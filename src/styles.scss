@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~variables.scss'; 
+
+body {
+  margin-left: 50px;
+  color: $white;
+  background-image: url("assets/images/background.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+
+}

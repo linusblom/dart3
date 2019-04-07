@@ -1,0 +1,24 @@
+@import '~variables.scss'; 
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-image: linear-gradient(to bottom, #373737, #303030, #292929, #222222, #1c1c1c);
+  width: 50px;
+  text-align: center;
+  padding-top: 15px;
+}
+
+fa-faicon { 
+  cursor: pointer;
+}
+
+.logo {
+  margin: 120px 5px;
+  font-family: $logo;
+  font-weight: 100;
+  font-size: 40px;
+  transform: rotate(-90deg);
+}

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
@@ -28,6 +29,7 @@ import { reducers } from './app.reducer';
     CoreModule,
     SharedModule,
     AuthModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

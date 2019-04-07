@@ -1,3 +1,4 @@
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
 @import '~variables.scss'; 
 
 body {
@@ -9,5 +10,5 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
-
+  font-family: $regular;
 }

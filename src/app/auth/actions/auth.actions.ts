@@ -1,12 +1,6 @@
-import { Action } from '@ngrx/store';
+import { createAction, union } from '@ngrx/store';
 
-export enum AuthActionTypes {
-  Logout = '[Auth] Logout Redirect',
-}
+export const logout = createAction('[Auth] Logout');
 
-export class Logout implements Action {
-  readonly type = AuthActionTypes.Logout;
-  constructor(public payload: undefined) {}
-}
-
-export type AuthActions = Logout;
+const actions = union({ logout });
+export type AuthActionsUnion = typeof actions;

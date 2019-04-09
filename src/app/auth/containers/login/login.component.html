@@ -1,3 +1,13 @@
-<p>
-  login works!
-</p>
+<div class="login" [formGroup]="loginForm">
+  <div class="header">
+    WELCOME TO
+    <span class="logo">DART3</span>
+  </div>
+  <mat-form-field>
+    <input matInput formControlName="email" placeholder="Email" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput formControlName="password" type="password" placeholder="Password" />
+  </mat-form-field>
+  <button mat-flat-button color="primary" [disabled]="loginForm.invalid">Login</button>
+</div>

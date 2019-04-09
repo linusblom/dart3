@@ -11,4 +11,9 @@ body {
   background-size: cover;
   height: 100vh;
   font-family: $regular;
+  font-weight: 300;
+}
+
+.logo {
+  font-family: $logo;
 }

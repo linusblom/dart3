@@ -1,18 +1,29 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
-import { logout } from '@auth/actions/auth.actions';
+import { loginSuccess, logout } from '@auth/actions/auth.actions';
 import { State } from '@root/app.reducer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private store: Store<State>) {}
+  constructor(private readonly fireAuth: AngularFireAuth, private readonly store: Store<State>) {}
 
   canActivate() {
-    this.store.dispatch(logout());
-    return false;
+    return this.fireAuth.user.pipe(
+      map(user => {
+        if (user) {
+          this.store.dispatch(loginSuccess({ user }));
+          return true;
+        }
+
+        this.store.dispatch(logout());
+        return false;
+      }),
+    );
   }
 }

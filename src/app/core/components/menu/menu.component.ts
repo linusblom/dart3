@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -8,4 +8,6 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 })
 export class MenuComponent {
   menuIcon = faBars;
+
+  @Output() logout = new EventEmitter<void>();
 }

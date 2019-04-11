@@ -1,19 +1,50 @@
-import { AuthActionsUnion, logout } from '@auth/actions/auth.actions';
+import {
+  AuthActionsUnion,
+  login,
+  loginFailure,
+  loginSuccess,
+  logout,
+} from '@auth/actions/auth.actions';
+import { User } from 'firebase';
 
 export interface State {
-  authenticated: boolean;
+  loading: boolean;
+  user: User;
 }
 
 export const initalState: State = {
-  authenticated: false,
+  loading: false,
+  user: null,
 };
 
 export function reducer(state = initalState, action: AuthActionsUnion): State {
   switch (action.type) {
+    case login.type: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case loginSuccess.type: {
+      return {
+        user: action.user,
+        loading: false,
+      };
+    }
+
+    case loginFailure.type: {
+      return {
+        ...state,
+        user: null,
+        loading: false,
+      };
+    }
+
     case logout.type:
       return {
         ...state,
-        authenticated: false,
+        user: null,
       };
 
     default:
@@ -21,4 +52,4 @@ export function reducer(state = initalState, action: AuthActionsUnion): State {
   }
 }
 
-export const getAuthenticated = (state: State) => state.authenticated;
+export const getLoading = (state: State) => state.loading;

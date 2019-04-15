@@ -16,6 +16,7 @@ import { SharedModule } from '@shared/shared.module';
 import { AppComponent } from './app.component';
 import { reducers } from './app.reducer';
 import { routes } from './app.routing';
+import { AuthEffects } from './auth/effects/auth.effect';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,7 @@ import { routes } from './app.routing';
       name: 'Dart3',
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     RouterModule.forRoot(routes),
     CoreModule,
     SharedModule,

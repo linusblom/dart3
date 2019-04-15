@@ -1,0 +1,36 @@
+@import '~variables.scss';
+
+.notification {
+  display: flex;
+  border: 1px solid;
+  padding: 15px;
+  align-items: center;
+  border-radius: 5px;
+  background: $modal;
+  width: 350px;
+  margin-bottom: 20px;
+
+  &.error {
+    border-color: lighten(#a94442, 10);
+    color: lighten(#a94442, 10);
+  }
+
+  &.warning {
+    border-color: lighten(#8a6d3b, 20);
+    color: lighten(#8a6d3b, 20);
+  }
+
+  &.info {
+    border-color: lighten(#31708f, 20);
+    color: lighten(#31708f, 20);
+  }
+
+  &.success {
+    border-color: lighten(#3c763d, 20);
+    color: lighten(#3c763d, 20);
+  }
+}
+
+fa-icon {
+  margin-right: 10px;
+}

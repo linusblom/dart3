@@ -10,6 +10,7 @@
   top: 0;
   bottom: 0;
   background: $backdrop;
+  z-index: 200;
 }
 
 .login {
@@ -30,7 +31,7 @@
   button {
     float: right;
   }
-  
+
   mat-spinner {
     float: right;
     margin-right: 16px;

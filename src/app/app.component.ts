@@ -1,20 +1,13 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { State } from './app.reducer';
-import { logout } from './auth/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-menu (logout)="onLogout()"></app-menu>
+    <app-menu></app-menu>
+    <app-notification></app-notification>
     <router-outlet></router-outlet>
   `,
 })
 export class AppComponent {
-  constructor(private readonly store: Store<State>) {}
-
-  onLogout() {
-    this.store.dispatch(logout());
-  }
+  constructor() {}
 }

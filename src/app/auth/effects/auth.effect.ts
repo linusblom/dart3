@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { from } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
 
 import { login, loginFailure, loginSuccess, logout } from '@auth/actions/auth.actions';
-import { from } from 'rxjs';
+import { push } from '@core/actions/notification.actions';
+import { NotificationState } from '@root/core/models';
 
 @Injectable()
 export class AuthEffects {
@@ -16,7 +18,10 @@ export class AuthEffects {
       from(this.fireAuth.auth.signInWithEmailAndPassword(email, password)).pipe(
         tap(() => this.router.navigate(['/'])),
         map(({ user }) => loginSuccess({ user })),
-        catchError(error => [loginFailure({ error })]),
+        catchError(error => [
+          loginFailure({ error }),
+          push({ state: NotificationState.ERROR, message: error.message }),
+        ]),
       ),
     ),
   );

@@ -1,2 +1,10 @@
-<fa-icon [icon]="menuIcon" size="2x" (click)="logoutClick()"></fa-icon>
-<div class="logo">DART3</div>
+<div class="wrapper" [@menuAnimation]="expanded ? 'show' : 'hide'">
+  <div class="menu">
+    <div class="item">NEW GAME</div>
+    <div class="item" (click)="logoutClick()">LOGOUT</div>
+  </div>
+  <div class="menu-bar">
+    <fa-icon [icon]="menuIcon" size="2x" (click)="expanded = !expanded"></fa-icon>
+    <div class="logo">DART3</div>
+  </div>
+</div>

@@ -1,25 +1,47 @@
 @import '~variables.scss'; 
 
-:host {
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  background-image: linear-gradient(to bottom, #373737, #303030, #292929, #222222, #1c1c1c);
-  width: 50px;
-  text-align: center;
-  padding-top: 15px;
   z-index: 100;
+  display: flex;
+  background: $dark-grey;
+  border-right: 1px solid $borders;
+  height: 100%;
+  padding-top: 15px;
 }
 
-fa-faicon { 
-  cursor: pointer;
+.menu {
+  width: 250px;
+  padding-top: 32px; 
+
+  .item {
+    font-size: 20px;
+    font-weight: 300;
+    padding: 15px 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-image: linear-gradient(to right, $primary, $dark-grey);
+    }
+  }
 }
 
-.logo {
-  margin: 120px 5px;
-  font-family: $logo;
-  font-weight: 100;
-  font-size: 40px;
-  transform: rotate(-90deg);
+.menu-bar {
+  text-align: center;
+  width: 50px;
+
+  fa-icon { 
+    cursor: pointer;
+  }
+
+  .logo {
+    margin: 120px 5px;
+    font-family: $logo;
+    font-weight: 100;
+    font-size: 40px;
+    transform: rotate(-90deg);
+  }
 }

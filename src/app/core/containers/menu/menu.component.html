@@ -1,7 +1,9 @@
 <div class="wrapper" [@menuAnimation]="expanded ? 'show' : 'hide'">
   <div class="menu">
-    <div class="item">NEW GAME</div>
-    <div class="item" (click)="logoutClick()">LOGOUT</div>
+    <div class="item" (click)="onNavigate(['game'])">New Game</div>
+    <div class="item" (click)="onNavigate(['players'])">Players</div>
+    <div class="item" (click)="onNavigate(['settings'])">Settings</div>
+    <div class="item" (click)="onLogout()">Logout</div>
   </div>
   <div class="menu-bar">
     <fa-icon [icon]="menuIcon" size="2x" (click)="expanded = !expanded"></fa-icon>

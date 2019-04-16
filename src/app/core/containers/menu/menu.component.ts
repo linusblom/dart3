@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 
@@ -29,9 +30,18 @@ export class MenuComponent {
     }
   }
 
-  constructor(private readonly store: Store<State>, private readonly element: ElementRef) {}
+  constructor(
+    private readonly store: Store<State>,
+    private readonly element: ElementRef,
+    private readonly router: Router,
+  ) {}
 
-  logoutClick() {
+  onNavigate(path: string[]) {
+    this.expanded = false;
+    this.router.navigate(path);
+  }
+
+  onLogout() {
     this.expanded = false;
     this.store.dispatch(logout());
   }

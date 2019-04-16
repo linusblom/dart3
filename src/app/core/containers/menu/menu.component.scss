@@ -22,6 +22,7 @@
     font-weight: 300;
     padding: 15px 5px;
     cursor: pointer;
+    text-transform: uppercase;
 
     &:hover {
       background-image: linear-gradient(to right, $primary, $dark-grey);

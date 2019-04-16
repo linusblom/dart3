@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { from } from 'rxjs';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, switchMap, tap } from 'rxjs/operators';
 
 import { login, loginFailure, loginSuccess, logout } from '@auth/actions/auth.actions';
 import { push } from '@core/actions/notification.actions';
@@ -17,7 +17,13 @@ export class AuthEffects {
     exhaustMap(({ email, password }) =>
       from(this.fireAuth.auth.signInWithEmailAndPassword(email, password)).pipe(
         tap(() => this.router.navigate(['/'])),
-        map(({ user }) => loginSuccess({ user })),
+        switchMap(({ user }) => [
+          loginSuccess({ user }),
+          push({
+            state: NotificationState.INFO,
+            message: `Welcome back ${user.displayName || user.email}!`,
+          }),
+        ]),
         catchError(error => [
           loginFailure({ error }),
           push({ state: NotificationState.ERROR, message: error.message }),

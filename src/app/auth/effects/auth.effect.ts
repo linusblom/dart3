@@ -3,9 +3,17 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { from } from 'rxjs';
-import { catchError, exhaustMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 
-import { login, loginFailure, loginSuccess, logout } from '@auth/actions/auth.actions';
+import {
+  login,
+  loginFailure,
+  loginSuccess,
+  logout,
+  updateProfile,
+  updateProfileFailure,
+  updateProfileSuccess,
+} from '@auth/actions/auth.actions';
 import { push } from '@core/actions/notification.actions';
 import { NotificationState } from '@root/core/models';
 
@@ -26,6 +34,20 @@ export class AuthEffects {
         ]),
         catchError(error => [
           loginFailure({ error }),
+          push({ state: NotificationState.ERROR, message: error.message }),
+        ]),
+      ),
+    ),
+  );
+
+  @Effect()
+  updateProfile$ = this.actions$.pipe(
+    ofType(updateProfile.type),
+    concatMap(({ displayName }) =>
+      from(this.fireAuth.auth.currentUser.updateProfile({ displayName })).pipe(
+        map(() => updateProfileSuccess({ displayName })),
+        catchError(error => [
+          updateProfileFailure({ error }),
           push({ state: NotificationState.ERROR, message: error.message }),
         ]),
       ),

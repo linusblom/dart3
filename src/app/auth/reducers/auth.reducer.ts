@@ -4,6 +4,7 @@ import {
   loginFailure,
   loginSuccess,
   logout,
+  updateProfileSuccess,
 } from '@auth/actions/auth.actions';
 import { User } from 'firebase';
 
@@ -47,9 +48,19 @@ export function reducer(state = initalState, action: AuthActionsUnion): State {
         user: null,
       };
 
+    case updateProfileSuccess.type:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          displayName: action.displayName,
+        },
+      };
+
     default:
       return state;
   }
 }
 
 export const getLoading = (state: State) => state.loading;
+export const getUser = (state: State) => state.user;

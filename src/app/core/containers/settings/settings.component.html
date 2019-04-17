@@ -1,3 +1,12 @@
-<p>
-  settings works!
-</p>
+<app-box header="Settings" [icon]="icon">
+  <app-box-group>
+    <mat-form-field>
+      <input
+        matInput
+        [formControl]="displayName"
+        placeholder="Account name"
+        (change)="onChangeDisplayName()"
+      />
+    </mat-form-field>
+  </app-box-group>
+</app-box>

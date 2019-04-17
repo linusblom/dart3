@@ -18,6 +18,10 @@ export const getAuthLoading = createSelector(
   getAuthState,
   fromAuth.getLoading,
 );
+export const getAuthUser = createSelector(
+  getAuthState,
+  fromAuth.getUser,
+);
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
 export const getNotifications = createSelector(

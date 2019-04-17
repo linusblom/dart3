@@ -1,0 +1,34 @@
+@import '~variables.scss';
+
+:host {
+  display: inline-flex;
+}
+
+.box {
+  min-width: 650px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $borders;
+  background: $modal;
+
+  .header {
+    display: flex;
+    align-items: center;
+    background: rgba($dark-grey, .8);
+    color: $white;
+    letter-spacing: 5px;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 20px;
+    padding: 10px;
+
+    fa-icon {
+      margin-right: 10px;
+    }
+  }
+
+  .footer {
+    background: rgba($dark-grey, .8);
+    height: 45px;
+  }
+}

@@ -1,0 +1,12 @@
+@import '~variables.scss';
+
+.content {
+  padding: 10px;
+  border: solid $borders;
+  border-width: 1px 0;
+}
+
+.divider {
+  height: 5px;
+  background: rgba($dark-grey, .8);
+}

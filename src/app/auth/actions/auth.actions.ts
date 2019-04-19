@@ -8,6 +8,7 @@ export const loginFailure = createAction(
   '[Auth] Login Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+export const logout = createAction('[Auth] Logout');
 
 export const updateProfile = createAction(
   '[Auth] Update Profile',
@@ -22,15 +23,26 @@ export const updateProfileFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const logout = createAction('[Auth] Logout');
+export const updatePassword = createAction(
+  '[Auth] Update Password',
+  props<{ currentPassword: string; newPassword: string }>(),
+);
+export const updatePasswordSuccess = createAction('[Auth] Update Password Success');
+export const updatePasswordFailure = createAction(
+  '[Auth] Update Password Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
 
 const actions = union({
   login,
   loginSuccess,
   loginFailure,
+  logout,
   updateProfile,
   updateProfileSuccess,
   updateProfileFailure,
-  logout,
+  updatePassword,
+  updatePasswordSuccess,
+  updatePasswordFailure,
 });
 export type AuthActionsUnion = typeof actions;

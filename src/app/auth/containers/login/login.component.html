@@ -10,7 +10,7 @@
     <input matInput formControlName="password" type="password" placeholder="Password" />
   </mat-form-field>
   <button
-    *ngIf="!(loading$ | async)"
+    *ngIf="!(loading$ | async); else spinner"
     mat-flat-button
     color="primary"
     [disabled]="loginForm.invalid"
@@ -18,5 +18,7 @@
   >
     Login
   </button>
-  <mat-spinner *ngIf="(loading$ | async)" diameter="36"></mat-spinner>
+  <ng-template #spinner>
+    <mat-spinner diameter="36"></mat-spinner>
+  </ng-template>
 </div>

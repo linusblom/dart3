@@ -9,4 +9,43 @@
       />
     </mat-form-field>
   </app-box-group>
+  <app-box-group [formGroup]="passwordForm">
+    <div class="password-form">
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          formControlName="currentPassword"
+          placeholder="Current password"
+        />
+      </mat-form-field>
+      <div class="new-password">
+        <mat-form-field>
+          <input matInput type="password" formControlName="newPassword" placeholder="Password" />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+          />
+        </mat-form-field>
+        <div class="button">
+          <button
+            *ngIf="!(loading$ | async); else spinner"
+            mat-flat-button
+            color="primary"
+            [disabled]="passwordForm.invalid"
+            (click)="onChangePassword()"
+          >
+            Change
+          </button>
+          <ng-template #spinner>
+            <mat-spinner diameter="36"></mat-spinner>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </app-box-group>
 </app-box>

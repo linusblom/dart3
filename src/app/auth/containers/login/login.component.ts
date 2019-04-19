@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { getAuthLoading, State } from '@root/app.reducer';
 import { login } from '@root/auth/actions/auth.actions';
-import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,7 @@ export class LoginComponent {
       password: ['', [Validators.required]],
     });
 
-    this.loading$ = store.pipe(select(getAuthLoading, shareReplay(1)));
+    this.loading$ = store.pipe(select(getAuthLoading));
   }
 
   login() {

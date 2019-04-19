@@ -2,19 +2,26 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { from } from 'rxjs';
-import { catchError, concatMap, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import { forkJoin, from } from 'rxjs';
+import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
   login,
   loginFailure,
   loginSuccess,
   logout,
+  updatePassword,
+  updatePasswordFailure,
+  updatePasswordSuccess,
   updateProfile,
   updateProfileFailure,
   updateProfileSuccess,
 } from '@auth/actions/auth.actions';
 import { push } from '@core/actions/notification.actions';
+import { getAuthUser, State } from '@root/app.reducer';
 import { NotificationState } from '@root/core/models';
 
 @Injectable()
@@ -45,13 +52,45 @@ export class AuthEffects {
     ofType(updateProfile.type),
     concatMap(({ displayName }) =>
       from(this.fireAuth.auth.currentUser.updateProfile({ displayName })).pipe(
-        map(() => updateProfileSuccess({ displayName })),
+        switchMap(() => [
+          updateProfileSuccess({ displayName }),
+          push({ state: NotificationState.SUCCESS, message: 'Account name updated' }),
+        ]),
         catchError(error => [
           updateProfileFailure({ error }),
           push({ state: NotificationState.ERROR, message: error.message }),
         ]),
       ),
     ),
+  );
+
+  @Effect()
+  updatePassword$ = this.actions$.pipe(
+    ofType(updatePassword.type),
+    withLatestFrom(this.store.pipe(select(getAuthUser))),
+    exhaustMap(([{ newPassword, currentPassword }, { email }]) => {
+      const credentials = firebase.auth.EmailAuthProvider.credential(email, currentPassword);
+      return from(
+        this.fireAuth.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials),
+      ).pipe(
+        concatMap(() =>
+          from(this.fireAuth.auth.currentUser.updatePassword(newPassword)).pipe(
+            switchMap(() => [
+              updatePasswordSuccess(),
+              push({ state: NotificationState.SUCCESS, message: 'Account password changed' }),
+            ]),
+            catchError(error => [
+              updatePasswordFailure({ error }),
+              push({ state: NotificationState.ERROR, message: error.message }),
+            ]),
+          ),
+        ),
+        catchError(error => [
+          updatePasswordFailure({ error }),
+          push({ state: NotificationState.ERROR, message: error.message }),
+        ]),
+      );
+    }),
   );
 
   @Effect({ dispatch: false })
@@ -67,5 +106,6 @@ export class AuthEffects {
     private readonly actions$: Actions,
     private readonly router: Router,
     private readonly fireAuth: AngularFireAuth,
+    private readonly store: Store<State>,
   ) {}
 }

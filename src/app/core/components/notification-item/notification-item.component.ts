@@ -46,7 +46,7 @@ export class NotificationItemComponent {
   };
 
   constructor() {
-    timer(10000)
+    timer(5000)
       .pipe(
         tap(() => (this.show = false)),
         delay(500),

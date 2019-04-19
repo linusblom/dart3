@@ -4,6 +4,9 @@ import {
   loginFailure,
   loginSuccess,
   logout,
+  updatePassword,
+  updatePasswordFailure,
+  updatePasswordSuccess,
   updateProfileSuccess,
 } from '@auth/actions/auth.actions';
 import { User } from 'firebase';
@@ -20,10 +23,19 @@ export const initalState: State = {
 
 export function reducer(state = initalState, action: AuthActionsUnion): State {
   switch (action.type) {
+    case updatePassword.type:
     case login.type: {
       return {
         ...state,
         loading: true,
+      };
+    }
+
+    case updatePasswordSuccess.type:
+    case updatePasswordFailure.type: {
+      return {
+        ...state,
+        loading: false,
       };
     }
 

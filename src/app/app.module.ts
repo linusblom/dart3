@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 import { reducers } from './app.reducer';
 import { routes } from './app.routing';
 import { AuthEffects } from './auth/effects/auth.effect';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { AuthEffects } from './auth/effects/auth.effect';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    GameModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

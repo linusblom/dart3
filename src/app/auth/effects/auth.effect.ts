@@ -5,7 +5,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
-import { forkJoin, from } from 'rxjs';
+import { from } from 'rxjs';
 import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {

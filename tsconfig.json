@@ -22,6 +22,7 @@
       "@auth/*": ["app/auth/*"],
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
+      "@game/*": ["app/game/*"],
     }
   }
 }

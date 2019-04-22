@@ -1,0 +1,11 @@
+button {
+  position: relative;
+  overflow: hidden;
+
+  mat-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+  }
+}

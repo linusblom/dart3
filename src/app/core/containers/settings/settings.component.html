@@ -31,20 +31,14 @@
             placeholder="Confirm password"
           />
         </mat-form-field>
-        <div class="button">
-          <button
-            *ngIf="!(loading$ | async); else spinner"
-            mat-flat-button
-            color="primary"
-            [disabled]="passwordForm.invalid"
-            (click)="onChangePassword()"
-          >
-            Change
-          </button>
-          <ng-template #spinner>
-            <mat-spinner diameter="36"></mat-spinner>
-          </ng-template>
-        </div>
+        <app-button
+          color="primary"
+          [loading]="loading$ | async"
+          [disabled]="passwordForm.invalid"
+          (btnClick)="onChangePassword()"
+        >
+          Change
+        </app-button>
       </div>
     </div>
   </app-box-group>

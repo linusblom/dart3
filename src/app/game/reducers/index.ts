@@ -1,13 +1,13 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
-import * as fromGame from './game.reducer';
+import * as fromPlayer from './player.reducer';
 
 export interface State {
-  game: fromGame.State;
+  player: fromPlayer.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
-  game: fromGame.reducer,
+  player: fromPlayer.reducer,
 };
 
-export const getGameState = createFeatureSelector<fromGame.State>('game');
+export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');

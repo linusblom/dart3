@@ -1,4 +1,4 @@
-import { loadPlayers, loadPlayersSuccess, PlayerActionsUnion } from '@game/actions/player.actions';
+import { loadPlayersSuccess, PlayerActionsUnion } from '@game/actions/player.actions';
 import { Player } from '@game/models/player';
 
 export interface State {

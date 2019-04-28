@@ -3,19 +3,31 @@ import { createAction, props, union } from '@ngrx/store';
 
 import { Player } from '@game/models/player';
 
-export const loadPlayers = createAction('[Game] Load Players');
+export const loadPlayers = createAction('[Players] Load Players');
 export const loadPlayersSuccess = createAction(
-  '[Game] Load Players Success',
+  '[Players] Load Players Success',
   props<{ players: Player[] }>(),
 );
-export const loadPlayersDestroy = createAction('[Game] Load Players Destroy');
 export const loadPlayerFailure = createAction(
-  '[Game] Load Players Failure',
+  '[Players] Load Players Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+export const loadPlayersDestroy = createAction('[Players] Load Players Destroy');
+
+export const createPlayer = createAction('[Players] Create Player', props<{ name: string }>());
+export const createPlayerSuccess = createAction('[Player] Create Player Success');
+export const createPlayerFailue = createAction(
+  '[Player] Create Player Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
 const actions = union({
   loadPlayers,
   loadPlayersSuccess,
+  loadPlayerFailure,
+  loadPlayersDestroy,
+  createPlayer,
+  createPlayerSuccess,
+  createPlayerFailue,
 });
 export type PlayerActionsUnion = typeof actions;

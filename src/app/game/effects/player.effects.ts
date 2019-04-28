@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { from } from 'rxjs';
+import { catchError, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import {
+  createPlayer,
+  createPlayerFailue,
+  createPlayerSuccess,
   loadPlayerFailure,
   loadPlayers,
   loadPlayersDestroy,
@@ -11,16 +15,31 @@ import {
 } from '@game/actions/player.actions';
 import { Player } from '@game/models/player';
 import { PlayerService } from '@game/services';
-import { getAuthUser, State } from '@root/app.reducer';
+import { State } from '@root/app.reducer';
+import { push } from '@root/core/actions/notification.actions';
+import { NotificationState } from '@root/core/models';
 
 @Injectable()
 export class PlayerEffects {
   @Effect()
+  createPlayer$ = this.actions$.pipe(
+    ofType(createPlayer.type),
+    concatMap(({ name }) =>
+      from(this.service.create(name)).pipe(
+        switchMap(() => [
+          push({ state: NotificationState.SUCCESS, message: `Player ${name} created!` }),
+          createPlayerSuccess(),
+        ]),
+        catchError(error => [createPlayerFailue(error)]),
+      ),
+    ),
+  );
+
+  @Effect()
   loadPlayers$ = this.actions$.pipe(
     ofType(loadPlayers.type),
-    withLatestFrom(this.store.pipe(select(getAuthUser))),
-    switchMap(([_, { uid }]) =>
-      this.service.list(uid).pipe(
+    switchMap(() =>
+      this.service.list().pipe(
         takeUntil(this.actions$.pipe(ofType(loadPlayersDestroy.type))),
         map((players: Player[]) => loadPlayersSuccess({ players })),
         catchError(error => [loadPlayerFailure(error)]),

@@ -1,1 +1,17 @@
-<app-box header="Players" [icon]="icon"></app-box>
+<app-box header="Players" [icon]="icon">
+  <app-box-group>
+    <div class="new-player">
+      <mat-form-field>
+        <input matInput [formControl]="name" placeholder="New player name" />
+      </mat-form-field>
+      <app-button
+        color="primary"
+        [loading]="loading$ | async"
+        [disabled]="name.invalid"
+        (btnClick)="onCreatePlayer()"
+      >
+        Create player
+      </app-button>
+    </div>
+  </app-box-group>
+</app-box>

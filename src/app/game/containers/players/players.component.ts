@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 
-import { loadPlayers, loadPlayersDestroy } from '@game/actions/player.actions';
+import { createPlayer, loadPlayers, loadPlayersDestroy } from '@game/actions/player.actions';
 import { State } from '@root/app.reducer';
 
 @Component({
@@ -12,6 +13,7 @@ import { State } from '@root/app.reducer';
 })
 export class PlayersComponent implements OnDestroy {
   icon = faUsers;
+  name = new FormControl('', [Validators.required, Validators.minLength(3)]);
 
   constructor(private readonly store: Store<State>) {
     this.store.dispatch(loadPlayers());
@@ -19,5 +21,11 @@ export class PlayersComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.store.dispatch(loadPlayersDestroy());
+  }
+
+  onCreatePlayer() {
+    this.store.dispatch(createPlayer({ name: this.name.value }));
+
+    this.name.reset();
   }
 }

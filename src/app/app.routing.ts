@@ -1,21 +1,20 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '@auth/services/auth.guard';
-import { NotFoundComponent } from '@core/components';
+import { NotFoundComponent } from '@shared/components';
 
-import { LoginComponent } from './auth/containers/login/login.component';
 import { SettingsComponent } from './core/containers';
-import { PlayersComponent } from './game/containers';
 
 export const routes: Routes = [
-  {
-    path: '',
-    canActivate: [AuthGuard],
-    children: [
-      { path: 'players', component: PlayersComponent },
-      { path: 'settings', component: SettingsComponent },
-    ],
-  },
-  { path: 'login', component: LoginComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: '', redirectTo: '/game', pathMatch: 'full' },
+  { path: 'game', loadChildren: '@game/game.module#GameModule', canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

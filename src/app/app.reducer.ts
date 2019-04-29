@@ -16,15 +16,15 @@ export const reducers: ActionReducerMap<State> = {
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
 export const getAuthLoading = createSelector(
   getAuthState,
-  fromAuth.getLoading,
+  state => state.loading,
 );
 export const getAuthUser = createSelector(
   getAuthState,
-  fromAuth.getUser,
+  state => state.user,
 );
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
 export const getNotifications = createSelector(
   getNotificationState,
-  fromNotification.getNotifications,
+  state => state.notifications,
 );

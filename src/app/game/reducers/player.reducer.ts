@@ -1,5 +1,5 @@
 import { loadPlayersSuccess, PlayerActionsUnion } from '@game/actions/player.actions';
-import { Player } from '@game/models/player';
+import { Player } from '@game/models';
 
 export interface State {
   players: Player[];
@@ -12,7 +12,6 @@ export const initialState: State = {
 export function reducer(state = initialState, action: PlayerActionsUnion) {
   switch (action.type) {
     case loadPlayersSuccess.type:
-      console.log(action);
       return {
         ...state,
         players: action.players,

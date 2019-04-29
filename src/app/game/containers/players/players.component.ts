@@ -1,10 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { createPlayer, loadPlayers, loadPlayersDestroy } from '@game/actions/player.actions';
-import { State } from '@root/app.reducer';
+import { Player } from '@game/models';
+import { getPlayers, State } from '@game/reducers';
 
 @Component({
   selector: 'app-players',
@@ -12,11 +15,14 @@ import { State } from '@root/app.reducer';
   styleUrls: ['./players.component.scss'],
 })
 export class PlayersComponent implements OnDestroy {
+  players$: Observable<Player[]>;
   icon = faUsers;
   name = new FormControl('', [Validators.required, Validators.minLength(3)]);
 
   constructor(private readonly store: Store<State>) {
     this.store.dispatch(loadPlayers());
+
+    this.store.pipe(select(getPlayers)).subscribe(res => console.log(res));
   }
 
   ngOnDestroy() {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,11 @@ export class PlayerService {
       .collection('users')
       .doc(this.fireAuth.auth.currentUser.uid)
       .collection('players')
-      .valueChanges();
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() })),
+        ),
+      );
   }
 }

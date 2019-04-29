@@ -6,6 +6,7 @@ import {
   MatProgressBarModule,
   MatProgressSpinnerModule,
 } from '@angular/material';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { components } from './components';
 import { BoxModule } from './modules/box/box.module';
@@ -18,7 +19,7 @@ const materialComponents = [
 ];
 
 @NgModule({
-  imports: [BoxModule, CommonModule, ...materialComponents],
+  imports: [BoxModule, CommonModule, FontAwesomeModule, ...materialComponents],
   exports: [BoxModule, ...materialComponents, ...components],
   declarations: [...components],
 })

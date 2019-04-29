@@ -8,16 +8,18 @@ import { SharedModule } from '@shared/shared.module';
 
 import { containers } from './containers';
 import { effects } from './effects';
+import { GameRoutingModule } from './game.routing';
 import { reducers } from './reducers';
 import { services } from './services';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     ReactiveFormsModule,
+    GameRoutingModule,
     StoreModule.forFeature('game', reducers),
-    EffectsModule.forFeature([...effects]),
+    EffectsModule.forFeature(effects),
+    SharedModule,
   ],
   declarations: [...containers],
   providers: [...services],

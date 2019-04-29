@@ -16,30 +16,29 @@ import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { reducers } from './app.reducer';
-import { routes } from './app.routing';
+import { AppRoutingModule } from './app.routing';
 import { AuthEffects } from './auth/effects/auth.effect';
-import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    AuthModule,
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([AuthEffects]),
-    RouterModule.forRoot(routes),
     CoreModule,
     SharedModule,
-    AuthModule,
-    BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    GameModule,
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent],
 })

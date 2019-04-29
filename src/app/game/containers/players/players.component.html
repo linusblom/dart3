@@ -1,5 +1,10 @@
 <app-box header="Players" [icon]="icon">
   <app-box-group>
+    <div *ngFor="let player of (players$ | async)">
+      {{ player.name }}
+    </div>
+  </app-box-group>
+  <app-box-group>
     <div class="new-player">
       <mat-form-field>
         <input matInput [formControl]="name" placeholder="New player name" />

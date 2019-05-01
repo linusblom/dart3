@@ -7,9 +7,7 @@ import { map } from 'rxjs/operators';
 import { loginSuccess, logout } from '@auth/actions/auth.actions';
 import { State } from '@root/app.reducer';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private readonly fireAuth: AngularFireAuth, private readonly store: Store<State>) {}
 

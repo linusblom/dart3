@@ -8,7 +8,7 @@ export const loadPlayersSuccess = createAction(
   '[Players] Load Players Success',
   props<{ players: Player[] }>(),
 );
-export const loadPlayerFailure = createAction(
+export const loadPlayersFailure = createAction(
   '[Players] Load Players Failure',
   props<{ error: HttpErrorResponse }>(),
 );
@@ -24,7 +24,7 @@ export const createPlayerFailue = createAction(
 const actions = union({
   loadPlayers,
   loadPlayersSuccess,
-  loadPlayerFailure,
+  loadPlayersFailure,
   loadPlayersDestroy,
   createPlayer,
   createPlayerSuccess,

@@ -1,6 +1,6 @@
 import { dismiss, NotificationActionsUnion, push } from '@core/actions/notification.actions';
 import { Notification } from '@core/models';
-import { generateId } from '@root/utils';
+import { generateId } from '@utils/generateId';
 
 export interface State {
   notifications: Notification[];

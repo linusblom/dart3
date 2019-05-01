@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-box-group',
   templateUrl: './box-group.component.html',
   styleUrls: ['./box-group.component.scss'],
 })
-export class BoxGroupComponent {}
+export class BoxGroupComponent {
+  @Input() hover = false;
+}

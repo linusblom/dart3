@@ -1,0 +1,28 @@
+<app-box header="Select Players" [icon]="iconPlayers">
+  <app-box-group *ngFor="let player of players" [hover]="true">
+    <div class="player">
+      <fa-icon [icon]="iconUnchecked" size="2x"></fa-icon>
+      <div class="name">{{ player.name }}</div>
+      <div class="details"></div>
+    </div>
+  </app-box-group>
+  <app-box-loading *ngIf="loadingPlayers"></app-box-loading>
+</app-box>
+
+<app-box header="Create New Player" [icon]="iconNewPlayer">
+  <app-box-group>
+    <div class="new-player">
+      <mat-form-field>
+        <input matInput [formControl]="name" placeholder="New player name" />
+      </mat-form-field>
+      <app-button
+        color="primary"
+        [loading]="loadingCreatePlayer"
+        [disabled]="name.invalid"
+        (btnClick)="onCreatePlayer()"
+      >
+        Create player
+      </app-button>
+    </div>
+  </app-box-group>
+</app-box>

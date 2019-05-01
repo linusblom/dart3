@@ -1,17 +1,11 @@
 @import '~variables.scss';
 
 .content {
+  display: flex;
+  justify-content: center;
   padding: 10px;
   border: solid $borders;
   border-width: 1px 0;
-
-  &.hover {
-  cursor: pointer;
-
-    &:hover {
-      background: rgba($white, .32)
-    }
-  }
 }
 
 .divider {

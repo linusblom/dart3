@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { from } from 'rxjs';
 import { catchError, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
+import { push } from '@core/actions/notification.actions';
+import { NotificationState } from '@core/models';
 import {
   createPlayer,
   createPlayerFailue,
   createPlayerSuccess,
-  loadPlayerFailure,
   loadPlayers,
   loadPlayersDestroy,
+  loadPlayersFailure,
   loadPlayersSuccess,
 } from '@game/actions/player.actions';
 import { Player } from '@game/models/player';
 import { PlayerService } from '@game/services';
-import { State } from '@root/app.reducer';
-import { push } from '@root/core/actions/notification.actions';
-import { NotificationState } from '@root/core/models';
 
 @Injectable()
 export class PlayerEffects {
@@ -42,14 +40,10 @@ export class PlayerEffects {
       this.service.list().pipe(
         takeUntil(this.actions$.pipe(ofType(loadPlayersDestroy.type))),
         map((players: Player[]) => loadPlayersSuccess({ players })),
-        catchError(error => [loadPlayerFailure(error)]),
+        catchError(error => [loadPlayersFailure(error)]),
       ),
     ),
   );
 
-  constructor(
-    private readonly actions$: Actions,
-    private readonly store: Store<State>,
-    private readonly service: PlayerService,
-  ) {}
+  constructor(private readonly actions$: Actions, private readonly service: PlayerService) {}
 }

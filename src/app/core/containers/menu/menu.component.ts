@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 
+import { logout } from '@auth/actions/auth.actions';
 import { State } from '@root/app.reducer';
-import { logout } from '@root/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-menu',

@@ -1,0 +1,32 @@
+@import '~variables.scss';
+
+.player {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+
+  fa-icon {
+    margin-right: 8px;
+    color: rgba($grey, .8);
+  }
+
+  .name {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 300;
+  }
+
+  .details {
+    flex: 1;
+  }
+}
+
+.new-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  mat-form-field {
+    width: 250px;
+  }
+}

@@ -1,0 +1,6 @@
+<app-start-select-players
+  [players]="players$ | async"
+  [loadingPlayers]="loadingPlayers$ | async"
+  [loadingCreatePlayer]="loadingCreatePlayer$ | async"
+  (createPlayer)="onCreatePlayer($event)"
+></app-start-select-players>

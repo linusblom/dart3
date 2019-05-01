@@ -3,9 +3,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+import { makePlayer } from '@game/models';
+
+@Injectable()
 export class PlayerService {
   constructor(private readonly db: AngularFirestore, private readonly fireAuth: AngularFireAuth) {}
 
@@ -25,7 +25,7 @@ export class PlayerService {
       .snapshotChanges()
       .pipe(
         map(actions =>
-          actions.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() })),
+          actions.map(({ payload }) => makePlayer({ id: payload.doc.id, ...payload.doc.data() })),
         ),
       );
   }

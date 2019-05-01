@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
+import { login } from '@auth/actions/auth.actions';
 import { getAuthLoading, State } from '@root/app.reducer';
-import { login } from '@root/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-login',

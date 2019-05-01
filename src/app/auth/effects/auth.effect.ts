@@ -21,8 +21,8 @@ import {
   updateProfileSuccess,
 } from '@auth/actions/auth.actions';
 import { push } from '@core/actions/notification.actions';
+import { NotificationState } from '@core/models';
 import { getAuthUser, State } from '@root/app.reducer';
-import { NotificationState } from '@root/core/models';
 
 @Injectable()
 export class AuthEffects {

@@ -17,12 +17,13 @@
       "dom"
     ],
     "paths": {
-      "@root/*": ["app/*"],
       "@envs/*": ["environments/*"],
       "@auth/*": ["app/auth/*"],
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
       "@game/*": ["app/game/*"],
+      "@utils/*": ["app/utils/*"],
+      "@root/*": ["app/*"],
     }
   }
 }

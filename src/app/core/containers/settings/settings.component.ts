@@ -5,8 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { updatePassword, updateProfile } from '@auth/actions/auth.actions';
 import { getAuthLoading, getAuthUser, State } from '@root/app.reducer';
-import { updatePassword, updateProfile } from '@root/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-settings',

@@ -1,6 +1,7 @@
 <div class="wrapper" [@menuAnimation]="expanded ? 'show' : 'hide'">
   <div class="menu">
     <div class="item" (click)="onNavigate([''])">Game</div>
+    <div class="item" (click)="onNavigate(['players'])">Players</div>
     <div class="item" (click)="onNavigate(['settings'])">Settings</div>
     <div class="item" (click)="onLogout()">Logout</div>
   </div>

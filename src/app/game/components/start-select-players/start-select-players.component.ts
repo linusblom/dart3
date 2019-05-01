@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
-import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import { Player } from '@game/models';
 
@@ -13,19 +12,8 @@ import { Player } from '@game/models';
 export class StartSelectPlayersComponent {
   @Input() players: Player[] = [];
   @Input() loadingPlayers = false;
-  @Input() loadingCreatePlayer = false;
-
-  @Output() createPlayer = new EventEmitter<string>();
 
   iconPlayers = faUsers;
-  iconNewPlayer = faUserPlus;
   iconUnchecked = faCircle;
   iconChecked = faCheckCircle;
-
-  name = new FormControl('', [Validators.required, Validators.minLength(3)]);
-
-  onCreatePlayer() {
-    this.createPlayer.emit(this.name.value);
-    this.name.reset();
-  }
 }

@@ -8,21 +8,3 @@
   </app-box-group>
   <app-box-loading *ngIf="loadingPlayers"></app-box-loading>
 </app-box>
-
-<app-box header="Create New Player" [icon]="iconNewPlayer">
-  <app-box-group>
-    <div class="new-player">
-      <mat-form-field>
-        <input matInput [formControl]="name" placeholder="New player name" />
-      </mat-form-field>
-      <app-button
-        color="primary"
-        [loading]="loadingCreatePlayer"
-        [disabled]="name.invalid"
-        (btnClick)="onCreatePlayer()"
-      >
-        Create player
-      </app-button>
-    </div>
-  </app-box-group>
-</app-box>

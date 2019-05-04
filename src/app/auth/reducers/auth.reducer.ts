@@ -1,15 +1,7 @@
-import {
-  AuthActionsUnion,
-  login,
-  loginFailure,
-  loginSuccess,
-  logout,
-  updatePassword,
-  updatePasswordFailure,
-  updatePasswordSuccess,
-  updateProfileSuccess,
-} from '@auth/actions/auth.actions';
+import { createReducer, on } from '@ngrx/store';
 import { User } from 'firebase';
+
+import { AuthActions } from '@auth/actions';
 
 export interface State {
   loading: boolean;
@@ -21,58 +13,20 @@ export const initalState: State = {
   user: null,
 };
 
-export function reducer(state = initalState, action: AuthActionsUnion): State {
-  switch (action.type) {
-    case updatePassword.type:
-    case login.type: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case updatePasswordSuccess.type:
-    case updatePasswordFailure.type: {
-      return {
-        ...state,
-        loading: false,
-      };
-    }
-
-    case loginSuccess.type: {
-      return {
-        user: action.user,
-        loading: false,
-      };
-    }
-
-    case loginFailure.type: {
-      return {
-        ...state,
-        user: null,
-        loading: false,
-      };
-    }
-
-    case logout.type:
-      return {
-        ...state,
-        user: null,
-      };
-
-    case updateProfileSuccess.type:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          displayName: action.displayName,
-        },
-      };
-
-    default:
-      return state;
-  }
-}
+export const reducer = createReducer(
+  initalState,
+  on(AuthActions.login, AuthActions.updatePassword, state => ({ ...state, loading: true })),
+  on(AuthActions.updatePasswordSuccess, AuthActions.updatePasswordFailure, state => ({
+    ...state,
+    loading: false,
+  })),
+  on(AuthActions.loginSuccess, (state, { user }) => ({ ...state, loading: false, user })),
+  on(AuthActions.loginFailure, AuthActions.logout, () => initalState),
+  on(AuthActions.updateProfileSuccess, (state, { displayName }) => ({
+    ...state,
+    user: { ...state.user, displayName },
+  })),
+);
 
 export const getLoading = (state: State) => state.loading;
 export const getUser = (state: State) => state.user;

@@ -1,4 +1,4 @@
-export const generateId = (prefix: string) => {
+export const generateId = (prefix: string): string => {
   let id = `${prefix}-`;
   const chars = '0123456789abcdef';
   for (let i = 0; i < 10; i++) {

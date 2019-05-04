@@ -10,10 +10,4 @@ export class ButtonComponent {
   @Input() color = 'primary';
   @Input() disabled = false;
   @Output() btnClick = new EventEmitter<void>();
-
-  onClick() {
-    if (!this.loading) {
-      this.btnClick.emit();
-    }
-  }
 }

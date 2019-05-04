@@ -1,33 +1,24 @@
-import { dismiss, NotificationActionsUnion, push } from '@core/actions/notification.actions';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
+
+import { NotificationActions } from '@core/actions';
 import { Notification } from '@core/models';
-import { generateId } from '@utils/generateId';
 
-export interface State {
-  notifications: Notification[];
-}
+export interface State extends EntityState<Notification> {}
 
-export const initialState: State = {
-  notifications: [],
-};
+export const adapter: EntityAdapter<Notification> = createEntityAdapter<Notification>({
+  selectId: (notification: Notification) => notification.id,
+  sortComparer: false,
+});
 
-export function reducer(state = initialState, action: NotificationActionsUnion): State {
-  switch (action.type) {
-    case push.type:
-      return {
-        notifications: [
-          ...state.notifications,
-          { id: generateId('notification'), state: action.state, message: action.message },
-        ],
-      };
+export const initialState = adapter.getInitialState({});
 
-    case dismiss.type:
-      return {
-        notifications: state.notifications.filter(notification => notification.id !== action.id),
-      };
+export const reducer = createReducer(
+  initialState,
+  on(NotificationActions.pushSuccess, (state, { notification }) =>
+    adapter.addOne(notification, state),
+  ),
+  on(NotificationActions.dismiss, (state, { id }) => adapter.removeOne(id, state)),
+);
 
-    default:
-      return state;
-  }
-}
-
-export const getNotifications = (state: State) => state.notifications;
+export const selectAll = adapter.getSelectors().selectAll;

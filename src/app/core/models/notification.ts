@@ -1,4 +1,4 @@
-export enum NotificationState {
+export enum Status {
   ERROR = 'error',
   WARNING = 'warning',
   INFO = 'info',
@@ -7,6 +7,6 @@ export enum NotificationState {
 
 export interface Notification {
   id: string;
-  state: NotificationState;
+  status: Status;
   message: string;
 }

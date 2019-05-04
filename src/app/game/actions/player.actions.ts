@@ -20,14 +20,3 @@ export const createPlayerFailue = createAction(
   '[Player] Create Player Failure',
   props<{ error: HttpErrorResponse }>(),
 );
-
-const actions = union({
-  loadPlayers,
-  loadPlayersSuccess,
-  loadPlayersFailure,
-  loadPlayersDestroy,
-  createPlayer,
-  createPlayerSuccess,
-  createPlayerFailue,
-});
-export type PlayerActionsUnion = typeof actions;

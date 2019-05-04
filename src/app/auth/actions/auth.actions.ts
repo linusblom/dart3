@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { createAction, props, union } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { User } from 'firebase';
 
 export const login = createAction('[Auth] Login', props<{ email: string; password: string }>());
@@ -32,17 +32,3 @@ export const updatePasswordFailure = createAction(
   '[Auth] Update Password Failure',
   props<{ error: HttpErrorResponse }>(),
 );
-
-const actions = union({
-  login,
-  loginSuccess,
-  loginFailure,
-  logout,
-  updateProfile,
-  updateProfileSuccess,
-  updateProfileFailure,
-  updatePassword,
-  updatePasswordSuccess,
-  updatePasswordFailure,
-});
-export type AuthActionsUnion = typeof actions;

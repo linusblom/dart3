@@ -1,12 +1,13 @@
-import { createAction, props, union } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
-import { NotificationState } from '@core/models';
+import { Notification, Status } from '@core/models';
 
 export const push = createAction(
-  '[Notification] Add',
-  props<{ state: NotificationState; message: string }>(),
+  '[Notification] Push',
+  props<{ status: Status; message: string }>(),
+);
+export const pushSuccess = createAction(
+  '[Notification] Push Success',
+  props<{ notification: Notification }>(),
 );
 export const dismiss = createAction('[Notification] Dismiss', props<{ id: string }>());
-
-const actions = union({ push, dismiss });
-export type NotificationActionsUnion = typeof actions;

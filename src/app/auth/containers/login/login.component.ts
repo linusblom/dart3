@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { login } from '@auth/actions/auth.actions';
+import { AuthActions } from '@auth/actions';
 import { getAuthLoading, State } from '@root/app.reducer';
 
 @Component({
@@ -26,6 +26,6 @@ export class LoginComponent {
 
   login() {
     const { email, password } = this.loginForm.value;
-    this.store.dispatch(login({ email, password }));
+    this.store.dispatch(AuthActions.login({ email, password }));
   }
 }

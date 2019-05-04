@@ -24,5 +24,6 @@ export class PlayersComponent {
 
   onCreatePlayer() {
     this.store.dispatch(createPlayer({ name: this.name.value }));
+    this.name.reset();
   }
 }

@@ -1,73 +1,39 @@
-import {
-  createPlayer,
-  createPlayerFailue,
-  createPlayerSuccess,
-  loadPlayers,
-  loadPlayersDestroy,
-  loadPlayersFailure,
-  loadPlayersSuccess,
-  PlayerActionsUnion,
-} from '@game/actions/player.actions';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
+
+import { PlayerActions } from '@game/actions';
 import { Player } from '@game/models';
 
-export interface State {
-  players: Player[];
+export interface State extends EntityState<Player> {
   loadingPlayers: boolean;
   loadingCreatePlayer: boolean;
 }
 
-export const initialState: State = {
-  players: [],
+export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
+  selectId: (player: Player) => player.id,
+  sortComparer: false,
+});
+
+export const initialState: State = adapter.getInitialState({
   loadingPlayers: false,
   loadingCreatePlayer: false,
-};
+});
 
-export function reducer(state = initialState, action: PlayerActionsUnion) {
-  switch (action.type) {
-    case createPlayer.type:
-      return {
-        ...state,
-        loadingCreatePlayer: true,
-      };
+export const reducer = createReducer(
+  initialState,
+  on(PlayerActions.createPlayer, state => ({ ...state, loadingCreatePlayer: true })),
+  on(PlayerActions.createPlayerSuccess, PlayerActions.createPlayerFailue, state => ({
+    ...state,
+    loadingCreatePlayer: false,
+  })),
+  on(PlayerActions.loadPlayers, state => ({ ...state, loadingPlayers: true })),
+  on(PlayerActions.loadPlayersSuccess, (state, { players }) =>
+    adapter.upsertMany(players, { ...state, loadingPlayers: false }),
+  ),
+  on(PlayerActions.loadPlayersFailure, state => ({ ...state, loadingPlayers: false })),
+  on(PlayerActions.loadPlayersDestroy, state => adapter.removeAll(state)),
+);
 
-    case createPlayerSuccess.type:
-      return {
-        ...state,
-        loadingCreatePlayer: false,
-      };
-
-    case createPlayerFailue.type:
-      return {
-        ...state,
-        loadingCreatePlayer: false,
-      };
-
-    case loadPlayers.type:
-      return {
-        ...state,
-        loadingPlayers: true,
-      };
-
-    case loadPlayersSuccess.type:
-      return {
-        ...state,
-        players: action.players,
-        loadingPlayers: false,
-      };
-
-    case loadPlayersFailure.type:
-      return {
-        ...state,
-        loadingPlayers: false,
-      };
-
-    case loadPlayersDestroy.type:
-      return {
-        ...state,
-        players: [],
-      };
-
-    default:
-      return state;
-  }
-}
+export const getLoadingPlayers = (state: State) => state.loadingPlayers;
+export const getLoadingCreatePlayers = (state: State) => state.loadingCreatePlayer;
+export const selectAll = adapter.getSelectors().selectAll;

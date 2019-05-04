@@ -27,15 +27,15 @@ export const getGamePlayersState = createSelector(
 
 export const getPlayers = createSelector(
   getGamePlayersState,
-  state => state.players,
+  fromPlayer.selectAll,
 );
 
 export const getLoadingPlayers = createSelector(
   getGamePlayersState,
-  state => state.loadingPlayers,
+  fromPlayer.getLoadingPlayers,
 );
 
 export const getLoadingCreatePlayer = createSelector(
   getGamePlayersState,
-  state => state.loadingCreatePlayer,
+  fromPlayer.getLoadingCreatePlayers,
 );

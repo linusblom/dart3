@@ -19,6 +19,7 @@ export class PlayerComponent {
   }
 
   @Output() updatePlayer = new EventEmitter<Partial<Player>>();
+  @Output() updateAvatar = new EventEmitter<File>();
 
   name = new FormControl('', [Validators.required, Validators.minLength(3)]);
 

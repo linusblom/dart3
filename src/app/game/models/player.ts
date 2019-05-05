@@ -4,4 +4,5 @@ export interface Player {
   credits: number;
   xp: number;
   created: number;
+  avatarUrl: string;
 }

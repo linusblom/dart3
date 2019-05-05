@@ -72,4 +72,8 @@ export class PlayersComponent implements OnDestroy {
   onUpdate(data: Partial<Player>) {
     this.store.dispatch(PlayerActions.updatePlayer({ id: this.selectedPlayerId, data }));
   }
+
+  onUpdateAvatar(file: File) {
+    this.store.dispatch(PlayerActions.updateAvatar({ id: this.selectedPlayerId, file }));
+  }
 }

@@ -5,7 +5,11 @@
     [loading]="loadingPlayers$ | async"
     (select)="onSelect($event)"
   >
-    <app-player [player]="selectedPlayer$ | async" (updatePlayer)="onUpdate($event)"></app-player>
+    <app-player
+      [player]="selectedPlayer$ | async"
+      (updatePlayer)="onUpdate($event)"
+      (updateAvatar)="onUpdateAvatar($event)"
+    ></app-player>
   </app-box-list-view>
 </app-box>
 

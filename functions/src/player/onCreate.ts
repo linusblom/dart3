@@ -7,6 +7,7 @@ export const playerOnCreate = functions.firestore
       credits: 0,
       xp: 0,
       created: Date.now(),
+      avatarUrl: null,
     };
 
     return snapshot.ref.set(data, { merge: true });

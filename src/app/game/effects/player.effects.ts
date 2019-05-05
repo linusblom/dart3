@@ -54,5 +54,20 @@ export class PlayerEffects {
     ),
   );
 
+  uploadImage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.updateAvatar),
+      concatMap(({ id, file }) =>
+        from(this.service.updateAvatar(id, file)).pipe(
+          map(() => PlayerActions.updateAvatarSuccess()),
+          catchError(error => {
+            console.log(error);
+            return [PlayerActions.updateAvatarFailure(error)];
+          }),
+        ),
+      ),
+    ),
+  );
+
   constructor(private readonly actions$: Actions, private readonly service: PlayerService) {}
 }

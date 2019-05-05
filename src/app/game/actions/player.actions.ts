@@ -31,4 +31,14 @@ export const updatePlayerFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
+export const updateAvatar = createAction(
+  '[Player] Update Avatar',
+  props<{ id: string; file: File }>(),
+);
+export const updateAvatarSuccess = createAction('[Player] Update Avatar Success');
+export const updateAvatarFailure = createAction(
+  '[Player] Update Avatar Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
 export const selectPlayer = createAction('[Player] Select Player', props<{ id: string }>());

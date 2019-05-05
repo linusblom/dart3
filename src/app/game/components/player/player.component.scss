@@ -1,3 +1,13 @@
-mat-form-field {
-  width: 100%;
+.row {
+  display: flex;
+}
+
+img {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+}
+
+#upload {
+  display: none;
 }

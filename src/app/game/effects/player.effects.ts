@@ -23,7 +23,7 @@ export class PlayerEffects {
             }),
             PlayerActions.createPlayerSuccess(),
           ]),
-          catchError(error => [PlayerActions.createPlayerFailue(error)]),
+          catchError(error => [PlayerActions.createPlayerFailure(error)]),
         ),
       ),
     ),
@@ -37,6 +37,18 @@ export class PlayerEffects {
           takeUntil(this.actions$.pipe(ofType(PlayerActions.loadPlayersDestroy))),
           map((players: Player[]) => PlayerActions.loadPlayersSuccess({ players })),
           catchError(error => [PlayerActions.loadPlayersFailure(error)]),
+        ),
+      ),
+    ),
+  );
+
+  updatePlayer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.updatePlayer),
+      concatMap(({ id, data }) =>
+        from(this.service.update(id, data)).pipe(
+          map(() => PlayerActions.updatePlayerSuccess()),
+          catchError(error => [PlayerActions.updatePlayerFailure(error)]),
         ),
       ),
     ),

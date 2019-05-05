@@ -24,7 +24,6 @@ export const getAuthUser = createSelector(
 );
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
-export const getNotifications = createSelector(
+export const { selectAll: getAllNotifications } = fromNotification.adapter.getSelectors(
   getNotificationState,
-  fromNotification.selectAll,
 );

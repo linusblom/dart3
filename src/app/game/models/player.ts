@@ -3,12 +3,5 @@ export interface Player {
   name: string;
   credits: number;
   xp: number;
+  created: number;
 }
-
-export const makePlayer = (values: Partial<Player> = {}) => ({
-  id: '',
-  name: '',
-  credits: 0,
-  xp: 0,
-  ...values,
-});

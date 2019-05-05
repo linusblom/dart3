@@ -1,0 +1,7 @@
+<ng-container *ngIf="!player; else selectedPlayer">No player selected</ng-container>
+
+<ng-template #selectedPlayer>
+  <mat-form-field>
+    <input matInput [formControl]="name" placeholder="Name" (change)="onUpdatePlayer()" />
+  </mat-form-field>
+</ng-template>

@@ -1,0 +1,61 @@
+@import '~variables.scss';
+
+.wrapper {
+  display: flex;
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    width: 200px;
+    border: solid $borders;
+    border-width: 1px 1px 1px 0;
+
+    mat-spinner {
+      margin: auto;
+    }
+
+    .list-item {
+      padding: 8px;
+      font-size: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:not(.disabled) {
+        cursor: pointer;
+
+        &:hover {
+          background: rgba($white, .32);
+        }
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        color: $disabled;
+      }
+
+      &.selected {
+        background: rgba($white, .32);
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    padding: 10px;
+    border: solid $borders;
+    border-width: 1px 0 1px 1px;
+  }
+}
+
+.divider {
+  background: rgba($dark-grey, .8);
+
+  &.vertical {
+    width: 10px;
+  }
+
+  &.horizontal {
+    height: 10px;
+  }
+}

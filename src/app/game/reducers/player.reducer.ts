@@ -7,6 +7,7 @@ import { Player } from '@game/models';
 export interface State extends EntityState<Player> {
   loadingPlayers: boolean;
   loadingCreatePlayer: boolean;
+  selectedPlayerId: string;
 }
 
 export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
@@ -17,12 +18,13 @@ export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
 export const initialState: State = adapter.getInitialState({
   loadingPlayers: false,
   loadingCreatePlayer: false,
+  selectedPlayerId: '',
 });
 
 export const reducer = createReducer(
   initialState,
   on(PlayerActions.createPlayer, state => ({ ...state, loadingCreatePlayer: true })),
-  on(PlayerActions.createPlayerSuccess, PlayerActions.createPlayerFailue, state => ({
+  on(PlayerActions.createPlayerSuccess, PlayerActions.createPlayerFailure, state => ({
     ...state,
     loadingCreatePlayer: false,
   })),
@@ -32,8 +34,9 @@ export const reducer = createReducer(
   ),
   on(PlayerActions.loadPlayersFailure, state => ({ ...state, loadingPlayers: false })),
   on(PlayerActions.loadPlayersDestroy, state => adapter.removeAll(state)),
+  on(PlayerActions.selectPlayer, (state, { id }) => ({ ...state, selectedPlayerId: id })),
 );
 
 export const getLoadingPlayers = (state: State) => state.loadingPlayers;
 export const getLoadingCreatePlayers = (state: State) => state.loadingCreatePlayer;
-export const selectAll = adapter.getSelectors().selectAll;
+export const getSelectedPlayerId = (state: State) => state.selectedPlayerId;

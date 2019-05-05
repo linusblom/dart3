@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Player } from '@game/models';
-import { getLoadingPlayers, getPlayers, State } from '@game/reducers';
+import { getAllPlayers, getLoadingPlayers, State } from '@game/reducers';
 
 @Component({
   selector: 'app-start-game',
@@ -15,7 +15,7 @@ export class StartGameComponent {
   loadingPlayers$: Observable<boolean>;
 
   constructor(private readonly store: Store<State>) {
-    this.players$ = this.store.pipe(select(getPlayers));
+    this.players$ = this.store.pipe(select(getAllPlayers));
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
   }
 }

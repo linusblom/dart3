@@ -1,3 +1,14 @@
+<app-box header="Players" [icon]="iconPlayers">
+  <app-box-list-view
+    [selected]="selectedPlayerId"
+    [items]="playersListItem$ | async"
+    [loading]="loadingPlayers$ | async"
+    (select)="onSelect($event)"
+  >
+    <app-player [player]="selectedPlayer$ | async" (updatePlayer)="onUpdate($event)"></app-player>
+  </app-box-list-view>
+</app-box>
+
 <app-box header="Create New Player" [icon]="iconNewPlayer">
   <app-box-group>
     <div class="new-player">
@@ -8,7 +19,7 @@
         color="primary"
         [loading]="loadingCreatePlayer$ | async"
         [disabled]="name.invalid"
-        (btnClick)="onCreatePlayer()"
+        (btnClick)="onCreate()"
       >
         Create player
       </app-button>

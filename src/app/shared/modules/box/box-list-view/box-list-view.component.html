@@ -1,0 +1,20 @@
+<div class="wrapper">
+  <div class="list">
+    <mat-spinner *ngIf="loading; else list" [diameter]="75"></mat-spinner>
+    <ng-template #list>
+      <div
+        *ngFor="let item of items"
+        class="list-item"
+        [ngClass]="{ disabled: item.disabled, selected: item.id === selected }"
+        (click)="select.emit(item.id)"
+      >
+        {{ item.value }}
+      </div>
+    </ng-template>
+  </div>
+  <div class="divider vertical"></div>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+</div>
+<div class="divider horizontal"></div>

@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-import { makePlayer } from '@game/models';
+import { Player } from '@game/models';
 
 @Injectable()
 export class PlayerService {
@@ -24,9 +24,16 @@ export class PlayerService {
       .collection('players')
       .snapshotChanges()
       .pipe(
-        map(actions =>
-          actions.map(({ payload }) => makePlayer({ id: payload.doc.id, ...payload.doc.data() })),
-        ),
+        map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),
       );
+  }
+
+  update(id: string, data: Partial<Player>) {
+    return this.db
+      .collection('users')
+      .doc(this.fireAuth.auth.currentUser.uid)
+      .collection('players')
+      .doc(id)
+      .update(data);
   }
 }

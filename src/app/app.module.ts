@@ -12,7 +12,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthModule } from '@auth/auth.module';
 import { AuthEffects } from '@auth/effects/auth.effect';
 import { CoreModule } from '@core/core.module';
-import { NotificationEffects } from '@core/effects/notification.effects';
 import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
 
@@ -31,7 +30,7 @@ import { AppRoutingModule } from './app.routing';
     AngularFireAuthModule,
     AngularFirestoreModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, NotificationEffects]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,

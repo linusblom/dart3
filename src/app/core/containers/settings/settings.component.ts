@@ -37,8 +37,8 @@ export class SettingsComponent implements OnDestroy {
     store
       .pipe(
         select(getAuthUser),
-        filter(user => !!user),
         takeUntil(this.destroy$),
+        filter(user => !!user),
       )
       .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
   }

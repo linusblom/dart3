@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { dismiss } from '@core/actions/notification.actions';
 import { Notification } from '@core/models';
-import { getNotifications, State } from '@root/app.reducer';
+import { getAllNotifications, State } from '@root/app.reducer';
 
 @Component({
   selector: 'app-notification',
@@ -15,7 +15,7 @@ export class NotificationComponent {
   notifications$: Observable<Notification[]>;
 
   constructor(private readonly store: Store<State>) {
-    this.notifications$ = store.pipe(select(getNotifications));
+    this.notifications$ = store.pipe(select(getAllNotifications));
   }
 
   onDismiss(id: string) {

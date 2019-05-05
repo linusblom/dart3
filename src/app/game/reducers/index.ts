@@ -25,11 +25,6 @@ export const getGamePlayersState = createSelector(
   state => state.player,
 );
 
-export const getPlayers = createSelector(
-  getGamePlayersState,
-  fromPlayer.selectAll,
-);
-
 export const getLoadingPlayers = createSelector(
   getGamePlayersState,
   fromPlayer.getLoadingPlayers,
@@ -38,4 +33,24 @@ export const getLoadingPlayers = createSelector(
 export const getLoadingCreatePlayer = createSelector(
   getGamePlayersState,
   fromPlayer.getLoadingCreatePlayers,
+);
+
+export const getSelectedPlayerId = createSelector(
+  getGamePlayersState,
+  fromPlayer.getSelectedPlayerId,
+);
+
+export const {
+  selectIds: getPlayerIds,
+  selectEntities: getPlayerEntities,
+  selectAll: getAllPlayers,
+  selectTotal: getTotalPlayers,
+} = fromPlayer.adapter.getSelectors(getGamePlayersState);
+
+export const getSelectedPlayer = createSelector(
+  getPlayerEntities,
+  getSelectedPlayerId,
+  (entities, selectedId) => {
+    return selectedId && entities[selectedId];
+  },
 );

@@ -3,20 +3,32 @@ import { createAction, props, union } from '@ngrx/store';
 
 import { Player } from '@game/models/player';
 
-export const loadPlayers = createAction('[Players] Load Players');
+export const loadPlayers = createAction('[Player] Load Players');
 export const loadPlayersSuccess = createAction(
-  '[Players] Load Players Success',
+  '[Player] Load Players Success',
   props<{ players: Player[] }>(),
 );
 export const loadPlayersFailure = createAction(
-  '[Players] Load Players Failure',
+  '[Player] Load Players Failure',
   props<{ error: HttpErrorResponse }>(),
 );
-export const loadPlayersDestroy = createAction('[Players] Load Players Destroy');
+export const loadPlayersDestroy = createAction('[Player] Load Players Destroy');
 
-export const createPlayer = createAction('[Players] Create Player', props<{ name: string }>());
+export const createPlayer = createAction('[Player] Create Player', props<{ name: string }>());
 export const createPlayerSuccess = createAction('[Player] Create Player Success');
-export const createPlayerFailue = createAction(
+export const createPlayerFailure = createAction(
   '[Player] Create Player Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+
+export const updatePlayer = createAction(
+  '[Player] Update player',
+  props<{ id: string; data: Partial<Player> }>(),
+);
+export const updatePlayerSuccess = createAction('[Player] Update player Success');
+export const updatePlayerFailure = createAction(
+  '[Player] Update player Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const selectPlayer = createAction('[Player] Select Player', props<{ id: string }>());

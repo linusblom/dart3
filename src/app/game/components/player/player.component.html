@@ -3,7 +3,12 @@
 <ng-template #selectedPlayer>
   <div class="row">
     <label for="upload">
-      <app-avatar [avatarUrl]="player.avatarUrl"></app-avatar>
+      <app-avatar
+        [avatarUrl]="player.avatarUrl"
+        [color]="player.color"
+        [name]="player.name"
+        size="120"
+      ></app-avatar>
       <input
         id="upload"
         type="file"
@@ -11,8 +16,37 @@
         accept=".png,.jpg"
       />
     </label>
+    <div class="user-info">
+      <mat-form-field>
+        <input matInput [formControl]="name" placeholder="Name" (change)="onUpdatePlayer()" />
+      </mat-form-field>
+      <div class="icons">
+        <div class="icon coins">
+          <fa-icon [icon]="iconCoins" size="lg"></fa-icon>
+          <span>{{ player.credits | number: '1.2-2' }}</span>
+        </div>
+        <div class="icon xp">
+          <fa-icon [icon]="iconBullseye" size="lg"></fa-icon>
+          <span>{{ player.xp }}</span>
+        </div>
+        <div class="icon diamonds">
+          <fa-icon [icon]="iconGem" size="lg"></fa-icon>
+          <span>{{ player.diamonds }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row line" [formGroup]="cashFormGroup">
     <mat-form-field>
-      <input matInput [formControl]="name" placeholder="Name" (change)="onUpdatePlayer()" />
+      <mat-label>Cash</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="deposit">Deposit</mat-option>
+        <mat-option value="withdraw">Withdraw</mat-option>
+      </mat-select>
     </mat-form-field>
+    <mat-form-field class="amount">
+      <input matInput type="number" placeholder="Amount" formControlName="amount" />
+    </mat-form-field>
+    <app-button color="accent" [disabled]="cashFormGroup.invalid">Dispatch</app-button>
   </div>
 </ng-template>

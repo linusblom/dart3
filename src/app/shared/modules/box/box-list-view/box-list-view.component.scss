@@ -25,7 +25,7 @@
         cursor: pointer;
 
         &:hover {
-          background: rgba($white, .32);
+          background: $selected;
         }
       }
 
@@ -35,7 +35,7 @@
       }
 
       &.selected {
-        background: rgba($white, .32);
+        background: $selected;
       }
     }
   }

@@ -5,4 +5,6 @@ export interface Player {
   xp: number;
   created: number;
   avatarUrl: string;
+  color: string;
+  diamonds: number;
 }

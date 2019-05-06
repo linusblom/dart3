@@ -6,14 +6,22 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./avatar.component.scss'],
 })
 export class AvatarComponent {
-  @Input() set avatarUrl(avatarUrl: string) {
-    this.showPlaceHolder = !avatarUrl;
-    this.url = `url('${avatarUrl}')`;
-  }
-  @Input() playerName = 'Player';
-  @Input() playerColor = '#FFFFFF';
+  @Input() avatarUrl: string;
+  @Input() name = 'Player';
+  @Input() color = '#FFFFFF';
   @Input() size = 50;
 
-  url = '';
-  showPlaceHolder = false;
+  get nameChars() {
+    return this.name.slice(0, 2).toUpperCase();
+  }
+
+  get styles() {
+    return {
+      'width.px': this.size,
+      'height.px': this.size,
+      'font-size.px': this.size * 0.5,
+      'background-color': this.color,
+      ...(this.avatarUrl && { 'background-image': `url('${this.avatarUrl}'` }),
+    };
+  }
 }

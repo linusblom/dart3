@@ -1,1 +1,3 @@
-<div class="img" [ngStyle]="{ 'width.px': size, 'height.px': size, 'background-image': url }"></div>
+<div class="img" [ngStyle]="styles">
+  <div *ngIf="!avatarUrl">{{ nameChars }}</div>
+</div>

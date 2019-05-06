@@ -5,6 +5,7 @@ import {
   MatInputModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
 } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -16,6 +17,7 @@ const materialComponents = [
   MatInputModule,
   MatProgressSpinnerModule,
   MatProgressBarModule,
+  MatSelectModule,
 ];
 
 @NgModule({

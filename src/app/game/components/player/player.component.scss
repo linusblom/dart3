@@ -2,14 +2,6 @@
 
 .row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &.line {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px $selected solid;
-  }
 }
 
 label {
@@ -44,6 +36,31 @@ label {
   }
 }
 
-.amount {
-  width: 100px;
+.stats {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px $selected solid;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .stats-item {
+    display: flex;
+    flex: 1 0 50%;
+    align-items: baseline;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .value {
+      font-size: 50px;
+    }
+
+    .description {
+      color: $selected;
+    }
+  }
 }

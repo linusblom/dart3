@@ -36,17 +36,46 @@
       </div>
     </div>
   </div>
-  <div class="row line" [formGroup]="cashFormGroup">
-    <mat-form-field>
-      <mat-label>Cash</mat-label>
-      <mat-select formControlName="type">
-        <mat-option value="deposit">Deposit</mat-option>
-        <mat-option value="withdraw">Withdraw</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="amount">
-      <input matInput type="number" placeholder="Amount" formControlName="amount" />
-    </mat-form-field>
-    <app-button color="accent" [disabled]="cashFormGroup.invalid">Dispatch</app-button>
+  <div class="row stats">
+    <div class="stats-item">
+      <div class="value">{{ player.played }}</div>
+      <div class="description">played</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.wins }}</div>
+      <div class="description">wins</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.hits }}</div>
+      <div class="description">hits</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.misses }}</div>
+      <div class="description">misses</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.highest }}</div>
+      <div class="description">highest</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.oneHundredEighties }}</div>
+      <div class="description">180's</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.halveIt }}</div>
+      <div class="description">halve it</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.legs }}</div>
+      <div class="description">legs</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.turnover }}</div>
+      <div class="description">turnover</div>
+    </div>
+    <div class="stats-item">
+      <div class="value">{{ player.net }}</div>
+      <div class="description">net</div>
+    </div>
   </div>
 </ng-template>

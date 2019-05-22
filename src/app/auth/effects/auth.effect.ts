@@ -6,10 +6,18 @@ import { select, Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { from } from 'rxjs';
-import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  exhaustMap,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { AuthActions } from '@auth/actions';
-import { NotificationActions } from '@core/actions';
+import { CoreActions, NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { getAuthUser, State } from '@root/app.reducer';
 
@@ -34,6 +42,13 @@ export class AuthEffects {
           ]),
         ),
       ),
+    ),
+  );
+
+  loginSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginSuccess),
+      map(() => CoreActions.openMenu()),
     ),
   );
 
@@ -94,16 +109,15 @@ export class AuthEffects {
     ),
   );
 
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          this.fireAuth.auth.signOut();
-          this.router.navigate(['login']);
-        }),
-      ),
-    { dispatch: false },
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      tap(() => {
+        this.fireAuth.auth.signOut();
+        this.router.navigate(['login']);
+      }),
+      map(() => CoreActions.closeMenu()),
+    ),
   );
 
   constructor(

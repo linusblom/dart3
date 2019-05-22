@@ -6,28 +6,28 @@
   padding: 15px;
   align-items: center;
   border-radius: 5px;
-  background: $modal;
+  background: $white30;
   width: 350px;
   margin-bottom: 20px;
 
   &.error {
-    border-color: lighten(#a94442, 10);
-    color: lighten(#a94442, 10);
+    border-color: $error;
+    color: $error;
   }
 
   &.warning {
-    border-color: lighten(#8a6d3b, 20);
-    color: lighten(#8a6d3b, 20);
+    border-color: $warning;
+    color: $warning;
   }
 
   &.info {
-    border-color: lighten(#31708f, 20);
-    color: lighten(#31708f, 20);
+    border-color: $info;
+    color: $info;
   }
 
   &.success {
-    border-color: lighten(#3c763d, 20);
-    color: lighten(#3c763d, 20);
+    border-color: $success;
+    color: $success;
   }
 }
 

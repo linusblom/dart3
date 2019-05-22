@@ -9,12 +9,7 @@
   <mat-form-field>
     <input matInput formControlName="password" type="password" placeholder="Password" />
   </mat-form-field>
-  <app-button
-    color="primary"
-    [loading]="loading$ | async"
-    [disabled]="loginForm.invalid"
-    (btnClick)="login()"
-  >
+  <app-button [loading]="loading$ | async" [disabled]="loginForm.invalid" (btnClick)="login()">
     Login
   </app-button>
 </div>

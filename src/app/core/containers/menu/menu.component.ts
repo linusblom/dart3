@@ -1,11 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { Store } from '@ngrx/store';
+import { faBullseye, faCog, faSignOutAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { logout } from '@auth/actions/auth.actions';
-import { State } from '@root/app.reducer';
+import { getMenuOpen, State } from '@root/app.reducer';
 
 @Component({
   selector: 'app-menu',
@@ -14,35 +15,32 @@ import { State } from '@root/app.reducer';
   animations: [
     trigger('menuAnimation', [
       state('show', style({ transform: 'translateX(0%)' })),
-      state('hide', style({ transform: 'translateX(-250px)' })),
+      state('hide', style({ transform: 'translateX(-100px)' })),
       transition('show <=> hide', animate('300ms ease-in-out')),
     ]),
   ],
 })
 export class MenuComponent {
-  menuIcon = faBars;
-  expanded = false;
+  menuOpen$: Observable<boolean>;
 
-  @HostListener('document:click', ['$event.target'])
-  onClick(target: HTMLElement) {
-    if (this.expanded && !this.element.nativeElement.contains(target)) {
-      this.expanded = false;
-    }
+  gameIcon = faBullseye;
+  userIcon = faUsers;
+  settingsIcon = faCog;
+  logoutIcon = faSignOutAlt;
+
+  constructor(private readonly store: Store<State>, private readonly router: Router) {
+    this.menuOpen$ = this.store.pipe(select(getMenuOpen));
   }
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly element: ElementRef,
-    private readonly router: Router,
-  ) {}
-
   onNavigate(path: string[]) {
-    this.expanded = false;
     this.router.navigate(path);
   }
 
   onLogout() {
-    this.expanded = false;
     this.store.dispatch(logout());
+  }
+
+  isRouteActive(path: string) {
+    return this.router.isActive(path, false);
   }
 }

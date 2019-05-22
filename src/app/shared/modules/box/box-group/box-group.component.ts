@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./box-group.component.scss'],
 })
 export class BoxGroupComponent {
-  @Input() hover = false;
+  @Input() header = '';
 }

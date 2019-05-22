@@ -9,6 +9,10 @@ mat-form-field {
   .new-password {
     display: inline-flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+  }
+
+  app-button {
+    padding-bottom: 1.25em; 
   }
 }

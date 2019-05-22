@@ -1,3 +1,4 @@
+import * as CoreActions from './core.actions';
 import * as NotificationActions from './notification.actions';
 
-export { NotificationActions };
+export { CoreActions, NotificationActions };

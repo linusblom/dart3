@@ -1,12 +1,23 @@
-<div class="wrapper" [@menuAnimation]="expanded ? 'show' : 'hide'">
-  <div class="menu">
-    <div class="item" (click)="onNavigate([''])">Game</div>
-    <div class="item" (click)="onNavigate(['players'])">Players</div>
-    <div class="item" (click)="onNavigate(['settings'])">Settings</div>
-    <div class="item" (click)="onLogout()">Logout</div>
+<div class="menu" [@menuAnimation]="(menuOpen$ | async) ? 'show' : 'hide'">
+  <div class="logo">DART3</div>
+  <div class="item" [ngClass]="{ active: isRouteActive('/start') }" (click)="onNavigate([''])">
+    <fa-icon [icon]="gameIcon" size="2x"></fa-icon>
   </div>
-  <div class="menu-bar">
-    <fa-icon [icon]="menuIcon" size="2x" (click)="expanded = !expanded"></fa-icon>
-    <div class="logo">DART3</div>
+  <div
+    class="item"
+    [ngClass]="{ active: isRouteActive('/players') }"
+    (click)="onNavigate(['players'])"
+  >
+    <fa-icon [icon]="userIcon" size="2x"></fa-icon>
+  </div>
+  <div
+    class="item"
+    [ngClass]="{ active: isRouteActive('/settings') }"
+    (click)="onNavigate(['settings'])"
+  >
+    <fa-icon [icon]="settingsIcon" size="2x"></fa-icon>
+  </div>
+  <div class="item" (click)="onLogout()">
+    <fa-icon [icon]="logoutIcon" size="2x"></fa-icon>
   </div>
 </div>

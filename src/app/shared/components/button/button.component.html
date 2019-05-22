@@ -1,4 +1,4 @@
 <button mat-flat-button [color]="color" [disabled]="disabled || loading" (click)="btnClick.emit()">
-  <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate" [color]="color"></mat-progress-bar>
   <ng-content></ng-content>
 </button>

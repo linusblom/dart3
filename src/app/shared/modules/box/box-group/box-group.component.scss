@@ -1,20 +1,17 @@
 @import '~variables.scss';
 
-.content {
-  padding: 10px;
-  border: solid $borders;
-  border-width: 1px 0;
-
-  &.hover {
-  cursor: pointer;
-
-    &:hover {
-      background: rgba($white, .32)
-    }
-  }
+.header {
+  letter-spacing: 5px;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: $white90;
+  border-bottom: 1px solid $white;
+  margin-top: 20px;
+  padding-left: 20px;
 }
 
-.divider {
-  height: 10px;
-  background: rgba($dark-grey, .8);
+.content {
+  background: $white30;
+  padding: 20px;
+  border-bottom: 1px solid $white;
 }

@@ -9,14 +9,13 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: $backdrop;
   z-index: 200;
 }
 
 .login {
   width: 300px;
   padding: 20px;
-  background: $modal;
+  background: $white30;
   border-radius: 8px;
   box-shadow: $shadow;
 

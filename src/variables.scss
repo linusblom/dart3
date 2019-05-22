@@ -1,15 +1,32 @@
-$primary: #c2185b;
-$black: #111D49;
+$regular: 'Rubik', sans-serif;
+$logo: 'Montserrat Subrayada', sans-serif;
+
+// new colors
 $white: #F8F8F8;
+$white15: rgba($white, .15);
+$white30: rgba($white, .30);
+$white40: rgba($white, .40);
+$white60: rgba($white, .60);
+$white90: rgba($white, .90);
+
+$black: #111D49;
+$black40: rgba($black, .40);
+
+$info: #6ccbff;
+$success: #8bff6c;
+$warning: #fbff6c;
+$error: #ff6c6c;
+
+
+// old
+$selected: rgba($white, .32);
+$primary: #c2185b;
+
+
 $grey: #888888;
 $borders: #505050;
 $dark-grey: #303030;
-$backdrop: rgba($black, .32);
 $modal: rgba($black, .58);
 $box: rgba($black, .75);
 $disabled: rgba($grey, .8);
-$selected: rgba($white, .32);
 $shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
-
-$regular: 'Rubik', sans-serif;
-$logo: 'Montserrat Subrayada', sans-serif;

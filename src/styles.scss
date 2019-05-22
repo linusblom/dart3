@@ -1,15 +1,15 @@
-@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+@import '~material.scss';
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
 @import '~variables.scss'; 
 
 body {
-  margin: 8px 8px 8px 58px;
-  color: $white;
-  background-image: url("assets/images/background.jpg");
+  margin: 0;
+  color: $white90;
+  background: url("assets/background.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
   font-family: $regular;
   font-weight: 300;
 }

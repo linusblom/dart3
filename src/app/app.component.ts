@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
     <app-notification></app-notification>
     <router-outlet></router-outlet>
   `,
+  styles: [':host { display: flex; height: 100vh; }'],
 })
 export class AppComponent {
   constructor() {}

@@ -1,4 +1,50 @@
-<app-box header="Settings" [icon]="icon">
+<app-box header="Settings">
+  <app-box-group header="Account name">
+    <mat-form-field>
+      <input
+        matInput
+        [formControl]="displayName"
+        placeholder="Account name"
+        (change)="onChangeDisplayName()"
+      />
+    </mat-form-field>
+  </app-box-group>
+
+  <app-box-group header="Password">
+    <div class="password-form" [formGroup]="passwordForm">
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          formControlName="currentPassword"
+          placeholder="Current password"
+        />
+      </mat-form-field>
+      <div class="new-password">
+        <mat-form-field>
+          <input matInput type="password" formControlName="newPassword" placeholder="Password" />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirm password"
+          />
+        </mat-form-field>
+        <app-button
+          [loading]="loading$ | async"
+          [disabled]="passwordForm.invalid"
+          (btnClick)="onChangePassword()"
+        >
+          Change
+        </app-button>
+      </div>
+    </div>
+  </app-box-group>
+</app-box>
+
+<!-- <app-box header="Settings" [icon]="icon">
   <app-box-group>
     <mat-form-field>
       <input
@@ -9,7 +55,7 @@
       />
     </mat-form-field>
   </app-box-group>
-  <app-box-group [formGroup]="passwordForm">
+  <app-box-group >
     <div class="password-form">
       <mat-form-field>
         <input
@@ -42,4 +88,4 @@
       </div>
     </div>
   </app-box-group>
-</app-box>
+</app-box> -->

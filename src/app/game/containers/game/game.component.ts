@@ -7,6 +7,7 @@ import { State } from '@game/reducers';
 @Component({
   selector: 'app-game',
   template: '<router-outlet></router-outlet>',
+  styles: [':host { display: block; height: 100%; width: 100%; }'],
 })
 export class GameComponent implements OnDestroy {
   constructor(private readonly store: Store<State>) {

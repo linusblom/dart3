@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 
 import { PlayerActions } from '@game/actions';
 import { createPlayer } from '@game/actions/player.actions';
@@ -16,7 +16,13 @@ import {
   getSelectedPlayerId,
   State,
 } from '@game/reducers';
-import { BoxListItem } from '@shared/modules/box/box.models';
+import { BoxListItem, BoxTab } from '@shared/modules/box/box.models';
+
+enum Tabs {
+  INFO = 'info',
+  BANK = 'bank',
+  STATS = 'stats',
+}
 
 @Component({
   selector: 'app-players',
@@ -27,19 +33,24 @@ export class PlayersComponent implements OnDestroy {
   loadingCreatePlayer$: Observable<boolean>;
   loadingPlayers$: Observable<boolean>;
   playersListItem$: Observable<BoxListItem[]>;
-  selectedPlayer$: Observable<Player>;
 
+  selectedPlayer = {} as Player;
   selectedPlayerId: string;
   iconPlayers = faUsers;
   iconNewPlayer = faUserPlus;
   name = new FormControl('', [Validators.required, Validators.minLength(3)]);
+  activeTab = Tabs.INFO;
+  tabs: BoxTab[] = [
+    { name: 'Info', value: Tabs.INFO },
+    { name: 'Bank', value: Tabs.BANK },
+    { name: 'Statistics', value: Tabs.STATS },
+  ];
 
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>) {
     this.loadingCreatePlayer$ = this.store.pipe(select(getLoadingCreatePlayer));
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
-    this.selectedPlayer$ = this.store.pipe(select(getSelectedPlayer));
     this.playersListItem$ = this.store.pipe(
       select(getAllPlayers),
       map(players =>
@@ -53,6 +64,13 @@ export class PlayersComponent implements OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(selectedPlayerId => (this.selectedPlayerId = selectedPlayerId));
+
+    this.store
+      .pipe(
+        select(getSelectedPlayer),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(selectedPlayer => (this.selectedPlayer = selectedPlayer));
   }
 
   ngOnDestroy() {

@@ -1,3 +1,22 @@
-<p>
-  box-list-view works!
-</p>
+<div class="header">{{ header }}</div>
+<div class="wrapper">
+  <div class="list">
+    <div
+      *ngFor="let item of items"
+      class="list-item"
+      [ngClass]="{ disabled: item.disabled, selected: item.id === selected }"
+      (click)="select.emit(item.id)"
+    >
+      {{ item.value }}
+    </div>
+    <div class="list-filler"></div>
+  </div>
+  <div class="content">
+    <div class="top">
+      <ng-content select="[top]"></ng-content>
+    </div>
+    <div class="body">
+      <ng-content select="[body]"></ng-content>
+    </div>
+  </div>
+</div>

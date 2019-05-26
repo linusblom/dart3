@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { BoxListItem } from '../box.models';
 
 @Component({
   selector: 'app-box-list-view',
   templateUrl: './box-list-view.component.html',
-  styleUrls: ['./box-list-view.component.scss']
+  styleUrls: ['./box-list-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BoxListViewComponent implements OnInit {
+export class BoxListViewComponent {
+  @Input() items: BoxListItem[] = [];
+  @Input() loading = false;
+  @Input() selected = '';
+  @Input() header = '';
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  @Output() select = new EventEmitter<string>();
 }

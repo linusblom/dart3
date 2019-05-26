@@ -3,3 +3,8 @@ export interface BoxListItem {
   disabled: boolean;
   value: string;
 }
+
+export interface BoxTab {
+  name: string;
+  value: string;
+}

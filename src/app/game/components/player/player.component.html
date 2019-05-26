@@ -21,15 +21,15 @@
         <input matInput [formControl]="name" placeholder="Name" (change)="onUpdatePlayer()" />
       </mat-form-field>
       <div class="icons">
-        <div class="icon coins">
+        <div class="icon">
           <fa-icon [icon]="iconCoins" size="lg"></fa-icon>
           <span>{{ player.credits | number: '1.2-2' }}</span>
         </div>
-        <div class="icon xp">
+        <div class="icon">
           <fa-icon [icon]="iconBullseye" size="lg"></fa-icon>
           <span>{{ player.xp }}</span>
         </div>
-        <div class="icon diamonds">
+        <div class="icon">
           <fa-icon [icon]="iconGem" size="lg"></fa-icon>
           <span>{{ player.diamonds }}</span>
         </div>

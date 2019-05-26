@@ -39,7 +39,7 @@ label {
 .stats {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px grey solid;
+  border-top: 1px $white90 solid;
   justify-content: space-between;
   flex-wrap: wrap;
 
@@ -58,9 +58,5 @@ label {
     .value {
       font-size: 50px;
     }
-
-    .description {
-      color: grey;
-    }
   }
-}
+} 

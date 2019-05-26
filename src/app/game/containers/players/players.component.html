@@ -1,34 +1,34 @@
-<app-box header="Players"></app-box>
-
-<!-- <app-box header="Players" [icon]="iconPlayers">
+<app-box header="Players">
   <app-box-list-view
+    header="Players"
     [selected]="selectedPlayerId"
     [items]="playersListItem$ | async"
     [loading]="loadingPlayers$ | async"
     (select)="onSelect($event)"
   >
-    <app-player
-      [player]="selectedPlayer$ | async"
-      (updatePlayer)="onUpdate($event)"
-      (updateAvatar)="onUpdateAvatar($event)"
-    ></app-player>
+    <app-box-tabs top [tabs]="tabs" [(activeTab)]="activeTab"></app-box-tabs>
+    <span class="player" body *ngIf="!selectedPlayer; else player">
+      No player selected
+    </span>
+    <ng-template #player>
+      <app-player
+        class="player"
+        [player]="selectedPlayer"
+        (updatePlayer)="onUpdate($event)"
+        (updateAvatar)="onUpdateAvatar($event)"
+      ></app-player>
+    </ng-template>
   </app-box-list-view>
-</app-box>
 
-<app-box header="Create New Player" [icon]="iconNewPlayer">
-  <app-box-group>
-    <div class="new-player">
-      <mat-form-field>
-        <input matInput [formControl]="name" placeholder="New player name" />
-      </mat-form-field>
-      <app-button
-        color="primary"
-        [loading]="loadingCreatePlayer$ | async"
-        [disabled]="name.invalid"
-        (btnClick)="onCreate()"
-      >
-        Create player
-      </app-button>
-    </div>
+  <app-box-group header="Add new player">
+    <mat-form-field>
+      <input matInput [formControl]="name" placeholder="New player name" />
+    </mat-form-field>
   </app-box-group>
-</app-box> -->
+  <app-box-buttons
+    rightText="Create player"
+    [rightLoading]="loadingCreatePlayer$ | async"
+    [rightDisabled]="name.invalid"
+    (rightClick)="onCreate()"
+  ></app-box-buttons>
+</app-box>

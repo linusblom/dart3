@@ -1,0 +1,8 @@
+<div
+  *ngFor="let tab of tabs"
+  class="tab"
+  [ngClass]="{ active: tab.value === activeTab }"
+  (click)="activeTabChange.emit(tab.value)"
+>
+  {{ tab.name }}
+</div>

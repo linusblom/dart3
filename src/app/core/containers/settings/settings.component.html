@@ -32,17 +32,24 @@
             placeholder="Confirm password"
           />
         </mat-form-field>
-        <app-button
+      </div>
+    </div>
+  </app-box-group>
+  <app-box-buttons
+    rightText="Change"
+    [rightLoading]="loading$ | async"
+    [rightDisabled]="passwordForm.invalid"
+    (rightClick)="onChangePassword()"
+  ></app-box-buttons>
+</app-box>
+
+<!-- <app-button
           [loading]="loading$ | async"
           [disabled]="passwordForm.invalid"
           (btnClick)="onChangePassword()"
         >
           Change
-        </app-button>
-      </div>
-    </div>
-  </app-box-group>
-</app-box>
+        </app-button> -->
 
 <!-- <app-box header="Settings" [icon]="icon">
   <app-box-group>

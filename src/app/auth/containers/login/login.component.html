@@ -1,15 +1,23 @@
-<div class="login" [formGroup]="loginForm">
-  <div class="header">
-    WELCOME TO
-    <span class="logo">DART3</span>
+<div class="login">
+  <div class="header">Dart3</div>
+  <div class="form" [formGroup]="loginForm">
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="Email" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="password" type="password" placeholder="Password" />
+    </mat-form-field>
   </div>
-  <mat-form-field>
-    <input matInput formControlName="email" placeholder="Email" />
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput formControlName="password" type="password" placeholder="Password" />
-  </mat-form-field>
-  <app-button [loading]="loading$ | async" [disabled]="loginForm.invalid" (btnClick)="login()">
-    Login
-  </app-button>
+  <div class="button" (click)="login()">
+    <div class="progress">
+      <mat-progress-bar
+        *ngIf="(loading$ | async)"
+        mode="indeterminate"
+        color="accent"
+      ></mat-progress-bar>
+    </div>
+    <div class="text">
+      <span>login</span>
+    </div>
+  </div>
 </div>

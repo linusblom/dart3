@@ -39,7 +39,7 @@ label {
 .stats {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px $selected solid;
+  border-top: 1px grey solid;
   justify-content: space-between;
   flex-wrap: wrap;
 
@@ -60,7 +60,7 @@ label {
     }
 
     .description {
-      color: $selected;
+      color: grey;
     }
   }
 }

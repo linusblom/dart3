@@ -157,10 +157,10 @@ $mat-primary: (
 $theme-primary: mat-palette($mat-primary, main, lighter, darker);
 
 $mat-accent: (
-  main: #ba324f,
-  lighter: #eac2ca,
-  darker: #a31f36,
-  200: #ba324f, // For slide toggle,
+  main: #797979,
+  lighter: #d7d7d7,
+  darker: #5c5c5c,
+  200: #797979, // For slide toggle,
   contrast : (
     main: $light-primary-text,
     lighter: $dark-primary-text,

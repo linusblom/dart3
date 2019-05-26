@@ -1,5 +1,5 @@
 mat-form-field {
-  width: 250px;
+  width: 45%;
 }
 
 .password-form {
@@ -10,9 +10,5 @@ mat-form-field {
     display: inline-flex;
     justify-content: space-between;
     align-items: flex-end;
-  }
-
-  app-button {
-    padding-bottom: 1.25em; 
   }
 }

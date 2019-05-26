@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -14,6 +14,13 @@ import { getAuthLoading, State } from '@root/app.reducer';
 export class LoginComponent {
   loading$: Observable<boolean>;
   loginForm: FormGroup;
+
+  @HostListener('keyup', ['$event.keyCode'])
+  onKeyDown(keyCode: number) {
+    if (keyCode === 13) {
+      this.login();
+    }
+  }
 
   constructor(private readonly formBuilder: FormBuilder, private readonly store: Store<State>) {
     this.loginForm = formBuilder.group({

@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -15,7 +14,6 @@ import { getAuthLoading, getAuthUser, State } from '@root/app.reducer';
 })
 export class SettingsComponent implements OnDestroy {
   loading$: Observable<boolean>;
-  icon = faCog;
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
     {

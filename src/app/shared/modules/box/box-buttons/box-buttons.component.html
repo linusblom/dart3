@@ -1,0 +1,29 @@
+<div
+  *ngIf="leftText"
+  class="button"
+  [ngClass]="{ disabled: leftDisabled, loading: leftLoading }"
+  (click)="onLeftClick()"
+>
+  <div class="progress">
+    <mat-progress-bar *ngIf="leftLoading" mode="indeterminate" color="accent"></mat-progress-bar>
+  </div>
+  <div class="text">
+    <span>{{ leftText }}</span>
+  </div>
+</div>
+
+<div class="filler"></div>
+
+<div
+  *ngIf="rightText"
+  class="button"
+  [ngClass]="{ disabled: rightDisabled, loading: rightLoading }"
+  (click)="onRightClick()"
+>
+  <div class="progress">
+    <mat-progress-bar *ngIf="rightLoading" mode="indeterminate" color="accent"></mat-progress-bar>
+  </div>
+  <div class="text">
+    <span>{{ rightText }}</span>
+  </div>
+</div>

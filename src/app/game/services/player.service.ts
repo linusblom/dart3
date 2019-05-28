@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { map, take } from 'rxjs/operators';
 
-import { Player } from '@game/models';
+import { Player, TransactionType } from '@game/models';
 
 @Injectable()
 export class PlayerService {

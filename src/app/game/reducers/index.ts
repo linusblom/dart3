@@ -3,9 +3,11 @@ import { Action, combineReducers, createFeatureSelector, createSelector } from '
 import * as fromRoot from '@root/app.reducer';
 
 import * as fromPlayer from './player.reducer';
+import * as fromTransaction from './transaction.reducer';
 
 export interface GameState {
   player: fromPlayer.State;
+  transaction: fromTransaction.State;
 }
 
 export interface State extends fromRoot.State {
@@ -15,6 +17,7 @@ export interface State extends fromRoot.State {
 export function reducers(state: GameState | undefined, action: Action) {
   return combineReducers({
     player: fromPlayer.reducer,
+    transaction: fromTransaction.reducer,
   })(state, action);
 }
 
@@ -53,4 +56,18 @@ export const getSelectedPlayer = createSelector(
   (entities, selectedId) => {
     return selectedId && entities[selectedId];
   },
+);
+
+export const getGameTransactionState = createSelector(
+  getGameState,
+  state => state.transaction,
+);
+
+export const getLoadingTransactons = createSelector(
+  getGameTransactionState,
+  fromTransaction.getLoading,
+);
+
+export const { selectAll: getAllTransactions } = fromTransaction.adapter.getSelectors(
+  getGameTransactionState,
 );

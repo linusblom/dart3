@@ -1,0 +1,59 @@
+@import '~variables.scss';
+
+mat-form-field, button {
+  width: 120px;
+}
+
+button {
+  margin-bottom: 1.25em;
+}
+
+.amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.transactions {
+  width: 100%;
+
+  .table-headers {
+    display: flex;
+    border-bottom: 1px $white90 solid;
+    text-transform: uppercase;
+  }
+
+  .table-body {
+    height: 350px;
+    overflow: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .table-row {
+      font-family: 'Lucida Console', Monaco, monospace;
+      font-size: 12px;
+      display: flex;
+    }
+  }
+
+  .sm {
+    padding: 3px;
+    flex: 0.6;
+  }
+  
+  .lg {
+    padding: 3px;
+    flex: 1;
+  }
+
+  .capital {
+    text-transform: capitalize;
+  }
+
+  .right {
+    text-align: right;
+  }
+}

@@ -8,16 +8,14 @@
       <input matInput formControlName="password" type="password" placeholder="Password" />
     </mat-form-field>
   </div>
-  <div class="button" (click)="login()">
-    <div class="progress">
+  <div class="button">
+    <button mat-button [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()">
       <mat-progress-bar
         *ngIf="(loading$ | async)"
         mode="indeterminate"
         color="accent"
       ></mat-progress-bar>
-    </div>
-    <div class="text">
-      <span>login</span>
-    </div>
+      Login
+    </button>
   </div>
 </div>

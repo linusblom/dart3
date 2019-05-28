@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatProgressBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule, MatProgressBarModule, MatProgressSpinnerModule } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
@@ -25,6 +25,7 @@ const components = [
     FontAwesomeModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatButtonModule,
   ],
   exports: components,
   declarations: components,

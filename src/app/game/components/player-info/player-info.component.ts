@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faGem } from '@fortawesome/free-regular-svg-icons';
 import { faBullseye, faCoins } from '@fortawesome/free-solid-svg-icons';
@@ -6,11 +6,12 @@ import { faBullseye, faCoins } from '@fortawesome/free-solid-svg-icons';
 import { Player } from '@game/models';
 
 @Component({
-  selector: 'app-player',
-  templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss'],
+  selector: 'app-player-info',
+  templateUrl: './player-info.component.html',
+  styleUrls: ['./player-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerComponent {
+export class PlayerInfoComponent {
   private _player: Player;
   @Input() set player(player: Player) {
     this._player = player;

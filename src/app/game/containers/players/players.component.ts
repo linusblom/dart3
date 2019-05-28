@@ -3,13 +3,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { PlayerActions } from '@game/actions';
+import { PlayerActions, TransactionActions } from '@game/actions';
 import { createPlayer } from '@game/actions/player.actions';
-import { Player } from '@game/models';
+import { Player, Transaction, TransactionPayload } from '@game/models';
 import {
   getAllPlayers,
+  getAllTransactions,
   getLoadingCreatePlayer,
   getLoadingPlayers,
   getSelectedPlayer,
@@ -33,7 +34,10 @@ export class PlayersComponent implements OnDestroy {
   loadingCreatePlayer$: Observable<boolean>;
   loadingPlayers$: Observable<boolean>;
   playersListItem$: Observable<BoxListItem[]>;
+  selectedPlayerId$: Observable<string>;
+  transactions$: Observable<Transaction[]>;
 
+  Tabs = Tabs;
   selectedPlayer = {} as Player;
   selectedPlayerId: string;
   iconPlayers = faUsers;
@@ -51,6 +55,8 @@ export class PlayersComponent implements OnDestroy {
   constructor(private readonly store: Store<State>) {
     this.loadingCreatePlayer$ = this.store.pipe(select(getLoadingCreatePlayer));
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
+    this.selectedPlayerId$ = this.store.pipe(select(getSelectedPlayerId));
+    this.transactions$ = this.store.pipe(select(getAllTransactions));
     this.playersListItem$ = this.store.pipe(
       select(getAllPlayers),
       map(players =>
@@ -58,12 +64,17 @@ export class PlayersComponent implements OnDestroy {
       ),
     );
 
-    this.store
+    this.selectedPlayerId$
       .pipe(
-        select(getSelectedPlayerId),
         takeUntil(this.destroy$),
+        filter(playerId => !!playerId),
+        distinctUntilChanged(),
+        tap(() => this.store.dispatch(TransactionActions.loadTransactionsDestroy())),
       )
-      .subscribe(selectedPlayerId => (this.selectedPlayerId = selectedPlayerId));
+      .subscribe(playerId => {
+        this.store.dispatch(TransactionActions.loadTransactions({ playerId }));
+        this.selectedPlayerId = playerId;
+      });
 
     this.store
       .pipe(
@@ -76,6 +87,7 @@ export class PlayersComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+    this.store.dispatch(TransactionActions.loadTransactionsDestroy());
   }
 
   onCreate() {
@@ -93,5 +105,11 @@ export class PlayersComponent implements OnDestroy {
 
   onUpdateAvatar(file: File) {
     this.store.dispatch(PlayerActions.updateAvatar({ id: this.selectedPlayerId, file }));
+  }
+
+  onTransaction(transaction: TransactionPayload) {
+    this.store.dispatch(
+      TransactionActions.transaction({ playerId: this.selectedPlayerId, transaction }),
+    );
   }
 }

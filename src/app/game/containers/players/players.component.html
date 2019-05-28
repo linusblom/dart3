@@ -7,16 +7,25 @@
     (select)="onSelect($event)"
   >
     <app-box-tabs top [tabs]="tabs" [(activeTab)]="activeTab"></app-box-tabs>
-    <span class="player" body *ngIf="!selectedPlayer; else player">
+    <div class="player" body *ngIf="!selectedPlayer; else player">
       No player selected
-    </span>
+    </div>
     <ng-template #player>
-      <app-player
-        class="player"
-        [player]="selectedPlayer"
-        (updatePlayer)="onUpdate($event)"
-        (updateAvatar)="onUpdateAvatar($event)"
-      ></app-player>
+      <div [ngSwitch]="activeTab" class="player">
+        <app-player-info
+          *ngSwitchCase="Tabs.INFO"
+          [player]="selectedPlayer"
+          (updatePlayer)="onUpdate($event)"
+          (updateAvatar)="onUpdateAvatar($event)"
+        ></app-player-info>
+        <app-player-bank
+          *ngSwitchCase="Tabs.BANK"
+          [credits]="selectedPlayer.credits"
+          [transactions]="transactions$ | async"
+          (transaction)="onTransaction($event)"
+        ></app-player-bank>
+        <app-player-stats *ngSwitchCase="Tabs.STATS"></app-player-stats>
+      </div>
     </ng-template>
   </app-box-list-view>
 

@@ -37,28 +37,49 @@
   }
 }
 
+
 .button {
   display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  background: $white15;
-  letter-spacing: 5px;
-  font-weight: 300;
-  text-transform: uppercase;
+  background: $white30;
   border-bottom: 1px solid $white90;
+  position: relative;
+  overflow: hidden;
+  height: 50px;
 
-  &:hover {
-    background: $white30;
+  mat-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
   }
 
-  .progress {
-    height: 4px;
-  }
-
-  .text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 45px;
+  button {
+    flex: 1;
   }
 }
+
+// .button {
+//   display: flex;
+//   flex-direction: column;
+//   cursor: pointer;
+//   background: $white15;
+//   letter-spacing: 5px;
+//   font-weight: 300;
+//   text-transform: uppercase;
+//   border-bottom: 1px solid $white90;
+
+//   &:hover {
+//     background: $white30;
+//   }
+
+//   .progress {
+//     height: 4px;
+//   }
+
+//   .text {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 45px;
+//   }
+// }

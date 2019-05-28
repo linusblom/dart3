@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { from } from 'rxjs';
-import { catchError, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
@@ -11,6 +11,8 @@ import { PlayerService } from '@game/services';
 
 @Injectable()
 export class PlayerEffects {
+  constructor(private readonly actions$: Actions, private readonly service: PlayerService) {}
+
   createPlayer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.createPlayer),
@@ -68,6 +70,4 @@ export class PlayerEffects {
       ),
     ),
   );
-
-  constructor(private readonly actions$: Actions, private readonly service: PlayerService) {}
 }

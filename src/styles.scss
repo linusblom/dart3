@@ -17,3 +17,12 @@ body {
 .logo {
   font-family: $logo;
 }
+
+button {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 300;
+  border-radius: 0 !important;
+  border-color: $white90 !important;
+  border-width: 1px 0 !important;
+}

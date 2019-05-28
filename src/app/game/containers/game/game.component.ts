@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { loadPlayers, loadPlayersDestroy } from '@game/actions/player.actions';
+import { PlayerActions } from '@game/actions';
 import { State } from '@game/reducers';
 
 @Component({
@@ -11,10 +11,10 @@ import { State } from '@game/reducers';
 })
 export class GameComponent implements OnDestroy {
   constructor(private readonly store: Store<State>) {
-    this.store.dispatch(loadPlayers());
+    this.store.dispatch(PlayerActions.loadPlayers());
   }
 
   ngOnDestroy() {
-    this.store.dispatch(loadPlayersDestroy());
+    this.store.dispatch(PlayerActions.loadPlayersDestroy());
   }
 }

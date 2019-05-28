@@ -2,7 +2,7 @@
 
 :host {
   display: flex;
-  height: 49px;
+  height: 50px;
 }
 
 .filler {
@@ -11,42 +11,20 @@
 
 .button {
   display: flex;
-  flex-direction: column;
-  cursor: pointer;
   background: $white30;
-  letter-spacing: 5px;
-  font-weight: 300;
-  text-transform: uppercase;
   width: 30%;
   border-bottom: 1px solid $white90;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    background: $white40;
+  mat-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
   }
 
-  &.disabled {
-    background: $white15;
-    color: $white60;
-    cursor: default;
-  }
-
-  &.loading {
-    background: $white30;
-    cursor: default;
-  }
-  
-  .progress {
-    height: 4px;
-  }
-  
-  .text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 45px;
-    padding: 0 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  button {
+    flex: 1;
   }
 }

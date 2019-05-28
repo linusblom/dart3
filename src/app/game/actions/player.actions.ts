@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { createAction, props, union } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
-import { Player } from '@game/models/player';
+import { Player } from '@game/models';
 
 export const loadPlayers = createAction('[Player] Load Players');
 export const loadPlayersSuccess = createAction(

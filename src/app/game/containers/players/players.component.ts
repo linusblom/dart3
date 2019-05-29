@@ -95,7 +95,7 @@ export class PlayersComponent implements OnDestroy {
     this.name.reset();
   }
 
-  onSelect(id: string) {
+  onSelectPlayer(id: string) {
     this.store.dispatch(PlayerActions.selectPlayer({ id }));
   }
 

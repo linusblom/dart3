@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
 
 import { Transaction, TransactionPayload, TransactionType } from '@game/models';
 
@@ -15,6 +16,7 @@ export class PlayerBankComponent {
 
   @Output() transaction = new EventEmitter<TransactionPayload>();
 
+  iconCoins = faCoins;
   amount = new FormControl(0, [Validators.required, Validators.min(1)]);
 
   onDeposit() {

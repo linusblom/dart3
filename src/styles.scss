@@ -1,6 +1,6 @@
+@import '~variables.scss'; 
 @import '~material.scss';
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
-@import '~variables.scss'; 
 
 body {
   margin: 0;
@@ -22,7 +22,4 @@ button {
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 300;
-  border-radius: 0 !important;
-  border-color: $white90 !important;
-  border-width: 1px 0 !important;
 }

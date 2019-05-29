@@ -1,4 +1,7 @@
-<div>Balance: {{ credits | number: '1.2-2' }}</div>
+<div class="balance">
+  <fa-icon [icon]="iconCoins" size="lg"></fa-icon>
+  <div>{{ credits | number: '1.2-2' }}</div>
+</div>
 <div class="amount">
   <mat-form-field>
     <input [formControl]="amount" type="number" matInput placeholder="Amount" />

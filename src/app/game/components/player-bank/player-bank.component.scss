@@ -5,13 +5,22 @@ mat-form-field, button {
 }
 
 button {
-  margin-bottom: 1.25em;
+  margin-bottom: 20px;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+
+  fa-icon {
+    margin-right: 10px;
+  }
 }
 
 .amount {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 20px;
 }
 

@@ -1,1 +1,31 @@
-<app-box header="Select players"></app-box>
+<app-box header="Start game">
+  <app-box-group header="Game and bet">
+    <div class="settings">
+      <mat-button-toggle-group
+        name="gameType"
+        aria-label="Game Type"
+        [value]="type"
+        (change)="updateGame({ type: $event.value })"
+      >
+        <mat-button-toggle [value]="GameType.HALVEIT">Halve it</mat-button-toggle>
+        <mat-button-toggle [value]="GameType.LEGS">Legs</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-button-toggle-group
+        name="gameBet"
+        aria-label="Game Bet"
+        [value]="bet"
+        (change)="updateGame({ bet: $event.value })"
+      >
+        <mat-button-toggle [value]="10">10</mat-button-toggle>
+        <mat-button-toggle [value]="20">20</mat-button-toggle>
+        <mat-button-toggle [value]="50">50</mat-button-toggle>
+        <mat-button-toggle [value]="100">100</mat-button-toggle>
+        <mat-button-toggle [value]="200">200</mat-button-toggle>
+        <mat-button-toggle [value]="500">500</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </app-box-group>
+
+  <app-box-group header="Select players"></app-box-group>
+</app-box>

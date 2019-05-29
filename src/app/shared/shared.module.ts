@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
   MatButtonModule,
+  MatButtonToggleModule,
   MatInputModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
@@ -18,6 +19,7 @@ const materialComponents = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatSelectModule,
+  MatButtonToggleModule,
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@
       *ngFor="let item of items"
       class="list-item"
       [ngClass]="{ disabled: item.disabled, selected: item.id === selected }"
-      (click)="select.emit(item.id)"
+      (click)="selectItem.emit(item.id)"
     >
       {{ item.value }}
     </div>

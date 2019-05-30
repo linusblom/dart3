@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatProgressBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 

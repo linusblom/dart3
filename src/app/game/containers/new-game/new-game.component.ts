@@ -14,12 +14,11 @@ import { getAllPlayers, getGame, State } from '@game/reducers';
   styleUrls: ['./new-game.component.scss'],
 })
 export class NewGameComponent implements OnDestroy {
-  players$: Observable<Player[]>;
-
+  players: Player[];
   GameType = GameType;
   type = GameType.HALVEIT;
   bet = 10;
-  selectedPlayers: string[] = [];
+  selectedPlayerIds: string[] = [];
 
   selectedIcon = faCheckCircle;
   unselectedIcon = faCircle;
@@ -27,7 +26,12 @@ export class NewGameComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>) {
-    this.players$ = this.store.pipe(select(getAllPlayers));
+    this.store
+      .pipe(
+        select(getAllPlayers),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(players => (this.players = players));
 
     this.store
       .pipe(
@@ -37,7 +41,7 @@ export class NewGameComponent implements OnDestroy {
       .subscribe(({ type, bet, players }) => {
         this.type = type;
         this.bet = bet;
-        this.selectedPlayers = players;
+        this.selectedPlayerIds = players;
       });
   }
 
@@ -50,13 +54,32 @@ export class NewGameComponent implements OnDestroy {
     this.store.dispatch(GameActions.updateGame({ data }));
   }
 
-  togglePlayers(id: string) {
-    const players = this.selectedPlayers.includes(id)
-      ? this.selectedPlayers.filter(playerId => playerId !== id)
-      : [...this.selectedPlayers, id];
+  changeBet(bet: number) {
+    const players = this.selectedPlayerIds.filter(
+      playerId => this.players.find(player => player.id === playerId).credits >= bet,
+    );
+    this.updateGame({ bet, players });
+  }
+
+  togglePlayers({ id, credits }: Player) {
+    // if (credits < this.bet) {
+    //   return;
+    // }
+
+    const players = this.selectedPlayerIds.includes(id)
+      ? this.selectedPlayerIds.filter(playerId => playerId !== id)
+      : [...this.selectedPlayerIds, id];
 
     this.updateGame({ players });
   }
 
-  play() {}
+  createGame() {
+    this.store.dispatch(
+      GameActions.createGame({
+        gameType: this.type,
+        bet: this.bet,
+        players: this.selectedPlayerIds,
+      }),
+    );
+  }
 }

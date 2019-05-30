@@ -13,14 +13,14 @@ import { TransactionService } from '@game/services';
 export class TransactionEffects {
   constructor(private readonly actions$: Actions, private readonly service: TransactionService) {}
 
-  transaction$ = createEffect(() =>
+  createTransaction$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionActions.transaction),
+      ofType(TransactionActions.createTransaction),
       exhaustMap(({ playerId, transaction: { type, amount } }) =>
-        from(this.service.transaction(playerId, type, amount)).pipe(
-          map(() => TransactionActions.transactionSuccess()),
+        from(this.service.create(playerId, type, amount)).pipe(
+          map(() => TransactionActions.createTransactionSuccess()),
           catchError(error => [
-            TransactionActions.transactionFailure(error),
+            TransactionActions.createTransaction(error),
             NotificationActions.push({ status: Status.ERROR, message: error.message }),
           ]),
         ),

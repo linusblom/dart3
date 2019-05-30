@@ -12,10 +12,6 @@
   padding: 10px 20px;
   background: $white15;
 
-  fa-icon {
-    color: $white60;
-  }
-
   app-avatar {
     padding: 0 20px;
   }
@@ -26,7 +22,11 @@
 
   &.disabled {
     cursor: not-allowed;
-    color: $white60;
+    color: $white30;
+
+    app-avatar {
+      opacity: .3;
+    }
   }
 
   &.selected {

@@ -3,13 +3,13 @@ import { createAction, props } from '@ngrx/store';
 
 import { Transaction, TransactionPayload } from '@game/models';
 
-export const transaction = createAction(
-  '[Transaction] Transaction',
+export const createTransaction = createAction(
+  '[Transaction] Create Transaction',
   props<{ playerId: string; transaction: TransactionPayload }>(),
 );
-export const transactionSuccess = createAction('[Transaction] Transaction Success');
-export const transactionFailure = createAction(
-  '[Transaction] Transaction Failure',
+export const createTransactionSuccess = createAction('[Transaction] Create Transaction Success');
+export const createTransactionFailure = createAction(
+  '[Transaction] Create Transaction Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

@@ -2,8 +2,8 @@ import * as functions from 'firebase-functions';
 
 import { generateColor } from '../utils/generateColor';
 
-export const playerOnCreate = functions.firestore
-  .document('/accounts/{userId}/players/{playerId}')
+export const onCreate = functions.firestore
+  .document('/accounts/{accountId}/players/{playerId}')
   .onCreate(snapshot => {
     const data = {
       credits: 0,
@@ -25,5 +25,5 @@ export const playerOnCreate = functions.firestore
       net: 0,
     };
 
-    return snapshot.ref.set(data, { merge: true });
+    return snapshot.ref.update(data);
   });

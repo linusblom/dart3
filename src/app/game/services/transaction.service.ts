@@ -26,7 +26,7 @@ export class TransactionService {
       );
   }
 
-  transaction(playerId: string, type: TransactionType, amount: number) {
+  create(playerId: string, type: TransactionType, amount: number) {
     const playerRef = this.db.firestore
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)

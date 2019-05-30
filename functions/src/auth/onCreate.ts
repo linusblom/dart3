@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 
 const db = admin.firestore();
 
-export const authOnCreate = functions.auth.user().onCreate(event => {
+export const onCreate = functions.auth.user().onCreate(event => {
   const data = {
     created: Date.now(),
     jackpot: 0,

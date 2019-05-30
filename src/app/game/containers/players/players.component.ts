@@ -109,7 +109,7 @@ export class PlayersComponent implements OnDestroy {
 
   onTransaction(transaction: TransactionPayload) {
     this.store.dispatch(
-      TransactionActions.transaction({ playerId: this.selectedPlayerId, transaction }),
+      TransactionActions.createTransaction({ playerId: this.selectedPlayerId, transaction }),
     );
   }
 }

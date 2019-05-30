@@ -8,15 +8,17 @@
         (change)="updateGame({ type: $event.value })"
       >
         <mat-button-toggle [value]="GameType.HALVEIT">Halve it</mat-button-toggle>
-        <mat-button-toggle [value]="GameType.LEGS">Legs</mat-button-toggle>
-        <mat-button-toggle [value]="GameType.THREEHUNDREDONE">301</mat-button-toggle>
+        <mat-button-toggle [value]="GameType.LEGS" [disabled]="true">Legs</mat-button-toggle>
+        <mat-button-toggle [value]="GameType.THREEHUNDREDONE" [disabled]="true">
+          301
+        </mat-button-toggle>
       </mat-button-toggle-group>
 
       <mat-button-toggle-group
         name="gameBet"
         aria-label="Game Bet"
         [value]="bet"
-        (change)="updateGame({ bet: $event.value })"
+        (change)="changeBet($event.value)"
       >
         <mat-button-toggle [value]="10">10</mat-button-toggle>
         <mat-button-toggle [value]="20">20</mat-button-toggle>
@@ -30,13 +32,15 @@
 
   <app-box-group header="Select players" [styled]="false" class="players">
     <div
-      *ngFor="let player of players$ | async"
+      *ngFor="let player of players"
       class="player"
-      (click)="togglePlayers(player.id)"
-      [ngClass]="{ selected: selectedPlayers.includes(player.id) }"
+      (click)="togglePlayers(player)"
+      [ngClass]="{
+        selected: selectedPlayerIds.includes(player.id)
+      }"
     >
       <fa-icon
-        [icon]="selectedPlayers.includes(player.id) ? selectedIcon : unselectedIcon"
+        [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
         size="2x"
       ></fa-icon>
       <app-avatar
@@ -52,7 +56,7 @@
   </app-box-group>
   <app-box-buttons
     rightText="Lets play"
-    [rightDisabled]="selectedPlayers.length < 2"
-    (rightClick)="play()"
+    [rightDisabled]="selectedPlayerIds.length < 2"
+    (rightClick)="createGame()"
   ></app-box-buttons>
 </app-box>

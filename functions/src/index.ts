@@ -2,5 +2,6 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp();
 
-export { authOnCreate } from './auth/onCreate';
-export { playerOnCreate } from './player/onCreate';
+export { onCreate as onCreateAuthUser } from './auth/onCreate';
+export { onCreate as onCreatePlayer } from './player/onCreate';
+export { onCreate as onCreateGame } from './game/onCreate';

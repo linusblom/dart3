@@ -6,6 +6,10 @@ service cloud.firestore {
       match /players/{document=**} {
         allow read, write: if request.auth.uid == userId;
       }
+
+      match /games/{document=**} {
+        allow read, write: if request.auth.uid == userId;
+      }
     }
   }
 }

@@ -213,7 +213,8 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
   min-height: 2.5em;
 }
 
-.mat-button-toggle-appearance-standard {
+.mat-button-toggle-appearance-standard,
+.mat-button-toggle-disabled.mat-button-toggle-appearance-standard {
   background: none;
 }
 

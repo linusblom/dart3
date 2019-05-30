@@ -7,10 +7,11 @@ export const initalState: Game = {
   id: null,
   type: GameType.HALVEIT,
   bet: 10,
-  created: 0,
   started: 0,
   ended: 0,
   players: [],
+  playerTurn: 0,
+  prizePool: 0,
 };
 
 export const reducer = createReducer(

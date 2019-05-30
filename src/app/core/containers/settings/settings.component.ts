@@ -17,7 +17,7 @@ export class SettingsComponent implements OnDestroy {
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
     {
-      currentPassword: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
       newPassword: new FormControl('', Validators.required),
       confirmPassword: new FormControl('', Validators.required),
     },
@@ -54,8 +54,9 @@ export class SettingsComponent implements OnDestroy {
 
   onChangePassword() {
     if (this.passwordForm.valid) {
-      const { currentPassword, newPassword } = this.passwordForm.value;
-      this.store.dispatch(AuthActions.updatePassword({ currentPassword, newPassword }));
+      const { password, newPassword } = this.passwordForm.value;
+      const action = AuthActions.updatePassword({ newPassword });
+      this.store.dispatch(AuthActions.reauthenticate({ password, action }));
     }
   }
 }

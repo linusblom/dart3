@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { createAction, props } from '@ngrx/store';
+import { Action, createAction, props } from '@ngrx/store';
 import { User } from 'firebase';
 
 export const login = createAction('[Auth] Login', props<{ email: string; password: string }>());
@@ -25,10 +25,20 @@ export const updateProfileFailure = createAction(
 
 export const updatePassword = createAction(
   '[Auth] Update Password',
-  props<{ currentPassword: string; newPassword: string }>(),
+  props<{ newPassword: string }>(),
 );
 export const updatePasswordSuccess = createAction('[Auth] Update Password Success');
 export const updatePasswordFailure = createAction(
   '[Auth] Update Password Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const reauthenticate = createAction(
+  '[Auth] Reauthenticate',
+  props<{ password: string; action: Action }>(),
+);
+export const reauthenticateSuccess = createAction('[Auth] Reauthenticate Success');
+export const reauthenticateFailure = createAction(
+  '[Auth] Reauthenticate Failure',
   props<{ error: HttpErrorResponse }>(),
 );

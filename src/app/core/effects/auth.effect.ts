@@ -6,15 +6,7 @@ import { select, Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { from } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  exhaustMap,
-  map,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AccountActions, AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
@@ -80,39 +72,46 @@ export class AuthEffects {
     ),
   );
 
-  updatePassword$ = createEffect(() =>
+  reauthenticate$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.updatePassword),
+      ofType(AuthActions.reauthenticate),
       withLatestFrom(this.store.pipe(select(getAuthUser))),
-      exhaustMap(([{ newPassword, currentPassword }, { email }]) => {
-        const credentials = firebase.auth.EmailAuthProvider.credential(email, currentPassword);
+      exhaustMap(([{ password, action }, { email }]) => {
+        const credentials = firebase.auth.EmailAuthProvider.credential(email, password);
         return from(
           this.fireAuth.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials),
         ).pipe(
-          concatMap(() =>
-            from(this.fireAuth.auth.currentUser.updatePassword(newPassword)).pipe(
-              switchMap(() => [
-                AuthActions.updatePasswordSuccess(),
-                NotificationActions.push({
-                  status: Status.SUCCESS,
-                  message: 'Account password changed',
-                }),
-              ]),
-              catchError(error => [
-                AuthActions.updatePasswordFailure({ error }),
-                NotificationActions.push({
-                  status: Status.ERROR,
-                  message: error.message,
-                }),
-              ]),
-            ),
-          ),
+          switchMap(() => [AuthActions.reauthenticateSuccess(), action]),
           catchError(error => [
-            AuthActions.updatePasswordFailure({ error }),
+            AuthActions.reauthenticateFailure({ error }),
             NotificationActions.push({ status: Status.ERROR, message: error.message }),
           ]),
         );
       }),
+    ),
+  );
+
+  updatePassword = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.updatePassword),
+      switchMap(({ newPassword }) =>
+        from(this.fireAuth.auth.currentUser.updatePassword(newPassword)).pipe(
+          switchMap(() => [
+            AuthActions.updatePasswordSuccess(),
+            NotificationActions.push({
+              status: Status.SUCCESS,
+              message: 'Account password changed',
+            }),
+          ]),
+          catchError(error => [
+            AuthActions.updatePasswordFailure({ error }),
+            NotificationActions.push({
+              status: Status.ERROR,
+              message: error.message,
+            }),
+          ]),
+        ),
+      ),
     ),
   );
 

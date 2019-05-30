@@ -3,7 +3,7 @@ import * as functions from 'firebase-functions';
 import { generateColor } from '../utils/generateColor';
 
 export const playerOnCreate = functions.firestore
-  .document('/users/{userId}/players/{playerId}')
+  .document('/accounts/{userId}/players/{playerId}')
   .onCreate(snapshot => {
     const data = {
       credits: 0,

@@ -8,10 +8,11 @@ export const authOnCreate = functions.auth.user().onCreate(event => {
     created: Date.now(),
     jackpot: 0,
     hiddenJackpot: 0,
+    currentGame: null,
   };
 
   return db
-    .collection('users')
+    .collection('accounts')
     .doc(event.uid)
     .set(data);
 });

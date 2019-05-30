@@ -32,7 +32,7 @@ export class TransactionEffects {
     this.actions$.pipe(
       ofType(TransactionActions.loadTransactions),
       switchMap(({ playerId }) =>
-        this.service.list(playerId).pipe(
+        this.service.listen(playerId).pipe(
           takeUntil(this.actions$.pipe(ofType(TransactionActions.loadTransactionsDestroy))),
           map((transactions: Transaction[]) =>
             TransactionActions.loadTransactionsSuccess({ transactions }),

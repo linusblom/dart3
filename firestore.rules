@@ -1,6 +1,6 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
+    match /accounts/{userId} {
       allow read, write: if request.auth.uid == userId;
 
       match /players/{document=**} {

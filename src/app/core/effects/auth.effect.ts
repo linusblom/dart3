@@ -16,13 +16,20 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AuthActions } from '@core/actions';
+import { AccountActions, AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { getAuthUser, State } from '@root/app.reducer';
 
 @Injectable()
 export class AuthEffects {
+  constructor(
+    private readonly actions$: Actions,
+    private readonly router: Router,
+    private readonly fireAuth: AngularFireAuth,
+    private readonly store: Store<State>,
+  ) {}
+
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
@@ -48,7 +55,7 @@ export class AuthEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      map(() => CoreActions.openMenu()),
+      switchMap(() => [CoreActions.openMenu(), AccountActions.loadAccount()]),
     ),
   );
 
@@ -116,14 +123,7 @@ export class AuthEffects {
         this.fireAuth.auth.signOut();
         this.router.navigate(['login']);
       }),
-      map(() => CoreActions.closeMenu()),
+      switchMap(() => [CoreActions.closeMenu(), AccountActions.loadAccountDestroy()]),
     ),
   );
-
-  constructor(
-    private readonly actions$: Actions,
-    private readonly router: Router,
-    private readonly fireAuth: AngularFireAuth,
-    private readonly store: Store<State>,
-  ) {}
 }

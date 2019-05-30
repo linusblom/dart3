@@ -11,4 +11,5 @@ export interface Game {
 export enum GameType {
   HALVEIT = 'halveit',
   LEGS = 'legs',
+  THREEHUNDREDONE = 'threehundredone',
 }

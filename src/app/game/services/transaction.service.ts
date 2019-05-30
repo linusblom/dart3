@@ -9,9 +9,9 @@ import { TransactionType } from '@game/models';
 export class TransactionService {
   constructor(private readonly db: AngularFirestore, private readonly auth: AngularFireAuth) {}
 
-  list(playerId: string) {
+  listen(playerId: string) {
     return this.db
-      .collection('users')
+      .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
       .doc(playerId)
@@ -28,7 +28,7 @@ export class TransactionService {
 
   transaction(playerId: string, type: TransactionType, amount: number) {
     const playerRef = this.db.firestore
-      .collection('users')
+      .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
       .doc(playerId);

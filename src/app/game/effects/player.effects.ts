@@ -35,7 +35,7 @@ export class PlayerEffects {
     this.actions$.pipe(
       ofType(PlayerActions.loadPlayers),
       switchMap(() =>
-        this.service.list().pipe(
+        this.service.listen().pipe(
           takeUntil(this.actions$.pipe(ofType(PlayerActions.loadPlayersDestroy))),
           map((players: Player[]) => PlayerActions.loadPlayersSuccess({ players })),
           catchError(error => [PlayerActions.loadPlayersFailure(error)]),

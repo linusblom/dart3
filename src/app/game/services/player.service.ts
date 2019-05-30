@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { map, take } from 'rxjs/operators';
 
-import { Player, TransactionType } from '@game/models';
+import { Player } from '@game/models';
 
 @Injectable()
 export class PlayerService {
@@ -16,15 +16,15 @@ export class PlayerService {
 
   create(name: string) {
     return this.db
-      .collection('users')
+      .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
       .add({ name });
   }
 
-  list() {
+  listen() {
     return this.db
-      .collection('users')
+      .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
       .snapshotChanges()
@@ -39,7 +39,7 @@ export class PlayerService {
 
   update(id: string, data: Partial<Player>) {
     return this.db
-      .collection('users')
+      .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
       .doc(id)

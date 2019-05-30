@@ -5,7 +5,7 @@ import { faBullseye, faCog, faSignOutAlt, faUsers } from '@fortawesome/free-soli
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { logout } from '@auth/actions/auth.actions';
+import { AuthActions } from '@core/actions';
 import { getMenuOpen, State } from '@root/app.reducer';
 
 @Component({
@@ -37,7 +37,7 @@ export class MenuComponent {
   }
 
   onLogout() {
-    this.store.dispatch(logout());
+    this.store.dispatch(AuthActions.logout());
   }
 
   isRouteActive(path: string) {

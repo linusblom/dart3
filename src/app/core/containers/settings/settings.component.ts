@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { updatePassword, updateProfile } from '@auth/actions/auth.actions';
+import { AuthActions } from '@core/actions';
 import { getAuthLoading, getAuthUser, State } from '@root/app.reducer';
 
 @Component({
@@ -48,14 +48,14 @@ export class SettingsComponent implements OnDestroy {
 
   onChangeDisplayName() {
     if (this.displayName.valid) {
-      this.store.dispatch(updateProfile({ displayName: this.displayName.value }));
+      this.store.dispatch(AuthActions.updateProfile({ displayName: this.displayName.value }));
     }
   }
 
   onChangePassword() {
     if (this.passwordForm.valid) {
       const { currentPassword, newPassword } = this.passwordForm.value;
-      this.store.dispatch(updatePassword({ currentPassword, newPassword }));
+      this.store.dispatch(AuthActions.updatePassword({ currentPassword, newPassword }));
     }
   }
 }

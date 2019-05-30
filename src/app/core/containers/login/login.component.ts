@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { AuthActions } from '@auth/actions';
+import { AuthActions } from '@core/actions';
 import { getAuthLoading, State } from '@root/app.reducer';
 import { shareReplay } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ export class LoginComponent {
   }
 
   constructor(private readonly formBuilder: FormBuilder, private readonly store: Store<State>) {
-    this.loginForm = formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });

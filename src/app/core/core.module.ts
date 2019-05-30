@@ -7,10 +7,13 @@ import { SharedModule } from '@shared/shared.module';
 
 import { components } from './components';
 import { containers } from './containers';
+import { CoreRoutingModule } from './core.routing';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
-  imports: [CommonModule, FontAwesomeModule, SharedModule, ReactiveFormsModule],
+  imports: [CommonModule, FontAwesomeModule, SharedModule, ReactiveFormsModule, CoreRoutingModule],
   declarations: [...components, ...containers],
   exports: [...containers],
+  providers: [AuthGuard],
 })
 export class CoreModule {}

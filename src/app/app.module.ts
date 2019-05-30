@@ -10,9 +10,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { AuthModule } from '@auth/auth.module';
-import { AuthEffects } from '@auth/effects/auth.effect';
 import { CoreModule } from '@core/core.module';
+import { AuthEffects } from '@core/effects/auth.effect';
 import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
 
@@ -25,7 +24,7 @@ import { AppRoutingModule } from './app.routing';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AuthModule,
+    CoreModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
@@ -37,7 +36,6 @@ import { AppRoutingModule } from './app.routing';
       name: 'Dart3',
       logOnly: environment.production,
     }),
-    CoreModule,
     SharedModule,
   ],
   exports: [RouterModule],

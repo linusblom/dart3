@@ -16,7 +16,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AuthActions } from '@auth/actions';
+import { AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { getAuthUser, State } from '@root/app.reducer';

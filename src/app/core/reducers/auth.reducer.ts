@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'firebase';
 
-import { AuthActions } from '@auth/actions';
+import { AuthActions } from '@core/actions';
 
 export interface State {
   loading: boolean;

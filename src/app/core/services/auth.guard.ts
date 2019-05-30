@@ -4,7 +4,7 @@ import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
-import { loginSuccess, logout } from '@auth/actions/auth.actions';
+import { AuthActions } from '@core/actions';
 import { State } from '@root/app.reducer';
 
 @Injectable()
@@ -15,11 +15,11 @@ export class AuthGuard implements CanActivate {
     return this.fireAuth.user.pipe(
       map(user => {
         if (user) {
-          this.store.dispatch(loginSuccess({ user }));
+          this.store.dispatch(AuthActions.loginSuccess({ user }));
           return true;
         }
 
-        this.store.dispatch(logout());
+        this.store.dispatch(AuthActions.logout());
         return false;
       }),
     );

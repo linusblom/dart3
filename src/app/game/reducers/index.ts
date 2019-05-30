@@ -1,13 +1,14 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-
 import * as fromRoot from '@root/app.reducer';
+
+import { Game } from '@game/models';
 
 import * as fromGame from './game.reducer';
 import * as fromPlayer from './player.reducer';
 import * as fromTransaction from './transaction.reducer';
 
 export interface GameState {
-  game: fromGame.State;
+  currentGame: Game;
   player: fromPlayer.State;
   transaction: fromTransaction.State;
 }
@@ -18,7 +19,7 @@ export interface State extends fromRoot.State {
 
 export function reducers(state: GameState | undefined, action: Action) {
   return combineReducers({
-    game: fromGame.reducer,
+    currentGame: fromGame.reducer,
     player: fromPlayer.reducer,
     transaction: fromTransaction.reducer,
   })(state, action);
@@ -77,7 +78,7 @@ export const { selectAll: getAllTransactions } = fromTransaction.adapter.getSele
 
 export const getGameGameState = createSelector(
   getGameState,
-  state => state.game,
+  state => state.currentGame,
 );
 
 export const getGame = createSelector(

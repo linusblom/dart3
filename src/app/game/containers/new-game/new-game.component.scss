@@ -1,0 +1,43 @@
+@import '~variables.scss';
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 20px;
+  background: $white15;
+
+  fa-icon {
+    color: $white60;
+  }
+
+  app-avatar {
+    padding: 0 20px;
+  }
+
+  &:not(.selected):not(.disabled):hover {
+    background: $white40;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: $white60;
+  }
+
+  &.selected {
+    background: $white30;
+
+    fa-icon {
+      color: $success;
+    }
+  }
+
+  .name {
+    font-size: 24px;
+  }
+}

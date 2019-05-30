@@ -6,7 +6,7 @@ export class GameGuard implements CanActivate {
   constructor(private readonly router: Router) {}
 
   canActivate() {
-    this.router.navigate(['start']);
+    this.router.navigate(['new']);
     return true;
   }
 }

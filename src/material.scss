@@ -208,10 +208,6 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
   border-color: $white90;
 }
 
-.mat-stroked-button {
-  border-radius: 0 !important;
-}
-
 .mat-standard-chip {
   padding: .5em .85em;
   min-height: 2.5em;

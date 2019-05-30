@@ -35,7 +35,7 @@
       cursor: pointer;
       background: $white15;
 
-      &:not(.selected, .disabled):hover {
+      &:not(.selected):not(.disabled):hover {
         background: $white40;
       }
 

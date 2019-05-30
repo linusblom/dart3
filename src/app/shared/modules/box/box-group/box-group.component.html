@@ -1,4 +1,4 @@
 <div class="header">{{ header }}</div>
-<div class="content">
+<div class="content" [ngClass]="{ styled: styled }">
   <ng-content></ng-content>
 </div>

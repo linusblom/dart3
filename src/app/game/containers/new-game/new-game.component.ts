@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,16 +9,20 @@ import { Game, GameType, Player } from '@game/models';
 import { getAllPlayers, getGame, State } from '@game/reducers';
 
 @Component({
-  selector: 'app-start-game',
-  templateUrl: './start-game.component.html',
-  styleUrls: ['./start-game.component.scss'],
+  selector: 'app-new-game',
+  templateUrl: './new-game.component.html',
+  styleUrls: ['./new-game.component.scss'],
 })
-export class StartGameComponent implements OnDestroy {
+export class NewGameComponent implements OnDestroy {
   players$: Observable<Player[]>;
 
   GameType = GameType;
   type = GameType.HALVEIT;
   bet = 10;
+  selectedPlayers: string[] = [];
+
+  selectedIcon = faCheckCircle;
+  unselectedIcon = faCircle;
 
   private destroy$ = new Subject<void>();
 
@@ -29,9 +34,10 @@ export class StartGameComponent implements OnDestroy {
         select(getGame),
         takeUntil(this.destroy$),
       )
-      .subscribe(({ type, bet }) => {
+      .subscribe(({ type, bet, players }) => {
         this.type = type;
         this.bet = bet;
+        this.selectedPlayers = players;
       });
   }
 
@@ -43,4 +49,14 @@ export class StartGameComponent implements OnDestroy {
   updateGame(data: Partial<Game>) {
     this.store.dispatch(GameActions.updateGame({ data }));
   }
+
+  togglePlayers(id: string) {
+    const players = this.selectedPlayers.includes(id)
+      ? this.selectedPlayers.filter(playerId => playerId !== id)
+      : [...this.selectedPlayers, id];
+
+    this.updateGame({ players });
+  }
+
+  play() {}
 }

@@ -8,4 +8,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class BoxGroupComponent {
   @Input() header = '';
+  @Input() styled = true;
 }

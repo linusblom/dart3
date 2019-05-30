@@ -4,9 +4,9 @@
     [selected]="selectedPlayerId"
     [items]="playersListItem$ | async"
     [loading]="loadingPlayers$ | async"
-    (selectItem)="onSelectPlayer($event)"
+    (selectId)="onSelectPlayer($event)"
   >
-    <app-box-tabs top [tabs]="tabs" [(activeTab)]="activeTab"></app-box-tabs>
+    <app-box-tabs head [tabs]="tabs" [(activeTab)]="activeTab"></app-box-tabs>
     <div class="player" body *ngIf="!selectedPlayer; else player">
       No player selected
     </div>

@@ -14,5 +14,5 @@ export class BoxListViewComponent {
   @Input() selected = '';
   @Input() header = '';
 
-  @Output() selectItem = new EventEmitter<string>();
+  @Output() selectId = new EventEmitter<string>();
 }

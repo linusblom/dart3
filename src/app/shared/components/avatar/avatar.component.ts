@@ -13,7 +13,10 @@ export class AvatarComponent {
   @Input() size = 50;
 
   get nameChars() {
-    return this.name.slice(0, 2).toUpperCase();
+    return this.name
+      .split(' ')
+      .slice(0, 2)
+      .reduce((chars, name) => `${chars}${name.charAt(0)}`, '');
   }
 
   get styles() {

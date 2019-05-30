@@ -28,5 +28,31 @@
     </div>
   </app-box-group>
 
-  <app-box-group header="Select players"></app-box-group>
+  <app-box-group header="Select players" [styled]="false" class="players">
+    <div
+      *ngFor="let player of players$ | async"
+      class="player"
+      (click)="togglePlayers(player.id)"
+      [ngClass]="{ selected: selectedPlayers.includes(player.id) }"
+    >
+      <fa-icon
+        [icon]="selectedPlayers.includes(player.id) ? selectedIcon : unselectedIcon"
+        size="2x"
+      ></fa-icon>
+      <app-avatar
+        [avatarUrl]="player.avatarUrl"
+        [color]="player.color"
+        [name]="player.name"
+        size="60"
+      ></app-avatar>
+      <div class="name">
+        {{ player.name }}
+      </div>
+    </div>
+  </app-box-group>
+  <app-box-buttons
+    rightText="Lets play"
+    [rightDisabled]="selectedPlayers.length < 2"
+    (rightClick)="play()"
+  ></app-box-buttons>
 </app-box>

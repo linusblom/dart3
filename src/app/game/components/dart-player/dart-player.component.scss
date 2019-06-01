@@ -1,0 +1,51 @@
+@import '~variables.scss';
+
+.table {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+
+  .row {
+    display: flex;
+    border-bottom: 1px solid $white90;
+
+    &:first-child {
+      border-top: 1px solid $white90;
+    }
+
+    &.headers {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .player, .score {
+      background: $white15;
+      margin: 0 1px;
+      padding: 5px;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      width: 125px;
+
+      .name {
+        margin-left: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .score {
+      text-align: center;
+      width: 30px;
+    }
+    
+    &.active {
+      .player, .score {
+        background: $white40;
+      }
+    }
+  } 
+}

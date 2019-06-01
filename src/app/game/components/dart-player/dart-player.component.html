@@ -1,0 +1,22 @@
+<div class="table">
+  <div class="row headers">
+    <div class="player">Player</div>
+    <div class="score">&Sigma;</div>
+  </div>
+  <div
+    *ngFor="let player of players; let index = index"
+    class="row"
+    [ngClass]="{ active: index === playerTurn }"
+  >
+    <div class="player">
+      <app-avatar
+        [avatarUrl]="player.avatarUrl"
+        [color]="player.color"
+        [name]="player.name"
+        size="25"
+      ></app-avatar>
+      <div class="name">{{ player.name }}</div>
+    </div>
+    <div class="score">0</div>
+  </div>
+</div>

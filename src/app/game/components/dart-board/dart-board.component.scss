@@ -1,33 +1,65 @@
+@import '~variables.scss';
+
+:host {
+  display: block;
+  position: relative;
+  cursor: url("../../../../assets/dart.png"), auto;
+}
+
 svg {
   height: 100%;
 }
 
 .light {
-  fill: #f7e9cd;
+  fill: $board-light;
 }
 
 .red {
-  fill: #ed3737;
+  fill: $board-red;
 }
 
 .green {
-  fill: #4f9962;
+  fill: $board-green;
 }
 
 .dark {
-  fill: #111111;
+  fill: $board-black;
 }
 
 .light, .red, .green, .dark {
   &:hover {
-    opacity: 0.6;
+    fill: $white60;
   }
 }
 
 .score {
   font-family: 'Rubik';
-  fill: #ffffff;
-  stroke: #000000;
+  fill: $white90;
+  stroke: $board-black;
   stroke-width: 0.25;
   font-size: 36px;
+}
+
+.hit {
+  position: absolute;
+  z-index: 100;
+  border: 10px solid #249cd8;
+  background: $white90;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.2;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }

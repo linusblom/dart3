@@ -1,5 +1,7 @@
 <div class="game-board" [ngClass]="{ loading: loading }">
   <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-  <app-dart-board></app-dart-board>
-  <div class="side-board">adasdasdsad</div>
+  <app-dart-board (hits)="onHit($event)"></app-dart-board>
+  <div class="side-board">
+    <app-dart-player [players]="players" [playerTurn]="game.playerTurn"></app-dart-player>
+  </div>
 </div>

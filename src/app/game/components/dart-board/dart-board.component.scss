@@ -1,0 +1,33 @@
+svg {
+  height: 100%;
+}
+
+.light {
+  fill: #f7e9cd;
+}
+
+.red {
+  fill: #ed3737;
+}
+
+.green {
+  fill: #4f9962;
+}
+
+.dark {
+  fill: #111111;
+}
+
+.light, .red, .green, .dark {
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.score {
+  font-family: 'Rubik';
+  fill: #ffffff;
+  stroke: #000000;
+  stroke-width: 0.25;
+  font-size: 36px;
+}

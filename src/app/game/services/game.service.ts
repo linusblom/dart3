@@ -14,4 +14,13 @@ export class GameService {
       .collection('games')
       .add({ type, bet, players });
   }
+
+  listen(gameId: string) {
+    return this.db
+      .collection('accounts')
+      .doc(this.auth.auth.currentUser.uid)
+      .collection('games')
+      .doc(gameId)
+      .valueChanges();
+  }
 }

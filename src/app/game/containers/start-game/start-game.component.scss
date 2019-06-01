@@ -21,7 +21,7 @@
   }
 
   &.disabled {
-    cursor: not-allowed;
+    cursor: default;
     color: $white30;
 
     app-avatar {

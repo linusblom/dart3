@@ -1,6 +1,10 @@
 <div class="menu" [@menuAnimation]="(menuOpen$ | async) ? 'show' : 'hide'">
   <div class="logo">DART3</div>
-  <div class="item" [ngClass]="{ active: isRouteActive('/new') }" (click)="onNavigate([''])">
+  <div
+    class="item"
+    [ngClass]="{ active: isRouteActive('/start') || isRouteActive('/game') }"
+    (click)="onNavigate([''])"
+  >
     <fa-icon [icon]="gameIcon" size="2x"></fa-icon>
   </div>
   <div

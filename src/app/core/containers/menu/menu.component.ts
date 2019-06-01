@@ -40,7 +40,7 @@ export class MenuComponent {
     this.store.dispatch(AuthActions.logout());
   }
 
-  isRouteActive(path: string) {
-    return this.router.isActive(path, false);
+  isRouteActive(path: string, exact = false) {
+    return this.router.isActive(path, exact);
   }
 }

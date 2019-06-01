@@ -216,6 +216,7 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 .mat-button-toggle-appearance-standard,
 .mat-button-toggle-disabled.mat-button-toggle-appearance-standard {
   background: none;
+  outline: none;
 }
 
 .mat-button-toggle-checked {

@@ -1,6 +1,5 @@
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Account } from '@core/models';
 import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
@@ -10,7 +9,7 @@ export interface State {
   auth: fromAuth.State;
   notification: fromNotification.State;
   core: fromCore.State;
-  account: Account;
+  account: fromAccount.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -41,8 +40,12 @@ export const getMenuOpen = createSelector(
   fromCore.getMenuOpen,
 );
 
-export const getAccountState = createFeatureSelector<Account>('account');
+export const getAccountState = createFeatureSelector<fromAccount.State>('account');
 export const getAccount = createSelector(
   getAccountState,
   fromAccount.getAccount,
+);
+export const getLoadingAccount = createSelector(
+  getAccountState,
+  fromAccount.getLoadingAccount,
 );

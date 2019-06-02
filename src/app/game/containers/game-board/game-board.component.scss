@@ -4,10 +4,6 @@
   display: flex;
   position: relative;
 
-  &.loading {
-    opacity: 0.6;
-  }
-
   mat-progress-bar {
     position: absolute;
     left: 0;
@@ -24,4 +20,14 @@ app-dart-board {
 .side-board {
   margin: 30px 30px 0 0;
   flex: 1;
+  z-index: 5;
+
+  app-dart-players {
+    margin-left: -125px;
+    z-index: 10;
+  }
+
+  app-dart-player-turn {
+    width: 260px;
+  }
 }

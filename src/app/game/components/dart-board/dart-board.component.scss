@@ -3,11 +3,26 @@
 :host {
   display: block;
   position: relative;
-  cursor: url("../../../../assets/dart.png"), auto;
+  cursor: default;
+
+  &:not(.locked) {
+    cursor: url("../../../../assets/dart.png"), auto;
+
+    .light, .red, .green, .dark {
+      &:hover {
+        fill: $white60;
+      }
+    }
+  }
 }
 
 svg {
   height: 100%;
+
+  path, circle {
+    stroke: transparent;
+    stroke-width: 5;
+  }
 }
 
 .light {
@@ -20,44 +35,56 @@ svg {
 
 .green {
   fill: $board-green;
+  stroke: $white90;
+  stroke-width: 2;
 }
 
 .dark {
   fill: $board-black;
 }
 
-.light, .red, .green, .dark {
-  &:hover {
-    fill: $white60;
-  }
-}
-
 .score {
   font-family: 'Rubik';
   fill: $white90;
   stroke: $board-black;
-  stroke-width: 0.25;
+  stroke-width: 1;
   font-size: 36px;
 }
 
 .hit {
   position: absolute;
   z-index: 100;
-  border: 10px solid #249cd8;
+  border: 1px solid $black;
   background: $white90;
-  width: 4px;
-  height: 4px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   animation: pulse 1s ease-in-out;
   animation-iteration-count: infinite;
+  box-shadow: 0px 0px 16px -2px rgba(0,0,0,0.65);
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border: 1px solid $black;
+    background: $board-red;
+    border-radius: 50%;
+    top: calc(50% - 3px);
+    left: calc(50% - 3px);
+  }
 }
 
 @keyframes pulse {
   0% {
     opacity: 0.2;
   }
-  70% {
+  40% {
     opacity: 1;
+  }
+  90% {
+    opacity: 0.4;
   }
   100% {
     opacity: 0.2;

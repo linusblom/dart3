@@ -1,7 +1,8 @@
-<div class="game-board" [ngClass]="{ loading: loading }">
+<div class="game-board">
   <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-  <app-dart-board (hits)="onHit($event)"></app-dart-board>
-  <div class="side-board">
-    <app-dart-player [players]="players" [playerTurn]="game.playerTurn"></app-dart-player>
+  <app-dart-board [locked]="loading" (hits)="hits = $event"></app-dart-board>
+  <div class="side-board" *ngIf="!loading">
+    <app-dart-players [players]="players" [playerTurn]="game.playerTurn"></app-dart-players>
+    <app-dart-player-turn [player]="currentPlayer" [hits]="hits"></app-dart-player-turn>
   </div>
 </div>

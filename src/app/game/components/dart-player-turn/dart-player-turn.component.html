@@ -1,0 +1,37 @@
+<app-box-group header="Playing">
+  <div class="player">
+    <app-avatar
+      [avatarUrl]="player.avatarUrl"
+      [color]="player.color"
+      [name]="player.name"
+      size="40"
+    ></app-avatar>
+    <div>
+      {{ player.name }}
+    </div>
+  </div>
+  <div class="scores">
+    <div *ngFor="let hit of hits" class="score-wrapper">
+      <div>{{ hit.score }}</div>
+      <div>x{{ hit.multiplier }}</div>
+      <div>{{ hit.score * hit.multiplier }}</div>
+    </div>
+    <div
+      *ngFor="let emptyHit of ['empty', 'empty', 'empty'] | slice: totalHits"
+      class="score-wrapper empty"
+    >
+      <div>-</div>
+      <div>-</div>
+      <div>-</div>
+    </div>
+  </div>
+  <div class="total-score">
+    {{ totalScore }}
+  </div>
+  <div class="round-text">
+    {{ roundText }}
+  </div>
+  <button mat-stroked-button>
+    End trun
+  </button>
+</app-box-group>

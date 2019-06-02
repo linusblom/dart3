@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Player } from '@game/models';
 
 @Component({
-  selector: 'app-dart-player',
-  templateUrl: './dart-player.component.html',
-  styleUrls: ['./dart-player.component.scss'],
+  selector: 'app-dart-players',
+  templateUrl: './dart-players.component.html',
+  styleUrls: ['./dart-players.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DartPlayerComponent {
+export class DartPlayersComponent {
   @Input() players: Player[];
   @Input() playerTurn: number;
 }

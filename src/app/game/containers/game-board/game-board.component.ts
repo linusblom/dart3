@@ -18,6 +18,7 @@ export class GameBoardComponent implements OnDestroy {
   players: Player[] = [];
   game = {} as Game;
   loading = false;
+  hits: DartHit[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -47,13 +48,13 @@ export class GameBoardComponent implements OnDestroy {
     this.store.pipe(select(getGame)).subscribe(game => (this.game = game));
   }
 
+  get currentPlayer() {
+    return this.players[this.game.playerTurn];
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
-  }
-
-  onHit(hits: DartHit[]) {
-    console.log(hits);
   }
 }

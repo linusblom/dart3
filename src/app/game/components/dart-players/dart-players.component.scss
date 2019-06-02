@@ -1,5 +1,9 @@
 @import '~variables.scss';
 
+:host {
+  display: flex;
+}
+
 .table {
   display: flex;
   flex-direction: column;
@@ -18,32 +22,22 @@
       letter-spacing: 2px;
     }
 
-    .player, .score {
+    .field {
+      display: inline-flex;
+      justify-content: center;
       background: $white15;
       margin: 0 1px;
       padding: 5px;
-    }
+      width: 40px;
+      height: 25px;
 
-    .player {
-      display: flex;
-      align-items: center;
-      width: 125px;
-
-      .name {
-        margin-left: 5px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      &.total {
+        width: 100px;
       }
-    }
-
-    .score {
-      text-align: center;
-      width: 30px;
     }
     
     &.active {
-      .player, .score {
+      .field {
         background: $white40;
       }
     }

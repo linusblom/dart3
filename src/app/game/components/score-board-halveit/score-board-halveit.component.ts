@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Player } from '@game/models';
+import { Player, Round } from '@game/models';
 
 @Component({
   selector: 'app-score-board-halveit',
@@ -9,8 +9,11 @@ import { Player } from '@game/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreBoardHalveitComponent {
-  @Input() players: Player[];
-  @Input() playerTurn: number;
+  @Input() players: Player[] = [];
+  @Input() rounds: Round[] = [];
+  @Input() currentTurn = 0;
+  @Input() currentRound = 0;
+  @Input() loading = false;
 
-  rounds = ['19', '18', 'D', '17', '41', 'T', '20', 'B'];
+  halveItRounds = ['19', '18', 'D', '17', '41', 'T', '20', 'B'];
 }

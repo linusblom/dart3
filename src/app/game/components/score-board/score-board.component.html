@@ -7,7 +7,7 @@
       <div
         *ngFor="let player of players; let index = index"
         class="row"
-        [ngClass]="{ active: index === playerTurn }"
+        [ngClass]="{ active: index === currentTurn && !loading }"
       >
         <div class="field">
           <app-avatar
@@ -21,7 +21,9 @@
     </div>
     <app-score-board-halveit
       [players]="players"
-      [playerTurn]="playerTurn"
+      [currentTurn]="currentTurn"
+      [currentRound]="currentRound"
+      [loading]="loading"
     ></app-score-board-halveit>
     <div class="table">
       <div class="row headers">
@@ -30,7 +32,7 @@
       <div
         *ngFor="let player of players; let index = index"
         class="row"
-        [ngClass]="{ active: index === playerTurn }"
+        [ngClass]="{ active: index === currentTurn && !loading }"
       >
         <div class="field total">0</div>
       </div>

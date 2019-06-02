@@ -67,26 +67,26 @@ export class GameEffects {
       switchMap(({ gameId }) =>
         this.service.listen(gameId).pipe(
           takeUntil(this.actions$.pipe(ofType(GameActions.loadGameDestroy))),
-          map((game: Game) => GameActions.loadGameSuccess({ game: { id: gameId, ...game } })),
+          map((game: Game) => GameActions.loadGameSuccess({ game })),
           catchError(error => [GameActions.loadGameFailure(error)]),
         ),
       ),
     ),
   );
 
-  changePlayerTurn$ = createEffect(() =>
+  changeCurrentTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoundActions.endTurnSuccess),
       withLatestFrom(this.store.pipe(select(getGame))),
-      map(([_, { currentRound, playerTurn, players }]) => {
-        playerTurn++;
+      map(([_, { currentRound, currentTurn, players }]) => {
+        currentTurn++;
 
-        if (playerTurn === players.length) {
-          playerTurn = 0;
+        if (currentTurn === players.length) {
+          currentTurn = 0;
           currentRound++;
         }
 
-        return GameActions.updateGame({ data: { currentRound, playerTurn } });
+        return GameActions.updateGame({ data: { currentRound, currentTurn } });
       }),
     ),
   );

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { GameType, Player } from '@game/models';
+
+import { GameType, Player, Round } from '@game/models';
 
 @Component({
   selector: 'app-score-board',
@@ -8,7 +9,10 @@ import { GameType, Player } from '@game/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreBoardComponent {
-  @Input() players: Player[];
-  @Input() playerTurn: number;
+  @Input() players: Player[] = [];
+  @Input() rounds: Round[] = [];
   @Input() type: GameType;
+  @Input() currentTurn = 0;
+  @Input() currentRound = 0;
+  @Input() loading = false;
 }

@@ -1,17 +1,26 @@
 <div class="game-board">
   <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-  <app-dart-board [locked]="loading" [(scores)]="scores"></app-dart-board>
+  <app-dart-board
+    [locked]="loading"
+    [scores]="scores"
+    (updateScores)="updateScores($event)"
+  ></app-dart-board>
   <div class="side-board">
     <app-score-board
       [players]="players"
-      [playerTurn]="game.playerTurn"
+      [currentTurn]="game.currentTurn"
       [type]="game.type"
+      [currentRound]="game.currentRound"
+      [loading]="loading"
     ></app-score-board>
     <app-current-player
       [player]="currentPlayer"
       [scores]="scores"
       [disableEndTurn]="loading"
+      [autoEndTurn]="countDown"
+      [roundText]="roundText"
       (endRound)="endRound()"
+      (abortAutoEndTurn)="abortAutoEndTurn()"
     ></app-current-player>
   </div>
 </div>

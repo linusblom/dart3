@@ -1,12 +1,11 @@
 export interface Game {
-  id: string;
   type: GameType;
   bet: number;
   started: number;
   ended: number;
   players: string[];
-  playerTurn: number;
   prizePool: number;
+  currentTurn: number;
   currentRound: number;
 }
 

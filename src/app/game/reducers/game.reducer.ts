@@ -8,16 +8,15 @@ export interface State extends Game {
 }
 
 export const initalState: State = {
-  id: null,
   type: null,
   bet: 0,
   started: 0,
   ended: 0,
   players: [],
-  playerTurn: 0,
   prizePool: 0,
   loading: false,
-  currentRound: 1,
+  currentTurn: 0,
+  currentRound: 0,
 };
 
 export const reducer = createReducer(

@@ -45,9 +45,9 @@ export const onCreate = functions.firestore
         started: Date.now(),
         ended: 0,
         players: players.sort(() => Math.random() - 0.5),
-        playerTurn: 0,
         prizePool: prizePool * 0.9,
-        currentRound: 1,
+        currentTurn: 0,
+        currentRound: 0,
       };
 
       const account = await accountRef.get();

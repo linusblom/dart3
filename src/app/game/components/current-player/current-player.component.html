@@ -32,6 +32,9 @@
     {{ roundText }}
   </div>
   <button mat-stroked-button (click)="endRound.emit()" [disabled]="disableEndTurn">
-    End turn
+    {{ endTurnButtonText }}
+  </button>
+  <button mat-stroked-button (click)="abortAutoEndTurn.emit()" [disabled]="countDown === -1">
+    Cancel
   </button>
 </app-box-group>

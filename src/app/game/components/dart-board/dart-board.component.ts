@@ -30,7 +30,7 @@ export class DartBoardComponent {
     }
   }
 
-  @Output() scoresChange = new EventEmitter<Score[]>();
+  @Output() updateScores = new EventEmitter<Score[]>();
 
   @HostBinding('class.locked')
   @Input()
@@ -84,6 +84,6 @@ export class DartBoardComponent {
 
   updateHits() {
     const scores = this.dartHits.map(hit => ({ score: hit.score, multiplier: hit.multiplier }));
-    this.scoresChange.emit(scores);
+    this.updateScores.emit(scores);
   }
 }

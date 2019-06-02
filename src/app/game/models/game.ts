@@ -7,6 +7,7 @@ export interface Game {
   players: string[];
   playerTurn: number;
   prizePool: number;
+  currentRound: number;
 }
 
 export enum GameType {

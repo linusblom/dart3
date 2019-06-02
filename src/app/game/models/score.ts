@@ -1,5 +1,4 @@
-export interface DartHit {
-  id: string;
+export interface Score {
   score: number;
   multiplier: number;
 }

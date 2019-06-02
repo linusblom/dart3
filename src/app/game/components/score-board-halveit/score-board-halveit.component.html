@@ -1,0 +1,12 @@
+<div class="row">
+  <div *ngFor="let round of rounds" class="column">
+    <div class="field header">{{ round }}</div>
+    <div
+      *ngFor="let player of players; let index = index"
+      class="row"
+      [ngClass]="{ active: index === playerTurn }"
+    >
+      <div class="field"></div>
+    </div>
+  </div>
+</div>

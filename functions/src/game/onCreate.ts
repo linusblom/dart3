@@ -47,6 +47,7 @@ export const onCreate = functions.firestore
         players: players.sort(() => Math.random() - 0.5),
         playerTurn: 0,
         prizePool: prizePool * 0.9,
+        currentRound: 1,
       };
 
       const account = await accountRef.get();

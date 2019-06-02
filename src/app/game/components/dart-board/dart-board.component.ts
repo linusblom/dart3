@@ -9,8 +9,13 @@ import {
   Renderer2,
 } from '@angular/core';
 
-import { DartHit } from '@game/models';
+import { Score } from '@game/models';
 import { generateId } from '@utils/generateId';
+
+interface DartHit extends Score {
+  id: string;
+  elementRef: HTMLDivElement;
+}
 
 @Component({
   selector: 'app-dart-board',
@@ -19,11 +24,17 @@ import { generateId } from '@utils/generateId';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DartBoardComponent {
+  @Input() set scores(scores: Score[]) {
+    if (!scores.length) {
+      this.resetHits();
+    }
+  }
+
+  @Output() scoresChange = new EventEmitter<Score[]>();
+
   @HostBinding('class.locked')
   @Input()
   locked = false;
-
-  @Output() hits = new EventEmitter<DartHit[]>();
 
   dartHits: DartHit[] = [];
 
@@ -37,28 +48,42 @@ export class DartBoardComponent {
     }
 
     const { offsetX, offsetY } = event;
-    const dartHitRef = this.renderer.createElement('div');
+    const elementRef = this.renderer.createElement('div');
     const id = generateId();
 
-    const dartHit = {
-      id,
-      score,
-      multiplier,
-    };
+    this.dartHits = [
+      ...this.dartHits,
+      {
+        id,
+        score,
+        multiplier,
+        elementRef,
+      },
+    ];
 
-    this.dartHits = [...this.dartHits, dartHit];
-
-    this.renderer.addClass(dartHitRef, 'hit');
-    this.renderer.setAttribute(dartHitRef, 'id', id);
-    this.renderer.setStyle(dartHitRef, 'top', `${offsetY - 12}px`);
-    this.renderer.setStyle(dartHitRef, 'left', `${offsetX - 12}px`);
-    this.renderer.listen(dartHitRef, 'click', (e: Event) => {
+    this.renderer.addClass(elementRef, 'hit');
+    this.renderer.setAttribute(elementRef, 'id', id);
+    this.renderer.setStyle(elementRef, 'top', `${offsetY - 12}px`);
+    this.renderer.setStyle(elementRef, 'left', `${offsetX - 12}px`);
+    this.renderer.listen(elementRef, 'click', (e: Event) => {
       this.dartHits = this.dartHits.filter(hit => hit.id !== id);
       this.renderer.removeChild(this.element.nativeElement, e.target);
-      this.hits.emit(this.dartHits);
+      this.updateHits();
     });
 
-    this.renderer.appendChild(this.element.nativeElement, dartHitRef);
-    this.hits.emit(this.dartHits);
+    this.renderer.appendChild(this.element.nativeElement, elementRef);
+    this.updateHits();
+  }
+
+  resetHits() {
+    this.dartHits.forEach(hit =>
+      this.renderer.removeChild(this.element.nativeElement, hit.elementRef),
+    );
+    this.dartHits = [];
+  }
+
+  updateHits() {
+    const scores = this.dartHits.map(hit => ({ score: hit.score, multiplier: hit.multiplier }));
+    this.scoresChange.emit(scores);
   }
 }

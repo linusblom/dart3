@@ -1,0 +1,55 @@
+@import '~variables.scss';
+
+.table-wrapper {
+  display: flex;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row, .column {
+  display: flex;
+  font-size: 20px;
+
+  &.headers, .header {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .field {
+    display: inline-flex;
+    justify-content: center;
+    background: $white15;
+    padding: 5px;
+    width: 40px;
+    height: 25px;
+
+    &.total {
+      width: 100px;
+    }
+  }
+  
+  &.active .field {
+    animation: active-player-pulse 2s ease-in-out;
+    animation-iteration-count: infinite;
+  }
+} 
+
+  .column {
+    flex-direction: column;
+  }
+
+
+@keyframes active-player-pulse {
+  0% {
+    background: rgba($white, .4);
+  }
+  50% {
+    background: rgba($white, .15);
+  }
+  100% {
+    background: rgba($white, .4);
+  }
+}

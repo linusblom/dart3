@@ -1,0 +1,39 @@
+<app-box-group header="Scoreboard" [styled]="false">
+  <div class="table-wrapper">
+    <div class="table">
+      <div class="row headers">
+        <div class="field"></div>
+      </div>
+      <div
+        *ngFor="let player of players; let index = index"
+        class="row"
+        [ngClass]="{ active: index === playerTurn }"
+      >
+        <div class="field">
+          <app-avatar
+            [avatarUrl]="player.avatarUrl"
+            [color]="player.color"
+            [name]="player.name"
+            size="25"
+          ></app-avatar>
+        </div>
+      </div>
+    </div>
+    <app-score-board-halveit
+      [players]="players"
+      [playerTurn]="playerTurn"
+    ></app-score-board-halveit>
+    <div class="table">
+      <div class="row headers">
+        <div class="field total">Total</div>
+      </div>
+      <div
+        *ngFor="let player of players; let index = index"
+        class="row"
+        [ngClass]="{ active: index === playerTurn }"
+      >
+        <div class="field total">0</div>
+      </div>
+    </div>
+  </div>
+</app-box-group>

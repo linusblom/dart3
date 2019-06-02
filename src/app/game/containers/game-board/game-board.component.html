@@ -1,8 +1,17 @@
 <div class="game-board">
   <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-  <app-dart-board [locked]="loading" (hits)="hits = $event"></app-dart-board>
-  <div class="side-board" *ngIf="!loading">
-    <app-dart-players [players]="players" [playerTurn]="game.playerTurn"></app-dart-players>
-    <app-dart-player-turn [player]="currentPlayer" [hits]="hits"></app-dart-player-turn>
+  <app-dart-board [locked]="loading" [(scores)]="scores"></app-dart-board>
+  <div class="side-board">
+    <app-score-board
+      [players]="players"
+      [playerTurn]="game.playerTurn"
+      [type]="game.type"
+    ></app-score-board>
+    <app-current-player
+      [player]="currentPlayer"
+      [scores]="scores"
+      [disableEndTurn]="loading"
+      (endRound)="endRound()"
+    ></app-current-player>
   </div>
 </div>

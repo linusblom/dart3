@@ -4,9 +4,16 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { GameActions } from '@game/actions';
-import { DartHit, Game, Player } from '@game/models';
-import { getGame, getGamePlayers, getLoadingGame, getLoadingPlayers, State } from '@game/reducers';
+import { GameActions, RoundActions } from '@game/actions';
+import { Game, Player, Score } from '@game/models';
+import {
+  getGame,
+  getGamePlayers,
+  getLoadingGame,
+  getLoadingPlayers,
+  getLoadingRounds,
+  State,
+} from '@game/reducers';
 import { getLoadingAccount } from '@root/app.reducer';
 
 @Component({
@@ -18,7 +25,7 @@ export class GameBoardComponent implements OnDestroy {
   players: Player[] = [];
   game = {} as Game;
   loading = false;
-  hits: DartHit[] = [];
+  scores: Score[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -26,14 +33,16 @@ export class GameBoardComponent implements OnDestroy {
     const { gameId } = this.route.snapshot.params;
 
     this.store.dispatch(GameActions.loadGame({ gameId }));
+    this.store.dispatch(RoundActions.loadRound({ gameId }));
 
     combineLatest([
       this.store.select(getLoadingAccount),
       this.store.select(getLoadingPlayers),
       this.store.select(getLoadingGame),
+      this.store.select(getLoadingRounds),
     ])
       .pipe(
-        map(([account, players, game]) => account || players || game),
+        map(([account, players, game, rounds]) => account || players || game || rounds),
         takeUntil(this.destroy$),
       )
       .subscribe(loading => (this.loading = loading));
@@ -49,12 +58,23 @@ export class GameBoardComponent implements OnDestroy {
   }
 
   get currentPlayer() {
-    return this.players[this.game.playerTurn];
+    return this.players[this.game.playerTurn] || ({} as Player);
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
+    this.store.dispatch(RoundActions.loadRoundDestroy());
+  }
+
+  endRound() {
+    const zeroScores = Array(3).fill({ score: 0, multiplier: 0 });
+    const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
+    const { id: gameId, currentRound: round, playerTurn: turn } = this.game;
+
+    this.store.dispatch(RoundActions.endTurn({ gameId, turn, round, scores }));
+
+    this.scores = [];
   }
 }

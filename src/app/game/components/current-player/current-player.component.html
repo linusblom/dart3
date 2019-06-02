@@ -11,13 +11,13 @@
     </div>
   </div>
   <div class="scores">
-    <div *ngFor="let hit of hits" class="score-wrapper">
-      <div>{{ hit.score }}</div>
-      <div>x{{ hit.multiplier }}</div>
-      <div>{{ hit.score * hit.multiplier }}</div>
+    <div *ngFor="let score of scores" class="score-wrapper">
+      <div>{{ score.score }}</div>
+      <div>x{{ score.multiplier }}</div>
+      <div>{{ score.score * score.multiplier }}</div>
     </div>
     <div
-      *ngFor="let emptyHit of ['empty', 'empty', 'empty'] | slice: totalHits"
+      *ngFor="let emptyScore of ['empty', 'empty', 'empty'] | slice: scoresCount"
       class="score-wrapper empty"
     >
       <div>-</div>
@@ -31,7 +31,7 @@
   <div class="round-text">
     {{ roundText }}
   </div>
-  <button mat-stroked-button>
-    End trun
+  <button mat-stroked-button (click)="endRound.emit()" [disabled]="disableEndTurn">
+    End turn
   </button>
 </app-box-group>

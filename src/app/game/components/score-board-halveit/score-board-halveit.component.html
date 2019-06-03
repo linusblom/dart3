@@ -1,16 +1,18 @@
-<div class="row">
-  <div
-    *ngFor="let round of halveItRounds; let roundIndex = index"
-    class="column"
-    [ngClass]="{ active: roundIndex === currentRound && !loading }"
-  >
-    <div class="field header">{{ round }}</div>
+<div class="wrapper">
+  <div *ngFor="let round of halveItRounds; let roundIndex = index" class="column">
+    <div
+      class="field header"
+      [ngClass]="{ active: roundIndex === currentRound && !loading, sum: round === 'Total' }"
+    >
+      {{ round }}
+    </div>
     <div
       *ngFor="let player of players; let playerIndex = index"
-      class="row"
-      [ngClass]="{ active: playerIndex === currentTurn && !loading }"
-    >
-      <div class="field"></div>
-    </div>
+      class="field"
+      [ngClass]="{
+        active: (playerIndex === currentTurn || roundIndex === currentRound) && !loading,
+        sum: round === 'Total'
+      }"
+    ></div>
   </div>
 </div>

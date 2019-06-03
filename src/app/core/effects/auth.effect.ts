@@ -15,13 +15,6 @@ import { getAuthUser, State } from '@root/app.reducer';
 
 @Injectable()
 export class AuthEffects {
-  constructor(
-    private readonly actions$: Actions,
-    private readonly router: Router,
-    private readonly fireAuth: AngularFireAuth,
-    private readonly store: Store<State>,
-  ) {}
-
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
@@ -125,4 +118,11 @@ export class AuthEffects {
       switchMap(() => [CoreActions.closeMenu(), AccountActions.loadAccountDestroy()]),
     ),
   );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly router: Router,
+    private readonly fireAuth: AngularFireAuth,
+    private readonly store: Store<State>,
+  ) {}
 }

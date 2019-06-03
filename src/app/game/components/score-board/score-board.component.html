@@ -1,41 +1,28 @@
 <app-box-group header="Scoreboard" [styled]="false">
-  <div class="table-wrapper">
-    <div class="table">
-      <div class="row headers">
-        <div class="field"></div>
-      </div>
+  <div class="wrapper">
+    <div class="column">
+      <div class="field"></div>
       <div
         *ngFor="let player of players; let index = index"
-        class="row"
+        class="field"
         [ngClass]="{ active: index === currentTurn && !loading }"
       >
-        <div class="field">
-          <app-avatar
-            [avatarUrl]="player.avatarUrl"
-            [color]="player.color"
-            [name]="player.name"
-            size="25"
-          ></app-avatar>
-        </div>
+        <app-avatar
+          [avatarUrl]="player.avatarUrl"
+          [color]="player.color"
+          [name]="player.name"
+          size="25"
+        ></app-avatar>
       </div>
     </div>
-    <app-score-board-halveit
-      [players]="players"
-      [currentTurn]="currentTurn"
-      [currentRound]="currentRound"
-      [loading]="loading"
-    ></app-score-board-halveit>
-    <div class="table">
-      <div class="row headers">
-        <div class="field total">Total</div>
-      </div>
-      <div
-        *ngFor="let player of players; let index = index"
-        class="row"
-        [ngClass]="{ active: index === currentTurn && !loading }"
-      >
-        <div class="field total">0</div>
-      </div>
-    </div>
+    <ng-container [ngSwitch]="type">
+      <app-score-board-halveit
+        *ngSwitchCase="GameType.HALVEIT"
+        [players]="players"
+        [currentTurn]="currentTurn"
+        [currentRound]="currentRound"
+        [loading]="loading"
+      ></app-score-board-halveit>
+    </ng-container>
   </div>
 </app-box-group>

@@ -23,12 +23,6 @@ import { getAccount } from '@root/app.reducer';
 
 @Injectable()
 export class GameEffects {
-  constructor(
-    private readonly actions$: Actions,
-    private readonly service: GameService,
-    private readonly store: Store<State>,
-  ) {}
-
   createGame$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.createGame),
@@ -90,4 +84,10 @@ export class GameEffects {
       }),
     ),
   );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly service: GameService,
+    private readonly store: Store<State>,
+  ) {}
 }

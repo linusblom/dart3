@@ -39,7 +39,6 @@ export class GameBoardComponent implements OnDestroy {
     this.gameId = this.route.snapshot.params.gameId;
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
-    this.store.dispatch(RoundActions.loadRound({ gameId: this.gameId }));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -68,6 +67,7 @@ export class GameBoardComponent implements OnDestroy {
       .subscribe(game => {
         this.game = game;
         this.roundText = this.getRoundText();
+        this.store.dispatch(RoundActions.loadRound({ gameId: this.gameId, gameType: game.type }));
       });
 
     this.store

@@ -15,5 +15,5 @@ export class ScoreBoardHalveitComponent {
   @Input() currentRound = 0;
   @Input() loading = false;
 
-  halveItRounds = ['19', '18', 'D', '17', '41', 'T', '20', 'B'];
+  halveItRounds = ['19', '18', 'D', '17', '41', 'T', '20', 'B', 'Total'];
 }

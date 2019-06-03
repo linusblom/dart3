@@ -8,8 +8,6 @@ import { AccountService } from '@core/services';
 
 @Injectable()
 export class AccountEffects {
-  constructor(private readonly actions$: Actions, private readonly service: AccountService) {}
-
   loadAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AccountActions.loadAccount),
@@ -22,4 +20,6 @@ export class AccountEffects {
       ),
     ),
   );
+
+  constructor(private readonly actions$: Actions, private readonly service: AccountService) {}
 }

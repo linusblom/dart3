@@ -15,4 +15,6 @@ export class ScoreBoardComponent {
   @Input() currentTurn = 0;
   @Input() currentRound = 0;
   @Input() loading = false;
+
+  GameType = GameType;
 }

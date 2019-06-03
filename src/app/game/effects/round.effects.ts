@@ -4,13 +4,11 @@ import { from } from 'rxjs';
 import { catchError, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { RoundActions } from '@game/actions';
-import { Round } from '@game/models';
-import { RoundService } from '@game/services';
+import { Calculate, GameType, Round } from '@game/models';
+import { HalveItService, RoundService } from '@game/services';
 
 @Injectable()
 export class RoundEffects {
-  constructor(private readonly actions$: Actions, private readonly service: RoundService) {}
-
   endTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoundActions.endTurn),
@@ -26,13 +24,29 @@ export class RoundEffects {
   loadRounds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoundActions.loadRound),
-      switchMap(({ gameId }) =>
+      switchMap(({ gameId, gameType }) =>
         this.service.listen(gameId).pipe(
           takeUntil(this.actions$.pipe(ofType(RoundActions.loadRoundDestroy))),
-          map((rounds: Round[]) => RoundActions.loadRoundSuccess({ rounds })),
+          map((rounds: Round[]) => {
+            if (gameType) {
+              rounds = this.calculateMap[gameType].calculate(rounds);
+            }
+
+            return RoundActions.loadRoundSuccess({ rounds });
+          }),
           catchError(error => [RoundActions.loadRoundFailure(error)]),
         ),
       ),
     ),
   );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly service: RoundService,
+    private readonly halveItService: HalveItService,
+  ) {}
+
+  calculateMap: { [key: string]: Calculate } = {
+    [GameType.HALVEIT]: this.halveItService,
+  };
 }

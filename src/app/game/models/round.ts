@@ -2,6 +2,8 @@ import { Score } from './score';
 
 export interface Round {
   id: string;
+  header?: string;
+  text?: string;
   [key: string]: Score[] | string;
 }
 
@@ -15,3 +17,7 @@ export const halveItRoundText = {
   '6': 'Round 20',
   '7': 'Round Bullseye',
 };
+
+export interface Calculate {
+  calculate(rounds: Round[]): Round[];
+}

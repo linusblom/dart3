@@ -11,8 +11,6 @@ import { TransactionService } from '@game/services';
 
 @Injectable()
 export class TransactionEffects {
-  constructor(private readonly actions$: Actions, private readonly service: TransactionService) {}
-
   createTransaction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionActions.createTransaction),
@@ -42,4 +40,6 @@ export class TransactionEffects {
       ),
     ),
   );
+
+  constructor(private readonly actions$: Actions, private readonly service: TransactionService) {}
 }

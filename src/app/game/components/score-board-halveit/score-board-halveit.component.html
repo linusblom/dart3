@@ -10,9 +10,10 @@
       *ngFor="let player of players; let playerIndex = index"
       class="field"
       [ngClass]="{
-        active: (playerIndex === currentTurn || roundIndex === currentRound) && !loading,
-        sum: round === 'Total'
+        active: (playerIndex === currentTurn || roundIndex === currentRound) && !loading
       }"
-    ></div>
+    >
+      {{ getPlayerRoundScore(roundIndex, playerIndex) }}
+    </div>
   </div>
 </div>

@@ -18,6 +18,7 @@ export const halveItRoundText = {
   '7': 'Round Bullseye',
 };
 
-export interface Calculate {
-  calculate(rounds: Round[]): Round[];
+export interface ScoreBoard {
+  roundScores: number[][];
+  total: { [key: string]: number };
 }

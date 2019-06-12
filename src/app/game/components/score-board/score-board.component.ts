@@ -10,11 +10,11 @@ import { GameType, Player, Round } from '@game/models';
 })
 export class ScoreBoardComponent {
   @Input() players: Player[] = [];
-  @Input() rounds: Round[] = [];
   @Input() type: GameType;
   @Input() currentTurn = 0;
   @Input() currentRound = 0;
   @Input() loading = false;
+  @Input() rounds: Round[];
 
   GameType = GameType;
 }

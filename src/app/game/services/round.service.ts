@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Score } from '@game/models';
 
@@ -30,6 +30,7 @@ export class RoundService {
       .snapshotChanges()
       .pipe(
         map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),
+        tap(a => console.log(a)),
       );
   }
 }

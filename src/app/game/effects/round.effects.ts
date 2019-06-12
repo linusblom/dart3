@@ -4,7 +4,7 @@ import { from } from 'rxjs';
 import { catchError, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { RoundActions } from '@game/actions';
-import { Calculate, GameType, Round } from '@game/models';
+import { Round } from '@game/models';
 import { HalveItService, RoundService } from '@game/services';
 
 @Injectable()
@@ -24,16 +24,10 @@ export class RoundEffects {
   loadRounds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoundActions.loadRound),
-      switchMap(({ gameId, gameType }) =>
+      switchMap(({ gameId }) =>
         this.service.listen(gameId).pipe(
           takeUntil(this.actions$.pipe(ofType(RoundActions.loadRoundDestroy))),
-          map((rounds: Round[]) => {
-            if (gameType) {
-              rounds = this.calculateMap[gameType].calculate(rounds);
-            }
-
-            return RoundActions.loadRoundSuccess({ rounds });
-          }),
+          map((rounds: Round[]) => RoundActions.loadRoundSuccess({ rounds })),
           catchError(error => [RoundActions.loadRoundFailure(error)]),
         ),
       ),
@@ -45,8 +39,4 @@ export class RoundEffects {
     private readonly service: RoundService,
     private readonly halveItService: HalveItService,
   ) {}
-
-  calculateMap: { [key: string]: Calculate } = {
-    [GameType.HALVEIT]: this.halveItService,
-  };
 }

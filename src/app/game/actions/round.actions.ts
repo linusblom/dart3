@@ -1,12 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { GameType, Round, Score } from '@game/models';
+import { Round, Score, ScoreBoard } from '@game/models';
 
-export const loadRound = createAction(
-  '[Round] Load Round',
-  props<{ gameId: string; gameType?: GameType }>(),
-);
+export const loadRound = createAction('[Round] Load Round', props<{ gameId: string }>());
 export const loadRoundSuccess = createAction(
   '[Round] Load Round Success',
   props<{ rounds: Round[] }>(),

@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, interval, Subject } from 'rxjs';
+import { combineLatest, interval, Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions, RoundActions } from '@game/actions';
-import { Game, GameType, halveItRoundText, Player, Round, Score } from '@game/models';
+import { Game, GameType, halveItRoundText, Player, Round, Score, ScoreBoard } from '@game/models';
 import {
   getAllRounds,
   getGame,
@@ -39,6 +39,7 @@ export class GameBoardComponent implements OnDestroy {
     this.gameId = this.route.snapshot.params.gameId;
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
+    this.store.dispatch(RoundActions.loadRound({ gameId: this.gameId }));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -67,7 +68,6 @@ export class GameBoardComponent implements OnDestroy {
       .subscribe(game => {
         this.game = game;
         this.roundText = this.getRoundText();
-        this.store.dispatch(RoundActions.loadRound({ gameId: this.gameId, gameType: game.type }));
       });
 
     this.store

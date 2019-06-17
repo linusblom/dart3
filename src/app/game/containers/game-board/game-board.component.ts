@@ -1,13 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, interval, Observable, Subject } from 'rxjs';
+import { combineLatest, interval, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
-import { GameActions, RoundActions } from '@game/actions';
-import { Game, GameType, halveItRoundText, Player, Round, Score, ScoreBoard } from '@game/models';
+import { GameActions } from '@game/actions';
+import { Game, GameType, halveItRoundText, Player, Score } from '@game/models';
 import {
-  getAllRounds,
   getGame,
   getGamePlayers,
   getLoadingGame,
@@ -25,7 +24,6 @@ import { getLoadingAccount } from '@root/app.reducer';
 export class GameBoardComponent implements OnDestroy {
   players: Player[] = [];
   game = {} as Game;
-  rounds: Round[] = [];
   loading = false;
   scores: Score[] = [];
   gameId = '';
@@ -39,7 +37,7 @@ export class GameBoardComponent implements OnDestroy {
     this.gameId = this.route.snapshot.params.gameId;
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
-    this.store.dispatch(RoundActions.loadRound({ gameId: this.gameId }));
+    this.store.dispatch(GameActions.loadRound({ gameId: this.gameId }));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -69,13 +67,6 @@ export class GameBoardComponent implements OnDestroy {
         this.game = game;
         this.roundText = this.getRoundText();
       });
-
-    this.store
-      .pipe(
-        select(getAllRounds),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(rounds => (this.rounds = rounds));
   }
 
   get currentPlayer() {
@@ -86,7 +77,7 @@ export class GameBoardComponent implements OnDestroy {
     this.destroy$.next();
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
-    this.store.dispatch(RoundActions.loadRoundDestroy());
+    this.store.dispatch(GameActions.loadRoundDestroy());
   }
 
   getRoundText() {
@@ -109,7 +100,6 @@ export class GameBoardComponent implements OnDestroy {
           filter(val => val === 4),
         )
         .subscribe(() => {
-          this.countDown = -1;
           this.endRound();
         });
     }
@@ -120,7 +110,10 @@ export class GameBoardComponent implements OnDestroy {
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
     const { currentRound: round, currentTurn: turn } = this.game;
 
-    this.store.dispatch(RoundActions.endTurn({ gameId: this.gameId, turn, round, scores }));
+    this.abortAutoEndTurn$.next();
+    this.countDown = -1;
+
+    this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, turn, round, scores }));
 
     this.scores = [];
   }

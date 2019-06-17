@@ -6,7 +6,7 @@ import { catchError, concatMap, exhaustMap, map, switchMap, takeUntil } from 'rx
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { PlayerActions } from '@game/actions';
-import { Player } from '@game/models/player';
+import { Player, Transaction } from '@game/models';
 import { PlayerService } from '@game/services';
 
 @Injectable()
@@ -64,6 +64,36 @@ export class PlayerEffects {
             console.log(error);
             return [PlayerActions.updateAvatarFailure(error)];
           }),
+        ),
+      ),
+    ),
+  );
+
+  createTransaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.createTransaction),
+      exhaustMap(({ playerId, transaction: { type, amount } }) =>
+        from(this.service.createTransaction(playerId, type, amount)).pipe(
+          map(() => PlayerActions.createTransactionSuccess()),
+          catchError(error => [
+            PlayerActions.createTransaction(error),
+            NotificationActions.push({ status: Status.ERROR, message: error.message }),
+          ]),
+        ),
+      ),
+    ),
+  );
+
+  loadTransaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.loadTransactions),
+      switchMap(({ playerId }) =>
+        this.service.listenTransactions(playerId).pipe(
+          takeUntil(this.actions$.pipe(ofType(PlayerActions.loadTransactionsDestroy))),
+          map((transactions: Transaction[]) =>
+            PlayerActions.loadTransactionsSuccess({ transactions }),
+          ),
+          catchError(error => [PlayerActions.loadTransactionsFailure(error)]),
         ),
       ),
     ),

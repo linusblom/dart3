@@ -21,7 +21,7 @@
         <app-player-bank
           *ngSwitchCase="Tabs.BANK"
           [credits]="selectedPlayer.credits"
-          [transactions]="transactions$ | async"
+          [transactions]="selectedPlayer.transactions"
           (transaction)="onTransaction($event)"
         ></app-player-bank>
         <app-player-stats *ngSwitchCase="Tabs.STATS"></app-player-stats>

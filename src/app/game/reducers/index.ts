@@ -1,16 +1,12 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '@root/app.reducer';
 
-import * as fromGame from './game.reducer';
+import * as fromCurrentGame from './game.reducer';
 import * as fromPlayer from './player.reducer';
-import * as fromRound from './round.reducer';
-import * as fromTransaction from './transaction.reducer';
 
 export interface GameState {
-  currentGame: fromGame.State;
+  currentGame: fromCurrentGame.State;
   player: fromPlayer.State;
-  transaction: fromTransaction.State;
-  round: fromRound.State;
 }
 
 export interface State extends fromRoot.State {
@@ -19,10 +15,8 @@ export interface State extends fromRoot.State {
 
 export function reducers(state: GameState | undefined, action: Action) {
   return combineReducers({
-    currentGame: fromGame.reducer,
+    currentGame: fromCurrentGame.reducer,
     player: fromPlayer.reducer,
-    transaction: fromTransaction.reducer,
-    round: fromRound.reducer,
   })(state, action);
 }
 
@@ -57,29 +51,21 @@ export const getSelectedPlayer = createSelector(
   },
 );
 
-export const getGameTransactionState = createSelector(
-  getGameState,
-  state => state.transaction,
-);
-export const getLoadingTransactons = createSelector(
-  getGameTransactionState,
-  fromTransaction.getLoading,
-);
-export const { selectAll: getAllTransactions } = fromTransaction.adapter.getSelectors(
-  getGameTransactionState,
-);
-
-export const getGameGameState = createSelector(
+export const getCurrentGame = createSelector(
   getGameState,
   state => state.currentGame,
 );
 export const getGame = createSelector(
-  getGameGameState,
-  fromGame.getGame,
+  getCurrentGame,
+  fromCurrentGame.getGame,
 );
 export const getLoadingGame = createSelector(
-  getGameGameState,
-  fromGame.getLoadingGame,
+  getCurrentGame,
+  fromCurrentGame.getLoadingGame,
+);
+export const getLoadingRounds = createSelector(
+  getCurrentGame,
+  fromCurrentGame.getLoadingRounds,
 );
 export const getGamePlayers = createSelector(
   getAllPlayers,
@@ -90,12 +76,9 @@ export const getGamePlayers = createSelector(
       .sort((a, b) => game.players.indexOf(a.id) - game.players.indexOf(b.id)),
 );
 
-export const getGameRoundState = createSelector(
-  getGameState,
-  state => state.round,
-);
-export const getLoadingRounds = createSelector(
-  getGameRoundState,
-  fromRound.getLoading,
-);
-export const { selectAll: getAllRounds } = fromRound.adapter.getSelectors(getGameRoundState);
+// export const getGameRoundState = createSelector(
+//   getGameState,
+//   state => state.round,
+// );
+
+// export const { selectAll: getAllRounds } = fromRound.adapter.getSelectors(getGameRoundState);

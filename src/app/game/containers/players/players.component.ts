@@ -5,12 +5,11 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { PlayerActions, TransactionActions } from '@game/actions';
+import { PlayerActions } from '@game/actions';
 import { createPlayer } from '@game/actions/player.actions';
 import { Player, Transaction, TransactionPayload } from '@game/models';
 import {
   getAllPlayers,
-  getAllTransactions,
   getLoadingCreatePlayer,
   getLoadingPlayers,
   getSelectedPlayer,
@@ -56,7 +55,6 @@ export class PlayersComponent implements OnDestroy {
     this.loadingCreatePlayer$ = this.store.pipe(select(getLoadingCreatePlayer));
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
     this.selectedPlayerId$ = this.store.pipe(select(getSelectedPlayerId));
-    this.transactions$ = this.store.pipe(select(getAllTransactions));
     this.playersListItem$ = this.store.pipe(
       select(getAllPlayers),
       map(players =>
@@ -69,10 +67,10 @@ export class PlayersComponent implements OnDestroy {
         takeUntil(this.destroy$),
         filter(playerId => !!playerId),
         distinctUntilChanged(),
-        tap(() => this.store.dispatch(TransactionActions.loadTransactionsDestroy())),
+        tap(() => this.store.dispatch(PlayerActions.loadTransactionsDestroy())),
       )
       .subscribe(playerId => {
-        this.store.dispatch(TransactionActions.loadTransactions({ playerId }));
+        this.store.dispatch(PlayerActions.loadTransactions({ playerId }));
         this.selectedPlayerId = playerId;
       });
 
@@ -87,7 +85,7 @@ export class PlayersComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-    this.store.dispatch(TransactionActions.loadTransactionsDestroy());
+    this.store.dispatch(PlayerActions.loadTransactionsDestroy());
   }
 
   onCreate() {
@@ -109,7 +107,7 @@ export class PlayersComponent implements OnDestroy {
 
   onTransaction(transaction: TransactionPayload) {
     this.store.dispatch(
-      TransactionActions.createTransaction({ playerId: this.selectedPlayerId, transaction }),
+      PlayerActions.createTransaction({ playerId: this.selectedPlayerId, transaction }),
     );
   }
 }

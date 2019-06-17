@@ -15,8 +15,8 @@ import {
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
-import { GameActions, RoundActions } from '@game/actions';
-import { Game } from '@game/models';
+import { GameActions } from '@game/actions';
+import { Game, Round } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
 import { getAccount } from '@root/app.reducer';
@@ -70,7 +70,7 @@ export class GameEffects {
 
   changeCurrentTurn$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(RoundActions.endTurnSuccess),
+      ofType(GameActions.endTurnSuccess),
       withLatestFrom(this.store.pipe(select(getGame))),
       map(([_, { currentRound, currentTurn, players }]) => {
         currentTurn++;
@@ -82,6 +82,31 @@ export class GameEffects {
 
         return GameActions.updateGame({ data: { currentRound, currentTurn } });
       }),
+    ),
+  );
+
+  endTurn$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.endTurn),
+      concatMap(({ gameId, turn, round, scores }) =>
+        from(this.service.updateRound(gameId, turn, round, scores)).pipe(
+          map(() => GameActions.endTurnSuccess()),
+          catchError(error => [GameActions.endTurnFailure(error)]),
+        ),
+      ),
+    ),
+  );
+
+  loadRounds$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.loadRound),
+      switchMap(({ gameId }) =>
+        this.service.listenRounds(gameId).pipe(
+          takeUntil(this.actions$.pipe(ofType(GameActions.loadRoundDestroy))),
+          map((rounds: Round[]) => GameActions.loadRoundSuccess({ rounds })),
+          catchError(error => [GameActions.loadRoundFailure(error)]),
+        ),
+      ),
     ),
   );
 

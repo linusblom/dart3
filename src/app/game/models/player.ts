@@ -1,3 +1,5 @@
+import { Transaction } from './transaction';
+
 export interface Player {
   id: string;
   name: string;
@@ -18,4 +20,5 @@ export interface Player {
   legs: number;
   turnover: number;
   net: number;
+  transactions: Transaction[];
 }

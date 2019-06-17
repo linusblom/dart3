@@ -1,3 +1,5 @@
+import { Round } from './round';
+
 export interface Game {
   type: GameType;
   bet: number;
@@ -7,6 +9,7 @@ export interface Game {
   prizePool: number;
   currentTurn: number;
   currentRound: number;
+  rounds: Round[];
 }
 
 export enum GameType {

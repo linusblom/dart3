@@ -15,15 +15,24 @@
         ></app-avatar>
       </div>
     </div>
-    <ng-container [ngSwitch]="type">
-      <app-score-board-halveit
-        *ngSwitchCase="GameType.HALVEIT"
-        [players]="players"
-        [currentTurn]="currentTurn"
-        [currentRound]="currentRound"
-        [loading]="loading"
-        [rounds]="rounds"
-      ></app-score-board-halveit>
-    </ng-container>
+    <div class="wrapper">
+      <div *ngFor="let round of halveItRounds; let roundIndex = index" class="column">
+        <div
+          class="field header"
+          [ngClass]="{ active: roundIndex === currentRound && !loading, sum: round === 'Total' }"
+        >
+          {{ round }}
+        </div>
+        <div
+          *ngFor="let player of players; let playerIndex = index"
+          class="field"
+          [ngClass]="{
+            active: (playerIndex === currentTurn || roundIndex === currentRound) && !loading
+          }"
+        >
+          {{ getPlayerRoundScore(roundIndex, playerIndex) }}
+        </div>
+      </div>
+    </div>
   </div>
 </app-box-group>

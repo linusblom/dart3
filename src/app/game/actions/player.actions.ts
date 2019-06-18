@@ -44,25 +44,25 @@ export const updateAvatarFailure = createAction(
 export const selectPlayer = createAction('[Player] Select Player', props<{ id: string }>());
 
 export const createTransaction = createAction(
-  '[Transaction] Create Transaction',
+  '[Player] Create Transaction',
   props<{ playerId: string; transaction: TransactionPayload }>(),
 );
-export const createTransactionSuccess = createAction('[Transaction] Create Transaction Success');
+export const createTransactionSuccess = createAction('[Player] Create Transaction Success');
 export const createTransactionFailure = createAction(
-  '[Transaction] Create Transaction Failure',
+  '[Player] Create Transaction Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
 export const loadTransactions = createAction(
-  '[Transaction] Load Transactions',
+  '[Player] Load Transactions',
   props<{ playerId: string }>(),
 );
 export const loadTransactionsSuccess = createAction(
-  '[Transaction] Load Transactions Success',
+  '[Player] Load Transactions Success',
   props<{ transactions: Transaction[] }>(),
 );
 export const loadTransactionsFailure = createAction(
-  '[Transaction] Load Transactions Failure',
+  '[Player] Load Transactions Failure',
   props<{ error: HttpErrorResponse }>(),
 );
-export const loadTransactionsDestroy = createAction('[Transaction] Load Transactions Destroy');
+export const loadTransactionsDestroy = createAction('[Player] Load Transactions Destroy');

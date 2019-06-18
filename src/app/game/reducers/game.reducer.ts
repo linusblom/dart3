@@ -1,9 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { GameActions } from '@game/actions';
-import { Game } from '@game/models';
+import { Game, ScoreBoard } from '@game/models';
 
 export interface State extends Game {
+  scoreboard: ScoreBoard;
   loadingGame: boolean;
   loadingRounds: boolean;
 }
@@ -18,6 +19,7 @@ export const initalState: State = {
   currentTurn: 0,
   currentRound: 0,
   rounds: [],
+  scoreboard: { roundScores: [], total: {}, roundText: [] },
   loadingGame: false,
   loadingRounds: false,
 };
@@ -37,6 +39,7 @@ export const reducer = createReducer(
     loadingRounds: false,
   })),
   on(GameActions.loadRoundFailure, state => ({ ...state, loadingRounds: false })),
+  on(GameActions.updateScoreBoard, (state, { scoreboard }) => ({ ...state, scoreboard })),
 );
 
 export const getGame = (state: State) => state;

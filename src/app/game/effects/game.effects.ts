@@ -16,6 +16,7 @@ import {
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
+import { HalveIt } from '@game/calculate';
 import { Game, Round } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
@@ -110,9 +111,22 @@ export class GameEffects {
     ),
   );
 
+  updateScoreBoard$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.loadRoundSuccess),
+      withLatestFrom(this.store.pipe(select(getGame))),
+      map(([{ rounds }, { type }]) => {
+        const scoreboard = this.halveIt.calculate(rounds);
+
+        return GameActions.updateScoreBoard({ scoreboard });
+      }),
+    ),
+  );
+
   constructor(
     private readonly actions$: Actions,
     private readonly service: GameService,
+    private readonly halveIt: HalveIt,
     private readonly store: Store<State>,
   ) {}
 }

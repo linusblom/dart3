@@ -8,6 +8,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { SharedModule } from '@shared/shared.module';
 
+import { calculate } from './calculate';
 import { components } from './components';
 import { containers } from './containers';
 import { effects } from './effects';
@@ -26,6 +27,6 @@ import { services } from './services';
     SharedModule,
   ],
   declarations: [...containers, ...components],
-  providers: [...services],
+  providers: [...services, ...calculate],
 })
 export class GameModule {}

@@ -7,12 +7,12 @@
   ></app-dart-board>
   <div class="side-board">
     <app-score-board
+      [scoreboard]="game.scoreboard"
       [players]="players"
       [currentTurn]="game.currentTurn"
       [type]="game.type"
       [currentRound]="game.currentRound"
       [loading]="loading"
-      [rounds]="game.rounds"
     ></app-score-board>
     <app-current-player
       [player]="currentPlayer"

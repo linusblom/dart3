@@ -5,7 +5,7 @@ import { combineLatest, interval, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { Game, GameType, halveItRoundText, Player, Score } from '@game/models';
+import { Player, Score } from '@game/models';
 import {
   getGame,
   getGamePlayers,
@@ -14,6 +14,7 @@ import {
   getLoadingRounds,
   State,
 } from '@game/reducers';
+import { State as Game } from '@game/reducers/game.reducer';
 import { getLoadingAccount } from '@root/app.reducer';
 
 @Component({
@@ -27,7 +28,6 @@ export class GameBoardComponent implements OnDestroy {
   loading = false;
   scores: Score[] = [];
   gameId = '';
-  roundText = '';
   countDown = -1;
 
   private abortAutoEndTurn$ = new Subject<void>();
@@ -63,10 +63,7 @@ export class GameBoardComponent implements OnDestroy {
         select(getGame),
         takeUntil(this.destroy$),
       )
-      .subscribe(game => {
-        this.game = game;
-        this.roundText = this.getRoundText();
-      });
+      .subscribe(game => (this.game = game));
   }
 
   get currentPlayer() {
@@ -80,11 +77,8 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadRoundDestroy());
   }
 
-  getRoundText() {
-    switch (this.game.type) {
-      case GameType.HALVEIT:
-        return halveItRoundText[this.game.currentRound];
-    }
+  get roundText() {
+    return this.game.scoreboard.roundText[this.game.currentRound];
   }
 
   updateScores(scores: Score[]) {

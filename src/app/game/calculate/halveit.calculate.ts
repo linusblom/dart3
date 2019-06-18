@@ -5,24 +5,35 @@ import { Round, Score } from '@game/models';
 import { Calculate } from './calculate';
 
 @Injectable()
-export class HalveItService extends Calculate {
+export class HalveIt extends Calculate {
+  roundText = [
+    'Round 19',
+    'Round 18',
+    'Round Double',
+    'Round 17',
+    'Round 41',
+    'Round Triple',
+    'Round 20',
+    'Round Bullseye',
+  ];
+
   calculate(rounds: Round[]) {
     const playerRounds = this.mapToPlayerRounds(rounds);
     const roundScores = this.mapRounds(playerRounds);
     const total = this.countTotal(roundScores);
 
-    return { roundScores, total };
+    return { roundScores, total, roundText: this.roundText };
   }
 
-  mapRounds(rounds: Score[][][]) {
+  private mapRounds(rounds: Score[][][]) {
     return rounds.map((players, index) => this.mapPlayers(players, index));
   }
 
-  mapPlayers(players: Score[][], round: number) {
+  private mapPlayers(players: Score[][], round: number) {
     return players.map(scores => this.mapScores(scores, round));
   }
 
-  mapScores(scores: Score[], round: number) {
+  private mapScores(scores: Score[], round: number) {
     switch (round) {
       case 0:
         return this.checkScore(scores, [19]);
@@ -43,7 +54,7 @@ export class HalveItService extends Calculate {
     }
   }
 
-  checkScore(scores: Score[], allowedScores: number[]) {
+  private checkScore(scores: Score[], allowedScores: number[]) {
     return scores.reduce(
       (total, score) =>
         allowedScores.includes(score.score) ? total + this.getHitTotal(score) : total,
@@ -51,7 +62,7 @@ export class HalveItService extends Calculate {
     );
   }
 
-  checkMultiplier(scores: Score[], allowedMultipliers: number[]) {
+  private checkMultiplier(scores: Score[], allowedMultipliers: number[]) {
     return scores.reduce(
       (total, score) =>
         allowedMultipliers.includes(score.multiplier) ? total + this.getHitTotal(score) : total,
@@ -59,12 +70,12 @@ export class HalveItService extends Calculate {
     );
   }
 
-  checkTotal(scores: Score[], allowedTotal: number) {
+  private checkTotal(scores: Score[], allowedTotal: number) {
     const total = this.getRoundTotal(scores);
     return total === allowedTotal ? total : 0;
   }
 
-  countTotal(rounds: number[][]) {
+  private countTotal(rounds: number[][]) {
     const total = {};
 
     rounds.forEach(round =>

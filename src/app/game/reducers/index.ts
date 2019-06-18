@@ -75,10 +75,3 @@ export const getGamePlayers = createSelector(
       .filter(player => game.players.includes(player.id))
       .sort((a, b) => game.players.indexOf(a.id) - game.players.indexOf(b.id)),
 );
-
-// export const getGameRoundState = createSelector(
-//   getGameState,
-//   state => state.round,
-// );
-
-// export const { selectAll: getAllRounds } = fromRound.adapter.getSelectors(getGameRoundState);

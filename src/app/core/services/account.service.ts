@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+
+import { Account } from '@core/models';
 
 @Injectable()
 export class AccountService {
@@ -12,5 +13,12 @@ export class AccountService {
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .valueChanges();
+  }
+
+  update(data: Partial<Account>) {
+    return this.db
+      .collection('accounts')
+      .doc(this.auth.auth.currentUser.uid)
+      .update(data);
   }
 }

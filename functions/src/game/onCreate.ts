@@ -58,11 +58,16 @@ export const onCreate = functions.firestore
         throw new Error('Unable to create new game');
       }
 
+      const roundData = Array(players.length)
+        .fill(Array(3).fill({ score: -1, multiplier: 0 }))
+        .reduce((scores, initialScores, index) => ({ ...scores, [index]: initialScores }), {});
+
       transaction.update(accountRef, {
         currentGame: snapshot.id,
         jackpot: jackpot + prizePool * 0.08,
         hiddenJackpot: hiddenJackpot + prizePool * 0.02,
       });
+      transaction.create(snapshot.ref.collection('rounds').doc('0'), roundData);
       transaction.update(snapshot.ref, data);
     });
   });

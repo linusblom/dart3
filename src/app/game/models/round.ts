@@ -11,4 +11,5 @@ export interface ScoreBoard {
   roundScores: number[][];
   total: { [key: string]: number };
   roundText: string[];
+  totalText?: string;
 }

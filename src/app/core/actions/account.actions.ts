@@ -13,3 +13,10 @@ export const loadAccountFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 export const loadAccountDestroy = createAction('[Account] Load Account Destroy');
+
+export const update = createAction('[Account] Update Account', props<{ data: Partial<Account> }>());
+export const updateSuccess = createAction('[Account] Update Account Success');
+export const updateFailure = createAction(
+  '[Account] Update Account Failure',
+  props<{ error: HttpErrorResponse }>(),
+);

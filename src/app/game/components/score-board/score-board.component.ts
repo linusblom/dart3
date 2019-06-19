@@ -14,7 +14,7 @@ export class ScoreBoardComponent {
   @Input() type: GameType;
   @Input() currentTurn = 0;
   @Input() currentRound = 0;
-  @Input() loading = false;
+  @Input() disableAnimation = false;
 
   GameType = GameType;
   halveItRounds = ['19', '18', 'D', '17', '41', 'T', '20', 'B'];

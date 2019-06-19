@@ -35,6 +35,21 @@ export class GameService {
       .update(data);
   }
 
+  createRound(gameId: string, round: number, playerCount: number) {
+    const data = Array(playerCount)
+      .fill(Array(3).fill({ score: -1, multiplier: 0 }))
+      .reduce((scores, initialScores, index) => ({ ...scores, [index]: initialScores }), {});
+
+    return this.db
+      .collection('accounts')
+      .doc(this.auth.auth.currentUser.uid)
+      .collection('games')
+      .doc(gameId)
+      .collection('rounds')
+      .doc(`${round}`)
+      .set(data);
+  }
+
   updateRound(gameId: string, turn: number, round: number, scores: Score[]) {
     return this.db
       .collection('accounts')

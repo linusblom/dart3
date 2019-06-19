@@ -40,16 +40,33 @@ export const loadRoundFailure = createAction(
 export const loadRoundDestroy = createAction('[Game] Load Round Destroy');
 
 export const endTurn = createAction(
-  '[Game] Update Round',
+  '[Game] End Turn',
   props<{ gameId: string; turn: number; round: number; scores: Score[] }>(),
 );
-export const endTurnSuccess = createAction('[Game] Update Round Success');
+export const endTurnSuccess = createAction('[Game] End Turn Success', props<{ gameId: string }>());
 export const endTurnFailure = createAction(
-  '[Game] Update Round Failure',
+  '[Game] End Turn Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
 export const updateScoreBoard = createAction(
   '[Game] Update ScoreBoard',
   props<{ scoreboard: ScoreBoard }>(),
+);
+
+export const createRound = createAction(
+  '[Game] Create Round',
+  props<{ gameId: string; round: number; playerCount: number }>(),
+);
+export const createRoundSuccess = createAction('[Game] Create Round Success');
+export const createRoundFailure = createAction(
+  '[Game] Create Round Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const endGame = createAction('[Game] End Game', props<{ gameId: string }>());
+export const endGameSuccess = createAction('[Game] End Game Success', props<{ gameId: string }>());
+export const endGameFailure = createAction(
+  '[Game] End Game Failure',
+  props<{ error: HttpErrorResponse }>(),
 );

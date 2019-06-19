@@ -5,6 +5,7 @@ import {
   GameBoardComponent,
   GameComponent,
   PlayersComponent,
+  ResultsComponent,
   StartGameComponent,
 } from './containers';
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
       { path: 'start', component: StartGameComponent },
       { path: 'game/:gameId', component: GameBoardComponent },
       { path: 'players', component: PlayersComponent },
+      { path: 'results/:gameId', component: ResultsComponent },
     ],
   },
 ];

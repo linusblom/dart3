@@ -5,7 +5,7 @@ import { combineLatest, interval, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { Player, Score } from '@game/models';
+import { GameType, Player, Score } from '@game/models';
 import {
   getGame,
   getGamePlayers,
@@ -106,9 +106,7 @@ export class GameBoardComponent implements OnDestroy {
 
     this.abortAutoEndTurn$.next();
     this.countDown = -1;
-
     this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, turn, round, scores }));
-
     this.scores = [];
   }
 

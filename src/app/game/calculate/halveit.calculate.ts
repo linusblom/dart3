@@ -4,25 +4,25 @@ import { Round, Score } from '@game/models';
 
 import { Calculate } from './calculate';
 
+const roundText = [
+  'Round 19',
+  'Round 18',
+  'Round Double',
+  'Round 17',
+  'Round 41',
+  'Round Triple',
+  'Round 20',
+  'Round Bullseye',
+];
+
 @Injectable()
 export class HalveIt extends Calculate {
-  roundText = [
-    'Round 19',
-    'Round 18',
-    'Round Double',
-    'Round 17',
-    'Round 41',
-    'Round Triple',
-    'Round 20',
-    'Round Bullseye',
-  ];
-
   calculate(rounds: Round[]) {
     const playerRounds = this.mapToPlayerRounds(rounds);
     const roundScores = this.mapRounds(playerRounds);
     const total = this.countTotal(roundScores);
 
-    return { roundScores, total, roundText: this.roundText };
+    return { roundScores, total, roundText };
   }
 
   private mapRounds(rounds: Score[][][]) {
@@ -34,6 +34,10 @@ export class HalveIt extends Calculate {
   }
 
   private mapScores(scores: Score[], round: number) {
+    if (scores.filter(score => score.score === -1).length === 3) {
+      return -1;
+    }
+
     switch (round) {
       case 0:
         return this.checkScore(scores, [19]);
@@ -81,7 +85,14 @@ export class HalveIt extends Calculate {
     rounds.forEach(round =>
       round.forEach((score, index) => {
         const playerTotal = total[index] || 0;
-        total[index] = score ? playerTotal + score : Math.ceil(playerTotal / 2);
+
+        if (score === -1) {
+          total[index] = playerTotal;
+        } else if (score === 0) {
+          total[index] = Math.ceil(playerTotal / 2);
+        } else {
+          total[index] = playerTotal + score;
+        }
       }),
     );
 

@@ -19,14 +19,14 @@ import { Notification } from '@core/models';
     trigger('notificationAnimation', [
       transition('void => *', [
         style({ opacity: '0', transform: 'translateX(400px)' }),
-        animate('300ms ease-in', style({ opacity: '1', transform: 'none' })),
+        animate('300ms ease-in-out', style({ opacity: '1', transform: 'none' })),
       ]),
 
       transition('* => void', [
         style({ height: '*', marginBottom: '*', opacity: '1', transform: 'none' }),
         sequence([
-          animate('300ms ease-out', style({ opacity: '0', transform: 'translateX(400px)' })),
-          animate('100ms ease-out', style({ height: '0', marginBottom: '0' })),
+          animate('300ms ease-in-out', style({ opacity: '0', transform: 'translateX(400px)' })),
+          animate('100ms ease-in-out', style({ height: '0', marginBottom: '0' })),
         ]),
       ]),
     ]),

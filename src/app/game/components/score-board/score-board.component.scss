@@ -37,6 +37,10 @@
     width: 40px;
     height: 25px;
 
+    &.placeholder {
+      background: $white08;
+    }
+
     &.total {
       width: 120px;
     }
@@ -56,6 +60,11 @@
   animation-iteration-count: infinite;
 }
 
+.active-placeholder {
+  animation: active-player-pulse-light 2s ease-in-out;
+  animation-iteration-count: infinite;
+}
+
 
 @keyframes active-player-pulse {
   0% {
@@ -66,5 +75,17 @@
   }
   100% {
     background: rgba($white, .4);
+  }
+}
+
+@keyframes active-player-pulse-light {
+  0% {
+    background: rgba($white, .2);
+  }
+  50% {
+    background: rgba($white, .08);
+  }
+  100% {
+    background: rgba($white, .2);
   }
 }

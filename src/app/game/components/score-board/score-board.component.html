@@ -17,13 +17,18 @@
     </div>
     <div class="score-columns">
       <div class="scores">
-        <div @slideIn *ngFor="let round of rounds" class="column score">
+        <div @slideIn *ngFor="let round of roundsPlaceHolder" class="column">
+          <div class="field placeholder"></div>
+          <div
+            *ngFor="let player of players; let playerIndex = index"
+            class="field placeholder"
+            [ngClass]="{ 'active-placeholder': playerIndex === currentTurn && !disableAnimation }"
+          ></div>
+        </div>
+        <div @slideIn *ngFor="let round of rounds" class="column">
           <div
             class="field header"
-            [ngClass]="{
-              active: round === currentRound && !disableAnimation,
-              sum: round === 'Total'
-            }"
+            [ngClass]="{ active: round === currentRound && !disableAnimation }"
           >
             <bdi>{{ gameConfig.shortRoundName(round) }}</bdi>
           </div>

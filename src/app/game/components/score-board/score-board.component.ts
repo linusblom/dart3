@@ -1,4 +1,4 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { GameConfig, GamePlayer, GameType, Player } from '@game/models';
@@ -24,8 +24,8 @@ const emptyGamePlayer: GamePlayer = {
   animations: [
     trigger('slideIn', [
       transition(':enter', [
-        style({ transform: 'translateX(100%)', 'margin-left': -50 }),
-        animate('300ms ease-in', style({ transform: 'none', 'margin-left': '*' })),
+        style({ transform: 'translateX(100%)', 'margin-left': -51 }),
+        animate('300ms ease-in-out', style({ transform: 'none', 'margin-left': '*' })),
       ]),
     ]),
   ],
@@ -40,6 +40,7 @@ export class ScoreBoardComponent implements OnChanges {
   @Input() gameConfig: GameConfig;
 
   rounds: number[] = [];
+  roundsPlaceHolder: number[] = [];
 
   GameType = GameType;
 
@@ -48,6 +49,8 @@ export class ScoreBoardComponent implements OnChanges {
       this.rounds = Array(currentRound.currentValue)
         .fill(0)
         .map((_, index) => index + 1);
+      this.roundsPlaceHolder =
+        currentRound.currentValue < 8 ? Array(8 - currentRound.currentValue).fill(0) : [];
     }
   }
 

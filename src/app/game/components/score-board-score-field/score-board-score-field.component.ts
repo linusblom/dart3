@@ -10,5 +10,5 @@ export class ScoreBoardScoreFieldComponent {
 
   @HostBinding('style.color')
   @Input()
-  color = 'red';
+  color = '#FFFFFF';
 }

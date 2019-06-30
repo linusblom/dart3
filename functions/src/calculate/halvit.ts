@@ -42,13 +42,39 @@ const checkRound = (scores: Score[], currentRound: number): number => {
   }
 };
 
-export const halveItCalculate = (round: Round, currentRound: number, total: number): Calculate => {
+const getRoundTotalScore = (score: number, currentTotal: number) => {
+  return score > 0
+    ? {
+        round: {
+          score,
+          scoreDisplay: `${score}`,
+          color: '#9ACB34',
+        },
+        total: currentTotal + score,
+        totalDisplay: `${currentTotal + score}`,
+      }
+    : {
+        round: {
+          score: 0,
+          scoreDisplay: '&#x2620;',
+          color: '#FFFFFF',
+        },
+        total: Math.ceil(currentTotal / 2),
+        totalDisplay: `${Math.ceil(currentTotal / 2)}`,
+      };
+};
+
+export const halveItCalculate = (
+  round: Round,
+  currentRound: number,
+  currentTotal: number,
+): Calculate => {
   const score = checkRound(round.scores, currentRound);
-  const newTotal = score === 0 ? Math.ceil(total / 2) : total + score;
+  const roundTotal = getRoundTotalScore(score, currentTotal);
 
   return {
-    round: { ...round, score, scoreDisplay: `${score}` },
-    total: newTotal,
-    totalDisplay: `${newTotal}`,
+    round: { ...round, ...roundTotal.round },
+    total: roundTotal.total,
+    totalDisplay: roundTotal.totalDisplay,
   };
 };

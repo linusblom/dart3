@@ -20,15 +20,20 @@ export enum GameType {
 
 export interface GamePlayer {
   id: string;
-  total: string;
+  total: number;
+  totalDisplay: string;
   currentRound: number;
   out: boolean;
   rounds: {
-    [key: string]: {
-      scores: Score[];
-      display: string;
-    };
+    [key: string]: Round;
   };
+}
+
+export interface Round {
+  scores: Score[];
+  score: number;
+  scoreDisplay: string;
+  color: string;
 }
 
 export interface GameConfigMap {

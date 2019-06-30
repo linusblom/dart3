@@ -39,7 +39,10 @@
               active: (playerIndex === currentTurn || round === currentRound) && !disableAnimation
             }"
           >
-            {{ getGamePlayerRound(player.id, round).display }}
+            <app-score-board-score-field
+              [display]="getGamePlayerRound(player.id, round).scoreDisplay"
+              [color]="getGamePlayerRound(player.id, round).color"
+            ></app-score-board-score-field>
           </div>
         </div>
       </div>
@@ -51,7 +54,7 @@
         class="field total"
         [ngClass]="{ active: index === currentTurn && !disableAnimation }"
       >
-        {{ getGamePlayer(player.id).total }}
+        {{ getGamePlayer(player.id).totalDisplay }}
       </div>
     </div>
   </div>

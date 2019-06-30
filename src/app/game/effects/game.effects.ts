@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { from } from 'rxjs';
@@ -14,7 +13,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AccountActions, NotificationActions } from '@core/actions';
+import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GamePlayer } from '@game/models';
@@ -123,6 +122,5 @@ export class GameEffects {
     private readonly actions$: Actions,
     private readonly service: GameService,
     private readonly store: Store<State>,
-    private readonly router: Router,
   ) {}
 }

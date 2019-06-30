@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GamePlayer, GameType, Score, ScoreBoard } from '@game/models';
+import { Game, GamePlayer, GameType, Score } from '@game/models';
 
 export const updateGame = createAction('[Game] Update Game', props<{ data: Partial<Game> }>());
 export const updateGameSuccess = createAction('[Game] Update Game Success');

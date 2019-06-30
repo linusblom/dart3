@@ -43,7 +43,13 @@ export class GameService {
       .doc(gameId)
       .collection('players')
       .doc(playerId)
-      .set({ currentRound: round, rounds: { [round]: { display: '', scores } } }, { merge: true });
+      .set(
+        {
+          currentRound: round,
+          rounds: { [round]: { score: 0, scoreDisplay: ':loader:', color: '#FFFFFF', scores } },
+        },
+        { merge: true },
+      );
   }
 
   listenGamePlayers(gameId: string) {

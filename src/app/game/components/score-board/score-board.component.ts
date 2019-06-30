@@ -5,13 +5,16 @@ import { GameConfig, GamePlayer, GameType, Player } from '@game/models';
 
 const emptyGamePlayer: GamePlayer = {
   id: '',
-  total: '',
+  total: 0,
+  totalDisplay: '',
   currentRound: 0,
   out: false,
   rounds: {
     '1': {
-      display: '',
       scores: [],
+      score: 0,
+      scoreDisplay: '',
+      color: '#FFFFFF',
     },
   },
 };
@@ -60,6 +63,6 @@ export class ScoreBoardComponent implements OnChanges {
 
   getGamePlayerRound(playerId: string, round: number) {
     const gamePlayer = this.getGamePlayer(playerId);
-    return gamePlayer[`${round}`] || emptyGamePlayer.rounds['1'];
+    return gamePlayer.rounds[`${round}`] || emptyGamePlayer.rounds['1'];
   }
 }

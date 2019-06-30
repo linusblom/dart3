@@ -1,12 +1,10 @@
 import * as functions from 'firebase-functions';
-import { initGamePlayer } from '../utils/initGamePlayer';
+import { makeGamePlayer } from '../models/game';
 
 export const onCreate = functions.firestore
   .document('/accounts/{accountId}/games/{gameId}')
   .onCreate(async snapshot => {
-    const playerOrder = snapshot.get('playerOrder');
-    const bet = snapshot.get('bet');
-    const type = snapshot.get('type');
+    const { bet, type, playerOrder } = snapshot.data()!;
     const accountRef = snapshot.ref.parent.parent!;
     const playersRef = snapshot.ref.parent.parent!.collection('players');
 
@@ -34,9 +32,7 @@ export const onCreate = functions.firestore
             type: 'bet',
           });
 
-          transaction.create(snapshot.ref.collection('players').doc(id), {
-            ...initGamePlayer[type],
-          });
+          transaction.create(snapshot.ref.collection('players').doc(id), makeGamePlayer(type));
 
           return Promise.resolve();
         }),

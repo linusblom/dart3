@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GameType, Round, Score, ScoreBoard } from '@game/models';
+import { Game, GamePlayer, GameType, Score, ScoreBoard } from '@game/models';
 
 export const updateGame = createAction('[Game] Update Game', props<{ data: Partial<Game> }>());
 export const updateGameSuccess = createAction('[Game] Update Game Success');
@@ -28,39 +28,27 @@ export const loadGameFailure = createAction(
 );
 export const loadGameDestroy = createAction('[Game] Load Game Destroy');
 
-export const loadRound = createAction('[Game] Load Round', props<{ gameId: string }>());
-export const loadRoundSuccess = createAction(
-  '[Game] Load Round Success',
-  props<{ rounds: Round[] }>(),
+export const loadGamePlayers = createAction(
+  '[Game] Load Game Players',
+  props<{ gameId: string }>(),
 );
-export const loadRoundFailure = createAction(
-  '[Game] Load Round Failure',
+export const loadGamePlayersSuccess = createAction(
+  '[Game] Load Game Players Success',
+  props<{ players: GamePlayer[] }>(),
+);
+export const loadGamePlayersFailure = createAction(
+  '[Game] Load Game Players Failure',
   props<{ error: HttpErrorResponse }>(),
 );
-export const loadRoundDestroy = createAction('[Game] Load Round Destroy');
+export const loadGamePlayersDestroy = createAction('[Game] Load Game Players Destroy');
 
 export const endTurn = createAction(
   '[Game] End Turn',
-  props<{ gameId: string; turn: number; round: number; scores: Score[] }>(),
+  props<{ gameId: string; scores: Score[] }>(),
 );
-export const endTurnSuccess = createAction('[Game] End Turn Success', props<{ gameId: string }>());
+export const endTurnSuccess = createAction('[Game] End Turn Success');
 export const endTurnFailure = createAction(
   '[Game] End Turn Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
-
-export const updateScoreBoard = createAction(
-  '[Game] Update ScoreBoard',
-  props<{ scoreboard: ScoreBoard }>(),
-);
-
-export const createRound = createAction(
-  '[Game] Create Round',
-  props<{ gameId: string; round: number; playerCount: number }>(),
-);
-export const createRoundSuccess = createAction('[Game] Create Round Success');
-export const createRoundFailure = createAction(
-  '[Game] Create Round Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

@@ -63,15 +63,15 @@ export const getLoadingGame = createSelector(
   getCurrentGame,
   fromCurrentGame.getLoadingGame,
 );
-export const getLoadingRounds = createSelector(
+export const getLoadingGamePlayers = createSelector(
   getCurrentGame,
-  fromCurrentGame.getLoadingRounds,
+  fromCurrentGame.getLoadingPlayers,
 );
 export const getGamePlayers = createSelector(
   getAllPlayers,
   getGame,
-  (players, game) =>
+  (players, { playerOrder }) =>
     players
-      .filter(player => game.players.includes(player.id))
-      .sort((a, b) => game.players.indexOf(a.id) - game.players.indexOf(b.id)),
+      .filter(player => playerOrder.includes(player.id))
+      .sort((a, b) => playerOrder.indexOf(a.id) - playerOrder.indexOf(b.id)),
 );

@@ -10,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { components } from './components';
 import { BoxModule } from './modules/box/box.module';
+import { pipes } from './pipes';
 
 const materialComponents = [
   MatButtonModule,
@@ -22,7 +23,7 @@ const materialComponents = [
 
 @NgModule({
   imports: [BoxModule, CommonModule, FontAwesomeModule, ...materialComponents],
-  exports: [BoxModule, ...materialComponents, ...components],
-  declarations: [...components],
+  exports: [BoxModule, ...materialComponents, ...components, ...pipes],
+  declarations: [...components, ...pipes],
 })
 export class SharedModule {}

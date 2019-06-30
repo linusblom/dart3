@@ -1,53 +1,55 @@
 import * as functions from 'firebase-functions';
+import { initGamePlayer } from '../utils/initGamePlayer';
 
 export const onCreate = functions.firestore
   .document('/accounts/{accountId}/games/{gameId}')
-  .onCreate(async (snapshot, context) => {
-    const players = snapshot.get('players');
+  .onCreate(async snapshot => {
+    const playerOrder = snapshot.get('playerOrder');
     const bet = snapshot.get('bet');
     const type = snapshot.get('type');
-    const { accountId } = context.params;
-    const { firestore } = snapshot.ref;
-    const accountRef = firestore.collection('accounts').doc(accountId);
-    const playersRef = firestore
-      .collection('accounts')
-      .doc(accountId)
-      .collection('players');
+    const accountRef = snapshot.ref.parent.parent!;
+    const playersRef = snapshot.ref.parent.parent!.collection('players');
 
-    return firestore.runTransaction(async transaction => {
-      const playerRefs = players.map((playerId: string) => playersRef.doc(playerId));
-      const allPlayers = await transaction.getAll(playerRefs);
+    return snapshot.ref.firestore.runTransaction(async transaction => {
+      await Promise.all(
+        playerOrder.map(async (id: string) => {
+          const player = await playersRef.doc(id).get();
+          const { credits, turnover, net } = player.data()!;
 
-      allPlayers.forEach(async player => {
-        const { credits, turnover, net } = player.data()!;
+          if (credits < bet) {
+            await snapshot.ref.delete();
+            throw new Error('Unable to create new game');
+          }
 
-        if (credits < bet) {
-          await snapshot.ref.delete();
-          throw new Error('Unable to create new game');
-        }
+          transaction.update(player.ref, {
+            credits: credits - bet,
+            turnover: turnover + bet,
+            net: net - bet,
+          });
 
-        transaction.update(player.ref, {
-          credits: credits - bet,
-          turnover: turnover + bet,
-          net: net - bet,
-        });
+          transaction.create(player.ref.collection('transactions').doc(), {
+            amount: bet * -1,
+            balance: credits - bet,
+            timestamp: Date.now(),
+            type: 'bet',
+          });
 
-        transaction.create(player.ref.collection('transactions').doc(), {
-          amount: bet * -1,
-          balance: credits - bet,
-          timestamp: Date.now(),
-          type: 'bet',
-        });
-      });
+          transaction.create(snapshot.ref.collection('players').doc(id), {
+            ...initGamePlayer[type],
+          });
 
-      const prizePool = bet * players.length;
+          return Promise.resolve();
+        }),
+      );
+
+      const prizePool = bet * playerOrder.length;
       const data = {
         started: Date.now(),
         ended: 0,
-        players: players.sort(() => Math.random() - 0.5),
+        playerOrder: playerOrder.sort(() => Math.random() - 0.5),
         prizePool: prizePool * 0.9,
         currentTurn: 0,
-        currentRound: 0,
+        currentRound: 1,
       };
 
       const account = await accountRef.get();
@@ -58,16 +60,11 @@ export const onCreate = functions.firestore
         throw new Error('Unable to create new game');
       }
 
-      const roundData = Array(players.length)
-        .fill(Array(3).fill({ score: -1, multiplier: 0 }))
-        .reduce((scores, initialScores, index) => ({ ...scores, [index]: initialScores }), {});
-
       transaction.update(accountRef, {
         currentGame: snapshot.id,
         jackpot: jackpot + prizePool * 0.08,
         hiddenJackpot: hiddenJackpot + prizePool * 0.02,
       });
-      transaction.create(snapshot.ref.collection('rounds').doc('0'), roundData);
       transaction.update(snapshot.ref, data);
     });
   });

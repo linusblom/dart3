@@ -15,37 +15,38 @@
         ></app-avatar>
       </div>
     </div>
-    <div class="wrapper">
-      <div *ngFor="let round of halveItRounds; let roundIndex = index" class="column">
-        <div
-          class="field header"
-          [ngClass]="{
-            active: roundIndex === currentRound && !disableAnimation,
-            sum: round === 'Total'
-          }"
-        >
-          {{ round }}
-        </div>
-        <div
-          *ngFor="let player of players; let playerIndex = index"
-          class="field"
-          [ngClass]="{
-            active:
-              (playerIndex === currentTurn || roundIndex === currentRound) && !disableAnimation
-          }"
-        >
-          {{ getPlayerRoundScore(roundIndex, playerIndex) }}
+    <div class="score-columns">
+      <div class="scores">
+        <div @slideIn *ngFor="let round of rounds" class="column score">
+          <div
+            class="field header"
+            [ngClass]="{
+              active: round === currentRound && !disableAnimation,
+              sum: round === 'Total'
+            }"
+          >
+            <bdi>{{ gameConfig.shortRoundName(round) }}</bdi>
+          </div>
+          <div
+            *ngFor="let player of players; let playerIndex = index"
+            class="field"
+            [ngClass]="{
+              active: (playerIndex === currentTurn || round === currentRound) && !disableAnimation
+            }"
+          >
+            {{ getGamePlayerRound(player.id, round).display }}
+          </div>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="field total">{{ scoreboard.totalText || 'Total' }}</div>
+      <div class="field total">Total</div>
       <div
         *ngFor="let player of players; let index = index"
         class="field total"
         [ngClass]="{ active: index === currentTurn && !disableAnimation }"
       >
-        {{ scoreboard.total[index] }}
+        {{ getGamePlayer(player.id).total }}
       </div>
     </div>
   </div>

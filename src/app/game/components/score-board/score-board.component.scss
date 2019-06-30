@@ -4,6 +4,20 @@
   display: flex;
 }
 
+.score-columns {
+  display: flex;
+  position: relative;
+  width: 357px;
+  overflow: hidden;
+
+  .scores {
+    overflow-x: hidden;
+    position: absolute;
+    right: 0;
+    display: flex;
+  }
+}
+
 .column {
   display: flex;
   font-size: 20px;

@@ -5,13 +5,14 @@ import { combineLatest, interval, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { GameType, Player, Score } from '@game/models';
+import { config } from '@game/game.config';
+import { Player, Score } from '@game/models';
 import {
   getGame,
   getGamePlayers,
   getLoadingGame,
+  getLoadingGamePlayers,
   getLoadingPlayers,
-  getLoadingRounds,
   State,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
@@ -37,16 +38,16 @@ export class GameBoardComponent implements OnDestroy {
     this.gameId = this.route.snapshot.params.gameId;
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
-    this.store.dispatch(GameActions.loadRound({ gameId: this.gameId }));
+    this.store.dispatch(GameActions.loadGamePlayers({ gameId: this.gameId }));
 
     combineLatest([
       this.store.select(getLoadingAccount),
       this.store.select(getLoadingPlayers),
       this.store.select(getLoadingGame),
-      this.store.select(getLoadingRounds),
+      this.store.select(getLoadingGamePlayers),
     ])
       .pipe(
-        map(([account, players, game, rounds]) => account || players || game || rounds),
+        map(([account, players, game, gamePlayers]) => account || players || game || gamePlayers),
         takeUntil(this.destroy$),
       )
       .subscribe(loading => (this.loading = loading));
@@ -70,15 +71,15 @@ export class GameBoardComponent implements OnDestroy {
     return this.players[this.game.currentTurn] || ({} as Player);
   }
 
+  get gameConfig() {
+    return config[this.game.type] || config.default;
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
-    this.store.dispatch(GameActions.loadRoundDestroy());
-  }
-
-  get roundText() {
-    return this.game.scoreboard.roundText[this.game.currentRound];
+    this.store.dispatch(GameActions.loadGamePlayersDestroy());
   }
 
   updateScores(scores: Score[]) {
@@ -102,11 +103,10 @@ export class GameBoardComponent implements OnDestroy {
   endRound() {
     const zeroScores = Array(3).fill({ score: 0, multiplier: 0 });
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
-    const { currentRound: round, currentTurn: turn } = this.game;
 
     this.abortAutoEndTurn$.next();
     this.countDown = -1;
-    this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, turn, round, scores }));
+    this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, scores }));
     this.scores = [];
   }
 

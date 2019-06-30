@@ -14,7 +14,7 @@ export class GameService {
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
-      .add({ type, bet, players });
+      .add({ type, bet, playerOrder: players });
   }
 
   listen(gameId: string) {
@@ -35,39 +35,24 @@ export class GameService {
       .update(data);
   }
 
-  createRound(gameId: string, round: number, playerCount: number) {
-    const data = Array(playerCount)
-      .fill(Array(3).fill({ score: -1, multiplier: 0 }))
-      .reduce((scores, initialScores, index) => ({ ...scores, [index]: initialScores }), {});
-
+  updateGamePlayersScores(gameId: string, round: number, playerId: string, scores: Score[]) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
       .doc(gameId)
-      .collection('rounds')
-      .doc(`${round}`)
-      .set(data);
+      .collection('players')
+      .doc(playerId)
+      .set({ currentRound: round, rounds: { [round]: { display: '', scores } } }, { merge: true });
   }
 
-  updateRound(gameId: string, turn: number, round: number, scores: Score[]) {
+  listenGamePlayers(gameId: string) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
       .doc(gameId)
-      .collection('rounds')
-      .doc(`${round}`)
-      .set({ [turn]: scores }, { merge: true });
-  }
-
-  listenRounds(gameId: string) {
-    return this.db
-      .collection('accounts')
-      .doc(this.auth.auth.currentUser.uid)
-      .collection('games')
-      .doc(gameId)
-      .collection('rounds')
+      .collection('players')
       .snapshotChanges()
       .pipe(
         map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),

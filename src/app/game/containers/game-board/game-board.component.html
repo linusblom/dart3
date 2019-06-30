@@ -7,19 +7,20 @@
   ></app-dart-board>
   <div class="side-board">
     <app-score-board
-      [scoreboard]="game.scoreboard"
+      [gamePlayers]="game.players"
       [players]="players"
       [currentTurn]="game.currentTurn"
       [type]="game.type"
       [currentRound]="game.currentRound"
       [disableAnimation]="loading || !!game.ended"
+      [gameConfig]="gameConfig"
     ></app-score-board>
     <app-current-player
       [player]="currentPlayer"
       [scores]="scores"
       [disableEndTurn]="loading || !!game.ended"
       [autoEndTurn]="countDown"
-      [roundText]="roundText"
+      [roundText]="gameConfig.longRoundName(game.currentRound)"
       (endRound)="endRound()"
       (abortAutoEndTurn)="abortAutoEndTurn()"
     ></app-current-player>

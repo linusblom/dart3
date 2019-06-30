@@ -10,7 +10,7 @@
         <mat-button-toggle
           *ngFor="let game of availableGames"
           [value]="game.type"
-          [disabled]="!allowedGames.includes(game.type)"
+          [disabled]="!allowedGames.includes(game.type) || loading"
         >
           {{ game.name }}
         </mat-button-toggle>
@@ -25,7 +25,7 @@
         <mat-button-toggle
           *ngFor="let bet of availableBets"
           [value]="bet"
-          [disabled]="!allowedBets.includes(bet)"
+          [disabled]="!allowedBets.includes(bet) || loading"
         >
           {{ bet }}
         </mat-button-toggle>
@@ -40,7 +40,7 @@
       (click)="togglePlayers(player)"
       [ngClass]="{
         selected: selectedPlayerIds.includes(player.id),
-        disabled: bet > player.credits
+        disabled: bet > player.credits || loading
       }"
     >
       <fa-icon

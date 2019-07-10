@@ -9,6 +9,7 @@ export interface GamePlayer {
   totalDisplay: string;
   currentRound: number;
   out: boolean;
+  xp: number;
   rounds: {
     [key: string]: Round;
   };
@@ -32,7 +33,7 @@ export interface Calculate {
   totalDisplay: string;
 }
 
-export const makeGamePlayer = (type: GameType): GamePlayer => {
+export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
   switch (type) {
     default:
       return {
@@ -40,6 +41,7 @@ export const makeGamePlayer = (type: GameType): GamePlayer => {
         totalDisplay: '0',
         currentRound: 0,
         out: false,
+        xp: bet * 10,
         rounds: {},
       };
   }

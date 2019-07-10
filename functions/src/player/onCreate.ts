@@ -19,8 +19,6 @@ export const onCreate = functions.firestore
       misses: 0,
       highest: 0,
       oneHundredEighties: 0,
-      halveIt: 0,
-      legs: 0,
       turnover: 0,
       net: 0,
     };

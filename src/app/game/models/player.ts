@@ -16,8 +16,6 @@ export interface Player {
   misses: number;
   highest: number;
   oneHundredEighties: number;
-  halveIt: number;
-  legs: number;
   turnover: number;
   net: number;
   transactions: Transaction[];

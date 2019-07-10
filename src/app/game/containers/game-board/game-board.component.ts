@@ -73,10 +73,8 @@ export class GameBoardComponent implements OnDestroy {
           this.scores = [];
         }
 
-        console.log(game);
-
         if (game.ended > 0) {
-          this.endGame();
+          this.navigateToResults();
         }
 
         this.game = game;
@@ -98,7 +96,7 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadGamePlayersDestroy());
   }
 
-  endGame() {
+  navigateToResults() {
     timer(5000)
       .pipe(take(1))
       .subscribe(() => this.router.navigate(['results', this.gameId]));

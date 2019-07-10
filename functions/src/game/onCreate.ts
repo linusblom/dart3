@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+
 import { makeGamePlayer } from '../models/game';
 
 export const onCreate = functions.firestore
@@ -12,7 +13,7 @@ export const onCreate = functions.firestore
       await Promise.all(
         playerOrder.map(async (id: string) => {
           const player = await playersRef.doc(id).get();
-          const { credits, turnover, net } = player.data()!;
+          const { credits, turnover, net, played, xp } = player.data()!;
 
           if (credits < bet) {
             await snapshot.ref.delete();
@@ -20,7 +21,9 @@ export const onCreate = functions.firestore
           }
 
           transaction.update(player.ref, {
+            xp: xp + bet * 10,
             credits: credits - bet,
+            played: played + 1,
             turnover: turnover + bet,
             net: net - bet,
           });
@@ -32,7 +35,7 @@ export const onCreate = functions.firestore
             type: 'bet',
           });
 
-          transaction.create(snapshot.ref.collection('players').doc(id), makeGamePlayer(type));
+          transaction.create(snapshot.ref.collection('players').doc(id), makeGamePlayer(type, bet));
 
           return Promise.resolve();
         }),

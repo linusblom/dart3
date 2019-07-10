@@ -68,23 +68,6 @@ export class GameEffects {
     ),
   );
 
-  changeCurrentTurn$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(GameActions.endTurnSuccess),
-      withLatestFrom(this.store.pipe(select(getGame))),
-      map(([_, { currentRound, currentTurn, playerOrder }]) => {
-        currentTurn++;
-
-        if (currentTurn === playerOrder.length) {
-          currentTurn = 0;
-          currentRound++;
-        }
-
-        return GameActions.updateGame({ data: { currentRound, currentTurn } });
-      }),
-    ),
-  );
-
   endTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.endTurn),

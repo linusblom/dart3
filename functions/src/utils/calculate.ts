@@ -1,5 +1,5 @@
 import { Score, Round, GameType, Calculate } from '../models/game';
-import { halveItCalculate } from './halvit';
+import { halveItCalculate } from './calculateHalvit';
 
 export const calculate = (
   type: GameType,

@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, interval, Subject } from 'rxjs';
-import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { combineLatest, interval, Subject, timer } from 'rxjs';
+import { filter, map, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
 import { config } from '@game/game.config';
@@ -34,7 +34,11 @@ export class GameBoardComponent implements OnDestroy {
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
+  constructor(
+    private readonly store: Store<State>,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+  ) {
     this.gameId = this.route.snapshot.params.gameId;
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
@@ -47,8 +51,8 @@ export class GameBoardComponent implements OnDestroy {
       this.store.select(getLoadingGamePlayers),
     ])
       .pipe(
-        map(([account, players, game, gamePlayers]) => account || players || game || gamePlayers),
         takeUntil(this.destroy$),
+        map(([account, players, game, gamePlayers]) => account || players || game || gamePlayers),
       )
       .subscribe(loading => (this.loading = loading));
 
@@ -64,7 +68,19 @@ export class GameBoardComponent implements OnDestroy {
         select(getGame),
         takeUntil(this.destroy$),
       )
-      .subscribe(game => (this.game = game));
+      .subscribe(game => {
+        if (game.currentTurn !== this.game.currentTurn) {
+          this.scores = [];
+        }
+
+        console.log(game);
+
+        if (game.ended > 0) {
+          this.endGame();
+        }
+
+        this.game = game;
+      });
   }
 
   get currentPlayer() {
@@ -80,6 +96,12 @@ export class GameBoardComponent implements OnDestroy {
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
     this.store.dispatch(GameActions.loadGamePlayersDestroy());
+  }
+
+  endGame() {
+    timer(5000)
+      .pipe(take(1))
+      .subscribe(() => this.router.navigate(['results', this.gameId]));
   }
 
   updateScores(scores: Score[]) {
@@ -104,10 +126,8 @@ export class GameBoardComponent implements OnDestroy {
     const zeroScores = Array(3).fill({ score: 0, multiplier: 0 });
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
 
-    this.abortAutoEndTurn$.next();
-    this.countDown = -1;
+    this.abortAutoEndTurn();
     this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, scores }));
-    this.scores = [];
   }
 
   abortAutoEndTurn() {

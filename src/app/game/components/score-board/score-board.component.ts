@@ -3,22 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 
 import { GameConfig, GamePlayer, GameType, Player } from '@game/models';
 
-const emptyGamePlayer: GamePlayer = {
-  id: '',
-  total: 0,
-  totalDisplay: '',
-  currentRound: 0,
-  out: false,
-  rounds: {
-    '1': {
-      scores: [],
-      score: 0,
-      scoreDisplay: '',
-      color: '#FFFFFF',
-    },
-  },
-};
-
 @Component({
   selector: 'app-score-board',
   templateUrl: './score-board.component.html',
@@ -41,6 +25,7 @@ export class ScoreBoardComponent implements OnChanges {
   @Input() disableAnimation = false;
   @Input() currentRound = 0;
   @Input() gameConfig: GameConfig;
+  @Input() fullWidth = false;
 
   rounds: number[] = [];
   roundsPlaceHolder: number[] = [];
@@ -58,11 +43,11 @@ export class ScoreBoardComponent implements OnChanges {
   }
 
   getGamePlayer(playerId: string) {
-    return this.gamePlayers.find(({ id }) => id === playerId) || emptyGamePlayer;
+    return this.gamePlayers.find(({ id }) => id === playerId);
   }
 
   getGamePlayerRound(playerId: string, round: number) {
     const gamePlayer = this.getGamePlayer(playerId);
-    return gamePlayer.rounds[`${round}`] || emptyGamePlayer.rounds['1'];
+    return gamePlayer && gamePlayer.rounds[`${round}`];
   }
 }

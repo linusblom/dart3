@@ -4,7 +4,7 @@
       <div class="field"></div>
       <div
         *ngFor="let player of players; let index = index"
-        class="field"
+        class="field avatar"
         [ngClass]="{ active: index === currentTurn && !disableAnimation }"
       >
         <app-avatar
@@ -15,7 +15,7 @@
         ></app-avatar>
       </div>
     </div>
-    <div class="score-columns">
+    <div class="score-columns" [ngClass]="{ 'full-width': fullWidth }">
       <div class="scores">
         <div @slideIn *ngFor="let round of roundsPlaceHolder" class="column">
           <div class="field placeholder"></div>
@@ -40,21 +40,25 @@
             }"
           >
             <app-score-board-score-field
-              [display]="getGamePlayerRound(player.id, round).scoreDisplay"
-              [color]="getGamePlayerRound(player.id, round).color"
+              *ngIf="getGamePlayerRound(player.id, round); let gamePlayerRound"
+              [display]="gamePlayerRound.scoreDisplay"
+              [color]="gamePlayerRound.color"
             ></app-score-board-score-field>
           </div>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="field total">Total</div>
+      <div class="field total header">Total</div>
       <div
         *ngFor="let player of players; let index = index"
         class="field total"
         [ngClass]="{ active: index === currentTurn && !disableAnimation }"
       >
-        {{ getGamePlayer(player.id).totalDisplay }}
+        <app-score-board-score-field
+          *ngIf="getGamePlayer(player.id); let gamePlayer"
+          [display]="gamePlayer.totalDisplay"
+        ></app-score-board-score-field>
       </div>
     </div>
   </div>

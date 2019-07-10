@@ -30,6 +30,7 @@ export const reducer = createReducer(
   on(GameActions.loadGameSuccess, (state, { game }) => ({ ...state, ...game, loadingGame: false })),
   on(GameActions.loadGameFailure, state => ({ ...state, loadingGame: false })),
   on(GameActions.endTurn, state => ({ ...state, loadingGame: true })),
+  on(GameActions.endTurnSuccess, state => ({ ...state, loadingPlayers: true })),
   on(GameActions.loadGamePlayers, state => ({ ...state, loadingPlayers: true })),
   on(GameActions.loadGamePlayersSuccess, (state, { players }) => ({
     ...state,

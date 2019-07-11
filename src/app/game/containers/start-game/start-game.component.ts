@@ -22,8 +22,6 @@ export class StartGameComponent implements OnDestroy {
   type = GameType.HALVEIT;
   bet = 0;
   selectedPlayerIds: string[] = [];
-  allowedGames: GameType[] = [];
-  allowedBets: number[] = [];
   loading = false;
   permissions: Permission[] = [];
 
@@ -64,8 +62,8 @@ export class StartGameComponent implements OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(({ type, bet, playerOrder }) => {
-        this.type = type || this.allowedGames[0];
-        this.bet = bet || this.allowedBets[0];
+        this.type = type;
+        this.bet = bet;
         this.selectedPlayerIds = playerOrder;
       });
 

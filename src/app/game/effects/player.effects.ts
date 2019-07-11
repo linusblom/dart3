@@ -91,6 +91,9 @@ export class PlayerEffects {
         this.service.listenTransactions(playerId).pipe(
           takeUntil(this.actions$.pipe(ofType(PlayerActions.loadTransactionsDestroy))),
           map((transactions: Transaction[]) =>
+            transactions.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1)),
+          ),
+          map((transactions: Transaction[]) =>
             PlayerActions.loadTransactionsSuccess({ transactions }),
           ),
           catchError(error => [PlayerActions.loadTransactionsFailure(error)]),

@@ -20,22 +20,22 @@ export function reducers(state: GameState | undefined, action: Action) {
   })(state, action);
 }
 
-export const getGameState = createFeatureSelector<State, GameState>('game');
+export const getGameModuleState = createFeatureSelector<State, GameState>('game');
 export const getGamePlayersState = createSelector(
-  getGameState,
+  getGameModuleState,
   state => state.player,
 );
 export const getLoadingPlayers = createSelector(
   getGamePlayersState,
-  fromPlayer.getLoadingPlayers,
+  state => state.loadingPlayers,
 );
 export const getLoadingCreatePlayer = createSelector(
   getGamePlayersState,
-  fromPlayer.getLoadingCreatePlayers,
+  state => state.loadingCreatePlayer,
 );
 export const getSelectedPlayerId = createSelector(
   getGamePlayersState,
-  fromPlayer.getSelectedPlayerId,
+  state => state.selectedPlayerId,
 );
 export const {
   selectIds: getPlayerIds,
@@ -52,20 +52,20 @@ export const getSelectedPlayer = createSelector(
 );
 
 export const getCurrentGame = createSelector(
-  getGameState,
+  getGameModuleState,
   state => state.currentGame,
 );
 export const getGame = createSelector(
   getCurrentGame,
-  fromCurrentGame.getGame,
+  state => state,
 );
 export const getLoadingGame = createSelector(
   getCurrentGame,
-  fromCurrentGame.getLoadingGame,
+  state => state.loadingGame,
 );
 export const getLoadingGamePlayers = createSelector(
   getCurrentGame,
-  fromCurrentGame.getLoadingPlayers,
+  state => state.loadingPlayers,
 );
 export const getGamePlayers = createSelector(
   getAllPlayers,

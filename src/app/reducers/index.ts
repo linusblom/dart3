@@ -28,11 +28,11 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
 export const getAuthLoading = createSelector(
   getAuthState,
-  fromAuth.getLoading,
+  state => state.loading,
 );
 export const getAuthUser = createSelector(
   getAuthState,
-  fromAuth.getUser,
+  state => state.user,
 );
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
@@ -43,15 +43,19 @@ export const { selectAll: getAllNotifications } = fromNotification.adapter.getSe
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const getMenuOpen = createSelector(
   getCoreState,
-  fromCore.getMenuOpen,
+  state => state.menuOpen,
 );
 
 export const getAccountState = createFeatureSelector<fromAccount.State>('account');
 export const getAccount = createSelector(
   getAccountState,
-  fromAccount.getAccount,
+  state => state,
 );
 export const getLoadingAccount = createSelector(
   getAccountState,
-  fromAccount.getLoadingAccount,
+  state => state.loading,
+);
+export const getPermissions = createSelector(
+  getAccountState,
+  state => state.permissions,
 );

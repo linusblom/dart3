@@ -39,7 +39,3 @@ export const reducer = createReducer(
     adapter.updateOne({ id: state.selectedPlayerId, changes: { transactions } }, state),
   ),
 );
-
-export const getLoadingPlayers = (state: State) => state.loadingPlayers;
-export const getLoadingCreatePlayers = (state: State) => state.loadingCreatePlayer;
-export const getSelectedPlayerId = (state: State) => state.selectedPlayerId;

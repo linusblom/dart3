@@ -52,9 +52,13 @@ export const onCreate = functions.firestore
       };
 
       const account = await accountRef.get();
-      const { jackpot, hiddenJackpot, currentGame, allowedGames, allowedBets } = account.data()!;
+      const { jackpot, hiddenJackpot, currentGame, permissions } = account.data()!;
 
-      if (currentGame || !allowedGames.includes(type) || !allowedBets.includes(bet)) {
+      if (
+        currentGame ||
+        !permissions.includes(`game:type:${type}`) ||
+        !permissions.includes(`game:bet:${bet}`)
+      ) {
         await snapshot.ref.delete();
         throw new Error('Unable to create new game');
       }

@@ -12,9 +12,8 @@ export const initalState: State = {
   jackpot: 0,
   hiddenJackpot: 0,
   currentGame: null,
-  allowedBets: [],
-  allowedGames: [],
   loading: false,
+  permissions: [],
 };
 
 export const reducer = createReducer(
@@ -27,6 +26,3 @@ export const reducer = createReducer(
   })),
   on(AccountActions.loadAccountFailure, AccountActions.loadAccountDestroy, () => initalState),
 );
-
-export const getAccount = (state: State) => state;
-export const getLoadingAccount = (state: State) => state.loading;

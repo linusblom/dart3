@@ -6,13 +6,11 @@ import { AuthActions } from '@core/actions';
 export interface State {
   loading: boolean;
   user: User;
-  account: Account;
 }
 
 export const initalState: State = {
   loading: false,
   user: null,
-  account: null,
 };
 
 export const reducer = createReducer(
@@ -29,6 +27,3 @@ export const reducer = createReducer(
     user: { ...state.user, displayName },
   })),
 );
-
-export const getLoading = (state: State) => state.loading;
-export const getUser = (state: State) => state.user;

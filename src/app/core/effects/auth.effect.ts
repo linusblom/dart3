@@ -6,12 +6,20 @@ import { select, Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { from } from 'rxjs';
-import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  exhaustMap,
+  filter,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { AccountActions, AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
-import { Status } from '@core/models';
-import { getAuthUser, State } from '@root/reducers';
+import { Permission, Status } from '@core/models';
+import { getAuthUser, getPermissions, State } from '@root/reducers';
 
 @Injectable()
 export class AuthEffects {
@@ -47,7 +55,9 @@ export class AuthEffects {
   updateProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.updateProfile),
-      concatMap(({ displayName }) =>
+      withLatestFrom(this.store.pipe(select(getPermissions))),
+      filter(([_, permissions]) => permissions.includes(Permission.CORE_ACCOUNT_WRITE)),
+      concatMap(([{ displayName }]) =>
         from(this.fireAuth.auth.currentUser.updateProfile({ displayName })).pipe(
           switchMap(() => [
             AuthActions.updateProfileSuccess({ displayName }),
@@ -71,9 +81,7 @@ export class AuthEffects {
       withLatestFrom(this.store.pipe(select(getAuthUser))),
       exhaustMap(([{ password, action }, { email }]) => {
         const credentials = firebase.auth.EmailAuthProvider.credential(email, password);
-        return from(
-          this.fireAuth.auth.currentUser.reauthenticateAndRetrieveDataWithCredential(credentials),
-        ).pipe(
+        return from(this.fireAuth.auth.currentUser.reauthenticateWithCredential(credentials)).pipe(
           switchMap(() => [AuthActions.reauthenticateSuccess(), action]),
           catchError(error => [
             AuthActions.reauthenticateFailure({ error }),
@@ -87,7 +95,9 @@ export class AuthEffects {
   updatePassword = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.updatePassword),
-      switchMap(({ newPassword }) =>
+      withLatestFrom(this.store.pipe(select(getPermissions))),
+      filter(([_, permissions]) => permissions.includes(Permission.CORE_PASSWORD_WRITE)),
+      switchMap(([{ newPassword }]) =>
         from(this.fireAuth.auth.currentUser.updatePassword(newPassword)).pipe(
           switchMap(() => [
             AuthActions.updatePasswordSuccess(),

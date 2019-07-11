@@ -39,7 +39,3 @@ export const reducer = createReducer(
   })),
   on(GameActions.loadGamePlayersFailure, state => ({ ...state, loadingPlayers: false })),
 );
-
-export const getGame = (state: State) => state;
-export const getLoadingGame = (state: State) => state.loadingGame;
-export const getLoadingPlayers = (state: State) => state.loadingPlayers;

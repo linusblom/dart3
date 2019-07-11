@@ -8,9 +8,9 @@
         (change)="updateGame({ type: $event.value })"
       >
         <mat-button-toggle
-          *ngFor="let game of availableGames"
+          *ngFor="let game of games"
           [value]="game.type"
-          [disabled]="!allowedGames.includes(game.type) || loading"
+          [disabled]="!hasPermission(game.permission) || loading"
         >
           {{ game.name }}
         </mat-button-toggle>
@@ -23,11 +23,11 @@
         (change)="changeBet($event.value)"
       >
         <mat-button-toggle
-          *ngFor="let bet of availableBets"
-          [value]="bet"
-          [disabled]="!allowedBets.includes(bet) || loading"
+          *ngFor="let bet of bets"
+          [value]="bet.value"
+          [disabled]="!hasPermission(bet.permission) || loading"
         >
-          {{ bet }}
+          {{ bet.value }}
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

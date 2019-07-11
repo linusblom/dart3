@@ -1,11 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
-import { getAuthLoading, getAuthUser, State } from '@root/reducers';
+import { Permission } from '@core/models';
+import { getAuthLoading, getAuthUser, getPermissions, State } from '@root/reducers';
 
 @Component({
   selector: 'app-settings',
@@ -13,7 +15,12 @@ import { getAuthLoading, getAuthUser, State } from '@root/reducers';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnDestroy {
+  Permission = Permission;
+
   loading$: Observable<boolean>;
+
+  permissions: Permission[] = [];
+  noPermissionIcon = faTimesCircle;
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
     {
@@ -39,11 +46,22 @@ export class SettingsComponent implements OnDestroy {
         filter(user => !!user),
       )
       .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
+
+    store
+      .pipe(
+        select(getPermissions),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(permissions => (this.permissions = permissions));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  hasPermission(permission: Permission) {
+    return this.permissions.includes(permission);
   }
 
   onChangeDisplayName() {

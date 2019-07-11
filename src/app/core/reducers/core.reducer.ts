@@ -15,5 +15,3 @@ export const reducer = createReducer(
   on(CoreActions.openMenu, state => ({ ...state, menuOpen: true })),
   on(CoreActions.closeMenu, state => ({ ...state, menuOpen: false })),
 );
-
-export const getMenuOpen = (state: State) => state.menuOpen;

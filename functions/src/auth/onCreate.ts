@@ -9,8 +9,17 @@ export const onCreate = functions.auth.user().onCreate(event => {
     jackpot: 0,
     hiddenJackpot: 0,
     currentGame: null,
-    allowedBets: [10, 20, 50, 100, 200, 500],
-    allowedGames: ['halveit'],
+    permissions: [
+      'core:account:write',
+      'core:password:write',
+      'game:bet:10',
+      'game:bet:20',
+      'game:bet:50',
+      'game:bet:100',
+      'game:bet:200',
+      'game:bet:500',
+      'game:type:halveit',
+    ],
   };
 
   return db

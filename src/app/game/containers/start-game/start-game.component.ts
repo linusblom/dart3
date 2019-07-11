@@ -5,6 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameType, Player } from '@game/models';
 import { getAllPlayers, getGame, State } from '@game/reducers';
@@ -24,13 +25,25 @@ export class StartGameComponent implements OnDestroy {
   allowedGames: GameType[] = [];
   allowedBets: number[] = [];
   loading = false;
+  permissions: Permission[] = [];
 
-  availableGames: { type: GameType; name: string }[] = [
-    { type: GameType.HALVEIT, name: 'Halve it' },
-    { type: GameType.LEGS, name: 'Legs' },
-    { type: GameType.THREEHUNDREDONE, name: '301' },
+  games: { type: GameType; name: string; permission: string }[] = [
+    { type: GameType.HALVEIT, name: 'Halve it', permission: Permission.GAME_TYPE_HALVEIT },
+    { type: GameType.LEGS, name: 'Legs', permission: Permission.GAME_TYPE_LEGS },
+    {
+      type: GameType.THREEHUNDREDONE,
+      name: '301',
+      permission: Permission.GAME_TYPE_THREEHUNDREDONE,
+    },
   ];
-  availableBets: number[] = [10, 20, 50, 100, 200, 500];
+  bets: { value: number; permission: string }[] = [
+    { value: 10, permission: Permission.GAME_BET_10 },
+    { value: 20, permission: Permission.GAME_BET_20 },
+    { value: 50, permission: Permission.GAME_BET_50 },
+    { value: 100, permission: Permission.GAME_BET_100 },
+    { value: 200, permission: Permission.GAME_BET_200 },
+    { value: 500, permission: Permission.GAME_BET_500 },
+  ];
 
   selectedIcon = faCheckCircle;
   unselectedIcon = faCircle;
@@ -61,11 +74,8 @@ export class StartGameComponent implements OnDestroy {
         select(getAccount),
         takeUntil(this.destroy$),
       )
-      .subscribe(({ allowedBets, allowedGames, currentGame }) => {
-        this.allowedGames = allowedGames;
-        this.allowedBets = allowedBets;
-        this.type = allowedGames[0];
-        this.bet = allowedBets[0];
+      .subscribe(({ permissions, currentGame }) => {
+        this.permissions = permissions;
 
         if (currentGame) {
           this.router.navigate(['game', currentGame]);
@@ -76,6 +86,10 @@ export class StartGameComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  hasPermission(permission: Permission) {
+    return this.permissions.includes(permission);
   }
 
   updateGame(data: Partial<Game>) {

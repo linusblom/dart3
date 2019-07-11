@@ -19,7 +19,7 @@ import { GameActions } from '@game/actions';
 import { Game, GamePlayer } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
-import { getAccount } from '@root/app.reducer';
+import { getAccount } from '@root/reducers';
 
 @Injectable()
 export class GameEffects {

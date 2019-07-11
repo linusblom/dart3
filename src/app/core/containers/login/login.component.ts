@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { AuthActions } from '@core/actions';
-import { getAuthLoading, State } from '@root/app.reducer';
+import { getAuthLoading, State } from '@root/reducers';
 import { shareReplay } from 'rxjs/operators';
 
 @Component({

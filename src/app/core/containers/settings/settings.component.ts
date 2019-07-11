@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
-import { getAuthLoading, getAuthUser, State } from '@root/app.reducer';
+import { getAuthLoading, getAuthUser, State } from '@root/reducers';
 
 @Component({
   selector: 'app-settings',

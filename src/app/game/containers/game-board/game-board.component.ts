@@ -16,7 +16,7 @@ import {
   State,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
-import { getLoadingAccount } from '@root/app.reducer';
+import { getLoadingAccount } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',

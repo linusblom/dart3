@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { AuthActions } from '@core/actions';
-import { getMenuOpen, State } from '@root/app.reducer';
+import { getMenuOpen, State } from '@root/reducers';
 
 @Component({
   selector: 'app-menu',

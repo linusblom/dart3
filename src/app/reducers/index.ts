@@ -1,4 +1,5 @@
-import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { InjectionToken } from '@angular/core';
+import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
@@ -12,12 +13,17 @@ export interface State {
   account: fromAccount.State;
 }
 
-export const reducers: ActionReducerMap<State> = {
-  auth: fromAuth.reducer,
-  notification: fromNotification.reducer,
-  core: fromCore.reducer,
-  account: fromAccount.reducer,
-};
+export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>(
+  'Root reducers token',
+  {
+    factory: () => ({
+      auth: fromAuth.reducer,
+      notification: fromNotification.reducer,
+      core: fromCore.reducer,
+      account: fromAccount.reducer,
+    }),
+  },
+);
 
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
 export const getAuthLoading = createSelector(

@@ -17,8 +17,8 @@ import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { reducers } from './app.reducer';
 import { AppRoutingModule } from './app.routing';
+import { ROOT_REDUCERS } from './reducers';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +31,7 @@ import { AppRoutingModule } from './app.routing';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(ROOT_REDUCERS),
     EffectsModule.forRoot([AuthEffects, AccountEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',

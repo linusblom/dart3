@@ -1,5 +1,5 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromRoot from '@root/app.reducer';
+import * as fromRoot from '@root/reducers';
 
 import * as fromCurrentGame from './game.reducer';
 import * as fromPlayer from './player.reducer';

@@ -11,7 +11,7 @@ import { catchError, concatMap, exhaustMap, switchMap, tap, withLatestFrom } fro
 import { AccountActions, AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
-import { getAuthUser, State } from '@root/app.reducer';
+import { getAuthUser, State } from '@root/reducers';
 
 @Injectable()
 export class AuthEffects {

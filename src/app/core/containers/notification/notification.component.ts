@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { dismiss } from '@core/actions/notification.actions';
 import { Notification } from '@core/models';
-import { getAllNotifications, State } from '@root/app.reducer';
+import { getAllNotifications, State } from '@root/reducers';
 
 @Component({
   selector: 'app-notification',

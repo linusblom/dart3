@@ -2,13 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameType, Player } from '@game/models';
-import { getAllPlayers, getGame, State } from '@game/reducers';
+import { getAllPlayers, getGame, getLoadingPlayers, State } from '@game/reducers';
 import { getAccount } from '@root/reducers';
 
 @Component({
@@ -17,6 +17,8 @@ import { getAccount } from '@root/reducers';
   styleUrls: ['./start-game.component.scss'],
 })
 export class StartGameComponent implements OnDestroy {
+  loadingPlayers$: Observable<boolean>;
+
   players: Player[];
   GameType = GameType;
   type = GameType.HALVEIT;
@@ -49,6 +51,7 @@ export class StartGameComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
+    this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
     this.store
       .pipe(
         select(getAllPlayers),
@@ -123,5 +126,9 @@ export class StartGameComponent implements OnDestroy {
         players: this.selectedPlayerIds,
       }),
     );
+  }
+
+  navigateToPlayers() {
+    this.router.navigate(['players']);
   }
 }

@@ -10,7 +10,7 @@ import { BoxListItem } from '../box.models';
 })
 export class BoxListViewComponent {
   @Input() items: BoxListItem[] = [];
-  @Input() loading = false;
+  @Input() loading = true;
   @Input() selected = '';
   @Input() header = '';
 

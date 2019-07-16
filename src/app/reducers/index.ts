@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { Permission } from '@core/models';
 import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
@@ -59,3 +60,8 @@ export const getPermissions = createSelector(
   getAccountState,
   state => state.permissions,
 );
+export const hasPermission = (permission: Permission) =>
+  createSelector(
+    getAccountState,
+    state => state.permissions.includes(permission),
+  );

@@ -1,15 +1,18 @@
 <div class="header">{{ header }}</div>
 <div class="wrapper">
   <div class="list">
-    <div
-      *ngFor="let item of items"
-      class="list-item"
-      [ngClass]="{ disabled: item.disabled, selected: item.id === selected }"
-      (click)="selectId.emit(item.id)"
-    >
-      {{ item.value }}
-    </div>
-    <div class="list-filler"></div>
+    <mat-spinner *ngIf="loading; else list" diameter="50"></mat-spinner>
+    <ng-template #list>
+      <div
+        *ngFor="let item of items"
+        class="list-item"
+        [ngClass]="{ disabled: item.disabled, selected: item.id === selected }"
+        (click)="selectId.emit(item.id)"
+      >
+        {{ item.value }}
+      </div>
+      <div class="list-filler"></div>
+    </ng-template>
   </div>
   <div class="content">
     <div class="head">

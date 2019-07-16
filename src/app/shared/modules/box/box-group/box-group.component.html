@@ -1,4 +1,7 @@
 <div class="header">{{ header }}</div>
-<div class="content" [ngClass]="{ styled: styled }">
-  <ng-content></ng-content>
+<div class="content" [ngClass]="{ styled: styled || loading }">
+  <mat-spinner *ngIf="loading; else content" diameter="50"></mat-spinner>
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
 </div>

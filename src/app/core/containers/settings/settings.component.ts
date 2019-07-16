@@ -7,7 +7,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
 import { Permission } from '@core/models';
-import { getAuthLoading, getAuthUser, getPermissions, State } from '@root/reducers';
+import { getAuthLoading, getAuthUser, hasPermission, State } from '@root/reducers';
 
 @Component({
   selector: 'app-settings',
@@ -15,11 +15,10 @@ import { getAuthLoading, getAuthUser, getPermissions, State } from '@root/reduce
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnDestroy {
-  Permission = Permission;
-
   loading$: Observable<boolean>;
+  hasCorePasswordWrite$: Observable<boolean>;
+  hasCoreAccountWrite$: Observable<boolean>;
 
-  permissions: Permission[] = [];
   noPermissionIcon = faTimesCircle;
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
@@ -38,6 +37,8 @@ export class SettingsComponent implements OnDestroy {
 
   constructor(private readonly store: Store<State>) {
     this.loading$ = store.pipe(select(getAuthLoading));
+    this.hasCoreAccountWrite$ = store.pipe(select(hasPermission(Permission.CORE_ACCOUNT_WRITE)));
+    this.hasCorePasswordWrite$ = store.pipe(select(hasPermission(Permission.CORE_PASSWORD_WRITE)));
 
     store
       .pipe(
@@ -46,22 +47,11 @@ export class SettingsComponent implements OnDestroy {
         filter(user => !!user),
       )
       .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
-
-    store
-      .pipe(
-        select(getPermissions),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(permissions => (this.permissions = permissions));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-  }
-
-  hasPermission(permission: Permission) {
-    return this.permissions.includes(permission);
   }
 
   onChangeDisplayName() {

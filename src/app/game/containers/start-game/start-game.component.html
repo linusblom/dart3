@@ -33,35 +33,43 @@
     </div>
   </app-box-group>
 
-  <app-box-group header="Select players" [styled]="false" class="players">
-    <div
-      *ngFor="let player of players"
-      class="player"
-      (click)="togglePlayers(player)"
-      [ngClass]="{
-        selected: selectedPlayerIds.includes(player.id),
-        disabled: bet > player.credits || loading
-      }"
-    >
-      <fa-icon
-        [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
-        size="2x"
-      ></fa-icon>
-      <app-avatar
-        [avatarUrl]="player.avatarUrl"
-        [color]="player.color"
-        [name]="player.name"
-        size="60"
-      ></app-avatar>
-      <div class="name">
-        {{ player.name }}
+  <ng-container *ngIf="players.length > 0; else createPlayer">
+    <app-box-group header="Select players" [styled]="false" class="players">
+      <div
+        *ngFor="let player of players"
+        class="player"
+        (click)="togglePlayers(player)"
+        [ngClass]="{
+          selected: selectedPlayerIds.includes(player.id),
+          disabled: bet > player.credits || loading
+        }"
+      >
+        <fa-icon
+          [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
+          size="2x"
+        ></fa-icon>
+        <app-avatar
+          [avatarUrl]="player.avatarUrl"
+          [color]="player.color"
+          [name]="player.name"
+          size="60"
+        ></app-avatar>
+        <div class="name">
+          {{ player.name }}
+        </div>
       </div>
-    </div>
-  </app-box-group>
-  <app-box-buttons
-    rightText="Lets play"
-    [rightDisabled]="selectedPlayerIds.length < 2 || !bet || !type"
-    [rightLoading]="loading"
-    (rightClick)="createGame()"
-  ></app-box-buttons>
+    </app-box-group>
+    <app-box-buttons
+      rightText="Lets play"
+      [rightDisabled]="selectedPlayerIds.length < 2 || !bet || !type"
+      [rightLoading]="loading"
+      (rightClick)="createGame()"
+    ></app-box-buttons>
+  </ng-container>
+  <ng-template #createPlayer>
+    <app-box-group header="Select players" [loading]="loadingPlayers$ | async">
+      There are no players, click below to create one.
+    </app-box-group>
+    <app-box-buttons rightText="Create player" (rightClick)="navigateToPlayers()"></app-box-buttons>
+  </ng-template>
 </app-box>

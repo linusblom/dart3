@@ -1,6 +1,6 @@
 <app-box header="Settings">
   <app-box-group header="Account name">
-    <ng-container *ngIf="hasPermission(Permission.CORE_ACCOUNT_WRITE); else noPermission">
+    <ng-container *ngIf="hasCoreAccountWrite$ | async; else noPermission">
       <mat-form-field>
         <input
           matInput
@@ -13,7 +13,7 @@
   </app-box-group>
 
   <app-box-group header="Password">
-    <ng-container *ngIf="hasPermission(Permission.CORE_PASSWORD_WRITE); else noPermission">
+    <ng-container *ngIf="hasCorePasswordWrite$ | async; else noPermission">
       <div class="password-form" [formGroup]="passwordForm">
         <mat-form-field>
           <input

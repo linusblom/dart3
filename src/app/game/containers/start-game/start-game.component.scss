@@ -2,7 +2,24 @@
 
 .settings {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  min-height: 120px;
+
+  .bet {
+    align-self: flex-end;
+  }
+}
+
+.no-players {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: $white30;
+  
+  fa-icon {
+    margin-right: 10px;
+  }
 }
 
 .player {

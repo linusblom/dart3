@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
+import { faUserTimes } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -47,6 +48,7 @@ export class StartGameComponent implements OnDestroy {
 
   selectedIcon = faCheckCircle;
   unselectedIcon = faCircle;
+  noPlayersIcon = faUserTimes;
 
   private destroy$ = new Subject<void>();
 

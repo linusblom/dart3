@@ -15,7 +15,7 @@ const checkMultiplier = (scores: Score[], allowedMultipliers: number[]): number 
   );
 
 const checkTotal = (scores: Score[], allowedTotal: number): number => {
-  const total = getRoundTotal(scores);
+  const total = getRoundTotal(scores, false);
   return total === allowedTotal ? total : 0;
 };
 

@@ -1,38 +1,40 @@
 import * as functions from 'firebase-functions';
 
-import { shouldGameEnd } from '../utils/endGame';
-import { calculate } from '../utils/calculate';
+import { shouldGameEnd } from './endGame';
+import { calculate } from './calculate';
 import { Score } from '../models/game';
 
-export const onUpdate = functions.firestore
-  .document('/accounts/{accountId}/games/{gameId}/players/{playerId}')
+export const onUpdate = functions
+  .region('europe-west1')
+  .firestore.document('/accounts/{accountId}/games/{gameId}/players/{playerId}')
   .onUpdate(async (change, context) => {
     const data = change.after.data()!;
     const previousData = change.before.data()!;
-    const { playerId } = context.params;
 
     if (data.currentRound === previousData.currentRound) {
       return null;
     }
 
     const gameRef = change.after.ref.parent.parent!;
-    const accountRef = gameRef.parent.parent!;
-    const playerRef = accountRef.collection('players').doc(playerId);
+    const playerRef = gameRef.parent.parent!.collection('players').doc(context.params.playerId);
     const game = await gameRef.get();
     const player = await playerRef.get();
     const players = await change.after.ref.parent.get();
     const playersCurrentRound: number[] = [];
     const type = game.get('type');
     let { currentRound, currentTurn } = game.data()!;
-    let playersCount = 0;
     let roundTotal = 0;
     let { xp, hits, misses, highest, oneHundredEighties } = player.data()!;
 
     data.rounds[data.currentRound].scores.forEach((score: Score) => {
       const total = score.score * score.multiplier;
       roundTotal += total;
-      hits += total > 0 ? 1 : 0;
-      misses += total === 0 ? 1 : 0;
+
+      if (total > 0) {
+        hits++;
+      } else {
+        misses++;
+      }
     });
 
     highest = roundTotal > highest ? roundTotal : highest;
@@ -42,18 +44,15 @@ export const onUpdate = functions.firestore
     await playerRef.update({ xp, hits, misses, highest, oneHundredEighties });
 
     players.forEach(gamePlayer => {
-      playersCount++;
       playersCurrentRound.push(gamePlayer.data().currentRound);
     });
 
-    const endGame = shouldGameEnd(type, playersCount, playersCurrentRound);
+    const endGame = shouldGameEnd(type, players.size, playersCurrentRound);
 
-    if (endGame) {
-      await accountRef.update({ currentGame: null });
-    } else {
+    if (!endGame) {
       currentTurn++;
 
-      if (currentTurn === playersCount) {
+      if (currentTurn === players.size) {
         currentTurn = 0;
         currentRound++;
       }

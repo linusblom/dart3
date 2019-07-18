@@ -2,8 +2,9 @@ import * as functions from 'firebase-functions';
 
 import { makeGamePlayer } from '../models/game';
 
-export const onCreate = functions.firestore
-  .document('/accounts/{accountId}/games/{gameId}')
+export const onCreate = functions
+  .region('europe-west1')
+  .firestore.document('/accounts/{accountId}/games/{gameId}')
   .onCreate(async snapshot => {
     const { bet, type, playerOrder } = snapshot.data()!;
     const accountRef = snapshot.ref.parent.parent!;

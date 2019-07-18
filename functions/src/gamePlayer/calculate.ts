@@ -17,5 +17,10 @@ export const calculate = (
 
 export const getHitTotal = (score: Score) => score.score * score.multiplier;
 
-export const getRoundTotal = (scores: Score[]) =>
-  scores.reduce((total, score) => total + getHitTotal(score), 0);
+export const getRoundTotal = (scores: Score[], allowMisses = true) => {
+  if (!allowMisses && scores.filter(score => score.score === 0).length > 0) {
+    return 0;
+  }
+
+  return scores.reduce((total, score) => total + getHitTotal(score), 0);
+};

@@ -1,9 +1,10 @@
 import * as functions from 'firebase-functions';
 
-import { generateColor } from '../utils/generateColor';
+import { generateColor } from './generateColor';
 
-export const onCreate = functions.firestore
-  .document('/accounts/{accountId}/players/{playerId}')
+export const onCreate = functions
+  .region('europe-west1')
+  .firestore.document('/accounts/{accountId}/players/{playerId}')
   .onCreate(snapshot => {
     const data = {
       credits: 0,

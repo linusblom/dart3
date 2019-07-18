@@ -25,18 +25,25 @@ import { ROOT_REDUCERS } from './reducers';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CoreModule,
-    AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    StoreModule.forRoot(ROOT_REDUCERS),
+    StoreModule.forRoot(ROOT_REDUCERS, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+        strictStateSerializability: false,
+        strictActionSerializability: false,
+      },
+    }),
     EffectsModule.forRoot([AuthEffects, AccountEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
     }),
+    CoreModule,
+    AppRoutingModule,
     SharedModule,
   ],
   exports: [RouterModule],

@@ -3,18 +3,18 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-import { Game, GameType, Score } from '@game/models';
+import { Game, GameType, RoundScore } from '@game/models';
 
 @Injectable()
 export class GameService {
   constructor(private readonly db: AngularFirestore, private readonly auth: AngularFireAuth) {}
 
-  create(type: GameType, bet: number, players: string[]) {
+  create(type: GameType, bet: number, playerIds: string[]) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
-      .add({ type, bet, playerOrder: players });
+      .add({ type, bet, playerIds });
   }
 
   listen(gameId: string) {
@@ -35,7 +35,7 @@ export class GameService {
       .update(data);
   }
 
-  updateGamePlayersScores(gameId: string, round: number, playerId: string, scores: Score[]) {
+  updateGamePlayersScores(gameId: string, round: number, playerId: string, roundScore: RoundScore) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
@@ -46,7 +46,9 @@ export class GameService {
       .set(
         {
           currentRound: round,
-          rounds: { [round]: { score: 0, scoreDisplay: ':loader:', color: '#FFFFFF', scores } },
+          rounds: { [round]: roundScore.round },
+          total: roundScore.total,
+          totalDisplay: roundScore.totalDisplay,
         },
         { merge: true },
       );

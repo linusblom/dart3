@@ -8,7 +8,7 @@ export interface GamePlayer {
   total: number;
   totalDisplay: string;
   currentRound: number;
-  out: boolean;
+  position: number;
   xp: number;
   rounds: {
     [key: string]: Round;
@@ -33,6 +33,10 @@ export interface Calculate {
   totalDisplay: string;
 }
 
+export interface GamePlayerMap {
+  [key: string]: Partial<GamePlayer>;
+}
+
 export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
   switch (type) {
     default:
@@ -40,7 +44,7 @@ export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
         total: 0,
         totalDisplay: '0',
         currentRound: 0,
-        out: false,
+        position: 0,
         xp: bet * 10,
         rounds: {},
       };

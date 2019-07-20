@@ -6,13 +6,13 @@ export const onCreate = functions
   .region('europe-west1')
   .firestore.document('/accounts/{accountId}/games/{gameId}')
   .onCreate(async snapshot => {
-    const { bet, type, playerOrder } = snapshot.data()!;
+    const { bet, type, playerIds } = snapshot.data()!;
     const accountRef = snapshot.ref.parent.parent!;
     const playersRef = snapshot.ref.parent.parent!.collection('players');
 
     return snapshot.ref.firestore.runTransaction(async transaction => {
       await Promise.all(
-        playerOrder.map(async (id: string) => {
+        playerIds.map(async (id: string) => {
           const player = await playersRef.doc(id).get();
           const { credits, turnover, net, played, xp } = player.data()!;
 
@@ -42,11 +42,11 @@ export const onCreate = functions
         }),
       );
 
-      const prizePool = bet * playerOrder.length;
+      const prizePool = bet * playerIds.length;
       const data = {
         started: Date.now(),
         ended: 0,
-        playerOrder: playerOrder.sort(() => Math.random() - 0.5),
+        playerIds: playerIds.sort(() => Math.random() - 0.5),
         prizePool: prizePool * 0.9,
         currentTurn: 0,
         currentRound: 1,

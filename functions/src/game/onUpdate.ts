@@ -1,9 +1,11 @@
 import * as functions from 'firebase-functions';
 
+import { getGameResults } from './results';
+
 export const onUpdate = functions
   .region('europe-west1')
   .firestore.document('/accounts/{accountId}/games/{gameId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async change => {
     const data = change.after.data()!;
     const previousData = change.before.data()!;
 
@@ -11,7 +13,16 @@ export const onUpdate = functions
       return null;
     }
 
-    const accountRef = change.after.ref.parent.parent!;
+    const batch = change.after.ref.firestore.batch();
 
-    return accountRef.update({ currentGame: null });
+    const accountRef = change.after.ref.parent.parent!;
+    batch.update(accountRef, { currentGame: null });
+
+    const players = await change.after.ref.collection('players').get();
+    const results = getGameResults(players, data.type);
+    players.forEach(player => {
+      batch.update(player.ref, results[player.id]);
+    });
+
+    return batch.commit();
   });

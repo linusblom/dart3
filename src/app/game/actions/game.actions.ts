@@ -12,7 +12,7 @@ export const updateGameFailure = createAction(
 
 export const createGame = createAction(
   '[Game] Create Game',
-  props<{ gameType: GameType; bet: number; players: string[] }>(),
+  props<{ gameType: GameType; bet: number; playerIds: string[] }>(),
 );
 export const createGameSuccess = createAction('[Game] Create Game Success');
 export const createGameFailure = createAction(
@@ -49,6 +49,13 @@ export const endTurn = createAction(
 export const endTurnSuccess = createAction('[Game] End Turn Success');
 export const endTurnFailure = createAction(
   '[Game] End Turn Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const nextTurn = createAction('[Game] Next Turn', props<{ gameId: string }>());
+export const nextTurnSuccess = createAction('[Game] Next Turn Success');
+export const nextTurnFailure = createAction(
+  '[Game] Next Turn Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

@@ -70,8 +70,8 @@ export const getLoadingGamePlayers = createSelector(
 export const getGamePlayers = createSelector(
   getAllPlayers,
   getGame,
-  (players, { playerOrder }) =>
+  (players, { playerIds }) =>
     players
-      .filter(player => playerOrder.includes(player.id))
-      .sort((a, b) => playerOrder.indexOf(a.id) - playerOrder.indexOf(b.id)),
+      .filter(player => playerIds.includes(player.id))
+      .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
 );

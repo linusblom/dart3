@@ -16,6 +16,7 @@ import {
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
+import { config } from '@game/game.config';
 import { Game, GamePlayer } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
@@ -26,8 +27,8 @@ export class GameEffects {
   createGame$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.createGame),
-      exhaustMap(({ gameType, bet, players }) =>
-        from(this.service.create(gameType, bet, players)).pipe(
+      exhaustMap(({ gameType, bet, playerIds }) =>
+        from(this.service.create(gameType, bet, playerIds)).pipe(
           map(() => GameActions.createGameSuccess()),
           catchError(error => [
             GameActions.createGameFailure(error),
@@ -72,19 +73,51 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.endTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([{ gameId, scores }, { currentRound, currentTurn, playerOrder }]) =>
-        from(
-          this.service.updateGamePlayersScores(
-            gameId,
-            currentRound,
-            playerOrder[currentTurn],
-            scores,
-          ),
+      concatMap(([{ gameId, scores }, { type, currentRound, currentTurn, playerIds, players }]) => {
+        const playerId = playerIds[currentTurn];
+        const player = players.find(p => p.id === playerId);
+        const controller = config[type].controller;
+        const roundScore = controller.calculateRoundScore(scores, currentRound, player.total);
+
+        return from(
+          this.service.updateGamePlayersScores(gameId, currentRound, playerId, roundScore),
         ).pipe(
-          map(() => GameActions.endTurnSuccess()),
+          switchMap(() => [GameActions.endTurnSuccess(), GameActions.nextTurn({ gameId })]),
           catchError(error => [GameActions.endTurnFailure(error)]),
-        ),
-      ),
+        );
+      }),
+    ),
+  );
+
+  nextRound$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.nextTurn),
+      withLatestFrom(this.store.pipe(select(getGame))),
+      concatMap(([{ gameId }, { type, currentRound, currentTurn, players }]) => {
+        const controller = config[type].controller;
+        const playersCurrentRound = players.map(player => player.currentRound);
+        const endGame = controller.shouldEnd(players.length, playersCurrentRound);
+
+        if (!endGame) {
+          currentTurn++;
+
+          if (currentTurn === players.length) {
+            currentTurn = 0;
+            currentRound++;
+          }
+        }
+
+        return from(
+          this.service.update(gameId, {
+            ended: endGame ? Date.now() : 0,
+            currentRound,
+            currentTurn,
+          }),
+        ).pipe(
+          map(() => GameActions.nextTurnSuccess()),
+          catchError(error => [GameActions.nextTurnFailure(error)]),
+        );
+      }),
     ),
   );
 

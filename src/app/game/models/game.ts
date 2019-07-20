@@ -1,11 +1,11 @@
-import { Score } from '.';
+import { GameController } from '@game/controllers';
 
 export interface Game {
   type: GameType;
   bet: number;
   started: number;
   ended: number;
-  playerOrder: string[];
+  playerIds: string[];
   prizePool: number;
   currentTurn: number;
   currentRound: number;
@@ -23,10 +23,15 @@ export interface GamePlayer {
   total: number;
   totalDisplay: string;
   currentRound: number;
-  out: boolean;
+  position: number;
   rounds: {
     [key: string]: Round;
   };
+}
+
+export interface Score {
+  score: number;
+  multiplier: number;
 }
 
 export interface Round {
@@ -36,6 +41,12 @@ export interface Round {
   color: string;
 }
 
+export interface RoundScore {
+  round: Round;
+  total: number;
+  totalDisplay: string;
+}
+
 export interface GameConfigMap {
   [key: string]: GameConfig;
 }
@@ -43,4 +54,5 @@ export interface GameConfigMap {
 export interface GameConfig {
   shortRoundName: Function;
   longRoundName: Function;
+  controller: GameController;
 }

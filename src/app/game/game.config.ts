@@ -1,9 +1,11 @@
+import { HalveItController } from './controllers';
 import { GameConfigMap, GameType } from './models';
 
 export const config: GameConfigMap = {
   default: {
     shortRoundName: () => {},
     longRoundName: () => {},
+    controller: null,
   },
   [GameType.HALVEIT]: {
     shortRoundName: (currentRound: number) =>
@@ -12,5 +14,6 @@ export const config: GameConfigMap = {
       ['Nineteen', 'Eighteen', 'Double', 'Seventeen', 'Forty one', 'Triple', 'Twenty', 'Bullseye'][
         currentRound - 1
       ],
+    controller: new HalveItController(),
   },
 };

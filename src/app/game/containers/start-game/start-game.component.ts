@@ -66,10 +66,10 @@ export class StartGameComponent implements OnDestroy {
         select(getGame),
         takeUntil(this.destroy$),
       )
-      .subscribe(({ type, bet, playerOrder }) => {
+      .subscribe(({ type, bet, playerIds }) => {
         this.type = type;
         this.bet = bet;
-        this.selectedPlayerIds = playerOrder;
+        this.selectedPlayerIds = playerIds;
       });
 
     this.store
@@ -100,10 +100,10 @@ export class StartGameComponent implements OnDestroy {
   }
 
   changeBet(bet: number) {
-    const playerOrder = this.selectedPlayerIds.filter(
+    const playerIds = this.selectedPlayerIds.filter(
       playerId => this.players.find(player => player.id === playerId).credits >= bet,
     );
-    this.updateGame({ bet, playerOrder });
+    this.updateGame({ bet, playerIds });
   }
 
   togglePlayers({ id, credits }: Player) {
@@ -111,11 +111,11 @@ export class StartGameComponent implements OnDestroy {
       return;
     }
 
-    const playerOrder = this.selectedPlayerIds.includes(id)
+    const playerIds = this.selectedPlayerIds.includes(id)
       ? this.selectedPlayerIds.filter(playerId => playerId !== id)
       : [...this.selectedPlayerIds, id];
 
-    this.updateGame({ playerOrder });
+    this.updateGame({ playerIds });
   }
 
   createGame() {
@@ -125,7 +125,7 @@ export class StartGameComponent implements OnDestroy {
       GameActions.createGame({
         gameType: this.type,
         bet: this.bet,
-        players: this.selectedPlayerIds,
+        playerIds: this.selectedPlayerIds,
       }),
     );
   }

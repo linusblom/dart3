@@ -18,11 +18,41 @@ export const onUpdate = functions
     const accountRef = change.after.ref.parent.parent!;
     batch.update(accountRef, { currentGame: null });
 
-    const players = await change.after.ref.collection('players').get();
-    const results = getGameResults(players, data.type);
-    players.forEach(player => {
-      batch.update(player.ref, results[player.id]);
+    const gamePlayers = await change.after.ref.collection('players').get();
+    const results = getGameResults(gamePlayers, data.type);
+    const winningPlayerIds = Object.entries(results)
+      .filter(([_, value]) => value.position === 1)
+      .map(([key, _]) => key);
+    const win = data.prizePool / winningPlayerIds.length;
+
+    gamePlayers.forEach(gamePlayer => {
+      batch.update(gamePlayer.ref, {
+        ...results[gamePlayer.id],
+        win: winningPlayerIds.includes(gamePlayer.id) ? win : 0,
+      });
     });
+
+    const playersRef = accountRef.collection('players');
+    await Promise.all(
+      winningPlayerIds.map(async playerId => {
+        const player = await playersRef.doc(playerId).get();
+        const { wins, credits, net, xp } = player.data()!;
+
+        batch.update(player.ref, {
+          wins: wins + 1,
+          credits: credits + win,
+          net: net + win,
+          xp: xp + 1000,
+        });
+
+        batch.create(player.ref.collection('transactions').doc(), {
+          amount: win,
+          balance: credits + win,
+          timestamp: Date.now(),
+          type: 'win',
+        });
+      }),
+    );
 
     return batch.commit();
   });

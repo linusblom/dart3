@@ -47,7 +47,7 @@ export const onCreate = functions
         started: Date.now(),
         ended: 0,
         playerIds: playerIds.sort(() => Math.random() - 0.5),
-        prizePool: prizePool * 0.9,
+        prizePool: +(prizePool * 0.9).toFixed(2),
         currentTurn: 0,
         currentRound: 1,
       };
@@ -66,8 +66,8 @@ export const onCreate = functions
 
       transaction.update(accountRef, {
         currentGame: snapshot.id,
-        jackpot: jackpot + prizePool * 0.08,
-        hiddenJackpot: hiddenJackpot + prizePool * 0.02,
+        jackpot: +(jackpot + prizePool * 0.08).toFixed(2),
+        hiddenJackpot: +(hiddenJackpot + prizePool * 0.02).toFixed(2),
       });
       transaction.update(snapshot.ref, data);
     });

@@ -99,7 +99,7 @@ export class GameEffects {
     ),
   );
 
-  nextRound$ = createEffect(() =>
+  nextTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.nextTurn),
       withLatestFrom(this.store.pipe(select(getGame))),

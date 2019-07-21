@@ -1,3 +1,5 @@
+import * as seedrandom from 'seedrandom';
+
 const GOLDEN_RATIO = 0.618033988749895;
 
 const hsvToRgb = (h: number, s: number, v: number) => {
@@ -60,7 +62,8 @@ const rgbToHex = (rgb: number[]) => {
 };
 
 export const generateColor = () => {
-  const h = (Math.random() + GOLDEN_RATIO) % 1;
+  const rng = seedrandom();
+  const h = (rng() + GOLDEN_RATIO) % 1;
   const rgb = hsvToRgb(h, 0.5, 0.95);
   return rgbToHex(rgb);
 };

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { Player, Transaction, TransactionPayload } from '@game/models';
+import { Player, Score, Transaction, TransactionPayload } from '@game/models';
 
 export const loadPlayers = createAction('[Player] Load Players');
 export const loadPlayersSuccess = createAction(
@@ -28,6 +28,16 @@ export const updatePlayer = createAction(
 export const updatePlayerSuccess = createAction('[Player] Update player Success');
 export const updatePlayerFailure = createAction(
   '[Player] Update player Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const updatePlayerStats = createAction(
+  '[Player] Update Player Stats',
+  props<{ id: string; scores: Score[] }>(),
+);
+export const updatePlayerStatsSuccess = createAction('[Player] Update Player Stats Success');
+export const updatePlayerStatsFailure = createAction(
+  '[Player] Update Player Stats Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

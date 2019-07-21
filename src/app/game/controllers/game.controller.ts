@@ -8,7 +8,7 @@ export abstract class GameController {
     return score.score * score.multiplier;
   }
 
-  protected getRoundTotal(scores: Score[], allowMisses = true) {
+  getRoundTotal(scores: Score[], allowMisses = true) {
     if (!allowMisses && scores.filter(score => score.score === 0).length > 0) {
       return 0;
     }

@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-import { Game, GameType, RoundScore } from '@game/models';
+import { Game, GamePlayer, GameType } from '@game/models';
 
 @Injectable()
 export class GameService {
@@ -35,7 +35,7 @@ export class GameService {
       .update(data);
   }
 
-  updateGamePlayersScores(gameId: string, round: number, playerId: string, roundScore: RoundScore) {
+  updateGamePlayersScores(gameId: string, playerId: string, data: Partial<GamePlayer>) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
@@ -43,15 +43,7 @@ export class GameService {
       .doc(gameId)
       .collection('players')
       .doc(playerId)
-      .set(
-        {
-          currentRound: round,
-          rounds: { [round]: roundScore.round },
-          total: roundScore.total,
-          totalDisplay: roundScore.totalDisplay,
-        },
-        { merge: true },
-      );
+      .set(data, { merge: true });
   }
 
   listenGamePlayers(gameId: string) {

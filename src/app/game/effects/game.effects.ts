@@ -15,7 +15,7 @@ import {
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
-import { GameActions } from '@game/actions';
+import { GameActions, PlayerActions } from '@game/actions';
 import { config } from '@game/game.config';
 import { Game, GamePlayer } from '@game/models';
 import { getGame, State } from '@game/reducers';
@@ -79,10 +79,20 @@ export class GameEffects {
         const controller = config[type].controller;
         const roundScore = controller.calculateRoundScore(scores, currentRound, player.total);
 
-        return from(
-          this.service.updateGamePlayersScores(gameId, currentRound, playerId, roundScore),
-        ).pipe(
-          switchMap(() => [GameActions.endTurnSuccess(), GameActions.nextTurn({ gameId })]),
+        const data = {
+          currentRound,
+          rounds: { [currentRound]: roundScore.round },
+          total: roundScore.total,
+          totalDisplay: roundScore.totalDisplay,
+          xp: player.xp + controller.getRoundTotal(scores),
+        };
+
+        return from(this.service.updateGamePlayersScores(gameId, playerId, data)).pipe(
+          switchMap(() => [
+            GameActions.endTurnSuccess(),
+            GameActions.nextTurn({ gameId }),
+            PlayerActions.updatePlayerStats({ id: playerId, scores }),
+          ]),
           catchError(error => [GameActions.endTurnFailure(error)]),
         );
       }),

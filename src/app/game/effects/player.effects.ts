@@ -1,12 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { from } from 'rxjs';
-import { catchError, concatMap, exhaustMap, map, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  exhaustMap,
+  map,
+  switchMap,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { PlayerActions } from '@game/actions';
 import { Player, Transaction } from '@game/models';
+import { getSelectedPlayer, State } from '@game/reducers';
 import { PlayerService } from '@game/services';
 
 @Injectable()
@@ -102,5 +112,46 @@ export class PlayerEffects {
     ),
   );
 
-  constructor(private readonly actions$: Actions, private readonly service: PlayerService) {}
+  updatePlayerStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.updatePlayerStats),
+      withLatestFrom(this.store.pipe(select(getSelectedPlayer))),
+      concatMap(([{ id, scores }, player]) => {
+        const { total, hits, misses } = scores.reduce(
+          (acc, score) => {
+            const hitTotal = score.score * score.multiplier;
+            return {
+              total: acc.total + hitTotal,
+              hits: acc.hits + (hitTotal > 0 ? 1 : 0),
+              misses: acc.misses + (hitTotal > 0 ? 0 : 1),
+            };
+          },
+          {
+            total: 0,
+            hits: 0,
+            misses: 0,
+          },
+        );
+
+        return from(
+          this.service.update(id, {
+            hits: player.hits + hits,
+            misses: player.misses + misses,
+            xp: player.xp + total,
+            highest: total > player.highest ? total : player.highest,
+            oneHundredEighties: player.oneHundredEighties + (total === 180 ? 1 : 0),
+          }),
+        ).pipe(
+          map(() => PlayerActions.updatePlayerStatsSuccess()),
+          catchError(error => [PlayerActions.updatePlayerStatsFailure(error)]),
+        );
+      }),
+    ),
+  );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly service: PlayerService,
+    private readonly store: Store<State>,
+  ) {}
 }

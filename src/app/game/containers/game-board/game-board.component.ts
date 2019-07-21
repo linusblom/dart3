@@ -74,6 +74,7 @@ export class GameBoardComponent implements OnDestroy {
         }
 
         if (game.ended > 0) {
+          this.scores = [];
           this.navigateToResults();
         }
 

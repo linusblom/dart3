@@ -24,6 +24,8 @@ export interface GamePlayer {
   totalDisplay: string;
   currentRound: number;
   position: number;
+  xp: number;
+  win: number;
   rounds: {
     [key: string]: Round;
   };

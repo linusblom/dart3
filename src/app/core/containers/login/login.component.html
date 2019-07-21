@@ -1,21 +1,25 @@
 <div class="login">
-  <div class="header">Dart3</div>
-  <div class="form" [formGroup]="loginForm">
-    <mat-form-field>
-      <input matInput formControlName="email" placeholder="Email" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput formControlName="password" type="password" placeholder="Password" />
-    </mat-form-field>
-  </div>
-  <div class="button">
-    <button mat-button [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()">
-      <mat-progress-bar
-        *ngIf="(loading$ | async)"
-        mode="indeterminate"
-        color="accent"
-      ></mat-progress-bar>
-      Login
-    </button>
+  <div class="header">&nbsp;Dart3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <div class="background-wrapper">
+    <div [@loginAnimation]="openForm ? 'show' : 'hide'" class="login-wrapper">
+      <div class="form" [formGroup]="loginForm">
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email" />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="password" type="password" placeholder="Password" />
+        </mat-form-field>
+      </div>
+      <div class="button">
+        <button mat-button [disabled]="loginForm.invalid || (loading$ | async)" (click)="login()">
+          <mat-progress-bar
+            *ngIf="loading$ | async"
+            mode="indeterminate"
+            color="accent"
+          ></mat-progress-bar>
+          Login
+        </button>
+      </div>
+    </div>
   </div>
 </div>

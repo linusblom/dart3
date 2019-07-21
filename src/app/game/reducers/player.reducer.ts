@@ -34,7 +34,10 @@ export const reducer = createReducer(
   ),
   on(PlayerActions.loadPlayersFailure, state => ({ ...state, loadingPlayers: false })),
   on(PlayerActions.loadPlayersDestroy, state => adapter.removeAll(state)),
-  on(PlayerActions.selectPlayer, (state, { id }) => ({ ...state, selectedPlayerId: id })),
+  on(PlayerActions.selectPlayer, PlayerActions.updatePlayerStats, (state, { id }) => ({
+    ...state,
+    selectedPlayerId: id,
+  })),
   on(PlayerActions.loadTransactionsSuccess, (state, { transactions }) =>
     adapter.updateOne({ id: state.selectedPlayerId, changes: { transactions } }, state),
   ),

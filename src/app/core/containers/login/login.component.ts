@@ -1,20 +1,33 @@
+import { animate, sequence, state, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 
 import { AuthActions } from '@core/actions';
 import { getAuthLoading, State } from '@root/reducers';
-import { shareReplay } from 'rxjs/operators';
+import { first, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  animations: [
+    trigger('loginAnimation', [
+      state('hide', style({ height: '0', opacity: '0' })),
+      transition('hide => show', [
+        sequence([
+          animate('300ms ease-in-out', style({ height: '*' })),
+          animate('200ms ease-in-out', style({ opacity: '1' })),
+        ]),
+      ]),
+    ]),
+  ],
 })
 export class LoginComponent {
   loading$: Observable<boolean>;
   loginForm: FormGroup;
+  openForm = false;
 
   @HostListener('keyup', ['$event.keyCode'])
   onKeyDown(keyCode: number) {
@@ -33,6 +46,10 @@ export class LoginComponent {
       select(getAuthLoading),
       shareReplay(1),
     );
+
+    timer(1500)
+      .pipe(first())
+      .subscribe(() => (this.openForm = true));
   }
 
   login() {

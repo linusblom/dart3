@@ -13,20 +13,26 @@ export const resultsHalveIt = (players: FirebaseFirestore.QuerySnapshot): GamePl
     results.push({ id: player.id, total: player.data().total, position: 0 });
   });
 
-  results.sort((a, b) => (a.total < b.total ? 1 : -1));
-
   let position = 0;
-  return results.reduce((resultsMap, result, index, array) => {
-    position++;
+  return results
+    .sort((a, b) => (a.total < b.total ? 1 : -1))
+    .reduce(
+      (resultsMap, result, index, array) => {
+        position++;
 
-    if (index === 0) {
-      return { [result.id]: { position } };
-    }
+        if (index === 0) {
+          return { [result.id]: { position } };
+        }
 
-    if (result.total === array[index - 1].total) {
-      return { ...resultsMap, [result.id]: { position: array[index - 1].position } };
-    }
+        if (result.total === array[index - 1].total) {
+          return {
+            ...resultsMap,
+            [result.id]: { position: resultsMap[array[index - 1].id].position },
+          };
+        }
 
-    return { ...resultsMap, [result.id]: { position } };
-  }, {});
+        return { ...resultsMap, [result.id]: { position } };
+      },
+      {} as GamePlayerMap,
+    );
 };

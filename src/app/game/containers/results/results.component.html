@@ -1,3 +1,69 @@
-<p>
-  results works!
-</p>
+<app-box header="Game results" width="100%">
+  <app-box-group header="Game">
+    <div class="info">
+      <div class="info-item">
+        <div class="description">type</div>
+        <div class="value">{{ game.type }}</div>
+      </div>
+
+      <div class="info-item">
+        <div class="description">players</div>
+        <div class="value">{{ game.playerIds.length }}</div>
+      </div>
+
+      <div class="info-item">
+        <div class="description">bet</div>
+        <div class="value">{{ game.bet | number: '1.2-2' }}</div>
+      </div>
+
+      <div class="info-item">
+        <div class="description">prizepool</div>
+        <div class="value">{{ game.prizePool | number: '1.2-2' }}</div>
+      </div>
+
+      <div class="info-item">
+        <div class="description">duration</div>
+        <div class="value">{{ millisToMinutesAndSeconds(game.ended - game.started) }}</div>
+      </div>
+    </div>
+  </app-box-group>
+
+  <app-score-board
+    [gamePlayers]="game.players"
+    [players]="players"
+    [type]="game.type"
+    [currentRound]="game.currentRound"
+    [disableAnimation]="true"
+    [gameConfig]="gameConfig"
+    [fullWidth]="true"
+  ></app-score-board>
+
+  <app-box-group header="Results" [styled]="false">
+    <div class="wrapper">
+      <div class="row header">
+        <div class="field">
+          Rank
+        </div>
+        <div class="field">
+          Name
+        </div>
+        <div class="field">
+          XP
+        </div>
+        <div class="field">
+          Win
+        </div>
+      </div>
+      <div
+        *ngFor="let player of sortedGamePlayers"
+        class="row"
+        [ngClass]="{ winner: player.position === 1 }"
+      >
+        <div class="field">{{ player.position }}</div>
+        <div class="field">{{ getPlayer(player.id).name }}</div>
+        <div class="field">{{ player.xp + (player.position === 1 ? 1000 : 0) }}</div>
+        <div class="field">{{ player.win | number: '1.2-2' }}</div>
+      </div>
+    </div>
+  </app-box-group>
+</app-box>

@@ -38,4 +38,5 @@ export const reducer = createReducer(
     loadingPlayers: false,
   })),
   on(GameActions.loadGamePlayersFailure, state => ({ ...state, loadingPlayers: false })),
+  on(GameActions.loadGameDestroy, () => initalState),
 );

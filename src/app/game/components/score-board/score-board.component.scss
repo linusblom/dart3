@@ -4,24 +4,6 @@
   display: flex;
 }
 
-.score-columns {
-  display: flex;
-  position: relative;
-  width: 357px;
-  overflow: hidden;
-
-  &.full-width {
-    width: 100%;
-  }
-
-  .scores {
-    overflow-x: hidden;
-    position: absolute;
-    right: 0;
-    display: flex;
-  }
-}
-
 .column {
   display: flex;
   font-size: 20px;
@@ -32,10 +14,12 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    background: $white15;
+    background: $white30;
     padding: 5px;
-    width: 40px;
-    height: 25px;
+    min-width: 50px;
+    width: 50px;
+    height: 35px;
+    box-sizing: border-box;
 
     &.header {
       text-transform: uppercase;
@@ -60,6 +44,28 @@
   }
 }
 
+.score-columns {
+  display: flex;
+  position: relative;
+  width: 357px;
+  overflow: hidden;
+
+  .scores {
+    overflow-x: hidden;
+    position: absolute;
+    right: 0;
+    display: flex;
+  }
+
+  &.full-width {
+    width: 100%;
+
+    .field {
+      max-width: 100px;
+    }
+  }
+}
+
 .active {
   animation: active-player-pulse 2s ease-in-out;
   animation-iteration-count: infinite;
@@ -73,13 +79,13 @@
 
 @keyframes active-player-pulse {
   0% {
-    background: rgba($white, .4);
+    background: rgba($white, .3);
   }
   50% {
     background: rgba($white, .15);
   }
   100% {
-    background: rgba($white, .4);
+    background: rgba($white, .3);
   }
 }
 

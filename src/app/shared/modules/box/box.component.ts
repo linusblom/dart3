@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-box',
@@ -7,4 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class BoxComponent {
   @Input() header = '';
+
+  @Input()
+  @HostBinding('style.width')
+  width = '750px';
 }

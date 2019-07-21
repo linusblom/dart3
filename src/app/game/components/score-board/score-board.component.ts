@@ -28,7 +28,7 @@ export class ScoreBoardComponent implements OnChanges {
   @Input() fullWidth = false;
 
   rounds: number[] = [];
-  roundsPlaceHolder: number[] = [];
+  roundsPlaceHolder = Array(30).fill(0);
 
   GameType = GameType;
 
@@ -37,8 +37,6 @@ export class ScoreBoardComponent implements OnChanges {
       this.rounds = Array(currentRound.currentValue)
         .fill(0)
         .map((_, index) => index + 1);
-      this.roundsPlaceHolder =
-        currentRound.currentValue < 8 ? Array(8 - currentRound.currentValue).fill(0) : [];
     }
   }
 

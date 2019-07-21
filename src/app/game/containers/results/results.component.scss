@@ -1,0 +1,69 @@
+@import '~variables.scss';
+
+.info {
+  display: flex;
+  justify-content: space-between;
+
+  .info-item {
+    display: flex;
+    align-items: baseline;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  
+    .value {
+      font-size: 35px;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+
+  .row {
+    display: flex;
+
+    &.header {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 1px;
+    }
+
+    .field {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 10px;
+      background: $white30;
+
+      &:not(:last-child) {
+        margin-right: 1px;
+      }
+    }
+
+    &.winner {
+      .field {
+        animation: active-player-pulse 2s ease-in-out;
+        animation-iteration-count: infinite;
+      }
+    }
+  }
+}
+
+@keyframes active-player-pulse {
+  0% {
+    background: rgba($white, .3);
+  }
+  50% {
+    background: rgba($white, .15);
+  }
+  100% {
+    background: rgba($white, .3);
+  }
+}

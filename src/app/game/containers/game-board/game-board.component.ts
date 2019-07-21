@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, interval, Subject, timer } from 'rxjs';
-import { filter, map, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, first, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
 import { config } from '@game/game.config';
@@ -99,7 +99,7 @@ export class GameBoardComponent implements OnDestroy {
 
   navigateToResults() {
     timer(5000)
-      .pipe(take(1))
+      .pipe(first())
       .subscribe(() => this.router.navigate(['results', this.gameId]));
   }
 

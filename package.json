@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy-stage": "ng build && firebase deploy --only hosting"
+    "deploy-stage": "ng build --aot && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {

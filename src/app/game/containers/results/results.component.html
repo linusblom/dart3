@@ -28,6 +28,53 @@
     </div>
   </app-box-group>
 
+  <app-box-group header="Results" [styled]="false">
+    <div class="wrapper">
+      <div class="row header">
+        <div class="field small">
+          Rank
+        </div>
+        <div class="field small"></div>
+        <div class="field">
+          Name
+        </div>
+        <div class="field">
+          XP
+        </div>
+        <div class="field small">
+          Win
+        </div>
+      </div>
+      <div *ngFor="let gamePlayer of sortedGamePlayers" class="row">
+        <div class="field rank small">
+          <app-emoji
+            *ngIf="gamePlayer.position < 4; else position"
+            [hex]="medalEmojiHex[gamePlayer.position]"
+            size="40"
+          ></app-emoji>
+          <ng-template #position>{{ gamePlayer.position }}.</ng-template>
+        </div>
+        <div class="field small">
+          <app-avatar
+            [avatarUrl]="getPlayer(gamePlayer.id).avatarUrl"
+            [color]="getPlayer(gamePlayer.id).color"
+            [name]="getPlayer(gamePlayer.id).name"
+            size="40"
+          ></app-avatar>
+        </div>
+        <div class="field">
+          <div>{{ getPlayer(gamePlayer.id).name }}</div>
+          <app-player-level [xp]="getPlayer(gamePlayer.id).xp"></app-player-level>
+        </div>
+        <div class="field">
+          <div>+{{ gamePlayer.xp }} ({{ getPlayer(gamePlayer.id).xp }})</div>
+          <app-player-level-progress [xp]="getPlayer(gamePlayer.id).xp"></app-player-level-progress>
+        </div>
+        <div class="field small">{{ gamePlayer.win > 0 && gamePlayer.win | number: '1.2-2' }}</div>
+      </div>
+    </div>
+  </app-box-group>
+
   <app-score-board
     [gamePlayers]="game.players"
     [players]="players"
@@ -38,44 +85,13 @@
     [fullWidth]="true"
   ></app-score-board>
 
-  <app-box-group header="Results" [styled]="false">
-    <div class="wrapper">
-      <div class="row header">
-        <div class="field">
-          Rank
-        </div>
-        <div class="field">
-          Name
-        </div>
-        <div class="field">
-          XP
-        </div>
-        <div class="field">
-          Win
-        </div>
-      </div>
-      <div *ngFor="let gamePlayer of sortedGamePlayers" class="row">
-        <div class="field rank">
-          <app-emoji
-            *ngIf="gamePlayer.position < 4; else position"
-            [hex]="medalEmojiHex[gamePlayer.position]"
-            size="40"
-          ></app-emoji>
-          <ng-template #position>{{ gamePlayer.position }}.</ng-template>
-        </div>
-        <div class="field">
-          <div>{{ getPlayer(gamePlayer.id).name }}</div>
-          <app-player-level [xp]="getPlayer(gamePlayer.id).xp"></app-player-level>
-        </div>
-        <div class="field">
-          <div>+{{ gamePlayer.xp }} ({{ getPlayer(gamePlayer.id).xp }})</div>
-          <app-player-level-progress [xp]="getPlayer(gamePlayer.id).xp"></app-player-level-progress>
-        </div>
-        <div class="field">{{ gamePlayer.win | number: '1.2-2' }}</div>
-      </div>
-    </div>
-  </app-box-group>
-  <app-box-group header="Statistics">
+  <app-box-group header="Statistics" [styled]="false">
+    <app-box-tabs
+      head
+      [tabs]="tabs"
+      [activeTab]="activeTab"
+      (activeTabChange)="changeTab($event)"
+    ></app-box-tabs>
     <div class="chart-wrapper">
       <div class="chart">
         <canvas #barChartRef>{{ barChart }}</canvas>

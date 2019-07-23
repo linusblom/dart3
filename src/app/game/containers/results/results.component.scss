@@ -43,6 +43,10 @@
       padding: 10px;
       background: $white30;
 
+      &.small {
+        flex: 0.3;
+      }
+
       &:not(:last-child) {
         margin-right: 1px;
       }
@@ -51,12 +55,19 @@
         font-size: 30px;
         font-family: $logo;
       }
+
+      .name {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 }
 
 .chart-wrapper {
   display: flex;
+  background: $white30;
+  padding: 20px;
 
   .chart {
     flex: 1;

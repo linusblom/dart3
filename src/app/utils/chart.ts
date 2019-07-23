@@ -19,7 +19,7 @@ export const boardLabels = [
   '18',
   '19',
   '20',
-  'BE',
+  'B',
 ];
 
 export const colors = [

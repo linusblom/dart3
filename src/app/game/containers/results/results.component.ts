@@ -7,7 +7,7 @@ import { filter, first, map, takeUntil, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
 import { config } from '@game/game.config';
-import { Game, Player } from '@game/models';
+import { Game, GamePlayer, Player } from '@game/models';
 import {
   getGame,
   getGamePlayers,
@@ -17,6 +17,7 @@ import {
   State,
 } from '@game/reducers';
 import { getLoadingAccount } from '@root/reducers';
+import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors, fontColor, gridLineColor } from '@utils/chart';
 
 @Component({
@@ -32,6 +33,8 @@ export class ResultsComponent implements OnDestroy {
   pieChart: Chart;
   players: Player[] = [];
   game = {} as Game;
+  activeTab = '';
+  tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = {
     '1': '1F947',
     '2': '1F948',
@@ -51,7 +54,13 @@ export class ResultsComponent implements OnDestroy {
         select(getGamePlayers),
         takeUntil(this.destroy$),
       )
-      .subscribe(players => (this.players = players));
+      .subscribe(players => {
+        this.players = players;
+        this.tabs = [
+          { name: 'All', value: '' },
+          ...players.map(player => ({ name: player.name, value: player.id })),
+        ];
+      });
 
     this.store
       .pipe(
@@ -94,19 +103,31 @@ export class ResultsComponent implements OnDestroy {
     return this.game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
   }
 
-  getBarChart() {
-    const datasets = this.game.players.reduce(
-      (acc, player) => {
-        const playerScores = Object.values(player.rounds)
-          .map(round => round.scores)
-          .reduce((accScores, scores) => [...accScores, ...scores], []);
+  changeTab(playerId: string) {
+    this.activeTab = playerId;
+    this.barChart.data.datasets = this.getBarChartDatasets();
+    this.barChart.update();
+    this.pieChart.data.datasets = this.getPieChartDatasets();
+    this.pieChart.update();
+  }
 
-        playerScores.forEach(score => {
-          if (score.score !== 0) {
-            const scoreIndex = score.score === 25 ? 20 : score.score - 1;
-            acc[score.multiplier - 1].data[scoreIndex]++;
-          }
-        });
+  getGamePlayerScores(player: GamePlayer) {
+    return Object.values(player.rounds)
+      .map(round => round.scores)
+      .reduce((accScores, scores) => [...accScores, ...scores], []);
+  }
+
+  getBarChartDatasets() {
+    return this.game.players.reduce(
+      (acc, player) => {
+        if (!this.activeTab || this.activeTab === player.id) {
+          this.getGamePlayerScores(player).forEach(score => {
+            if (score.score !== 0) {
+              const scoreIndex = score.score === 25 ? 20 : score.score - 1;
+              acc[score.multiplier - 1].data[scoreIndex]++;
+            }
+          });
+        }
 
         return acc;
       },
@@ -135,12 +156,14 @@ export class ResultsComponent implements OnDestroy {
         },
       ],
     );
+  }
 
+  getBarChart() {
     return new Chart(this.barChartRef.nativeElement, {
       type: 'bar',
       data: {
         labels: boardLabels,
-        datasets,
+        datasets: this.getBarChartDatasets(),
       },
       options: {
         legend: {
@@ -155,7 +178,7 @@ export class ResultsComponent implements OnDestroy {
             {
               stacked: true,
               gridLines: { color: gridLineColor, zeroLineColor: gridLineColor },
-              ticks: { fontColor },
+              ticks: { fontColor, precision: 0 } as Chart.TickOptions,
             },
           ],
         },
@@ -163,16 +186,14 @@ export class ResultsComponent implements OnDestroy {
     });
   }
 
-  getPieChart() {
-    const datasets = this.game.players.reduce(
+  getPieChartDatasets() {
+    return this.game.players.reduce(
       (acc, player) => {
-        const playerScores = Object.values(player.rounds)
-          .map(round => round.scores)
-          .reduce((accScores, scores) => [...accScores, ...scores], []);
-
-        playerScores.forEach(score => {
-          acc[0].data[score.score === 0 ? 3 : score.multiplier - 1]++;
-        });
+        if (!this.activeTab || this.activeTab === player.id) {
+          this.getGamePlayerScores(player).forEach(score => {
+            acc[0].data[score.score === 0 ? 3 : score.multiplier - 1]++;
+          });
+        }
 
         return acc;
       },
@@ -194,12 +215,14 @@ export class ResultsComponent implements OnDestroy {
         },
       ],
     );
+  }
 
+  getPieChart() {
     return new Chart(this.pieChartRef.nativeElement, {
       type: 'doughnut',
       data: {
         labels: ['Single', 'Double', 'Triple', 'Misses'],
-        datasets,
+        datasets: this.getPieChartDatasets(),
       },
       options: {
         legend: {

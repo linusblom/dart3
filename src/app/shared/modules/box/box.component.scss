@@ -3,9 +3,9 @@
 :host {
   display: block;
   padding: 30px 30px 0;
-  height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  height: 100%;
 }
 
 .header {
@@ -15,8 +15,8 @@
 }
 
 .content {
-  overflow: auto;
-  padding-right: 10px;
-  height: 100%;
+  padding: 0 10px 30px 0;
+  box-sizing: border-box;
   position: relative;
+  height: calc(100% - 50px);
 }

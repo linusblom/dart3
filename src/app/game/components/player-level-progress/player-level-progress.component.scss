@@ -1,0 +1,14 @@
+@import '~variables.scss';
+
+.progress {
+  margin: 5px;
+  width: 200px;
+  height: 5px;
+  border: solid $white90;
+  border-width: 1px 0;
+
+  .value {
+    background: $white40;
+    height: 100%;
+  }
+}

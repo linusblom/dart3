@@ -54,15 +54,34 @@
           Win
         </div>
       </div>
-      <div
-        *ngFor="let player of sortedGamePlayers"
-        class="row"
-        [ngClass]="{ winner: player.position === 1 }"
-      >
-        <div class="field">{{ player.position }}</div>
-        <div class="field">{{ getPlayer(player.id).name }}</div>
-        <div class="field">{{ player.xp + (player.position === 1 ? 1000 : 0) }}</div>
-        <div class="field">{{ player.win | number: '1.2-2' }}</div>
+      <div *ngFor="let gamePlayer of sortedGamePlayers" class="row">
+        <div class="field rank">
+          <app-emoji
+            *ngIf="gamePlayer.position < 4; else position"
+            [hex]="medalEmojiHex[gamePlayer.position]"
+            size="40"
+          ></app-emoji>
+          <ng-template #position>{{ gamePlayer.position }}.</ng-template>
+        </div>
+        <div class="field">
+          <div>{{ getPlayer(gamePlayer.id).name }}</div>
+          <app-player-level [xp]="getPlayer(gamePlayer.id).xp"></app-player-level>
+        </div>
+        <div class="field">
+          <div>+{{ gamePlayer.xp }} ({{ getPlayer(gamePlayer.id).xp }})</div>
+          <app-player-level-progress [xp]="getPlayer(gamePlayer.id).xp"></app-player-level-progress>
+        </div>
+        <div class="field">{{ gamePlayer.win | number: '1.2-2' }}</div>
+      </div>
+    </div>
+  </app-box-group>
+  <app-box-group header="Statistics">
+    <div class="chart-wrapper">
+      <div class="chart">
+        <canvas #barChartRef>{{ barChart }}</canvas>
+      </div>
+      <div class="chart">
+        <canvas #pieChartRef>{{ pieChart }}</canvas>
       </div>
     </div>
   </app-box-group>

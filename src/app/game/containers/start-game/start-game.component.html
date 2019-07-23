@@ -67,7 +67,8 @@
         size="60"
       ></app-avatar>
       <div class="name">
-        {{ player.name }}
+        <div>{{ player.name }}</div>
+        <app-player-level [xp]="player.xp"></app-player-level>
       </div>
     </div>
   </app-box-group>

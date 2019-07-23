@@ -36,6 +36,7 @@
 
     .field {
       display: inline-flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       flex: 1;
@@ -45,25 +46,19 @@
       &:not(:last-child) {
         margin-right: 1px;
       }
-    }
 
-    &.winner {
-      .field {
-        animation: active-player-pulse 2s ease-in-out;
-        animation-iteration-count: infinite;
+      &.rank {
+        font-size: 30px;
+        font-family: $logo;
       }
     }
   }
 }
 
-@keyframes active-player-pulse {
-  0% {
-    background: rgba($white, .3);
-  }
-  50% {
-    background: rgba($white, .15);
-  }
-  100% {
-    background: rgba($white, .3);
+.chart-wrapper {
+  display: flex;
+
+  .chart {
+    flex: 1;
   }
 }

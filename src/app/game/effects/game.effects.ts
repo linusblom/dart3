@@ -78,13 +78,14 @@ export class GameEffects {
         const player = players.find(p => p.id === playerId);
         const controller = config[type].controller;
         const roundScore = controller.calculateRoundScore(scores, currentRound, player.total);
+        const total = controller.getRoundTotal(scores);
 
         const data = {
           currentRound,
           rounds: { [currentRound]: roundScore.round },
           total: roundScore.total,
           totalDisplay: roundScore.totalDisplay,
-          xp: player.xp + controller.getRoundTotal(scores),
+          xp: player.xp + total,
         };
 
         return from(this.service.updateGamePlayersScores(gameId, playerId, data)).pipe(

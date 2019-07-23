@@ -1,18 +1,21 @@
 <div class="row">
-  <label for="upload">
-    <app-avatar
-      [avatarUrl]="player.avatarUrl"
-      [color]="player.color"
-      [name]="player.name"
-      size="120"
-    ></app-avatar>
-    <input
-      id="upload"
-      type="file"
-      (change)="updateAvatar.emit($event.target.files[0])"
-      accept=".png,.jpg"
-    />
-  </label>
+  <div class="avatar">
+    <label for="upload">
+      <app-avatar
+        [avatarUrl]="player.avatarUrl"
+        [color]="player.color"
+        [name]="player.name"
+        size="120"
+      ></app-avatar>
+      <input
+        id="upload"
+        type="file"
+        (change)="updateAvatar.emit($event.target.files[0])"
+        accept=".png,.jpg"
+      />
+    </label>
+    <app-player-level [xp]="player.xp"></app-player-level>
+  </div>
   <div class="user-info">
     <mat-form-field>
       <input matInput [formControl]="name" placeholder="Name" (change)="onUpdatePlayer()" />

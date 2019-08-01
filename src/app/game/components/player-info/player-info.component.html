@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="avatar">
+  <div>
     <label for="upload">
       <app-avatar
         [avatarUrl]="player.avatarUrl"
@@ -14,7 +14,6 @@
         accept=".png,.jpg"
       />
     </label>
-    <app-player-level [xp]="player.xp"></app-player-level>
   </div>
   <div class="user-info">
     <mat-form-field>
@@ -34,6 +33,8 @@
         <span>{{ player.diamonds }}</span>
       </div>
     </div>
+    <app-player-level-progress [xp]="player.xp"></app-player-level-progress>
+    <app-player-level [xp]="player.xp" justify="flex-start"></app-player-level>
   </div>
 </div>
 <div class="row stats">

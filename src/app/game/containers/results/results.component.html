@@ -70,7 +70,9 @@
           <div>+{{ gamePlayer.xp }} ({{ getPlayer(gamePlayer.id).xp }})</div>
           <app-player-level-progress [xp]="getPlayer(gamePlayer.id).xp"></app-player-level-progress>
         </div>
-        <div class="field small">{{ gamePlayer.win > 0 && gamePlayer.win | number: '1.2-2' }}</div>
+        <div class="field small">
+          {{ gamePlayer.win > 0 ? (gamePlayer.win | number: '1.2-2') : '-' }}
+        </div>
       </div>
     </div>
   </app-box-group>

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { getLevelScore, MAX_LEVEL } from '@utils/level';
+
 @Component({
   selector: 'app-player-level-progress',
   templateUrl: './player-level-progress.component.html',
@@ -14,19 +16,17 @@ export class PlayerLevelProgressComponent {
   progress = 0;
 
   getProgress(xp: number) {
-    switch (true) {
-      case xp > 100000000:
-        return 100;
-      case xp > 10000000:
-        return Math.round((xp / 1000000) * 100);
-      case xp > 1000000:
-        return Math.round((xp / 10000000) * 100);
-      case xp > 100000:
-        return Math.round((xp / 1000000) * 100);
-      case xp > 10000:
-        return Math.round((xp / 100000) * 100);
-      default:
-        return Math.round((xp / 10000) * 100);
+    for (let i = MAX_LEVEL; i > 0; i--) {
+      const currentLevelScore = getLevelScore(i);
+      if (xp > currentLevelScore) {
+        const nextLevelScore = getLevelScore(i + 1);
+
+        console.log(nextLevelScore, currentLevelScore);
+
+        return Math.round(((xp - currentLevelScore) / (nextLevelScore - currentLevelScore)) * 100);
+      }
     }
+
+    return Math.round((xp / getLevelScore(1)) * 100);
   }
 }

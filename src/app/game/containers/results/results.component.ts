@@ -18,7 +18,7 @@ import {
 } from '@game/reducers';
 import { getLoadingAccount } from '@root/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
-import { boardLabels, colors, fontColor, gridLineColor } from '@utils/chart';
+import { boardLabels, colors } from '@utils/chart';
 
 @Component({
   selector: 'app-results',
@@ -134,22 +134,22 @@ export class ResultsComponent implements OnDestroy {
       [
         {
           data: Array(21).fill(0),
-          backgroundColor: `rgba(${colors[0]}, 0.4)`,
-          borderColor: `rgb(${colors[0]})`,
+          backgroundColor: `rgba(${colors.single}, 0.4)`,
+          borderColor: `rgb(${colors.single})`,
           borderWidth: 1,
           label: 'Single',
         },
         {
           data: Array(21).fill(0),
-          backgroundColor: `rgba(${colors[1]}, 0.4)`,
-          borderColor: `rgb(${colors[1]})`,
+          backgroundColor: `rgba(${colors.double}, 0.4)`,
+          borderColor: `rgb(${colors.double})`,
           borderWidth: 1,
           label: 'Double',
         },
         {
           data: Array(21).fill(0),
-          backgroundColor: `rgba(${colors[2]}, 0.4)`,
-          borderColor: `rgb(${colors[2]})`,
+          backgroundColor: `rgba(${colors.triple}, 0.4)`,
+          borderColor: `rgb(${colors.triple})`,
           borderWidth: 1,
           label: 'Triple',
           fill: false,
@@ -168,17 +168,19 @@ export class ResultsComponent implements OnDestroy {
       options: {
         legend: {
           labels: {
-            fontColor,
+            fontColor: colors.font,
             fontSize: 18,
           },
         },
         scales: {
-          xAxes: [{ stacked: true, gridLines: { display: false }, ticks: { fontColor } }],
+          xAxes: [
+            { stacked: true, gridLines: { display: false }, ticks: { fontColor: colors.font } },
+          ],
           yAxes: [
             {
               stacked: true,
-              gridLines: { color: gridLineColor, zeroLineColor: gridLineColor },
-              ticks: { fontColor, precision: 0 } as Chart.TickOptions,
+              gridLines: { color: colors.gridLine, zeroLineColor: colors.gridLine },
+              ticks: { fontColor: colors.font, precision: 0 } as Chart.TickOptions,
             },
           ],
         },
@@ -201,16 +203,16 @@ export class ResultsComponent implements OnDestroy {
         {
           data: [0, 0, 0, 0],
           backgroundColor: [
-            `rgba(${colors[0]}, 0.4)`,
-            `rgba(${colors[1]}, 0.4)`,
-            `rgba(${colors[2]}, 0.4)`,
-            `rgba(${colors[6]}, 0.4)`,
+            `rgba(${colors.single}, 0.4)`,
+            `rgba(${colors.double}, 0.4)`,
+            `rgba(${colors.triple}, 0.4)`,
+            `rgba(${colors.misses}, 0.4)`,
           ],
           borderColor: [
-            `rgb(${colors[0]})`,
-            `rgb(${colors[1]})`,
-            `rgb(${colors[2]})`,
-            `rgb(${colors[6]})`,
+            `rgb(${colors.single})`,
+            `rgb(${colors.double})`,
+            `rgb(${colors.triple})`,
+            `rgb(${colors.misses})`,
           ],
         },
       ],
@@ -227,7 +229,7 @@ export class ResultsComponent implements OnDestroy {
       options: {
         legend: {
           labels: {
-            fontColor,
+            fontColor: colors.font,
             fontSize: 18,
           },
         },

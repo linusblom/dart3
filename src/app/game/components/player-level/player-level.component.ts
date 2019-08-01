@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+
+import { getLevel } from '@utils/level';
 
 @Component({
   selector: 'app-player-level',
@@ -7,25 +9,17 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerLevelComponent {
-  @Input() size = 20;
+  @Input()
+  @HostBinding('style.font-size.px')
+  size = 20;
+
+  @Input()
+  @HostBinding('style.justify-content')
+  justify = 'center';
+
   @Input() set xp(xp: number) {
-    this.stars = this.getStars(xp);
+    this.stars = Array(getLevel(xp)).fill('2B50');
   }
 
   stars: string[] = [];
-
-  getStars(xp: number) {
-    switch (true) {
-      case xp > 100000000:
-        return Array(5).fill('2B50');
-      case xp > 10000000:
-        return Array(4).fill('2B50');
-      case xp > 1000000:
-        return Array(3).fill('2B50');
-      case xp > 100000:
-        return Array(2).fill('2B50');
-      case xp > 10000:
-        return Array(1).fill('2B50');
-    }
-  }
 }

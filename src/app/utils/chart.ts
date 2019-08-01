@@ -22,15 +22,11 @@ export const boardLabels = [
   'B',
 ];
 
-export const colors = [
-  '255, 99, 132',
-  '255, 159, 64',
-  '255, 205, 86',
-  '75, 192, 192',
-  '54, 162, 235',
-  '153, 102, 255',
-  '201, 203, 207',
-];
-
-export const gridLineColor = 'rgba(248, 248, 248, 0.6)';
-export const fontColor = 'rgba(248, 248, 248, 0.9)';
+export const colors = {
+  single: '39, 24, 245',
+  double: '24, 193, 245',
+  triple: '24, 245, 193',
+  misses: '201, 203, 207',
+  gridLine: 'rgba(248, 248, 248, 0.6)',
+  font: 'rgba(248, 248, 248, 0.9)',
+};

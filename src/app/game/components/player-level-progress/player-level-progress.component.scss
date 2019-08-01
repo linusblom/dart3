@@ -1,8 +1,13 @@
 @import '~variables.scss';
 
+:host {
+  display: block;
+  width: 100%;
+}
+
 .progress {
-  margin: 5px;
-  width: 200px;
+  margin: 5px 0;
+  width: 100%;
   height: 5px;
   border: solid $white90;
   border-width: 1px 0;

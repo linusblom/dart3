@@ -1,0 +1,27 @@
+@import '~variables.scss'; 
+
+.diamonds {
+  display: flex;
+  justify-content: space-between;
+
+  app-emoji {
+    opacity: .2;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+
+.value {
+  font-family: $jackpot;
+  font-size: 60px;
+  text-align: right;
+  padding: 5px 10px;
+  background: $real-black40;
+  border-radius: 15px;
+
+  &.loading {
+    color: $black40;
+  }
+}

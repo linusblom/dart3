@@ -4,7 +4,7 @@ import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import { faUserTimes } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
@@ -58,6 +58,7 @@ export class StartGameComponent implements OnDestroy {
       .pipe(
         select(getAllPlayers),
         takeUntil(this.destroy$),
+        map(players => players.sort((a, b) => (a.xp < b.xp ? 1 : -1))),
       )
       .subscribe(players => (this.players = players));
 

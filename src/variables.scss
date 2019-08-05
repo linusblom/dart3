@@ -1,5 +1,6 @@
 $regular: 'Rubik', sans-serif;
 $logo: 'Montserrat Subrayada', sans-serif;
+$jackpot: 'VT323', monospace;
 
 // new colors
 $white: #F8F8F8;
@@ -11,7 +12,9 @@ $white60: rgba($white, .60);
 $white90: rgba($white, .90);
 
 $black: #111D49;
+$real-black: #000000;
 $black40: rgba($black, .40);
+$real-black40: rgba($real-black, .40);
 
 $info: #6ccbff;
 $success: #8bff6c;
@@ -22,3 +25,5 @@ $board-light: #f7e9cd;
 $board-red: #ed3737;
 $board-green: #4f9962;
 $board-black: #111111;
+
+$diamond: rgba(#70D1F4, .7);

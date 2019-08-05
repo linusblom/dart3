@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, interval, Subject, timer } from 'rxjs';
+import { combineLatest, interval, Observable, Subject, timer } from 'rxjs';
 import { filter, first, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
+import { NotificationActions } from '@core/actions';
+import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
 import { config } from '@game/game.config';
 import { Player, Score } from '@game/models';
@@ -16,7 +18,7 @@ import {
   State,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
-import { getLoadingAccount } from '@root/reducers';
+import { getJackpot, getLoadingAccount } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',
@@ -24,12 +26,15 @@ import { getLoadingAccount } from '@root/reducers';
   styleUrls: ['./game-board.component.scss'],
 })
 export class GameBoardComponent implements OnDestroy {
+  jackpot$: Observable<number>;
+
   players: Player[] = [];
   game = {} as Game;
   loading = false;
   scores: Score[] = [];
   gameId = '';
   countDown = -1;
+  ended = false;
 
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -43,6 +48,8 @@ export class GameBoardComponent implements OnDestroy {
 
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
     this.store.dispatch(GameActions.loadGamePlayers({ gameId: this.gameId }));
+
+    this.jackpot$ = this.store.pipe(select(getJackpot));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -73,8 +80,15 @@ export class GameBoardComponent implements OnDestroy {
           this.scores = [];
         }
 
-        if (game.ended > 0) {
+        if (game.ended > 0 && !this.ended) {
+          this.ended = true;
           this.scores = [];
+          this.store.dispatch(
+            NotificationActions.push({
+              status: Status.SUCCESS,
+              message: 'Game complate! Well played.',
+            }),
+          );
           this.navigateToResults();
         }
 

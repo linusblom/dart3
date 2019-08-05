@@ -58,7 +58,9 @@ export class PlayersComponent implements OnDestroy {
     this.playersListItem$ = this.store.pipe(
       select(getAllPlayers),
       map(players =>
-        players.map(player => ({ id: player.id, disabled: !player.created, value: player.name })),
+        players
+          .map(player => ({ id: player.id, disabled: !player.created, value: player.name }))
+          .sort((a, b) => (a.value.toLowerCase() < b.value.toLowerCase() ? -1 : 1)),
       ),
     );
 

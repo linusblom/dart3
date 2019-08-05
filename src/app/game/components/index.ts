@@ -1,5 +1,6 @@
 import { CurrentPlayerComponent } from './current-player/current-player.component';
 import { DartBoardComponent } from './dart-board/dart-board.component';
+import { JackpotComponent } from './jackpot/jackpot.component';
 import { PlayerBankComponent } from './player-bank/player-bank.component';
 import { PlayerInfoComponent } from './player-info/player-info.component';
 import { PlayerLevelProgressComponent } from './player-level-progress/player-level-progress.component';
@@ -11,6 +12,7 @@ import { ScoreBoardComponent } from './score-board/score-board.component';
 export const components = [
   DartBoardComponent,
   CurrentPlayerComponent,
+  JackpotComponent,
   PlayerInfoComponent,
   PlayerLevelComponent,
   PlayerLevelProgressComponent,

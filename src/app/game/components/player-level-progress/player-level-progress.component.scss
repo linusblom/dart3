@@ -1,13 +1,14 @@
 @import '~variables.scss';
 
 :host {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
 }
 
 .progress {
+  flex: 1;
   margin: 5px 0;
-  width: 100%;
   height: 5px;
   border: solid $white90;
   border-width: 1px 0;
@@ -16,4 +17,17 @@
     background: $white40;
     height: 100%;
   }
+}
+
+.current {
+  width: 65px;
+  margin-right: 10px;
+  font-size: 12px;
+  text-align: right;
+}
+
+.next {
+  width: 65px;
+  margin-left: 10px;
+  font-size: 12px;
 }

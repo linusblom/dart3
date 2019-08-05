@@ -24,17 +24,9 @@
         <fa-icon [icon]="iconCoins" size="lg"></fa-icon>
         <span>{{ player.credits | number: '1.2-2' }}</span>
       </div>
-      <div class="icon">
-        <fa-icon [icon]="iconBullseye" size="lg"></fa-icon>
-        <span>{{ player.xp }}</span>
-      </div>
-      <div class="icon">
-        <fa-icon [icon]="iconGem" size="lg"></fa-icon>
-        <span>{{ player.diamonds }}</span>
-      </div>
     </div>
     <app-player-level-progress [xp]="player.xp"></app-player-level-progress>
-    <app-player-level [xp]="player.xp" justify="flex-start"></app-player-level>
+    <app-player-level [xp]="player.xp"></app-player-level>
   </div>
 </div>
 <div class="row stats">

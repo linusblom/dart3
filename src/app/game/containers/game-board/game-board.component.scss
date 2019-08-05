@@ -23,7 +23,13 @@ app-dart-board {
   justify-content: flex-start;
   padding: 30px 30px 0 0;
 
-  app-current-player {
+  .side-board-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  app-current-player, app-jackpot {
+    display: block;
     width: 260px;
   }
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
-import { getLevel } from '@utils/level';
+import { getLevelXP, MAX_LEVEL } from '@utils/level';
 
 @Component({
   selector: 'app-player-level',
@@ -18,8 +18,18 @@ export class PlayerLevelComponent {
   justify = 'center';
 
   @Input() set xp(xp: number) {
-    this.stars = Array(getLevel(xp)).fill('2B50');
+    this.stars = Array(this.getLevel(xp)).fill('2B50');
   }
 
   stars: string[] = [];
+
+  getLevel(xp: number) {
+    for (let i = MAX_LEVEL; i > 0; i--) {
+      if (xp > getLevelXP(i)) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
 }

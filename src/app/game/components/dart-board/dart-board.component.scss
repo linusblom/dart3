@@ -64,12 +64,12 @@ svg {
   &:after {
     content: '';
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border: 1px solid $black;
     border-radius: 50%;
-    top: calc(50% - 3px);
-    left: calc(50% - 3px);
+    top: calc(50% - 4px);
+    left: calc(50% - 4px);
     animation: hit-pulse 1s ease-in-out;
     animation-iteration-count: infinite;
   }
@@ -77,12 +77,12 @@ svg {
 
 @keyframes hit-pulse {
   0% {
-    background: rgba($board-red, 1);
+    background: $board-red;
   }
-  50% {
-    background: rgba($board-red, 0.2);
+  70% {
+    background: $white;
   }
   100% {
-    background: rgba($board-red, 1);
+    background: $board-red;
   }
 }

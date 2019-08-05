@@ -52,6 +52,10 @@ export const getAccount = createSelector(
   getAccountState,
   state => state,
 );
+export const getJackpot = createSelector(
+  getAccountState,
+  state => state.jackpot,
+);
 export const getLoadingAccount = createSelector(
   getAccountState,
   state => state.loading,

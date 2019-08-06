@@ -25,8 +25,6 @@ export class PlayerLevelProgressComponent {
         const nextLevelXP = getLevelXP(i + 1);
         this.nextLevelXP = nextLevelXP;
 
-        console.log(nextLevelXP, currentLevelXP);
-
         return Math.round(((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100);
       }
     }

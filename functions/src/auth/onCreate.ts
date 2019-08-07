@@ -6,11 +6,10 @@ const db = admin.firestore();
 export const onCreate = functions
   .region('europe-west1')
   .auth.user()
-  .onCreate(event => {
+  .onCreate(user => {
     const data = {
       created: Date.now(),
-      jackpot: 0,
-      hiddenJackpot: 0,
+      currentJackpot: null,
       currentGame: null,
       permissions: [
         'core:account:write',
@@ -27,6 +26,6 @@ export const onCreate = functions
 
     return db
       .collection('accounts')
-      .doc(event.uid)
+      .doc(user.uid)
       .set(data);
   });

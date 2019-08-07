@@ -1,21 +1,40 @@
 import * as functions from 'firebase-functions';
+import * as seedrandom from 'seedrandom';
 
 import { getGameResults } from './results';
 
+export const onUpdate = functions
+  .region('europe-west1')
+  .firestore.document('/accounts/{accountId}/games/{gameId}')
+  .onUpdate(change => {
+    const data = change.after.data()!;
+    const previousData = change.before.data()!;
+
+    if (data.ended && data.ended !== previousData.ended) {
+      return endGame(change);
+    }
+
+    if (data.currentTurn !== previousData.currentTurn) {
+      return jackpot(change);
+    }
+
+    return null;
+  });
+
 const endGame = async (change: functions.Change<FirebaseFirestore.DocumentSnapshot>) => {
-  const data = change.after.data()!;
+  const { type, prizePool } = change.after.data()!;
   const batch = change.after.ref.firestore.batch();
   const accountRef = change.after.ref.parent.parent!;
   const gamePlayersRef = change.after.ref.collection('players');
   const playersRef = accountRef.collection('players');
 
   const gamePlayers = await gamePlayersRef.get();
-  const results = getGameResults(gamePlayers, data.type);
+  const results = getGameResults(gamePlayers, type);
   const gamePlayerIds: string[] = [];
   const winningPlayerIds = Object.entries(results)
     .filter(([_, value]) => value.position === 1)
     .map(([key, _]) => key);
-  const win = data.prizePool / winningPlayerIds.length;
+  const win = prizePool / winningPlayerIds.length;
 
   gamePlayers.forEach(({ id }) => {
     gamePlayerIds.push(id);
@@ -61,20 +80,19 @@ const endGame = async (change: functions.Change<FirebaseFirestore.DocumentSnapsh
   return batch.commit();
 };
 
-export const onUpdate = functions
-  .region('europe-west1')
-  .firestore.document('/accounts/{accountId}/games/{gameId}')
-  .onUpdate(change => {
-    const data = change.after.data()!;
-    const previousData = change.before.data()!;
+const jackpot = async (change: functions.Change<FirebaseFirestore.DocumentSnapshot>) => {
+  const { bet } = change.after.data()!;
+  // const batch = change.after.ref.firestore.batch();
 
-    if (data.ended && data.ended !== previousData.ended) {
-      return endGame(change);
-    }
+  if (jackpotHit(bet)) {
+    // const playerId = playerIds[currentTurn];
+    console.log('winner');
+  }
 
-    if (data.currentTurn !== previousData.currentTurn) {
-      console.log(data.currentTurn, previousData.currentTurn);
-    }
+  return null;
+};
 
-    return null;
-  });
+const jackpotHit = (bet: number) => {
+  const rng = seedrandom();
+  return Math.floor(rng() * 10000) < Math.floor(3 + bet * 0.1);
+};

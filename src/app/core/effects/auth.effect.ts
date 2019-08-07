@@ -125,7 +125,11 @@ export class AuthEffects {
         this.fireAuth.auth.signOut();
         this.router.navigate(['login']);
       }),
-      switchMap(() => [CoreActions.closeMenu(), AccountActions.loadAccountDestroy()]),
+      switchMap(() => [
+        CoreActions.closeMenu(),
+        AccountActions.loadAccountDestroy(),
+        AccountActions.loadJackpotDestroy(),
+      ]),
     ),
   );
 

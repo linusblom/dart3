@@ -52,9 +52,9 @@ export const getAccount = createSelector(
   getAccountState,
   state => state,
 );
-export const getJackpot = createSelector(
+export const getJackpotValue = createSelector(
   getAccountState,
-  state => state.jackpot,
+  state => state.jackpot.value,
 );
 export const getLoadingAccount = createSelector(
   getAccountState,

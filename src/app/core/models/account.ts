@@ -1,11 +1,17 @@
-import { GameType } from '@game/models';
-
 export interface Account {
   created: number;
-  jackpot: number;
-  hiddenJackpot: number;
   currentGame: string;
+  currentJackpot: string;
   permissions: Permission[];
+  jackpot: Jackpot;
+}
+
+export interface Jackpot {
+  value: number;
+  next: number;
+  started: number;
+  ended: number;
+  playerId: string;
 }
 
 export enum Permission {

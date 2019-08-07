@@ -10,6 +10,10 @@ service cloud.firestore {
       match /games/{document=**} {
         allow read, write: if request.auth.uid == userId;
       }
+
+      match /jackpots/{document=**} {
+        allow read, write: if request.auth.uid == userId;
+      }
     }
   }
 }

@@ -18,7 +18,7 @@ import {
   State,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
-import { getJackpot, getLoadingAccount } from '@root/reducers';
+import { getJackpotValue, getLoadingAccount } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',
@@ -49,7 +49,7 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
     this.store.dispatch(GameActions.loadGamePlayers({ gameId: this.gameId }));
 
-    this.jackpot$ = this.store.pipe(select(getJackpot));
+    this.jackpot$ = this.store.pipe(select(getJackpotValue));
 
     combineLatest([
       this.store.select(getLoadingAccount),

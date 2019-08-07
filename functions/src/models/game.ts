@@ -26,6 +26,7 @@ export interface Round {
   score: number;
   scoreDisplay: string;
   color: string;
+  jackpotWin: boolean;
 }
 
 export interface GamePlayerMap {

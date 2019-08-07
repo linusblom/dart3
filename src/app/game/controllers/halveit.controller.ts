@@ -8,7 +8,7 @@ export class HalveItController extends GameController {
     const roundTotal = this.getRoundTotalScore(score, total);
 
     return {
-      round: { scores, ...roundTotal.round },
+      round: { scores, jackpotWin: false, ...roundTotal.round },
       total: roundTotal.total,
       totalDisplay: roundTotal.totalDisplay,
     };

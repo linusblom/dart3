@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 
 import { makeGamePlayer } from '../models/game';
+import { Jackpot } from '../models/jackpot';
 
 export const onCreate = functions
   .region('europe-west1')
@@ -47,13 +48,13 @@ export const onCreate = functions
         started: Date.now(),
         ended: 0,
         playerIds: playerIds.sort(() => Math.random() - 0.5),
-        prizePool: +(prizePool * 0.9).toFixed(2),
+        prizePool: +(prizePool * (1 - Jackpot.VALUE - Jackpot.NEXT)).toFixed(2),
         currentTurn: 0,
         currentRound: 1,
       };
 
       const account = await accountRef.get();
-      const { jackpot, hiddenJackpot, currentGame, permissions } = account.data()!;
+      const { currentGame, permissions, currentJackpot } = account.data()!;
 
       if (
         currentGame ||
@@ -64,11 +65,15 @@ export const onCreate = functions
         throw new Error('Unable to create new game');
       }
 
-      transaction.update(accountRef, {
-        currentGame: snapshot.id,
-        jackpot: +(jackpot + prizePool * 0.08).toFixed(2),
-        hiddenJackpot: +(hiddenJackpot + prizePool * 0.02).toFixed(2),
+      const jackpotRef = accountRef.collection('jackpots').doc(currentJackpot);
+      const jackpot = await jackpotRef.get();
+      const { value, next } = jackpot.data()!;
+
+      transaction.update(jackpotRef, {
+        value: +(value + prizePool * Jackpot.VALUE).toFixed(2),
+        next: +(next + prizePool * Jackpot.NEXT).toFixed(2),
       });
+      transaction.update(accountRef, { currentGame: snapshot.id });
       transaction.update(snapshot.ref, data);
     });
   });

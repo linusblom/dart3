@@ -21,4 +21,13 @@ export class AccountService {
       .doc(this.auth.auth.currentUser.uid)
       .update(data);
   }
+
+  listenJackpot(id: string) {
+    return this.db
+      .collection('accounts')
+      .doc(this.auth.auth.currentUser.uid)
+      .collection('jackpots')
+      .doc(id)
+      .valueChanges();
+  }
 }

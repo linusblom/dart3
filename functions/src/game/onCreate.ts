@@ -65,11 +65,13 @@ export const onCreate = functions
         throw new Error('Unable to create new game');
       }
 
-      const jackpotRef = accountRef.collection('jackpots').doc(currentJackpot);
-      const jackpot = await jackpotRef.get();
+      const jackpot = await accountRef
+        .collection('jackpots')
+        .doc(currentJackpot)
+        .get();
       const { value, next } = jackpot.data()!;
 
-      transaction.update(jackpotRef, {
+      transaction.update(jackpot.ref, {
         value: +(value + prizePool * Jackpot.VALUE).toFixed(2),
         next: +(next + prizePool * Jackpot.NEXT).toFixed(2),
       });

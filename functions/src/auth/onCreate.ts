@@ -7,7 +7,9 @@ export const onCreate = functions
   .region('europe-west1')
   .auth.user()
   .onCreate(user => {
-    const data = {
+    const batch = db.batch();
+
+    batch.create(db.collection('accounts').doc(user.uid), {
       created: Date.now(),
       currentJackpot: null,
       currentGame: null,
@@ -22,10 +24,22 @@ export const onCreate = functions
         'game:bet:500',
         'game:type:halveit',
       ],
-    };
+    });
 
-    return db
-      .collection('accounts')
-      .doc(user.uid)
-      .set(data);
+    batch.create(
+      db
+        .collection('accounts')
+        .doc(user.uid)
+        .collection('jackpots')
+        .doc(),
+      {
+        value: 0,
+        next: 0,
+        started: Date.now(),
+        ended: 0,
+        playerId: null,
+      },
+    );
+
+    return batch.commit();
   });

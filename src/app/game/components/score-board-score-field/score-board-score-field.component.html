@@ -1,4 +1,1 @@
-<ng-container [ngSwitch]="display">
-  <mat-spinner *ngSwitchCase="':loader:'" diameter="25"></mat-spinner>
-  <span *ngSwitchDefault [innerHtml]="display | safeHtml"></span>
-</ng-container>
+<span *ngIf="display" [innerHtml]="display | safeHtml"></span>

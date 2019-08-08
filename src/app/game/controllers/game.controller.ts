@@ -1,7 +1,11 @@
-import { Round, RoundScore, Score } from '@game/models';
+import { RoundScore, Score } from '@game/models';
 
 export abstract class GameController {
-  abstract calculateRoundScore(scores: Score[], currentRound: number, total: number): RoundScore;
+  abstract calculateRoundScore(
+    scores: Score[],
+    currentRound: number,
+    total: number,
+  ): Omit<RoundScore, 'round.jackpotWin'>;
   abstract shouldEnd(playersCount: number, currentRounds: number[]): boolean;
 
   protected getHitTotal(score: Score) {

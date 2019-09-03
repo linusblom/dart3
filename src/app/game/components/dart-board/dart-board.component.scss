@@ -14,6 +14,10 @@
       }
     }
   }
+  
+  &.locked path {
+    transition: fill 200ms ease-in-out;
+  }
 }
 
 svg {
@@ -35,54 +39,30 @@ svg {
 
 .green {
   fill: $board-green;
-  stroke: $white90;
-  stroke-width: 2;
 }
 
 .dark {
   fill: $board-black;
 }
 
-.score {
+.white {
+  fill: $white70;
+}
+
+.black {
+  fill: $real-black40;
+}
+
+.blue {
+  fill: $blue70;
+}
+
+
+.text {
+  transition: opacity 200ms ease-in-out;
   font-family: 'Rubik';
   fill: $white90;
   stroke: $board-black;
   stroke-width: 1;
   font-size: 36px;
-}
-
-.hit {
-  position: absolute;
-  z-index: 100;
-  border: 1px solid $black;
-  background: $white90;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 16px -2px rgba(0,0,0,0.65);
-
-  &:after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border: 1px solid $black;
-    border-radius: 50%;
-    top: calc(50% - 4px);
-    left: calc(50% - 4px);
-    animation: hit-pulse 1s ease-in-out;
-    animation-iteration-count: infinite;
-  }
-}
-
-@keyframes hit-pulse {
-  0% {
-    background: $board-red;
-  }
-  70% {
-    background: $white;
-  }
-  100% {
-    background: $board-red;
-  }
 }

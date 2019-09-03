@@ -29,11 +29,7 @@ export class PlayerService {
       .collection('players')
       .snapshotChanges()
       .pipe(
-        map(action =>
-          action.map(({ payload }) => {
-            return { id: payload.doc.id, ...payload.doc.data() };
-          }),
-        ),
+        map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),
       );
   }
 
@@ -69,11 +65,7 @@ export class PlayerService {
       .collection('transactions')
       .snapshotChanges()
       .pipe(
-        map(action =>
-          action.map(({ payload }) => {
-            return { id: payload.doc.id, ...payload.doc.data() };
-          }),
-        ),
+        map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),
       );
   }
 

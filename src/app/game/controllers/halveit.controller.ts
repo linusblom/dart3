@@ -1,4 +1,4 @@
-import { RoundScore, Score } from '@game/models';
+import { RoundScore, Score, JackpotDrawType } from '@game/models';
 
 import { GameController } from './game.controller';
 
@@ -8,7 +8,7 @@ export class HalveItController extends GameController {
     const roundTotal = this.getRoundTotalScore(score, total);
 
     return {
-      round: { scores, ...roundTotal.round },
+      round: { scores, jackpotDraw: JackpotDrawType.PENDING, ...roundTotal.round },
       total: roundTotal.total,
       totalDisplay: roundTotal.totalDisplay,
     };

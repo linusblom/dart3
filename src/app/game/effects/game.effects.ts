@@ -11,13 +11,14 @@ import {
   switchMap,
   takeUntil,
   withLatestFrom,
+  distinctUntilKeyChanged,
 } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions, PlayerActions } from '@game/actions';
 import { config } from '@game/game.config';
-import { Game, GamePlayer } from '@game/models';
+import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
 import { getAccount } from '@root/reducers';
@@ -73,7 +74,7 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.endTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([{ gameId, scores }, { type, currentRound, currentTurn, playerIds, players }]) => {
+      concatMap(([{ scores }, { id, type, currentRound, currentTurn, playerIds, players }]) => {
         const playerId = playerIds[currentTurn];
         const player = players.find(p => p.id === playerId);
         const controller = config[type].controller;
@@ -88,10 +89,9 @@ export class GameEffects {
           xp: player.xp + total,
         };
 
-        return from(this.service.updateGamePlayersScores(gameId, playerId, data)).pipe(
+        return from(this.service.updateGamePlayersScores(id, playerId, data)).pipe(
           switchMap(() => [
             GameActions.endTurnSuccess(),
-            GameActions.nextTurn({ gameId }),
             PlayerActions.updatePlayerStats({ id: playerId, scores }),
           ]),
           catchError(error => [GameActions.endTurnFailure(error)]),
@@ -100,11 +100,65 @@ export class GameEffects {
     ),
   );
 
+  jackpotGameStart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.jackpotGameStart),
+      map(({ jackpotDraw, scores }) => {
+        const getAllScores = (multiplier: number) =>
+          Array(20)
+            .fill(null)
+            .map((_, index) => ({ score: index + 1, multiplier }));
+
+        const availableScores = [
+          ...getAllScores(1),
+          ...getAllScores(1),
+          ...getAllScores(1),
+          ...getAllScores(2),
+          ...getAllScores(3),
+          { score: 25, multiplier: 1 },
+          { score: 25, multiplier: 2 },
+        ].filter(
+          as =>
+            !scores.some(
+              ({ score, multiplier }) => score === as.score && multiplier === as.multiplier,
+            ),
+        );
+
+        const randomizeHitCount = () => {
+          const number = Math.random();
+          switch (true) {
+            case number < 0.7:
+              return 0;
+            case number < 0.95:
+              return 1;
+            case number < 1:
+              return 2;
+          }
+        };
+
+        const randomizeScores = () => {
+          const hitCount = randomizeHitCount();
+          return scores.map((score, index) =>
+            index < hitCount
+              ? score
+              : availableScores[Math.floor(Math.random() * availableScores.length)],
+          );
+        };
+
+        const jackpotRound = {
+          win: jackpotDraw === JackpotDrawType.WIN,
+          hits: jackpotDraw === JackpotDrawType.WIN ? scores : randomizeScores(),
+        };
+        return GameActions.jackpotGameSetRound({ jackpotRound });
+      }),
+    ),
+  );
+
   nextTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.nextTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([{ gameId }, { type, currentRound, currentTurn, players }]) => {
+      concatMap(([_, { id, type, currentRound, currentTurn, players }]) => {
         const controller = config[type].controller;
         const playersCurrentRound = players.map(player => player.currentRound);
         const endGame = controller.shouldEnd(players.length, playersCurrentRound);
@@ -119,7 +173,7 @@ export class GameEffects {
         }
 
         return from(
-          this.service.update(gameId, {
+          this.service.update(id, {
             ended: endGame ? Date.now() : 0,
             currentRound,
             currentTurn,
@@ -141,6 +195,25 @@ export class GameEffects {
           map((players: GamePlayer[]) => GameActions.loadGamePlayersSuccess({ players })),
           catchError(error => [GameActions.loadGamePlayersFailure(error)]),
         ),
+      ),
+    ),
+  );
+
+  loadGamePlayersSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.loadGamePlayersSuccess),
+      withLatestFrom(this.store.select(getGame)),
+      map(([{ players }, game]) => {
+        const player = players.find(({ id }) => id === game.playerIds[game.currentTurn]);
+        return player.currentRound === game.currentRound && player.rounds[player.currentRound];
+      }),
+      filter(round => !!round),
+      distinctUntilKeyChanged('jackpotDraw'),
+      filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.PENDING),
+      map(({ jackpotDraw, scores }) =>
+        scores.filter(({ score }) => score === 0).length
+          ? GameActions.nextTurn()
+          : GameActions.jackpotGameStart({ jackpotDraw, scores }),
       ),
     ),
   );

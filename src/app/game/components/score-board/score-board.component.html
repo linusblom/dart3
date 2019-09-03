@@ -40,9 +40,7 @@
             }"
           >
             <app-score-board-score-field
-              *ngIf="getGamePlayerRound(player.id, round); let gamePlayerRound"
-              [display]="gamePlayerRound.scoreDisplay"
-              [color]="gamePlayerRound.color"
+              [round]="getGamePlayer(player.id).rounds[round]"
             ></app-score-board-score-field>
           </div>
         </div>
@@ -56,8 +54,7 @@
         [ngClass]="{ active: index === currentTurn && !disableAnimation }"
       >
         <app-score-board-score-field
-          *ngIf="getGamePlayer(player.id); let gamePlayer"
-          [display]="gamePlayer.totalDisplay"
+          [display]="getGamePlayer(player.id).totalDisplay"
         ></app-score-board-score-field>
       </div>
     </div>

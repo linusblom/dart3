@@ -3,6 +3,7 @@ import * as fromRoot from '@root/reducers';
 
 import * as fromCurrentGame from './game.reducer';
 import * as fromPlayer from './player.reducer';
+import { JackpotDrawType } from '@game/models';
 
 export interface GameState {
   currentGame: fromCurrentGame.State;
@@ -74,4 +75,8 @@ export const getGamePlayers = createSelector(
     players
       .filter(player => playerIds.includes(player.id))
       .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
+);
+export const getGameJackpotRound = createSelector(
+  getCurrentGame,
+  state => state.jackpotRound,
 );

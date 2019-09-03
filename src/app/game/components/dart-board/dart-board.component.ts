@@ -1,44 +1,81 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  Output,
-  Renderer2,
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { first, concatMap, delay, finalize } from 'rxjs/operators';
+import { timer, from, of } from 'rxjs';
 
-import { Score } from '@game/models';
+import { Score, JackpotRound, DartHit, DartHitType, Player } from '@game/models';
 import { generateId } from '@utils/generateId';
 
-interface DartHit extends Score {
-  id: string;
-  elementRef: HTMLDivElement;
+enum BoardFieldColor {
+  UNUSED = '',
+  WHITE = 'white',
+  BLACK = 'black',
+  BLUE = 'blue',
 }
 
 @Component({
   selector: 'app-dart-board',
   templateUrl: './dart-board.component.html',
   styleUrls: ['./dart-board.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DartBoardComponent {
+  @Input() player: Player;
   @Input() set scores(scores: Score[]) {
     if (!scores.length) {
-      this.resetHits();
+      this.dartHits = [];
     }
   }
 
-  @Output() updateScores = new EventEmitter<Score[]>();
+  @Input() set jackpotRound(jackpotRound: JackpotRound) {
+    if (jackpotRound) {
+      console.log(jackpotRound);
+      this.hits = jackpotRound.hits;
+      this.currentJackpotRound = 0;
+      this.hitsLeft = this.dartHits.map(({ score, multiplier }) => ({ score, multiplier }));
+      this.playingJackpot = true;
+      this.playJackpotRound();
+    }
+  }
 
-  @HostBinding('class.locked')
   @Input()
+  @HostBinding('class.locked')
   locked = false;
 
-  dartHits: DartHit[] = [];
+  @Output() updateScores = new EventEmitter<Score[]>();
+  @Output() jackpotGameComplete = new EventEmitter<void>();
 
-  constructor(private readonly element: ElementRef, private readonly renderer: Renderer2) {}
+  dartHits: DartHit[] = [];
+  playingJackpot = false;
+  currentJackpotRound = 0;
+  hitsLeft: Score[] = [];
+  hits: Score[] = [];
+  boardFieldColors = [];
+
+  resetAllBoardFieldClasses(boardFieldColor: BoardFieldColor) {
+    this.boardFieldColors = Array(26)
+      .fill(null)
+      .map(() => [BoardFieldColor.UNUSED, boardFieldColor, boardFieldColor, boardFieldColor]);
+  }
+
+  getRandomizedBoardFieldScores(last: Score) {
+    return [
+      ...[
+        ...Array(20)
+          .fill(null)
+          .map((_, scoreIdx) =>
+            Array(3)
+              .fill(null)
+              .map((_, multiplierIdx) => ({ score: scoreIdx + 1, multiplier: multiplierIdx + 1 })),
+          )
+          .flat(),
+        { score: 25, multiplier: 1 },
+        { score: 25, multiplier: 2 },
+      ]
+        .filter(
+          ({ score, multiplier }) => !(score === last.score && multiplier === last.multiplier),
+        )
+        .sort(() => Math.random() - 0.5),
+    ];
+  }
 
   boardClick(event: MouseEvent, score: number, multiplier: number) {
     event.stopPropagation();
@@ -48,42 +85,100 @@ export class DartBoardComponent {
     }
 
     const { offsetX, offsetY } = event;
-    const elementRef = this.renderer.createElement('div');
-    const id = generateId();
 
     this.dartHits = [
       ...this.dartHits,
       {
-        id,
+        id: generateId(),
         score,
         multiplier,
-        elementRef,
+        top: offsetY - 12,
+        left: offsetX - 12,
+        type: DartHitType.AVATAR,
       },
     ];
 
-    this.renderer.addClass(elementRef, 'hit');
-    this.renderer.setAttribute(elementRef, 'id', id);
-    this.renderer.setStyle(elementRef, 'top', `${offsetY - 12}px`);
-    this.renderer.setStyle(elementRef, 'left', `${offsetX - 12}px`);
-    this.renderer.listen(elementRef, 'click', (e: Event) => {
-      this.dartHits = this.dartHits.filter(hit => hit.id !== id);
-      this.renderer.removeChild(this.element.nativeElement, e.target);
-      this.updateHits();
-    });
-
-    this.renderer.appendChild(this.element.nativeElement, elementRef);
     this.updateHits();
   }
 
-  resetHits() {
-    this.dartHits.forEach(hit =>
-      this.renderer.removeChild(this.element.nativeElement, hit.elementRef),
-    );
-    this.dartHits = [];
+  removeHit(id: string) {
+    if (!this.locked) {
+      this.dartHits = this.dartHits.filter(hit => hit.id !== id);
+      this.updateHits();
+    }
   }
 
   updateHits() {
     const scores = this.dartHits.map(hit => ({ score: hit.score, multiplier: hit.multiplier }));
     this.updateScores.emit(scores);
+  }
+
+  playJackpotRound() {
+    this.resetAllBoardFieldClasses(BoardFieldColor.WHITE);
+    this.hitsLeft.forEach(
+      ({ score, multiplier }) => (this.boardFieldColors[score][multiplier] = BoardFieldColor.BLUE),
+    );
+
+    const removalOrder = this.getRandomizedBoardFieldScores(this.hits[this.currentJackpotRound]);
+    const delayOrder = [
+      ...Array(removalOrder.length - 30).fill(50),
+      ...Array(10).fill(100),
+      ...Array(10).fill(200),
+      ...Array(4).fill(300),
+      ...Array(4).fill(600),
+      ...Array(2).fill(1000),
+    ];
+
+    from(removalOrder)
+      .pipe(
+        concatMap((score, index) => of(score).pipe(delay(delayOrder[index]))),
+        delay(500),
+        finalize(() => {
+          this.playDelay(() => this.checkJackpotHit(), 500);
+        }),
+      )
+      .subscribe(({ score, multiplier }) => {
+        this.boardFieldColors[score][multiplier] = BoardFieldColor.BLACK;
+      });
+  }
+
+  playDelay(complete: Function, ms = 2000) {
+    timer(ms)
+      .pipe(first())
+      .subscribe(() => complete());
+  }
+
+  checkJackpotHit() {
+    const hit = this.hits[this.currentJackpotRound];
+    const isHitIndex = this.hitsLeft.findIndex(
+      ({ score, multiplier }) => score === hit.score && multiplier === hit.multiplier,
+    );
+
+    if (isHitIndex >= 0) {
+      this.dartHits[isHitIndex].type = DartHitType.DIAMOND;
+      this.hitsLeft = this.hitsLeft.map((hit, index) =>
+        index === isHitIndex ? { score: 0, multiplier: 0 } : hit,
+      );
+
+      this.playDelay(() =>
+        this.currentJackpotRound++ === 2 ? this.jackpotWin() : this.playJackpotRound(),
+      );
+    } else {
+      this.endJackpotGame();
+    }
+  }
+
+  jackpotWin() {
+    this.resetAllBoardFieldClasses(BoardFieldColor.BLUE);
+    this.playDelay(() => this.endJackpotGame());
+  }
+
+  endJackpotGame() {
+    timer(1000)
+      .pipe(first())
+      .subscribe(() => {
+        this.playingJackpot = false;
+        this.jackpotGameComplete.emit();
+      });
   }
 }

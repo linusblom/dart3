@@ -1,6 +1,9 @@
 import { GameController } from '@game/controllers';
 
+import { JackpotDrawType } from './jackpot';
+
 export interface Game {
+  id: string;
   type: GameType;
   bet: number;
   started: number;
@@ -41,7 +44,7 @@ export interface Round {
   score: number;
   scoreDisplay: string;
   color: string;
-  jackpotWin?: boolean;
+  jackpotDraw: JackpotDrawType;
 }
 
 export interface RoundScore {
@@ -58,4 +61,16 @@ export interface GameConfig {
   shortRoundName: Function;
   longRoundName: Function;
   controller: GameController;
+}
+
+export enum DartHitType {
+  AVATAR = 'avatar',
+  DIAMOND = 'diamond',
+}
+
+export interface DartHit extends Score {
+  id: string;
+  top: number;
+  left: number;
+  type: DartHitType;
 }

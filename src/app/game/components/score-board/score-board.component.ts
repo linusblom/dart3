@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { GameConfig, GamePlayer, GameType, Player } from '@game/models';
+import { GameConfig, GamePlayer, Player } from '@game/models';
 
 @Component({
   selector: 'app-score-board',
@@ -20,7 +20,6 @@ import { GameConfig, GamePlayer, GameType, Player } from '@game/models';
 export class ScoreBoardComponent implements OnChanges {
   @Input() gamePlayers: GamePlayer[];
   @Input() players: Player[] = [];
-  @Input() type: GameType;
   @Input() currentTurn = 0;
   @Input() disableAnimation = false;
   @Input() currentRound = 0;
@@ -29,8 +28,6 @@ export class ScoreBoardComponent implements OnChanges {
 
   rounds: number[] = [];
   roundsPlaceHolder = Array(30).fill(0);
-
-  GameType = GameType;
 
   ngOnChanges({ currentRound }: SimpleChanges) {
     if (currentRound && currentRound.currentValue) {
@@ -41,11 +38,6 @@ export class ScoreBoardComponent implements OnChanges {
   }
 
   getGamePlayer(playerId: string) {
-    return this.gamePlayers.find(({ id }) => id === playerId);
-  }
-
-  getGamePlayerRound(playerId: string, round: number) {
-    const gamePlayer = this.getGamePlayer(playerId);
-    return gamePlayer && gamePlayer.rounds[`${round}`];
+    return this.gamePlayers.find(({ id }) => id === playerId) || { rounds: {} };
   }
 }

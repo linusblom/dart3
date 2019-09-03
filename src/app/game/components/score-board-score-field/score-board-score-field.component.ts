@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
+import { Round } from '@game/models';
+
 @Component({
   selector: 'app-score-board-score-field',
   templateUrl: './score-board-score-field.component.html',
@@ -9,7 +11,14 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 export class ScoreBoardScoreFieldComponent {
   @Input() display: string;
 
-  @HostBinding('style.color')
   @Input()
+  @HostBinding('style.color')
   color = '#FFFFFF';
+
+  @Input() set round(round: Round) {
+    if (round) {
+      this.display = round.scoreDisplay;
+      this.color = round.color;
+    }
+  }
 }

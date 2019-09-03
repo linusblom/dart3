@@ -1,14 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { GameActions } from '@game/actions';
-import { Game } from '@game/models';
+import { Game, JackpotRound } from '@game/models';
 
 export interface State extends Game {
   loadingGame: boolean;
   loadingPlayers: boolean;
+  jackpotRound: JackpotRound;
 }
 
 export const initalState: State = {
+  id: null,
   type: null,
   bet: 0,
   started: 0,
@@ -20,6 +22,7 @@ export const initalState: State = {
   currentRound: 0,
   loadingGame: false,
   loadingPlayers: false,
+  jackpotRound: null,
 };
 
 export const reducer = createReducer(
@@ -39,4 +42,5 @@ export const reducer = createReducer(
   })),
   on(GameActions.loadGamePlayersFailure, state => ({ ...state, loadingPlayers: false })),
   on(GameActions.loadGameDestroy, () => initalState),
+  on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
 );

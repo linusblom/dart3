@@ -3,14 +3,16 @@
   <app-dart-board
     [locked]="loading || ended"
     [scores]="scores"
+    [jackpotRound]="jackpotRound$ | async"
+    [player]="currentPlayer"
     (updateScores)="updateScores($event)"
+    (jackpotGameComplete)="nextTurn()"
   ></app-dart-board>
   <div class="side-board">
     <app-score-board
       [gamePlayers]="game.players"
       [players]="players"
       [currentTurn]="game.currentTurn"
-      [type]="game.type"
       [currentRound]="game.currentRound"
       [disableAnimation]="loading || ended"
       [gameConfig]="gameConfig"

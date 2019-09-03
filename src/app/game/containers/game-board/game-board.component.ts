@@ -8,7 +8,7 @@ import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
 import { config } from '@game/game.config';
-import { Player, Score } from '@game/models';
+import { Player, Score, JackpotRound } from '@game/models';
 import {
   getGame,
   getGamePlayers,
@@ -16,6 +16,7 @@ import {
   getLoadingGamePlayers,
   getLoadingPlayers,
   State,
+  getGameJackpotRound,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
 import { getJackpotValue, getLoadingAccount } from '@root/reducers';
@@ -27,6 +28,7 @@ import { getJackpotValue, getLoadingAccount } from '@root/reducers';
 })
 export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
+  jackpotRound$: Observable<JackpotRound>;
 
   players: Player[] = [];
   game = {} as Game;
@@ -50,6 +52,7 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadGamePlayers({ gameId: this.gameId }));
 
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
+    this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -81,15 +84,7 @@ export class GameBoardComponent implements OnDestroy {
         }
 
         if (game.ended > 0 && !this.ended) {
-          this.ended = true;
-          this.scores = [];
-          this.store.dispatch(
-            NotificationActions.push({
-              status: Status.SUCCESS,
-              message: 'Game complate! Well played.',
-            }),
-          );
-          this.navigateToResults();
+          this.endGame();
         }
 
         this.game = game;
@@ -111,7 +106,16 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadGamePlayersDestroy());
   }
 
-  navigateToResults() {
+  endGame() {
+    this.ended = true;
+    this.scores = [];
+    this.store.dispatch(
+      NotificationActions.push({
+        status: Status.SUCCESS,
+        message: 'Game complate! Well played.',
+      }),
+    );
+
     timer(5000)
       .pipe(first())
       .subscribe(() => this.router.navigate(['results', this.gameId]));
@@ -140,11 +144,15 @@ export class GameBoardComponent implements OnDestroy {
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
 
     this.abortAutoEndTurn();
-    this.store.dispatch(GameActions.endTurn({ gameId: this.gameId, scores }));
+    this.store.dispatch(GameActions.endTurn({ scores }));
   }
 
   abortAutoEndTurn() {
     this.abortAutoEndTurn$.next();
     this.countDown = -1;
+  }
+
+  nextTurn() {
+    this.store.dispatch(GameActions.nextTurn());
   }
 }

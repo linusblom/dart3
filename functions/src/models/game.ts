@@ -1,3 +1,5 @@
+import { JackpotDrawType } from './jackpot';
+
 export enum GameType {
   HALVEIT = 'halveit',
   LEGS = 'legs',
@@ -26,7 +28,7 @@ export interface Round {
   score: number;
   scoreDisplay: string;
   color: string;
-  jackpotWin?: boolean;
+  jackpotDraw: JackpotDrawType;
 }
 
 export interface GamePlayerMap {

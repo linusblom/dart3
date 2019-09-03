@@ -8,9 +8,11 @@ import { PlayerLevelComponent } from './player-level/player-level.component';
 import { PlayerStatsComponent } from './player-stats/player-stats.component';
 import { ScoreBoardScoreFieldComponent } from './score-board-score-field/score-board-score-field.component';
 import { ScoreBoardComponent } from './score-board/score-board.component';
+import { DartHitComponent } from './dart-hit/dart-hit.component';
 
 export const components = [
   DartBoardComponent,
+  DartHitComponent,
   CurrentPlayerComponent,
   JackpotComponent,
   PlayerInfoComponent,

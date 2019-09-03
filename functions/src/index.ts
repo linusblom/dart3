@@ -7,3 +7,4 @@ export { onCreate as onCreatePlayer } from './player/onCreate';
 export { onCreate as onCreateGame } from './game/onCreate';
 export { onUpdate as onUpdateGame } from './game/onUpdate';
 export { onCreate as onCreateJackpot } from './jackpot/onCreate';
+export { onUpdate as onUpdateGamePlayer } from './gamePlayer/onUpdate';

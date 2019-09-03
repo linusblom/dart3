@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GamePlayer, GameType, Score } from '@game/models';
+import { Game, GamePlayer, GameType, Score, JackpotRound, JackpotDrawType } from '@game/models';
 
 export const updateGame = createAction('[Game] Update Game', props<{ data: Partial<Game> }>());
 export const updateGameSuccess = createAction('[Game] Update Game Success');
@@ -42,26 +42,25 @@ export const loadGamePlayersFailure = createAction(
 );
 export const loadGamePlayersDestroy = createAction('[Game] Load Game Players Destroy');
 
-export const endTurn = createAction(
-  '[Game] End Turn',
-  props<{ gameId: string; scores: Score[] }>(),
-);
+export const endTurn = createAction('[Game] End Turn', props<{ scores: Score[] }>());
 export const endTurnSuccess = createAction('[Game] End Turn Success');
 export const endTurnFailure = createAction(
   '[Game] End Turn Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const nextTurn = createAction('[Game] Next Turn', props<{ gameId: string }>());
+export const nextTurn = createAction('[Game] Next Turn');
 export const nextTurnSuccess = createAction('[Game] Next Turn Success');
 export const nextTurnFailure = createAction(
   '[Game] Next Turn Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const endGame = createAction('[Game] End Game', props<{ gameId: string }>());
-export const endGameSuccess = createAction('[Game] End Game Success', props<{ gameId: string }>());
-export const endGameFailure = createAction(
-  '[Game] End Game Failure',
-  props<{ error: HttpErrorResponse }>(),
+export const jackpotGameStart = createAction(
+  '[Game] Jackpot Game Start',
+  props<{ jackpotDraw: JackpotDrawType; scores: Score[] }>(),
+);
+export const jackpotGameSetRound = createAction(
+  '[Game] Jackpot Game Set Round',
+  props<{ jackpotRound: JackpotRound }>(),
 );

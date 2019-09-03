@@ -23,7 +23,8 @@ export class GameService {
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
       .doc(gameId)
-      .valueChanges();
+      .snapshotChanges()
+      .pipe(map(({ payload }) => ({ id: payload.id, ...payload.data() })));
   }
 
   update(id: string, data: Partial<Game>) {

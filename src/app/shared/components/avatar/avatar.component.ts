@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class AvatarComponent {
   @Input() avatarUrl: string;
-  @Input() name = 'Player';
+  @Input() name = '';
   @Input() color = '#FFFFFF';
   @Input() size = 50;
 

@@ -28,7 +28,6 @@ export class DartBoardComponent {
 
   @Input() set jackpotRound(jackpotRound: JackpotRound) {
     if (jackpotRound) {
-      console.log(jackpotRound);
       this.hits = jackpotRound.hits;
       this.currentJackpotRound = 0;
       this.hitsLeft = this.dartHits.map(({ score, multiplier }) => ({ score, multiplier }));

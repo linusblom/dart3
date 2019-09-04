@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "dart3-develop"
+    "stage": "dart3-stage",
+    "prod": "dart3-production"
   }
 }

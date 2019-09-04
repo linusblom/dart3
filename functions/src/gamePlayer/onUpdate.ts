@@ -66,5 +66,5 @@ export const onUpdate = functions
 
 const jackpotHit = () => {
   const rng = seedrandom();
-  return Math.floor(rng() * 10) < 5;
+  return Math.floor(rng() * 10000) < 3;
 };

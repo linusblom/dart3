@@ -5,6 +5,7 @@
     [scores]="scores"
     [jackpotRound]="jackpotRound$ | async"
     [player]="currentPlayer"
+    [jackpot]="jackpot$ | async"
     (updateScores)="updateScores($event)"
     (jackpotGameComplete)="nextTurn()"
   ></app-dart-board>
@@ -27,7 +28,6 @@
         (endRound)="endRound()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>
-      <app-jackpot [value]="jackpot$ | async" [loading]="loading"></app-jackpot>
     </div>
   </div>
 </div>

@@ -1,10 +1,4 @@
-<app-box-group header="Jackpot">
-  <div class="diamonds">
-    <app-emoji hex="1F48E" size="60" [ngClass]="{ active: true }"></app-emoji>
-    <app-emoji hex="1F48E" size="60" [ngClass]="{ active: false }"></app-emoji>
-    <app-emoji hex="1F48E" size="60" [ngClass]="{ active: false }"></app-emoji>
-  </div>
-  <div class="value" [ngClass]="{ loading: loading }">
-    {{ value | number: '1.2-2' }}
-  </div>
-</app-box-group>
+<app-emoji hex="1F48E" size="60"></app-emoji>
+<div class="value">
+  {{ winner ? 'WINNER' : (displayValue | number: '1.2-2') }}
+</div>

@@ -7,7 +7,7 @@
   [ngClass]="hit.type"
   (remove)="removeHit(hit.id)"
 ></app-dart-hit>
-
+<app-jackpot [jackpot]="jackpot" [locked]="playingJackpot" [winner]="winner"></app-jackpot>
 <svg
   version="1.1"
   id="dartboard"

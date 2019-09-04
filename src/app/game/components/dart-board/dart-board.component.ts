@@ -18,6 +18,7 @@ enum BoardFieldColor {
   styleUrls: ['./dart-board.component.scss'],
 })
 export class DartBoardComponent {
+  @Input() jackpot = 0;
   @Input() player: Player;
   @Input() set scores(scores: Score[]) {
     if (!scores.length) {
@@ -49,6 +50,7 @@ export class DartBoardComponent {
   hitsLeft: Score[] = [];
   hits: Score[] = [];
   boardFieldColors = [];
+  winner = false;
 
   resetAllBoardFieldClasses(boardFieldColor: BoardFieldColor) {
     this.boardFieldColors = Array(26)
@@ -160,9 +162,12 @@ export class DartBoardComponent {
         index === isHitIndex ? { score: 0, multiplier: 0 } : hit,
       );
 
-      this.playDelay(() =>
-        this.currentJackpotRound++ === 2 ? this.jackpotWin() : this.playJackpotRound(),
-      );
+      if (this.currentJackpotRound++ === 2) {
+        this.winner = true;
+        this.playDelay(() => this.jackpotWin());
+      } else {
+        this.playDelay(() => this.playJackpotRound());
+      }
     } else {
       this.endJackpotGame();
     }
@@ -177,6 +182,7 @@ export class DartBoardComponent {
     timer(1000)
       .pipe(first())
       .subscribe(() => {
+        this.winner = false;
         this.playingJackpot = false;
         this.jackpotGameComplete.emit();
       });

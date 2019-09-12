@@ -3,7 +3,8 @@ import { JackpotDrawType } from './jackpot';
 export enum GameType {
   HALVEIT = 'halveit',
   LEGS = 'legs',
-  THREEHUNDREDONE = 'threehundredone',
+  LEGS_CLASSIC = 'legs-classic',
+  THREE_HUNDRED_ONE = 'three-hundred-one',
 }
 
 export interface GamePlayer {
@@ -36,16 +37,26 @@ export interface GamePlayerMap {
 }
 
 export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
+  const gamePlayerBase = {
+    total: 0,
+    totalDisplay: '0',
+    currentRound: 0,
+    position: 0,
+    xp: bet + 10,
+    win: 0,
+    rounds: {},
+  };
+
   switch (type) {
-    default:
+    case GameType.HALVEIT:
+      return gamePlayerBase;
+    case GameType.LEGS:
       return {
-        total: 0,
-        totalDisplay: '0',
-        currentRound: 0,
-        position: 0,
-        xp: bet * 10,
-        win: 0,
-        rounds: {},
+        ...gamePlayerBase,
+        total: 3,
+        totalDisplay: '&#x1f9b5; &#x1f9b5; &#x1f9b5;',
       };
+    default:
+      return gamePlayerBase;
   }
 };

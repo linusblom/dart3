@@ -25,5 +25,6 @@ export enum Permission {
   GAME_BET_500 = 'game:bet:500',
   GAME_TYPE_HALVEIT = 'game:type:halveit',
   GAME_TYPE_LEGS = 'game:type:legs',
-  GAME_TYPE_THREEHUNDREDONE = 'game:type:threehundredone',
+  GAME_TYPE_LEGS_CLASSIC = 'game:type:legs-classic',
+  GAME_TYPE_THREEHUNDREDONE = 'game:type:three-hundred-one',
 }

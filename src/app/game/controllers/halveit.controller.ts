@@ -1,21 +1,24 @@
-import { RoundScore, Score, JackpotDrawType } from '@game/models';
+import { Score, JackpotDrawType, GamePlayer, Game } from '@game/models';
 
 import { GameController } from './game.controller';
 
 export class HalveItController extends GameController {
-  calculateRoundScore(scores: Score[], currentRound: number, total: number): RoundScore {
-    const score = this.checkRound(scores, currentRound);
-    const roundTotal = this.getRoundTotalScore(score, total);
+  endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
+    const player = this.getCurrentPlayer(game);
+    const score = this.checkRound(scores, game.currentRound);
+    const { round, ...rest } = this.getRoundTotalScore(score, player.total);
 
     return {
-      round: { scores, jackpotDraw: JackpotDrawType.PENDING, ...roundTotal.round },
-      total: roundTotal.total,
-      totalDisplay: roundTotal.totalDisplay,
+      id: player.id,
+      currentRound: game.currentRound,
+      xp: player.xp + this.getTurnTotal(scores),
+      ...rest,
+      rounds: { [game.currentRound]: { scores, jackpotDraw: JackpotDrawType.PENDING, ...round } },
     };
   }
 
-  shouldEnd(playersCount: number, currentRounds: number[]): boolean {
-    return playersCount === currentRounds.filter(currentRound => currentRound === 8).length;
+  shouldEnd(players: GamePlayer[]): boolean {
+    return players.length === players.filter(player => player.currentRound === 8).length;
   }
 
   private checkScore(scores: Score[], allowedScores: number[]): number {
@@ -35,7 +38,7 @@ export class HalveItController extends GameController {
   }
 
   private checkTotal(scores: Score[], allowedTotal: number): number {
-    const total = this.getRoundTotal(scores, false);
+    const total = this.getTurnTotal(scores, false);
     return total === allowedTotal ? total : 0;
   }
 
@@ -77,7 +80,6 @@ export class HalveItController extends GameController {
           round: {
             score: 0,
             scoreDisplay: '&#x2620;',
-            color: '#FFFFFF',
           },
           total: Math.ceil(currentTotal / 2),
           totalDisplay: `${Math.ceil(currentTotal / 2)}`,

@@ -32,7 +32,12 @@ export class StartGameComponent implements OnDestroy {
     { type: GameType.HALVEIT, name: 'Halve it', permission: Permission.GAME_TYPE_HALVEIT },
     { type: GameType.LEGS, name: 'Legs', permission: Permission.GAME_TYPE_LEGS },
     {
-      type: GameType.THREEHUNDREDONE,
+      type: GameType.LEGS_CLASSIC,
+      name: 'Legs Classic',
+      permission: Permission.GAME_TYPE_LEGS_CLASSIC,
+    },
+    {
+      type: GameType.THREE_HUNDRED_ONE,
       name: '301',
       permission: Permission.GAME_TYPE_THREEHUNDREDONE,
     },

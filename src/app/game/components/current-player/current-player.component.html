@@ -31,7 +31,7 @@
   <div class="round-text">
     {{ roundText }}
   </div>
-  <button mat-stroked-button (click)="endRound.emit()" [disabled]="disableEndTurn">
+  <button mat-stroked-button (click)="endTurn.emit()" [disabled]="disableEndTurn">
     {{ endTurnButtonText }}
   </button>
   <button mat-stroked-button (click)="abortAutoEndTurn.emit()" [disabled]="countDown === -1">

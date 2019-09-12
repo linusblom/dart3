@@ -112,7 +112,7 @@ export class GameBoardComponent implements OnDestroy {
     this.store.dispatch(
       NotificationActions.push({
         status: Status.SUCCESS,
-        message: 'Game complate! Well played.',
+        message: 'Game complete! Well played.',
       }),
     );
 
@@ -134,12 +134,12 @@ export class GameBoardComponent implements OnDestroy {
           filter(val => val === 4),
         )
         .subscribe(() => {
-          this.endRound();
+          this.endTurn();
         });
     }
   }
 
-  endRound() {
+  endTurn() {
     const zeroScores = Array(3).fill({ score: 0, multiplier: 0 });
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
 

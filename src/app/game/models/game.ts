@@ -18,7 +18,8 @@ export interface Game {
 export enum GameType {
   HALVEIT = 'halveit',
   LEGS = 'legs',
-  THREEHUNDREDONE = 'threehundredone',
+  LEGS_CLASSIC = 'legs-classic',
+  THREE_HUNDRED_ONE = 'three-hundred-one',
 }
 
 export interface GamePlayer {
@@ -43,8 +44,8 @@ export interface Round {
   scores: Score[];
   score: number;
   scoreDisplay: string;
-  color: string;
   jackpotDraw: JackpotDrawType;
+  color?: string;
 }
 
 export interface RoundScore {
@@ -60,6 +61,7 @@ export interface GameConfigMap {
 export interface GameConfig {
   shortRoundName: Function;
   longRoundName: Function;
+  totalHeader: string;
   controller: GameController;
 }
 

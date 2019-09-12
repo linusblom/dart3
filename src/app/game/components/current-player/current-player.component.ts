@@ -17,7 +17,7 @@ export class CurrentPlayerComponent {
     this.countDown = countDown;
   }
 
-  @Output() endRound = new EventEmitter<void>();
+  @Output() endTurn = new EventEmitter<void>();
   @Output() abortAutoEndTurn = new EventEmitter<void>();
 
   emptyScore = ['empty', 'empty', 'empty'];

@@ -25,7 +25,7 @@
         [disableEndTurn]="loading || ended"
         [autoEndTurn]="countDown"
         [roundText]="gameConfig.longRoundName(game.currentRound)"
-        (endRound)="endRound()"
+        (endTurn)="endTurn()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>
     </div>

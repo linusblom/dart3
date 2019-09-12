@@ -18,7 +18,7 @@ export class ScoreBoardScoreFieldComponent {
   @Input() set round(round: Round) {
     if (round) {
       this.display = round.scoreDisplay;
-      this.color = round.color;
+      this.color = round.color || '#FFFFFF';
     }
   }
 }

@@ -1,10 +1,11 @@
-import { HalveItController } from './controllers';
+import { HalveItController, LegsController } from './controllers';
 import { GameConfigMap, GameType } from './models';
 
 export const config: GameConfigMap = {
   default: {
     shortRoundName: () => {},
     longRoundName: () => {},
+    totalHeader: 'Total',
     controller: null,
   },
   [GameType.HALVEIT]: {
@@ -14,6 +15,13 @@ export const config: GameConfigMap = {
       ['Nineteen', 'Eighteen', 'Double', 'Seventeen', 'Forty one', 'Triple', 'Twenty', 'Bullseye'][
         currentRound - 1
       ],
+    totalHeader: 'Total',
     controller: new HalveItController(),
+  },
+  [GameType.LEGS]: {
+    shortRoundName: (currentRound: number) => `${currentRound}`,
+    longRoundName: (currentRound: number) => `Round ${currentRound}`,
+    totalHeader: 'Legs',
+    controller: new LegsController(),
   },
 };

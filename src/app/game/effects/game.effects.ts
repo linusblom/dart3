@@ -22,6 +22,7 @@ import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
 import { getAccount } from '@root/reducers';
+import { environment } from '@envs/environment';
 
 @Injectable()
 export class GameEffects {
@@ -74,25 +75,13 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.endTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([{ scores }, { id, type, currentRound, currentTurn, playerIds, players }]) => {
-        const playerId = playerIds[currentTurn];
-        const player = players.find(p => p.id === playerId);
-        const controller = config[type].controller;
-        const roundScore = controller.calculateRoundScore(scores, currentRound, player.total);
-        const total = controller.getRoundTotal(scores);
+      concatMap(([{ scores }, game]) => {
+        const { id, ...data } = config[game.type].controller.endTurn(scores, game);
 
-        const data = {
-          currentRound,
-          rounds: { [currentRound]: roundScore.round },
-          total: roundScore.total,
-          totalDisplay: roundScore.totalDisplay,
-          xp: player.xp + total,
-        };
-
-        return from(this.service.updateGamePlayersScores(id, playerId, data)).pipe(
+        return from(this.service.updateGamePlayersScores(game.id, id, data)).pipe(
           switchMap(() => [
             GameActions.endTurnSuccess(),
-            PlayerActions.updatePlayerStats({ id: playerId, scores }),
+            PlayerActions.updatePlayerStats({ id: id, scores }),
           ]),
           catchError(error => [GameActions.endTurnFailure(error)]),
         );
@@ -158,25 +147,24 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.nextTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([_, { id, type, currentRound, currentTurn, players }]) => {
-        const controller = config[type].controller;
-        const playersCurrentRound = players.map(player => player.currentRound);
-        const endGame = controller.shouldEnd(players.length, playersCurrentRound);
-
-        if (!endGame) {
-          currentTurn++;
-
-          if (currentTurn === players.length) {
-            currentTurn = 0;
-            currentRound++;
+      concatMap(([_, { id, type, currentRound, currentTurn, players, playerIds }]) => {
+        const getNextTurn = (turn: number, round: number) => {
+          if (++turn === players.length) {
+            turn = 0;
+            round++;
           }
-        }
+
+          return players.find(player => player.id === playerIds[turn]).position === 0
+            ? { currentTurn: turn, currentRound: round }
+            : getNextTurn(turn, round);
+        };
+
+        const endGame = config[type].controller.shouldEnd(players);
 
         return from(
           this.service.update(id, {
             ended: endGame ? Date.now() : 0,
-            currentRound,
-            currentTurn,
+            ...(!endGame && getNextTurn(currentTurn, currentRound)),
           }),
         ).pipe(
           map(() => GameActions.nextTurnSuccess()),
@@ -211,7 +199,7 @@ export class GameEffects {
       distinctUntilKeyChanged('jackpotDraw'),
       filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.PENDING),
       map(({ jackpotDraw, scores }) =>
-        scores.filter(({ score }) => score === 0).length
+        scores.filter(({ score }) => score === 0).length || !environment.production
           ? GameActions.nextTurn()
           : GameActions.jackpotGameStart({ jackpotDraw, scores }),
       ),

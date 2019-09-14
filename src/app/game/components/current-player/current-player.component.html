@@ -17,7 +17,7 @@
       <div>{{ score.score * score.multiplier }}</div>
     </div>
     <div
-      *ngFor="let emptyScore of ['empty', 'empty', 'empty'] | slice: scoresCount"
+      *ngFor="let emptyScore of emptyScores | slice: scoresCount"
       class="score-wrapper empty"
     >
       <div>-</div>
@@ -28,8 +28,8 @@
   <div class="total-score">
     {{ totalScore }}
   </div>
-  <div class="round-text">
-    {{ roundText }}
+  <div class="turn-text">
+    {{ turnText }}
   </div>
   <button mat-stroked-button (click)="endTurn.emit()" [disabled]="disableEndTurn">
     {{ endTurnButtonText }}

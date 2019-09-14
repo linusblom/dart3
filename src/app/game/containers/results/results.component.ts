@@ -6,7 +6,6 @@ import { combineLatest, Subject } from 'rxjs';
 import { filter, first, map, takeUntil, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { config } from '@game/game.config';
 import { Game, GamePlayer, Player } from '@game/models';
 import {
   getGame,
@@ -93,10 +92,6 @@ export class ResultsComponent implements OnDestroy {
     this.destroy$.unsubscribe();
     this.store.dispatch(GameActions.loadGameDestroy());
     this.store.dispatch(GameActions.loadGamePlayersDestroy());
-  }
-
-  get gameConfig() {
-    return config[this.game.type] || config.default;
   }
 
   get sortedGamePlayers() {

@@ -1,9 +1,11 @@
-import { Score, GamePlayer, Game } from '@game/models';
+import { Game, GamePlayer, Score } from '@game/models';
 
 export abstract class GameController {
   abstract endTurn(scores: Score[], game: Game): Partial<GamePlayer>;
-
   abstract shouldGameEnd(players: GamePlayer[]): boolean;
+  abstract roundHeader(round: number): string;
+  abstract totalHeader(): string;
+  abstract turnText(game: Game): string;
 
   protected getPlayerById(id: string, players: GamePlayer[]) {
     return players.find(player => player.id === id);

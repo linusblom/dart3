@@ -1,7 +1,9 @@
-import { Score, GamePlayer, Game, JackpotDrawType } from '@game/models';
+import { Injectable } from '@angular/core';
+import { Game, GamePlayer, JackpotDrawType, Score } from '@game/models';
 
 import { GameController } from './game.controller';
 
+@Injectable()
 export class LegsController extends GameController {
   endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
     const player = this.getCurrentPlayer(game);
@@ -27,6 +29,18 @@ export class LegsController extends GameController {
 
   shouldGameEnd(players: GamePlayer[]): boolean {
     return this.getActivePlayers(players) === 1;
+  }
+
+  roundHeader(currentRound: number): string {
+    return `${currentRound}`;
+  }
+
+  totalHeader(): string {
+    return 'Legs';
+  }
+
+  turnText(game: Game): string {
+    return '';
   }
 
   private checkScore(

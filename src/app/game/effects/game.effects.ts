@@ -1,28 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { from } from 'rxjs';
 import {
   catchError,
   concatMap,
+  distinctUntilKeyChanged,
   exhaustMap,
   filter,
   map,
   switchMap,
   takeUntil,
   withLatestFrom,
-  distinctUntilKeyChanged,
 } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions, PlayerActions } from '@game/actions';
-import { config } from '@game/game.config';
+import { ControllerService } from '@game/controllers';
 import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
 import { getAccount } from '@root/reducers';
-import { environment } from '@envs/environment';
 
 @Injectable()
 export class GameEffects {
@@ -76,7 +75,7 @@ export class GameEffects {
       ofType(GameActions.endTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
       concatMap(([{ scores }, game]) => {
-        const { id, ...data } = config[game.type].controller.endTurn(scores, game);
+        const { id, ...data } = this.controllerService.getController().endTurn(scores, game);
 
         return from(this.service.updateGamePlayersScores(game.id, id, data)).pipe(
           switchMap(() => [
@@ -147,7 +146,7 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.nextTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
-      concatMap(([_, { id, type, currentRound, currentTurn, players, playerIds }]) => {
+      concatMap(([_, { id, currentRound, currentTurn, players, playerIds }]) => {
         const getNextTurn = (turn: number, round: number) => {
           if (++turn === players.length) {
             turn = 0;
@@ -159,7 +158,7 @@ export class GameEffects {
             : getNextTurn(turn, round);
         };
 
-        const endGame = config[type].controller.shouldGameEnd(players);
+        const endGame = this.controllerService.getController().shouldGameEnd(players);
 
         return from(
           this.service.update(id, {
@@ -210,5 +209,6 @@ export class GameEffects {
     private readonly actions$: Actions,
     private readonly service: GameService,
     private readonly store: Store<State>,
+    private readonly controllerService: ControllerService,
   ) {}
 }

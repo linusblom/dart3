@@ -1,7 +1,9 @@
-import { Score, JackpotDrawType, GamePlayer, Game } from '@game/models';
+import { Injectable } from '@angular/core';
+import { Game, GamePlayer, JackpotDrawType, Score } from '@game/models';
 
 import { GameController } from './game.controller';
 
+@Injectable()
 export class HalveItController extends GameController {
   endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
     const player = this.getCurrentPlayer(game);
@@ -19,6 +21,27 @@ export class HalveItController extends GameController {
 
   shouldGameEnd(players: GamePlayer[]): boolean {
     return players.length === players.filter(player => player.currentRound === 8).length;
+  }
+
+  roundHeader(round: number): string {
+    return ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1];
+  }
+
+  totalHeader(): string {
+    return 'Total';
+  }
+
+  turnText(game: Game): string {
+    return [
+      'Nineteen',
+      'Eighteen',
+      'Double',
+      'Seventeen',
+      'Forty one',
+      'Triple',
+      'Twenty',
+      'Bullseye',
+    ][game.currentRound - 1];
   }
 
   private checkScore(scores: Score[], allowedScores: number[]): number {

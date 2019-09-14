@@ -3,7 +3,6 @@ import * as fromRoot from '@root/reducers';
 
 import * as fromCurrentGame from './game.reducer';
 import * as fromPlayer from './player.reducer';
-import { JackpotDrawType } from '@game/models';
 
 export interface GameState {
   currentGame: fromCurrentGame.State;
@@ -71,6 +70,10 @@ export const getLoadingGamePlayers = createSelector(
 export const getPlayingJackpot = createSelector(
   getCurrentGame,
   state => state.playingJackpot,
+);
+export const getTurnText = createSelector(
+  getCurrentGame,
+  state => state.turnText,
 );
 export const getGamePlayers = createSelector(
   getAllPlayers,

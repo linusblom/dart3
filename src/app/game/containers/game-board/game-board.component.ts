@@ -7,17 +7,18 @@ import { filter, first, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { GameActions } from '@game/actions';
-import { config } from '@game/game.config';
-import { Player, Score, JackpotRound } from '@game/models';
+import { ControllerService } from '@game/controllers';
+import { JackpotRound, Player, Score } from '@game/models';
 import {
   getGame,
+  getGameJackpotRound,
   getGamePlayers,
   getLoadingGame,
   getLoadingGamePlayers,
   getLoadingPlayers,
-  State,
-  getGameJackpotRound,
   getPlayingJackpot,
+  getTurnText,
+  State,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
 import { getJackpotValue, getLoadingAccount } from '@root/reducers';
@@ -30,6 +31,7 @@ import { getJackpotValue, getLoadingAccount } from '@root/reducers';
 export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
   jackpotRound$: Observable<JackpotRound>;
+  turnText$: Observable<string>;
 
   betweenTurns = false;
   playingJackpot = false;
@@ -40,6 +42,7 @@ export class GameBoardComponent implements OnDestroy {
   gameId = '';
   countDown = -1;
   ended = false;
+  turnText = '-';
 
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -48,6 +51,7 @@ export class GameBoardComponent implements OnDestroy {
     private readonly store: Store<State>,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly controllerService: ControllerService,
   ) {
     this.gameId = this.route.snapshot.params.gameId;
 
@@ -56,6 +60,7 @@ export class GameBoardComponent implements OnDestroy {
 
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
     this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
+    this.turnText$ = this.store.pipe(select(getTurnText));
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -92,6 +97,7 @@ export class GameBoardComponent implements OnDestroy {
         }
 
         this.game = game;
+        this.turnText = this.controllerService.getController().turnText(game);
       });
 
     this.store
@@ -104,10 +110,6 @@ export class GameBoardComponent implements OnDestroy {
 
   get currentPlayer() {
     return this.players[this.game.currentTurn] || ({} as Player);
-  }
-
-  get gameConfig() {
-    return config[this.game.type] || config.default;
   }
 
   get disableBoard() {

@@ -8,6 +8,7 @@ export interface State extends Game {
   loadingPlayers: boolean;
   jackpotRound: JackpotRound;
   playingJackpot: boolean;
+  turnText: string;
 }
 
 export const initialState: State = {
@@ -25,6 +26,7 @@ export const initialState: State = {
   loadingPlayers: false,
   playingJackpot: false,
   jackpotRound: null,
+  turnText: '',
 };
 
 export const reducer = createReducer(
@@ -46,4 +48,5 @@ export const reducer = createReducer(
   on(GameActions.loadGameDestroy, () => initialState),
   on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
   on(GameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
+  on(GameActions.setTurnText, (state, { text }) => ({ ...state, turnText: text })),
 );

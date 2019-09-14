@@ -30,7 +30,7 @@
             class="field header"
             [ngClass]="{ active: round === currentRound && !disableAnimation }"
           >
-            <bdi>{{ gameConfig.shortRoundName(round) }}</bdi>
+            <bdi>{{ getRoundHeader(round) }}</bdi>
           </div>
           <div
             *ngFor="let player of players; let playerIndex = index"
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="column">
-      <div class="field total header">{{ gameConfig.totalHeader }}</div>
+      <div class="field total header">{{ getTotalHeader() }}</div>
       <div
         *ngFor="let player of players; let index = index"
         class="field total"

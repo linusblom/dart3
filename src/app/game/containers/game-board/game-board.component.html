@@ -16,7 +16,6 @@
       [currentTurn]="game.currentTurn"
       [currentRound]="game.currentRound"
       [disableAnimation]="disableBoard"
-      [gameConfig]="gameConfig"
     ></app-score-board>
     <div class="side-board-row">
       <app-current-player
@@ -24,7 +23,7 @@
         [scores]="scores"
         [disableEndTurn]="disableBoard"
         [countDown]="countDown"
-        [roundText]="gameConfig.longRoundName(game.currentRound)"
+        [turnText]="turnText"
         (endTurn)="endTurn()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>

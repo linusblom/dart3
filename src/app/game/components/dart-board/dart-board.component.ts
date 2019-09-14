@@ -130,8 +130,6 @@ export class DartBoardComponent {
       ...Array(1).fill(2000),
     ];
 
-    console.log(removalOrder.length);
-
     from(removalOrder)
       .pipe(
         concatMap((score, index) =>

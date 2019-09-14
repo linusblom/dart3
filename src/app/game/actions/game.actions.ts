@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GamePlayer, GameType, Score, JackpotRound, JackpotDrawType } from '@game/models';
+import { Game, GamePlayer, GameType, JackpotDrawType, JackpotRound, Score } from '@game/models';
 
 export const updateGame = createAction('[Game] Update Game', props<{ data: Partial<Game> }>());
 export const updateGameSuccess = createAction('[Game] Update Game Success');
@@ -64,3 +64,5 @@ export const jackpotGameSetRound = createAction(
   '[Game] Jackpot Game Set Round',
   props<{ jackpotRound: JackpotRound }>(),
 );
+
+export const setTurnText = createAction('[Game] Set Turn Text', props<{ text: string }>());

@@ -11,14 +11,14 @@ import { Player, Score } from '@game/models';
 export class CurrentPlayerComponent {
   @Input() player: Player;
   @Input() scores: Score[] = [];
-  @Input() roundText = '-';
   @Input() disableEndTurn = false;
   @Input() countDown = -1;
+  @Input() turnText = '-';
 
   @Output() endTurn = new EventEmitter<void>();
   @Output() abortAutoEndTurn = new EventEmitter<void>();
 
-  emptyScore = ['empty', 'empty', 'empty'];
+  emptyScores = ['empty', 'empty', 'empty'];
 
   get scoresCount() {
     return this.scores.length;

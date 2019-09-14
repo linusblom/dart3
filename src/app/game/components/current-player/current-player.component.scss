@@ -3,7 +3,6 @@
 .player {
   display: flex;
   align-items: center;
-  font-family: $logo;
   font-size: 30px;
 
   div {
@@ -46,7 +45,7 @@
   font-size: 72px;
 }
 
-.round-text {
+.turn-text {
   font-size: 24px;
   padding: 20px;
   border-bottom: 1px solid $white90;

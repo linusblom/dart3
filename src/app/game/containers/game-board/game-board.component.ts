@@ -17,6 +17,7 @@ import {
   getLoadingPlayers,
   State,
   getGameJackpotRound,
+  getPlayingJackpot,
 } from '@game/reducers';
 import { State as Game } from '@game/reducers/game.reducer';
 import { getJackpotValue, getLoadingAccount } from '@root/reducers';
@@ -30,6 +31,8 @@ export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
   jackpotRound$: Observable<JackpotRound>;
 
+  betweenTurns = false;
+  playingJackpot = false;
   players: Player[] = [];
   game = {} as Game;
   loading = false;
@@ -81,6 +84,7 @@ export class GameBoardComponent implements OnDestroy {
       .subscribe(game => {
         if (game.currentTurn !== this.game.currentTurn) {
           this.scores = [];
+          this.betweenTurns = false;
         }
 
         if (game.ended > 0 && !this.ended) {
@@ -89,6 +93,13 @@ export class GameBoardComponent implements OnDestroy {
 
         this.game = game;
       });
+
+    this.store
+      .pipe(
+        select(getPlayingJackpot),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(playingJackpot => (this.playingJackpot = playingJackpot));
   }
 
   get currentPlayer() {
@@ -97,6 +108,10 @@ export class GameBoardComponent implements OnDestroy {
 
   get gameConfig() {
     return config[this.game.type] || config.default;
+  }
+
+  get disableBoard() {
+    return this.loading || this.ended || this.playingJackpot || this.betweenTurns;
   }
 
   ngOnDestroy() {
@@ -144,6 +159,7 @@ export class GameBoardComponent implements OnDestroy {
     const scores = [...this.scores, ...zeroScores.slice(this.scores.length, 4)];
 
     this.abortAutoEndTurn();
+    this.betweenTurns = true;
     this.store.dispatch(GameActions.endTurn({ scores }));
   }
 

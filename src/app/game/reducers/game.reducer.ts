@@ -7,9 +7,10 @@ export interface State extends Game {
   loadingGame: boolean;
   loadingPlayers: boolean;
   jackpotRound: JackpotRound;
+  playingJackpot: boolean;
 }
 
-export const initalState: State = {
+export const initialState: State = {
   id: null,
   type: null,
   bet: 0,
@@ -22,18 +23,19 @@ export const initalState: State = {
   currentRound: 0,
   loadingGame: false,
   loadingPlayers: false,
+  playingJackpot: false,
   jackpotRound: null,
 };
 
 export const reducer = createReducer(
-  initalState,
+  initialState,
   on(GameActions.updateGame, (state, { data }) => ({ ...state, ...data })),
   on(GameActions.updateGameSuccess, state => ({ ...state, loadingGame: false })),
   on(GameActions.loadGame, state => ({ ...state, loadingGame: true })),
   on(GameActions.loadGameSuccess, (state, { game }) => ({ ...state, ...game, loadingGame: false })),
   on(GameActions.loadGameFailure, state => ({ ...state, loadingGame: false })),
-  on(GameActions.endTurn, state => ({ ...state, loadingPlayers: true, loadingGame: true })),
-  on(GameActions.nextTurn, state => ({ ...state, loadingGame: true })),
+  on(GameActions.endTurn, state => ({ ...state, loadingPlayers: true })),
+  on(GameActions.nextTurn, state => ({ ...state, loadingGame: true, playingJackpot: false })),
   on(GameActions.loadGamePlayers, state => ({ ...state, loadingPlayers: true })),
   on(GameActions.loadGamePlayersSuccess, (state, { players }) => ({
     ...state,
@@ -41,6 +43,7 @@ export const reducer = createReducer(
     loadingPlayers: false,
   })),
   on(GameActions.loadGamePlayersFailure, state => ({ ...state, loadingPlayers: false })),
-  on(GameActions.loadGameDestroy, () => initalState),
+  on(GameActions.loadGameDestroy, () => initialState),
   on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
+  on(GameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
 );

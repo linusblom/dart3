@@ -1,11 +1,11 @@
 <div class="game-board">
   <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
   <app-dart-board
-    [locked]="loading || ended"
+    [disabled]="disableBoard"
     [scores]="scores"
     [jackpotRound]="jackpotRound$ | async"
     [player]="currentPlayer"
-    [jackpot]="jackpot$ | async"
+    [playingJackpot]="playingJackpot"
     (updateScores)="updateScores($event)"
     (jackpotGameComplete)="nextTurn()"
   ></app-dart-board>
@@ -15,19 +15,20 @@
       [players]="players"
       [currentTurn]="game.currentTurn"
       [currentRound]="game.currentRound"
-      [disableAnimation]="loading || ended"
+      [disableAnimation]="disableBoard"
       [gameConfig]="gameConfig"
     ></app-score-board>
     <div class="side-board-row">
       <app-current-player
         [player]="currentPlayer"
         [scores]="scores"
-        [disableEndTurn]="loading || ended"
-        [autoEndTurn]="countDown"
+        [disableEndTurn]="disableBoard"
+        [countDown]="countDown"
         [roundText]="gameConfig.longRoundName(game.currentRound)"
         (endTurn)="endTurn()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>
+      <app-jackpot [jackpot]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
     </div>
   </div>
 </div>

@@ -25,7 +25,7 @@ export class LegsController extends GameController {
     };
   }
 
-  shouldEnd(players: GamePlayer[]): boolean {
+  shouldGameEnd(players: GamePlayer[]): boolean {
     return this.getActivePlayers(players) === 1;
   }
 

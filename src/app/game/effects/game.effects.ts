@@ -159,7 +159,7 @@ export class GameEffects {
             : getNextTurn(turn, round);
         };
 
-        const endGame = config[type].controller.shouldEnd(players);
+        const endGame = config[type].controller.shouldGameEnd(players);
 
         return from(
           this.service.update(id, {
@@ -199,7 +199,7 @@ export class GameEffects {
       distinctUntilKeyChanged('jackpotDraw'),
       filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.PENDING),
       map(({ jackpotDraw, scores }) =>
-        scores.filter(({ score }) => score === 0).length || !environment.production
+        scores.filter(({ score }) => score === 0).length
           ? GameActions.nextTurn()
           : GameActions.jackpotGameStart({ jackpotDraw, scores }),
       ),

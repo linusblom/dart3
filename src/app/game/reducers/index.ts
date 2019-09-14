@@ -68,6 +68,10 @@ export const getLoadingGamePlayers = createSelector(
   getCurrentGame,
   state => state.loadingPlayers,
 );
+export const getPlayingJackpot = createSelector(
+  getCurrentGame,
+  state => state.playingJackpot,
+);
 export const getGamePlayers = createSelector(
   getAllPlayers,
   getGame,

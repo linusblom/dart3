@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-jackpot',
@@ -15,7 +15,6 @@ export class JackpotComponent {
     }
   }
   @Input() locked = false;
-  @Input() winner = false;
 
   value = 0;
   lockedValue = 0;

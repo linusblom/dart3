@@ -5,7 +5,7 @@
   position: relative;
   cursor: default;
 
-  &:not(.locked) {
+  &:not(.disabled) {
     cursor: url("../../../../assets/dart.png"), auto;
 
     .light, .red, .green, .dark {
@@ -15,8 +15,15 @@
     }
   }
   
-  &.locked path {
+  &.disabled path {
     transition: fill 200ms ease-in-out;
+  }
+
+  &.pulse {
+    .white, .blue {
+      animation: jackpot-pulse 1s ease-in-out;
+      animation-iteration-count: infinite;
+    }
   }
 }
 
@@ -69,4 +76,16 @@ svg {
   stroke: $board-black;
   stroke-width: 1;
   font-size: 36px;
+}
+
+@keyframes jackpot-pulse {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }

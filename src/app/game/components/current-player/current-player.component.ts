@@ -13,15 +13,12 @@ export class CurrentPlayerComponent {
   @Input() scores: Score[] = [];
   @Input() roundText = '-';
   @Input() disableEndTurn = false;
-  @Input() set autoEndTurn(countDown: number) {
-    this.countDown = countDown;
-  }
+  @Input() countDown = -1;
 
   @Output() endTurn = new EventEmitter<void>();
   @Output() abortAutoEndTurn = new EventEmitter<void>();
 
   emptyScore = ['empty', 'empty', 'empty'];
-  countDown = -1;
 
   get scoresCount() {
     return this.scores.length;

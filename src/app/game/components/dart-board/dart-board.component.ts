@@ -1,8 +1,8 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { first, concatMap, delay, finalize } from 'rxjs/operators';
-import { timer, from, of } from 'rxjs';
+import { from, of, timer } from 'rxjs';
+import { concatMap, delay, finalize, first, tap } from 'rxjs/operators';
 
-import { Score, JackpotRound, DartHit, DartHitType, Player } from '@game/models';
+import { DartHit, DartHitType, JackpotRound, Player, Score } from '@game/models';
 import { generateId } from '@utils/generateId';
 
 enum BoardFieldColor {
@@ -18,8 +18,8 @@ enum BoardFieldColor {
   styleUrls: ['./dart-board.component.scss'],
 })
 export class DartBoardComponent {
-  @Input() jackpot = 0;
   @Input() player: Player;
+  @Input() playingJackpot = false;
   @Input() set scores(scores: Score[]) {
     if (!scores.length) {
       this.dartHits = [];
@@ -31,20 +31,21 @@ export class DartBoardComponent {
       this.hits = jackpotRound.hits;
       this.currentJackpotRound = 0;
       this.hitsLeft = this.dartHits.map(({ score, multiplier }) => ({ score, multiplier }));
-      this.playingJackpot = true;
       this.playJackpotRound();
     }
   }
 
   @Input()
-  @HostBinding('class.locked')
-  locked = false;
+  @HostBinding('class.disabled')
+  disabled = false;
+
+  @HostBinding('class.pulse')
+  pulse = false;
 
   @Output() updateScores = new EventEmitter<Score[]>();
   @Output() jackpotGameComplete = new EventEmitter<void>();
 
   dartHits: DartHit[] = [];
-  playingJackpot = false;
   currentJackpotRound = 0;
   hitsLeft: Score[] = [];
   hits: Score[] = [];
@@ -65,7 +66,7 @@ export class DartBoardComponent {
           .map((_, scoreIdx) =>
             Array(3)
               .fill(null)
-              .map((_, multiplierIdx) => ({ score: scoreIdx + 1, multiplier: multiplierIdx + 1 })),
+              .map((__, multiplierIdx) => ({ score: scoreIdx + 1, multiplier: multiplierIdx + 1 })),
           )
           .flat(),
         { score: 25, multiplier: 1 },
@@ -81,7 +82,7 @@ export class DartBoardComponent {
   boardClick(event: MouseEvent, score: number, multiplier: number) {
     event.stopPropagation();
 
-    if (this.locked || this.dartHits.length === 3) {
+    if (this.disabled || this.dartHits.length === 3) {
       return;
     }
 
@@ -103,7 +104,7 @@ export class DartBoardComponent {
   }
 
   removeHit(id: string) {
-    if (!this.locked) {
+    if (!this.disabled) {
       this.dartHits = this.dartHits.filter(hit => hit.id !== id);
       this.updateHits();
     }
@@ -122,19 +123,26 @@ export class DartBoardComponent {
 
     const removalOrder = this.getRandomizedBoardFieldScores(this.hits[this.currentJackpotRound]);
     const delayOrder = [
-      ...Array(removalOrder.length - 30).fill(50),
-      ...Array(10).fill(100),
-      ...Array(10).fill(200),
-      ...Array(4).fill(300),
-      ...Array(4).fill(600),
-      ...Array(2).fill(1000),
+      ...Array(removalOrder.length - 10).fill(20),
+      ...Array(4).fill(250),
+      ...Array(4).fill(500),
+      ...Array(1).fill(1000),
+      ...Array(1).fill(2000),
     ];
+
+    console.log(removalOrder.length);
 
     from(removalOrder)
       .pipe(
-        concatMap((score, index) => of(score).pipe(delay(delayOrder[index]))),
+        concatMap((score, index) =>
+          of(score).pipe(
+            delay(delayOrder[index]),
+            tap(() => (this.pulse = index === 59)),
+          ),
+        ),
         delay(500),
         finalize(() => {
+          this.pulse = false;
           this.playDelay(() => this.checkJackpotHit(), 500);
         }),
       )
@@ -157,8 +165,8 @@ export class DartBoardComponent {
 
     if (isHitIndex >= 0) {
       this.dartHits[isHitIndex].type = DartHitType.DIAMOND;
-      this.hitsLeft = this.hitsLeft.map((hit, index) =>
-        index === isHitIndex ? { score: 0, multiplier: 0 } : hit,
+      this.hitsLeft = this.hitsLeft.map((hitLeft, index) =>
+        index === isHitIndex ? { score: 0, multiplier: 0 } : hitLeft,
       );
 
       if (this.currentJackpotRound++ === 2) {
@@ -182,7 +190,6 @@ export class DartBoardComponent {
       .pipe(first())
       .subscribe(() => {
         this.winner = false;
-        this.playingJackpot = false;
         this.jackpotGameComplete.emit();
       });
   }

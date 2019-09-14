@@ -17,7 +17,7 @@ export class HalveItController extends GameController {
     };
   }
 
-  shouldEnd(players: GamePlayer[]): boolean {
+  shouldGameEnd(players: GamePlayer[]): boolean {
     return players.length === players.filter(player => player.currentRound === 8).length;
   }
 

@@ -1,4 +1,5 @@
-<app-emoji hex="1F48E" size="60"></app-emoji>
-<div class="value">
-  {{ winner ? 'WINNER' : (displayValue | number: '1.2-2') }}
-</div>
+<app-box-group header="Jackpot">
+  <div class="value">
+    {{ displayValue | number: '1.2-2' }}
+  </div>
+</app-box-group>

@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 
-import { Game, GamePlayer, Score } from '@game/models';
+import { GameData, GamePlayer, Score } from '@game/models';
+import { State } from '@game/reducers';
 
 import { GameController } from './game.controller';
 
 @Injectable()
 export class DefaultController extends GameController {
-  endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
+  constructor(store: Store<State>) {
+    super(store);
+  }
+
+  endTurn(scores: Score[]): Partial<GamePlayer> {
     return {};
   }
 
-  shouldGameEnd(players: GamePlayer[]): boolean {
+  shouldGameEnd(): boolean {
     return false;
   }
 
-  roundHeader(round: number): string {
-    return `${round}`;
-  }
-
-  totalHeader(): string {
-    return 'Total';
-  }
-
-  turnText(game: Game): string {
-    return '';
+  getGameData(): GameData {
+    return {
+      roundHeaders: [],
+      totalHeader: '',
+      turnText: '',
+    };
   }
 }

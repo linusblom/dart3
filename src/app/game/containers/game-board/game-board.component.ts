@@ -2,26 +2,24 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, interval, Observable, Subject, timer } from 'rxjs';
-import { filter, first, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, first, map, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
-import { Status } from '@core/models';
+import { Permission, Status } from '@core/models';
 import { GameActions } from '@game/actions';
-import { ControllerService } from '@game/controllers';
-import { JackpotRound, Player, Score } from '@game/models';
+import { Game, GameData, JackpotRound, Player, Score } from '@game/models';
 import {
   getGame,
+  getGameData,
   getGameJackpotRound,
   getGamePlayers,
   getLoadingGame,
   getLoadingGamePlayers,
   getLoadingPlayers,
   getPlayingJackpot,
-  getTurnText,
   State,
 } from '@game/reducers';
-import { State as Game } from '@game/reducers/game.reducer';
-import { getJackpotValue, getLoadingAccount } from '@root/reducers';
+import { getJackpotValue, getLoadingAccount, hasPermission } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',
@@ -31,7 +29,8 @@ import { getJackpotValue, getLoadingAccount } from '@root/reducers';
 export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
   jackpotRound$: Observable<JackpotRound>;
-  turnText$: Observable<string>;
+  hasGameDevControls$: Observable<boolean>;
+  gameData$: Observable<GameData>;
 
   betweenTurns = false;
   playingJackpot = false;
@@ -42,7 +41,6 @@ export class GameBoardComponent implements OnDestroy {
   gameId = '';
   countDown = -1;
   ended = false;
-  turnText = '-';
 
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -51,7 +49,6 @@ export class GameBoardComponent implements OnDestroy {
     private readonly store: Store<State>,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly controllerService: ControllerService,
   ) {
     this.gameId = this.route.snapshot.params.gameId;
 
@@ -60,7 +57,11 @@ export class GameBoardComponent implements OnDestroy {
 
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
     this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
-    this.turnText$ = this.store.pipe(select(getTurnText));
+    this.hasGameDevControls$ = this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)));
+    this.gameData$ = this.store.pipe(
+      select(getGameData),
+      shareReplay(1),
+    );
 
     combineLatest([
       this.store.select(getLoadingAccount),
@@ -97,7 +98,6 @@ export class GameBoardComponent implements OnDestroy {
         }
 
         this.game = game;
-        this.turnText = this.controllerService.getController().turnText(game);
       });
 
     this.store
@@ -172,5 +172,9 @@ export class GameBoardComponent implements OnDestroy {
 
   nextTurn() {
     this.store.dispatch(GameActions.nextTurn());
+  }
+
+  abortGame() {
+    this.store.dispatch(GameActions.abortGame());
   }
 }

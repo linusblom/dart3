@@ -1,41 +1,48 @@
-import { Game, GamePlayer, Score } from '@game/models';
+import { select, Store } from '@ngrx/store';
+
+import { Game, GameData, GamePlayer, Score } from '@game/models';
+import { getGame, State } from '@game/reducers';
 
 export abstract class GameController {
-  abstract endTurn(scores: Score[], game: Game): Partial<GamePlayer>;
-  abstract shouldGameEnd(players: GamePlayer[]): boolean;
-  abstract roundHeader(round: number): string;
-  abstract totalHeader(): string;
-  abstract turnText(game: Game): string;
+  game: Game;
 
-  protected getPlayerById(id: string, players: GamePlayer[]) {
-    return players.find(player => player.id === id);
+  constructor(private readonly store: Store<State>) {
+    this.store.pipe(select(getGame)).subscribe(game => (this.game = game));
   }
 
-  protected getCurrentPlayer(game: Game) {
-    return this.getPlayerById(game.playerIds[game.currentTurn], game.players);
+  abstract endTurn(scores: Score[]): Partial<GamePlayer>;
+  abstract shouldGameEnd(): boolean;
+  abstract getGameData(): GameData;
+
+  protected getPlayerById(id: string) {
+    return this.game.players.find(player => player.id === id);
   }
 
-  protected getPreviousPlayerScores(game: Game) {
-    if (game.currentRound === 1 && game.currentTurn === 0) {
+  protected getCurrentPlayer() {
+    return this.getPlayerById(this.game.playerIds[this.game.currentTurn]);
+  }
+
+  protected getPreviousPlayerScores() {
+    if (this.game.currentRound === 1 && this.game.currentTurn === 0) {
       return Array(3).fill({ score: 1, multiplier: -1 });
     }
 
     const getPreviousTurn = (turn: number, round: number) => {
       if (--turn === -1) {
-        turn = game.players.length - 1;
+        turn = this.game.players.length - 1;
         round--;
       }
 
-      const prevPlayerTurn = this.getPlayerById(game.playerIds[turn], game.players).rounds[round];
+      const prevPlayerTurn = this.getPlayerById(this.game.playerIds[turn]).rounds[round];
 
       return prevPlayerTurn ? prevPlayerTurn.scores : getPreviousTurn(turn, round);
     };
 
-    return getPreviousTurn(game.currentTurn, game.currentRound);
+    return getPreviousTurn(this.game.currentTurn, this.game.currentRound);
   }
 
-  protected getActivePlayers(players: GamePlayer[]) {
-    return players.filter(player => player.position === 0).length;
+  protected getActivePlayers() {
+    return this.game.players.filter(player => player.position === 0).length;
   }
 
   protected getHitTotal(score: Score) {

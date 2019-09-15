@@ -1,7 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { ControllerService } from '@game/controllers';
 import { GamePlayer, Player } from '@game/models';
 
 @Component({
@@ -25,19 +24,11 @@ export class ScoreBoardComponent implements OnChanges {
   @Input() disableAnimation = false;
   @Input() currentRound = 0;
   @Input() fullWidth = false;
+  @Input() roundHeaders = [];
+  @Input() totalHeader = 'Total';
 
   rounds: number[] = [];
   roundsPlaceHolder = Array(30).fill(0);
-
-  constructor(private readonly controllerService: ControllerService) {}
-
-  getRoundHeader(round: number) {
-    return this.controllerService.getController().roundHeader(round);
-  }
-
-  getTotalHeader() {
-    return this.controllerService.getController().totalHeader();
-  }
 
   ngOnChanges({ currentRound }: SimpleChanges) {
     if (currentRound && currentRound.currentValue) {

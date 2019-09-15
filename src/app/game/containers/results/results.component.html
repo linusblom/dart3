@@ -83,6 +83,8 @@
     [currentRound]="game.currentRound"
     [disableAnimation]="true"
     [fullWidth]="true"
+    [roundHeaders]="(gameData$ | async).roundHeaders"
+    [totalHeader]="(gameData$ | async).totalHeader"
   ></app-score-board>
 
   <app-box-group header="Statistics" [styled]="false">

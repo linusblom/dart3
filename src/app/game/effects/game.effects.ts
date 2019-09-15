@@ -1,4 +1,5 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { from } from 'rxjs';
@@ -11,17 +12,18 @@ import {
   map,
   switchMap,
   takeUntil,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { NotificationActions } from '@core/actions';
-import { Status } from '@core/models';
+import { AccountActions } from '@core/actions';
+import { Permission } from '@core/models';
 import { GameActions, PlayerActions } from '@game/actions';
 import { ControllerService } from '@game/controllers';
 import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
-import { getAccount } from '@root/reducers';
+import { getAccount, hasPermission } from '@root/reducers';
 
 @Injectable()
 export class GameEffects {
@@ -31,13 +33,7 @@ export class GameEffects {
       exhaustMap(({ gameType, bet, playerIds }) =>
         from(this.service.create(gameType, bet, playerIds)).pipe(
           map(() => GameActions.createGameSuccess()),
-          catchError(error => [
-            GameActions.createGameFailure(error),
-            NotificationActions.push({
-              status: Status.ERROR,
-              message: error.message,
-            }),
-          ]),
+          catchError(() => [GameActions.createGameFailure()]),
         ),
       ),
     ),
@@ -51,7 +47,7 @@ export class GameEffects {
       concatMap(([{ data }, { currentGame }]) =>
         from(this.service.update(currentGame, data)).pipe(
           map(() => GameActions.updateGameSuccess()),
-          catchError(error => [GameActions.createGameFailure(error)]),
+          catchError(() => [GameActions.createGameFailure()]),
         ),
       ),
     ),
@@ -64,8 +60,17 @@ export class GameEffects {
         this.service.listen(gameId).pipe(
           takeUntil(this.actions$.pipe(ofType(GameActions.loadGameDestroy))),
           map((game: Game) => GameActions.loadGameSuccess({ game })),
-          catchError(error => [GameActions.loadGameFailure(error)]),
+          catchError(() => [GameActions.loadGameFailure()]),
         ),
+      ),
+    ),
+  );
+
+  loadGameSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.loadGameSuccess),
+      map(() =>
+        GameActions.updateGameData({ data: this.controllerService.getController().getGameData() }),
       ),
     ),
   );
@@ -75,14 +80,14 @@ export class GameEffects {
       ofType(GameActions.endTurn),
       withLatestFrom(this.store.pipe(select(getGame))),
       concatMap(([{ scores }, game]) => {
-        const { id, ...data } = this.controllerService.getController().endTurn(scores, game);
+        const { id, ...data } = this.controllerService.getController().endTurn(scores);
 
         return from(this.service.updateGamePlayersScores(game.id, id, data)).pipe(
           switchMap(() => [
             GameActions.endTurnSuccess(),
             PlayerActions.updatePlayerStats({ id: id, scores }),
           ]),
-          catchError(error => [GameActions.endTurnFailure(error)]),
+          catchError(() => [GameActions.endTurnFailure()]),
         );
       }),
     ),
@@ -158,7 +163,7 @@ export class GameEffects {
             : getNextTurn(turn, round);
         };
 
-        const endGame = this.controllerService.getController().shouldGameEnd(players);
+        const endGame = this.controllerService.getController().shouldGameEnd();
 
         return from(
           this.service.update(id, {
@@ -167,7 +172,7 @@ export class GameEffects {
           }),
         ).pipe(
           map(() => GameActions.nextTurnSuccess()),
-          catchError(error => [GameActions.nextTurnFailure(error)]),
+          catchError(() => [GameActions.nextTurnFailure()]),
         );
       }),
     ),
@@ -180,7 +185,7 @@ export class GameEffects {
         this.service.listenGamePlayers(gameId).pipe(
           takeUntil(this.actions$.pipe(ofType(GameActions.loadGamePlayersDestroy))),
           map((players: GamePlayer[]) => GameActions.loadGamePlayersSuccess({ players })),
-          catchError(error => [GameActions.loadGamePlayersFailure(error)]),
+          catchError(() => [GameActions.loadGamePlayersFailure()]),
         ),
       ),
     ),
@@ -205,10 +210,21 @@ export class GameEffects {
     ),
   );
 
+  abortGame$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.abortGame),
+      withLatestFrom(this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)))),
+      filter(([_, hasGameDevControls]) => hasGameDevControls),
+      tap(() => this.router.navigate(['start'])),
+      map(() => AccountActions.update({ data: { currentGame: null } })),
+    ),
+  );
+
   constructor(
     private readonly actions$: Actions,
     private readonly service: GameService,
     private readonly store: Store<State>,
     private readonly controllerService: ControllerService,
+    private readonly router: Router,
   ) {}
 }

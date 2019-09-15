@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 
 import { Player, Score, Transaction, TransactionPayload } from '@game/models';
@@ -9,47 +8,33 @@ export const loadPlayersSuccess = createAction(
   props<{ players: Player[] }>(),
 );
 export const loadPlayersFailure = createAction(
-  '[Player] Load Players Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+  '[Player] Load Players Failure');
 export const loadPlayersDestroy = createAction('[Player] Load Players Destroy');
 
 export const createPlayer = createAction('[Player] Create Player', props<{ name: string }>());
 export const createPlayerSuccess = createAction('[Player] Create Player Success');
-export const createPlayerFailure = createAction(
-  '[Player] Create Player Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const createPlayerFailure = createAction('[Player] Create Player Failure');
 
 export const updatePlayer = createAction(
   '[Player] Update player',
   props<{ id: string; data: Partial<Player> }>(),
 );
 export const updatePlayerSuccess = createAction('[Player] Update player Success');
-export const updatePlayerFailure = createAction(
-  '[Player] Update player Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const updatePlayerFailure = createAction('[Player] Update player Failure');
 
 export const updatePlayerStats = createAction(
   '[Player] Update Player Stats',
   props<{ id: string; scores: Score[] }>(),
 );
 export const updatePlayerStatsSuccess = createAction('[Player] Update Player Stats Success');
-export const updatePlayerStatsFailure = createAction(
-  '[Player] Update Player Stats Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const updatePlayerStatsFailure = createAction('[Player] Update Player Stats Failure');
 
 export const updateAvatar = createAction(
   '[Player] Update Avatar',
   props<{ id: string; file: File }>(),
 );
 export const updateAvatarSuccess = createAction('[Player] Update Avatar Success');
-export const updateAvatarFailure = createAction(
-  '[Player] Update Avatar Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const updateAvatarFailure = createAction('[Player] Update Avatar Failure');
 
 export const selectPlayer = createAction('[Player] Select Player', props<{ id: string }>());
 
@@ -58,10 +43,7 @@ export const createTransaction = createAction(
   props<{ playerId: string; transaction: TransactionPayload }>(),
 );
 export const createTransactionSuccess = createAction('[Player] Create Transaction Success');
-export const createTransactionFailure = createAction(
-  '[Player] Create Transaction Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const createTransactionFailure = createAction('[Player] Create Transaction Failure');
 
 export const loadTransactions = createAction(
   '[Player] Load Transactions',
@@ -71,8 +53,5 @@ export const loadTransactionsSuccess = createAction(
   '[Player] Load Transactions Success',
   props<{ transactions: Transaction[] }>(),
 );
-export const loadTransactionsFailure = createAction(
-  '[Player] Load Transactions Failure',
-  props<{ error: HttpErrorResponse }>(),
-);
+export const loadTransactionsFailure = createAction('[Player] Load Transactions Failure');
 export const loadTransactionsDestroy = createAction('[Player] Load Transactions Destroy');

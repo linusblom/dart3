@@ -1,5 +1,5 @@
-import { Component, Input, HostListener, Output, EventEmitter } from '@angular/core';
-import { Player, DartHitType } from '@game/models';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { DartHitType, Player } from '@game/models';
 
 @Component({
   selector: 'app-dart-hit',
@@ -11,10 +11,10 @@ export class DartHitComponent {
   @Input() type = DartHitType.AVATAR;
   @Output() remove = new EventEmitter<void>();
 
+  DartHitType = DartHitType;
+
   @HostListener('click')
   onClick() {
     this.remove.emit();
   }
-
-  DartHitType = DartHitType;
 }

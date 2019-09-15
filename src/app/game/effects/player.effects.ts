@@ -33,7 +33,7 @@ export class PlayerEffects {
             }),
             PlayerActions.createPlayerSuccess(),
           ]),
-          catchError(error => [PlayerActions.createPlayerFailure(error)]),
+          catchError(() => [PlayerActions.createPlayerFailure()]),
         ),
       ),
     ),
@@ -46,7 +46,7 @@ export class PlayerEffects {
         this.service.listen().pipe(
           takeUntil(this.actions$.pipe(ofType(PlayerActions.loadPlayersDestroy))),
           map((players: Player[]) => PlayerActions.loadPlayersSuccess({ players })),
-          catchError(error => [PlayerActions.loadPlayersFailure(error)]),
+          catchError(() => [PlayerActions.loadPlayersFailure()]),
         ),
       ),
     ),
@@ -58,7 +58,7 @@ export class PlayerEffects {
       concatMap(({ id, data }) =>
         from(this.service.update(id, data)).pipe(
           map(() => PlayerActions.updatePlayerSuccess()),
-          catchError(error => [PlayerActions.updatePlayerFailure(error)]),
+          catchError(() => [PlayerActions.updatePlayerFailure()]),
         ),
       ),
     ),
@@ -70,10 +70,7 @@ export class PlayerEffects {
       concatMap(({ id, file }) =>
         from(this.service.updateAvatar(id, file)).pipe(
           map(() => PlayerActions.updateAvatarSuccess()),
-          catchError(error => {
-            console.log(error);
-            return [PlayerActions.updateAvatarFailure(error)];
-          }),
+          catchError(() => [PlayerActions.updateAvatarFailure()]),
         ),
       ),
     ),
@@ -85,10 +82,7 @@ export class PlayerEffects {
       exhaustMap(({ playerId, transaction: { type, amount } }) =>
         from(this.service.createTransaction(playerId, type, amount)).pipe(
           map(() => PlayerActions.createTransactionSuccess()),
-          catchError(error => [
-            PlayerActions.createTransaction(error),
-            NotificationActions.push({ status: Status.ERROR, message: error.message }),
-          ]),
+          catchError(() => [PlayerActions.createTransactionFailure()]),
         ),
       ),
     ),
@@ -106,7 +100,7 @@ export class PlayerEffects {
           map((transactions: Transaction[]) =>
             PlayerActions.loadTransactionsSuccess({ transactions }),
           ),
-          catchError(error => [PlayerActions.loadTransactionsFailure(error)]),
+          catchError(() => [PlayerActions.loadTransactionsFailure()]),
         ),
       ),
     ),
@@ -143,7 +137,7 @@ export class PlayerEffects {
           }),
         ).pipe(
           map(() => PlayerActions.updatePlayerStatsSuccess()),
-          catchError(error => [PlayerActions.updatePlayerStatsFailure(error)]),
+          catchError(() => [PlayerActions.updatePlayerStatsFailure()]),
         );
       }),
     ),

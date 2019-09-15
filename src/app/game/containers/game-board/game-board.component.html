@@ -15,6 +15,8 @@
       [players]="players"
       [currentTurn]="game.currentTurn"
       [currentRound]="game.currentRound"
+      [roundHeaders]="(gameData$ | async).roundHeaders"
+      [totalHeader]="(gameData$ | async).totalHeader"
       [disableAnimation]="disableBoard"
     ></app-score-board>
     <div class="side-board-row">
@@ -23,11 +25,17 @@
         [scores]="scores"
         [disableEndTurn]="disableBoard"
         [countDown]="countDown"
-        [turnText]="turnText"
+        [turnText]="(gameData$ | async).turnText"
         (endTurn)="endTurn()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>
-      <app-jackpot [jackpot]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
+      <div>
+        <app-jackpot [jackpot]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
+        <app-dev-controls
+          *ngIf="hasGameDevControls$ | async"
+          (abortGame)="abortGame()"
+        ></app-dev-controls>
+      </div>
     </div>
   </div>
 </div>

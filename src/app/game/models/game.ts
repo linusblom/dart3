@@ -63,3 +63,9 @@ export interface DartHit extends Score {
   left: number;
   type: DartHitType;
 }
+
+export interface GameData {
+  roundHeaders: string[];
+  totalHeader: string;
+  turnText: string;
+}

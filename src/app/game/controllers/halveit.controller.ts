@@ -1,38 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Game, GamePlayer, JackpotDrawType, Score } from '@game/models';
+
+import { GameData, GamePlayer, JackpotDrawType, Score } from '@game/models';
+import { State } from '@game/reducers';
+import { Store } from '@ngrx/store';
 
 import { GameController } from './game.controller';
 
 @Injectable()
 export class HalveItController extends GameController {
-  endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
-    const player = this.getCurrentPlayer(game);
-    const score = this.checkRound(scores, game.currentRound);
+  constructor(store: Store<State>) {
+    super(store);
+  }
+
+  endTurn(scores: Score[]): Partial<GamePlayer> {
+    const player = this.getCurrentPlayer();
+    const score = this.checkRound(scores, this.game.currentRound);
     const { round, ...rest } = this.getRoundTotalScore(score, player.total);
 
     return {
       id: player.id,
-      currentRound: game.currentRound,
+      currentRound: this.game.currentRound,
       xp: player.xp + this.getTurnTotal(scores),
       ...rest,
-      rounds: { [game.currentRound]: { scores, jackpotDraw: JackpotDrawType.PENDING, ...round } },
+      rounds: {
+        [this.game.currentRound]: { scores, jackpotDraw: JackpotDrawType.PENDING, ...round },
+      },
     };
   }
 
-  shouldGameEnd(players: GamePlayer[]): boolean {
-    return players.length === players.filter(player => player.currentRound === 8).length;
+  shouldGameEnd(): boolean {
+    return (
+      this.game.players.length ===
+      this.game.players.filter(player => player.currentRound === 8).length
+    );
   }
 
-  roundHeader(round: number): string {
-    return ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1];
-  }
-
-  totalHeader(): string {
-    return 'Total';
-  }
-
-  turnText(game: Game): string {
-    return [
+  getGameData(): GameData {
+    const turnText = [
       'Nineteen',
       'Eighteen',
       'Double',
@@ -41,7 +45,13 @@ export class HalveItController extends GameController {
       'Triple',
       'Twenty',
       'Bullseye',
-    ][game.currentRound - 1];
+    ][this.game.currentRound];
+
+    return {
+      roundHeaders: ['unused', '19', '18', 'D', '17', '41', 'T', '20', 'B'],
+      totalHeader: 'Total',
+      turnText,
+    };
   }
 
   private checkScore(scores: Score[], allowedScores: number[]): number {

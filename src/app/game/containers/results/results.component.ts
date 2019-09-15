@@ -2,13 +2,14 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
-import { combineLatest, Subject } from 'rxjs';
-import { filter, first, map, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { filter, first, map, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { Game, GamePlayer, Player } from '@game/models';
+import { Game, GameData, GamePlayer, Player } from '@game/models';
 import {
   getGame,
+  getGameData,
   getGamePlayers,
   getLoadingGame,
   getLoadingGamePlayers,
@@ -27,6 +28,8 @@ import { boardLabels, colors } from '@utils/chart';
 export class ResultsComponent implements OnDestroy {
   @ViewChild('barChartRef', { static: true }) barChartRef: ElementRef;
   @ViewChild('pieChartRef', { static: true }) pieChartRef: ElementRef;
+
+  gameData$: Observable<GameData>;
 
   barChart: Chart;
   pieChart: Chart;
@@ -48,6 +51,11 @@ export class ResultsComponent implements OnDestroy {
     this.store.dispatch(GameActions.loadGame({ gameId }));
     this.store.dispatch(GameActions.loadGamePlayers({ gameId }));
 
+    this.gameData$ = this.store.pipe(
+      select(getGameData),
+      shareReplay(1),
+    );
+
     this.store
       .pipe(
         select(getGamePlayers),
@@ -66,7 +74,9 @@ export class ResultsComponent implements OnDestroy {
         select(getGame),
         takeUntil(this.destroy$),
       )
-      .subscribe(game => (this.game = game));
+      .subscribe(game => {
+        this.game = game;
+      });
 
     combineLatest([
       this.store.select(getLoadingAccount),

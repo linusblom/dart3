@@ -57,7 +57,7 @@ export const getCurrentGame = createSelector(
 );
 export const getGame = createSelector(
   getCurrentGame,
-  state => state,
+  state => state.game,
 );
 export const getLoadingGame = createSelector(
   getCurrentGame,
@@ -71,9 +71,13 @@ export const getPlayingJackpot = createSelector(
   getCurrentGame,
   state => state.playingJackpot,
 );
-export const getTurnText = createSelector(
+export const getGameJackpotRound = createSelector(
   getCurrentGame,
-  state => state.turnText,
+  state => state.jackpotRound,
+);
+export const getGameData = createSelector(
+  getCurrentGame,
+  state => state.data,
 );
 export const getGamePlayers = createSelector(
   getAllPlayers,
@@ -82,8 +86,4 @@ export const getGamePlayers = createSelector(
     players
       .filter(player => playerIds.includes(player.id))
       .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
-);
-export const getGameJackpotRound = createSelector(
-  getCurrentGame,
-  state => state.jackpotRound,
 );

@@ -1,24 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Game, GamePlayer, JackpotDrawType, Score } from '@game/models';
+
+import { GameData, GamePlayer, JackpotDrawType, Score } from '@game/models';
+import { State } from '@game/reducers';
+import { Store } from '@ngrx/store';
 
 import { GameController } from './game.controller';
 
 @Injectable()
 export class LegsController extends GameController {
-  endTurn(scores: Score[], game: Game): Partial<GamePlayer> {
-    const player = this.getCurrentPlayer(game);
-    const previousPlayerScores = this.getPreviousPlayerScores(game);
-    const activePlayers = this.getActivePlayers(game.players);
+  constructor(store: Store<State>) {
+    super(store);
+  }
+
+  endTurn(scores: Score[]): Partial<GamePlayer> {
+    const player = this.getCurrentPlayer();
+    const previousPlayerScores = this.getPreviousPlayerScores();
+    const activePlayers = this.getActivePlayers();
 
     const { round, ...rest } = this.checkScore(player, scores, previousPlayerScores, activePlayers);
 
     return {
       id: player.id,
-      currentRound: game.currentRound,
+      currentRound: this.game.currentRound,
       xp: player.xp + this.getTurnTotal(scores),
       ...rest,
       rounds: {
-        [game.currentRound]: {
+        [this.game.currentRound]: {
           scores,
           jackpotDraw: JackpotDrawType.PENDING,
           ...round,
@@ -27,20 +34,18 @@ export class LegsController extends GameController {
     };
   }
 
-  shouldGameEnd(players: GamePlayer[]): boolean {
-    return this.getActivePlayers(players) === 1;
+  shouldGameEnd(): boolean {
+    return this.getActivePlayers() === 1;
   }
 
-  roundHeader(currentRound: number): string {
-    return `${currentRound}`;
-  }
-
-  totalHeader(): string {
-    return 'Legs';
-  }
-
-  turnText(game: Game): string {
-    return '';
+  getGameData(): GameData {
+    return {
+      roundHeaders: Array(this.game.currentRound)
+        .fill(null)
+        .map((_, index) => `${index}`),
+      totalHeader: 'Legs',
+      turnText: '-',
+    };
   }
 
   private checkScore(

@@ -61,11 +61,7 @@ export const getGame = createSelector(
 );
 export const getLoadingGame = createSelector(
   getCurrentGame,
-  state => state.loadingGame,
-);
-export const getLoadingGamePlayers = createSelector(
-  getCurrentGame,
-  state => state.loadingPlayers,
+  state => state.loadingGame || state.loadingPlayers,
 );
 export const getPlayingJackpot = createSelector(
   getCurrentGame,

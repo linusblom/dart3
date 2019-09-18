@@ -39,12 +39,14 @@ export class LegsController extends GameController {
   }
 
   getGameData(): GameData {
+    const turnText = `Score to beat ${this.getTurnTotal(this.getPreviousPlayerScores())}`;
+
     return {
-      roundHeaders: Array(this.game.currentRound)
+      roundHeaders: Array(this.game.currentRound + 1)
         .fill(null)
         .map((_, index) => `${index}`),
       totalHeader: 'Legs',
-      turnText: '-',
+      turnText,
     };
   }
 
@@ -63,9 +65,12 @@ export class LegsController extends GameController {
       return {
         position: legsLeft === 0 ? activePlayers : 0,
         total: legsLeft,
-        totalDisplay: Array(legsLeft)
-          .fill('&#x1f9b5;')
-          .join(' '),
+        totalDisplay:
+          legsLeft > 0
+            ? Array(legsLeft)
+                .fill('&#x1f9b5;')
+                .join(' ')
+            : '&#x274C',
         round: {
           score: currentPlayerTotal,
           scoreDisplay: `${currentPlayerTotal}`,

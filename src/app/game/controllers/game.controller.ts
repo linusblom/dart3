@@ -24,7 +24,7 @@ export abstract class GameController {
 
   protected getPreviousPlayerScores() {
     if (this.game.currentRound === 1 && this.game.currentTurn === 0) {
-      return Array(3).fill({ score: 1, multiplier: -1 });
+      return Array(3).fill({ score: 0, multiplier: 0 });
     }
 
     const getPreviousTurn = (turn: number, round: number) => {

@@ -26,8 +26,12 @@
       letter-spacing: 2px;
     }
 
-    &.placeholder {
+    &.placeholder  {
       background: $white08;
+    }
+
+    &.position {
+      opacity: .5;
     }
 
     &.total {
@@ -66,7 +70,7 @@
   }
 }
 
-.active {
+.active:not(.disabled) {
   animation: active-player-pulse 2s ease-in-out;
   animation-iteration-count: infinite;
 }

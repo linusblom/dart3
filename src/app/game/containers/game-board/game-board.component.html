@@ -18,6 +18,7 @@
       [roundHeaders]="(gameData$ | async).roundHeaders"
       [totalHeader]="(gameData$ | async).totalHeader"
       [disableAnimation]="disableBoard"
+      [disablePosition]="ended"
     ></app-score-board>
     <div class="side-board-row">
       <app-current-player
@@ -30,7 +31,7 @@
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>
       <div>
-        <app-jackpot [jackpot]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
+        <app-jackpot [value]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
         <app-dev-controls
           *ngIf="hasGameDevControls$ | async"
           (abortGame)="abortGame()"

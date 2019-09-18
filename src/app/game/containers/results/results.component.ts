@@ -12,7 +12,6 @@ import {
   getGameData,
   getGamePlayers,
   getLoadingGame,
-  getLoadingGamePlayers,
   getLoadingPlayers,
   State,
 } from '@game/reducers';
@@ -82,11 +81,10 @@ export class ResultsComponent implements OnDestroy {
       this.store.select(getLoadingAccount),
       this.store.select(getLoadingPlayers),
       this.store.select(getLoadingGame),
-      this.store.select(getLoadingGamePlayers),
     ])
       .pipe(
         takeUntil(this.destroy$),
-        map(([account, players, game, gamePlayers]) => account || players || game || gamePlayers),
+        map(([account, players, game]) => account || players || game),
         filter(loading => !loading),
         first(),
         tap(() => {

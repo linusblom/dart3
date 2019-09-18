@@ -7,19 +7,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JackpotComponent {
-  @Input() set jackpot(value: number) {
-    this.value = value;
-
-    if (!this.locked) {
-      this.lockedValue = value;
-    }
+  @Input() value = 0;
+  @Input() set locked(locked: boolean) {
+    this.lockedValue = locked ? this.value : 0;
   }
-  @Input() locked = false;
 
-  value = 0;
   lockedValue = 0;
-
-  get displayValue() {
-    return this.locked ? this.lockedValue : this.value;
-  }
 }

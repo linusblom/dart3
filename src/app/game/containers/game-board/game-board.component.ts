@@ -14,7 +14,6 @@ import {
   getGameJackpotRound,
   getGamePlayers,
   getLoadingGame,
-  getLoadingGamePlayers,
   getLoadingPlayers,
   getPlayingJackpot,
   State,
@@ -67,11 +66,10 @@ export class GameBoardComponent implements OnDestroy {
       this.store.select(getLoadingAccount),
       this.store.select(getLoadingPlayers),
       this.store.select(getLoadingGame),
-      this.store.select(getLoadingGamePlayers),
     ])
       .pipe(
         takeUntil(this.destroy$),
-        map(([account, players, game, gamePlayers]) => account || players || game || gamePlayers),
+        map(([account, players, game]) => account || players || game),
       )
       .subscribe(loading => (this.loading = loading));
 

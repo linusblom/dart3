@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { GameData, GamePlayer, JackpotDrawType, Score } from '@game/models';
+import { GameData, GamePlayer, JackpotDrawType, Score, UNUSED } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
 
@@ -37,6 +37,7 @@ export class HalveItController extends GameController {
 
   getGameData(): GameData {
     const turnText = [
+      UNUSED,
       'Nineteen',
       'Eighteen',
       'Double',
@@ -48,7 +49,7 @@ export class HalveItController extends GameController {
     ][this.game.currentRound];
 
     return {
-      roundHeaders: ['unused', '19', '18', 'D', '17', '41', 'T', '20', 'B'],
+      roundHeaders: [UNUSED, '19', '18', 'D', '17', '41', 'T', '20', 'B'],
       totalHeader: 'Total',
       turnText,
     };

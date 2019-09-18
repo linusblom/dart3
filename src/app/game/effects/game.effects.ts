@@ -21,7 +21,7 @@ import { Permission } from '@core/models';
 import { GameActions, PlayerActions } from '@game/actions';
 import { ControllerService } from '@game/controllers';
 import { Game, GamePlayer, JackpotDrawType } from '@game/models';
-import { getGame, State } from '@game/reducers';
+import { getGame, getLoadingGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
 import { getAccount, hasPermission } from '@root/reducers';
 
@@ -66,9 +66,11 @@ export class GameEffects {
     ),
   );
 
-  loadGameSuccess$ = createEffect(() =>
+  updateGameData$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(GameActions.loadGameSuccess),
+      ofType(GameActions.loadGameSuccess, GameActions.loadGamePlayersSuccess),
+      withLatestFrom(this.store.pipe(select(getLoadingGame))),
+      filter(([_, loading]) => !loading),
       map(() =>
         GameActions.updateGameData({ data: this.controllerService.getController().getGameData() }),
       ),

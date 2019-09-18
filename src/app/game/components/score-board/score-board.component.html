@@ -36,7 +36,8 @@
             *ngFor="let player of players; let playerIndex = index"
             class="field"
             [ngClass]="{
-              active: (playerIndex === currentTurn || round === currentRound) && !disableAnimation
+              active: playerIndex === currentTurn && !disableAnimation,
+              position: getGamePlayer(player.id).position && !disablePosition
             }"
           >
             <app-score-board-score-field
@@ -51,7 +52,10 @@
       <div
         *ngFor="let player of players; let index = index"
         class="field total"
-        [ngClass]="{ active: index === currentTurn && !disableAnimation }"
+        [ngClass]="{
+          active: index === currentTurn && !disableAnimation,
+          position: getGamePlayer(player.id).position && !disablePosition
+        }"
       >
         <app-score-board-score-field
           [display]="getGamePlayer(player.id).totalDisplay"

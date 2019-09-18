@@ -1,5 +1,5 @@
 <app-box-group header="Jackpot">
   <div class="value">
-    {{ displayValue | number: '1.2-2' }}
+    {{ lockedValue || value | number: '1.2-2' }}
   </div>
 </app-box-group>

@@ -1,5 +1,7 @@
 import { JackpotDrawType } from './jackpot';
 
+export const UNUSED = 'unused';
+
 export interface Game {
   id: string;
   type: GameType;

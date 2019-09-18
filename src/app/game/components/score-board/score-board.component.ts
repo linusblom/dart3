@@ -22,6 +22,7 @@ export class ScoreBoardComponent implements OnChanges {
   @Input() players: Player[] = [];
   @Input() currentTurn = 0;
   @Input() disableAnimation = false;
+  @Input() disablePosition = false;
   @Input() currentRound = 0;
   @Input() fullWidth = false;
   @Input() roundHeaders = [];

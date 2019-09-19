@@ -2,11 +2,9 @@ import { Action, combineReducers, createFeatureSelector, createSelector } from '
 import * as fromRoot from '@root/reducers';
 
 import * as fromCurrentGame from './game.reducer';
-import * as fromPlayer from './player.reducer';
 
 export interface GameState {
   currentGame: fromCurrentGame.State;
-  player: fromPlayer.State;
 }
 
 export interface State extends fromRoot.State {
@@ -16,40 +14,10 @@ export interface State extends fromRoot.State {
 export function reducers(state: GameState | undefined, action: Action) {
   return combineReducers({
     currentGame: fromCurrentGame.reducer,
-    player: fromPlayer.reducer,
   })(state, action);
 }
 
 export const getGameModuleState = createFeatureSelector<State, GameState>('game');
-export const getGamePlayersState = createSelector(
-  getGameModuleState,
-  state => state.player,
-);
-export const getLoadingPlayers = createSelector(
-  getGamePlayersState,
-  state => state.loadingPlayers,
-);
-export const getLoadingCreatePlayer = createSelector(
-  getGamePlayersState,
-  state => state.loadingCreatePlayer,
-);
-export const getSelectedPlayerId = createSelector(
-  getGamePlayersState,
-  state => state.selectedPlayerId,
-);
-export const {
-  selectIds: getPlayerIds,
-  selectEntities: getPlayerEntities,
-  selectAll: getAllPlayers,
-  selectTotal: getTotalPlayers,
-} = fromPlayer.adapter.getSelectors(getGamePlayersState);
-export const getSelectedPlayer = createSelector(
-  getPlayerEntities,
-  getSelectedPlayerId,
-  (entities, selectedId) => {
-    return selectedId && entities[selectedId];
-  },
-);
 
 export const getCurrentGame = createSelector(
   getGameModuleState,
@@ -62,6 +30,12 @@ export const getGame = createSelector(
 export const getLoadingGame = createSelector(
   getCurrentGame,
   state => state.loadingGame || state.loadingPlayers,
+);
+export const getLoading = createSelector(
+  getLoadingGame,
+  fromRoot.getLoadingPlayers,
+  fromRoot.getLoadingAccount,
+  (game, players, account) => game || players || account,
 );
 export const getPlayingJackpot = createSelector(
   getCurrentGame,
@@ -76,9 +50,9 @@ export const getGameData = createSelector(
   state => state.data,
 );
 export const getGamePlayers = createSelector(
-  getAllPlayers,
   getGame,
-  (players, { playerIds }) =>
+  fromRoot.getAllPlayers,
+  ({ playerIds }, players) =>
     players
       .filter(player => playerIds.includes(player.id))
       .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),

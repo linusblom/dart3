@@ -5,8 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { PlayerActions } from '@game/actions';
-import { createPlayer } from '@game/actions/player.actions';
+import { PlayerActions } from '@core/actions';
 import { Player, Transaction, TransactionPayload } from '@game/models';
 import {
   getAllPlayers,
@@ -15,7 +14,7 @@ import {
   getSelectedPlayer,
   getSelectedPlayerId,
   State,
-} from '@game/reducers';
+} from '@root/reducers';
 import { BoxListItem, BoxTab } from '@shared/modules/box/box.models';
 
 enum Tabs {
@@ -91,7 +90,7 @@ export class PlayersComponent implements OnDestroy {
   }
 
   onCreate() {
-    this.store.dispatch(createPlayer({ name: this.name.value }));
+    this.store.dispatch(PlayerActions.createPlayer({ name: this.name.value }));
     this.name.reset();
   }
 

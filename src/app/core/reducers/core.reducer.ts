@@ -6,12 +6,12 @@ export interface State {
   menuOpen: boolean;
 }
 
-export const initalState: State = {
+export const initialState: State = {
   menuOpen: false,
 };
 
 export const reducer = createReducer(
-  initalState,
+  initialState,
   on(CoreActions.openMenu, state => ({ ...state, menuOpen: true })),
   on(CoreActions.closeMenu, state => ({ ...state, menuOpen: false })),
 );

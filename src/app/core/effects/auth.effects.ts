@@ -16,7 +16,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AccountActions, AuthActions } from '@core/actions';
+import { AccountActions, AuthActions, PlayerActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Permission, Status } from '@core/models';
 import { getAuthUser, getPermissions, State } from '@root/reducers';
@@ -48,7 +48,7 @@ export class AuthEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      switchMap(() => [CoreActions.openMenu(), AccountActions.loadAccount()]),
+      switchMap(() => [CoreActions.openMenu(), AccountActions.loadAccount(), PlayerActions.loadPlayers()]),
     ),
   );
 
@@ -129,6 +129,7 @@ export class AuthEffects {
         CoreActions.closeMenu(),
         AccountActions.loadAccountDestroy(),
         AccountActions.loadJackpotDestroy(),
+        PlayerActions.loadPlayersDestroy(),
       ]),
     ),
   );

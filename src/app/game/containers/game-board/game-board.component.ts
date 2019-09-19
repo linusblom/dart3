@@ -13,8 +13,7 @@ import {
   getGameData,
   getGameJackpotRound,
   getGamePlayers,
-  getLoadingGame,
-  getLoadingPlayers,
+  getLoading,
   getPlayingJackpot,
   State,
 } from '@game/reducers';
@@ -62,16 +61,7 @@ export class GameBoardComponent implements OnDestroy {
       shareReplay(1),
     );
 
-    combineLatest([
-      this.store.select(getLoadingAccount),
-      this.store.select(getLoadingPlayers),
-      this.store.select(getLoadingGame),
-    ])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(([account, players, game]) => account || players || game),
-      )
-      .subscribe(loading => (this.loading = loading));
+    this.store.select(getLoading).subscribe(loading => (this.loading = loading));
 
     this.store
       .pipe(

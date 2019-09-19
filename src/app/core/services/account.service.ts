@@ -4,7 +4,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Account } from '@core/models';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AccountService {
   constructor(private readonly db: AngularFirestore, private readonly auth: AngularFireAuth) {}
 

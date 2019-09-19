@@ -8,6 +8,7 @@ import {
   ResultsComponent,
   StartGameComponent,
 } from './containers';
+import { GameGuard, StartGameGuard } from './services';
 
 export const routes: Routes = [
   {
@@ -15,8 +16,8 @@ export const routes: Routes = [
     component: GameComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'start' },
-      { path: 'start', component: StartGameComponent },
-      { path: 'game/:gameId', component: GameBoardComponent },
+      { path: 'start', component: StartGameComponent, canActivate: [StartGameGuard] },
+      { path: 'game/:gameId', component: GameBoardComponent, canActivate: [GameGuard] },
       { path: 'players', component: PlayersComponent },
       { path: 'results/:gameId', component: ResultsComponent },
     ],

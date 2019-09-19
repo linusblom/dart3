@@ -7,7 +7,7 @@ export interface State extends Account {
   loading: boolean;
 }
 
-export const initalState: State = {
+export const initialState: State = {
   created: 0,
   currentGame: null,
   currentJackpot: null,
@@ -23,13 +23,13 @@ export const initalState: State = {
 };
 
 export const reducer = createReducer(
-  initalState,
-  on(AccountActions.loadAccount, state => ({ ...state, loading: true })),
+  initialState,
+  on(AccountActions.loadAccount, AccountActions.update, state => ({ ...state, loading: true })),
   on(AccountActions.loadAccountSuccess, (state, { account }) => ({
     ...state,
     ...account,
     loading: false,
   })),
   on(AccountActions.loadJackpotSuccess, (state, { jackpot }) => ({ ...state, jackpot })),
-  on(AccountActions.loadAccountFailure, AccountActions.loadAccountDestroy, () => initalState),
+  on(AccountActions.loadAccountFailure, AccountActions.loadAccountDestroy, () => initialState),
 );

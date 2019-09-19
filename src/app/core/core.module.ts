@@ -8,12 +8,10 @@ import { SharedModule } from '@shared/shared.module';
 import { components } from './components';
 import { containers } from './containers';
 import { CoreRoutingModule } from './core.routing';
-import { services } from './services';
 
 @NgModule({
   imports: [CommonModule, FontAwesomeModule, SharedModule, ReactiveFormsModule, CoreRoutingModule],
   declarations: [...components, ...containers],
   exports: [...containers],
-  providers: [...services],
 })
 export class CoreModule {}

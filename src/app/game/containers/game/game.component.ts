@@ -1,22 +1,18 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
-import { PlayerActions } from '@game/actions';
-import { State } from '@game/reducers';
+import { getLoading, State } from '@game/reducers';
 
 @Component({
   selector: 'app-game',
-  template: `
-    <router-outlet></router-outlet>
-  `,
-  styles: [':host { display: block; height: 100%; width: 100%; }'],
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.scss'],
 })
-export class GameComponent implements OnDestroy {
-  constructor(private readonly store: Store<State>) {
-    this.store.dispatch(PlayerActions.loadPlayers());
-  }
+export class GameComponent {
+  loading$: Observable<boolean>;
 
-  ngOnDestroy() {
-    this.store.dispatch(PlayerActions.loadPlayersDestroy());
+  constructor(private readonly store: Store<State>) {
+    this.loading$ = this.store.select(getLoading);
   }
 }

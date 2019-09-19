@@ -7,15 +7,7 @@ import { filter, first, map, shareReplay, takeUntil, tap } from 'rxjs/operators'
 
 import { GameActions } from '@game/actions';
 import { Game, GameData, GamePlayer, Player } from '@game/models';
-import {
-  getGame,
-  getGameData,
-  getGamePlayers,
-  getLoadingGame,
-  getLoadingPlayers,
-  State,
-} from '@game/reducers';
-import { getLoadingAccount } from '@root/reducers';
+import { getGame, getGameData, getGamePlayers, getLoading, State } from '@game/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
 
@@ -77,14 +69,10 @@ export class ResultsComponent implements OnDestroy {
         this.game = game;
       });
 
-    combineLatest([
-      this.store.select(getLoadingAccount),
-      this.store.select(getLoadingPlayers),
-      this.store.select(getLoadingGame),
-    ])
+    this.store
+      .select(getLoading)
       .pipe(
         takeUntil(this.destroy$),
-        map(([account, players, game]) => account || players || game),
         filter(loading => !loading),
         first(),
         tap(() => {

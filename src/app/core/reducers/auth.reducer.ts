@@ -8,20 +8,20 @@ export interface State {
   user: User;
 }
 
-export const initalState: State = {
+export const initialState: State = {
   loading: false,
   user: null,
 };
 
 export const reducer = createReducer(
-  initalState,
+  initialState,
   on(AuthActions.login, AuthActions.updatePassword, state => ({ ...state, loading: true })),
   on(AuthActions.updatePasswordSuccess, AuthActions.updatePasswordFailure, state => ({
     ...state,
     loading: false,
   })),
   on(AuthActions.loginSuccess, (state, { user }) => ({ ...state, loading: false, user })),
-  on(AuthActions.loginFailure, AuthActions.logout, () => initalState),
+  on(AuthActions.loginFailure, AuthActions.logout, () => initialState),
   on(AuthActions.updateProfileSuccess, (state, { displayName }) => ({
     ...state,
     user: { ...state.user, displayName },

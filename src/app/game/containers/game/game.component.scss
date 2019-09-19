@@ -1,0 +1,13 @@
+:host {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+mat-progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}

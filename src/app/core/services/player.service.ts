@@ -6,7 +6,7 @@ import { map, take } from 'rxjs/operators';
 
 import { Player, TransactionType } from '@game/models';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PlayerService {
   constructor(
     private readonly db: AngularFirestore,

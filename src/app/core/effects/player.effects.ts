@@ -13,11 +13,12 @@ import {
 } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
+import { PlayerActions } from '@core/actions';
 import { Status } from '@core/models';
-import { PlayerActions } from '@game/actions';
+import { PlayerService } from '@core/services';
 import { Player, Transaction } from '@game/models';
-import { getSelectedPlayer, State } from '@game/reducers';
-import { PlayerService } from '@game/services';
+import { State } from '@game/reducers';
+import { getSelectedPlayer } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {

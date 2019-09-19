@@ -6,12 +6,14 @@ import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromNotification from '@core/reducers/notification.reducer';
+import * as fromPlayer from '@core/reducers/player.reducer';
 
 export interface State {
   auth: fromAuth.State;
   notification: fromNotification.State;
   core: fromCore.State;
   account: fromAccount.State;
+  player: fromPlayer.State;
 }
 
 export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>(
@@ -22,6 +24,7 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       notification: fromNotification.reducer,
       core: fromCore.reducer,
       account: fromAccount.reducer,
+      player: fromPlayer.reducer,
     }),
   },
 );
@@ -68,4 +71,31 @@ export const hasPermission = (permission: Permission) =>
   createSelector(
     getAccountState,
     state => state.permissions.includes(permission),
+  );
+
+  export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
+  export const getLoadingPlayers = createSelector(
+    getPlayerState,
+    state => state.loadingPlayers,
+  );
+  export const getLoadingCreatePlayer = createSelector(
+    getPlayerState,
+    state => state.loadingCreatePlayer,
+  );
+  export const getSelectedPlayerId = createSelector(
+    getPlayerState,
+    state => state.selectedPlayerId,
+  );
+  export const {
+    selectIds: getPlayerIds,
+    selectEntities: getPlayerEntities,
+    selectAll: getAllPlayers,
+    selectTotal: getTotalPlayers,
+  } = fromPlayer.adapter.getSelectors(getPlayerState);
+  export const getSelectedPlayer = createSelector(
+    getPlayerEntities,
+    getSelectedPlayerId,
+    (entities, selectedId) => {
+      return selectedId && entities[selectedId];
+    },
   );

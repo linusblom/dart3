@@ -11,8 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { CoreModule } from '@core/core.module';
-import { AccountEffects } from '@core/effects/account.effects';
-import { AuthEffects } from '@core/effects/auth.effect';
+import { effects } from '@core/effects';
 import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
 
@@ -37,7 +36,7 @@ import { ROOT_REDUCERS } from './reducers';
         strictActionSerializability: false,
       },
     }),
-    EffectsModule.forRoot([AuthEffects, AccountEffects]),
+    EffectsModule.forRoot(effects),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,

@@ -9,8 +9,8 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameType, Player } from '@game/models';
-import { getAllPlayers, getGame, getLoadingPlayers, State } from '@game/reducers';
-import { getAccount } from '@root/reducers';
+import { getGame, State } from '@game/reducers';
+import { getAccount, getAllPlayers, getLoadingPlayers } from '@root/reducers';
 
 @Component({
   selector: 'app-start-game',

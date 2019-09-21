@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { PlayerActions } from '@core/actions';
-import { Player, Transaction, TransactionPayload } from '@game/models';
+import { Player, Transaction, TransactionPayload } from '@core/models';
 import {
   getAllPlayers,
   getLoadingCreatePlayer,

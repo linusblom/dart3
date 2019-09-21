@@ -1,5 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { DartHitType, Player } from '@game/models';
+
+import { Player } from '@core/models';
+import { DartHitType } from '@game/models';
 
 @Component({
   selector: 'app-dart-hit',

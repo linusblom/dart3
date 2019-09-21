@@ -6,9 +6,9 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { Permission } from '@core/models';
+import { Permission, Player } from '@core/models';
 import { GameActions } from '@game/actions';
-import { Game, GameType, Player } from '@game/models';
+import { Game, GameType } from '@game/models';
 import { getGame, State } from '@game/reducers';
 import { getAccount, getAllPlayers, getLoadingPlayers } from '@root/reducers';
 

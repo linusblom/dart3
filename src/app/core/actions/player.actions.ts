@@ -1,14 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Player, Score, Transaction, TransactionPayload } from '@game/models';
+import { Player, Transaction, TransactionPayload } from '@core/models';
+import { Score } from '@game/models';
 
 export const loadPlayers = createAction('[Player] Load Players');
 export const loadPlayersSuccess = createAction(
   '[Player] Load Players Success',
   props<{ players: Player[] }>(),
 );
-export const loadPlayersFailure = createAction(
-  '[Player] Load Players Failure');
+export const loadPlayersFailure = createAction('[Player] Load Players Failure');
 export const loadPlayersDestroy = createAction('[Player] Load Players Destroy');
 
 export const createPlayer = createAction('[Player] Create Player', props<{ name: string }>());

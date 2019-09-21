@@ -55,6 +55,10 @@ export const getAccount = createSelector(
   getAccountState,
   state => state,
 );
+export const getJackpot = createSelector(
+  getAccountState,
+  state => state.jackpot,
+);
 export const getJackpotValue = createSelector(
   getAccountState,
   state => state.jackpot.value,
@@ -73,29 +77,29 @@ export const hasPermission = (permission: Permission) =>
     state => state.permissions.includes(permission),
   );
 
-  export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
-  export const getLoadingPlayers = createSelector(
-    getPlayerState,
-    state => state.loadingPlayers,
-  );
-  export const getLoadingCreatePlayer = createSelector(
-    getPlayerState,
-    state => state.loadingCreatePlayer,
-  );
-  export const getSelectedPlayerId = createSelector(
-    getPlayerState,
-    state => state.selectedPlayerId,
-  );
-  export const {
-    selectIds: getPlayerIds,
-    selectEntities: getPlayerEntities,
-    selectAll: getAllPlayers,
-    selectTotal: getTotalPlayers,
-  } = fromPlayer.adapter.getSelectors(getPlayerState);
-  export const getSelectedPlayer = createSelector(
-    getPlayerEntities,
-    getSelectedPlayerId,
-    (entities, selectedId) => {
-      return selectedId && entities[selectedId];
-    },
-  );
+export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
+export const getLoadingPlayers = createSelector(
+  getPlayerState,
+  state => state.loadingPlayers,
+);
+export const getLoadingCreatePlayer = createSelector(
+  getPlayerState,
+  state => state.loadingCreatePlayer,
+);
+export const getSelectedPlayerId = createSelector(
+  getPlayerState,
+  state => state.selectedPlayerId,
+);
+export const {
+  selectIds: getPlayerIds,
+  selectEntities: getPlayerEntities,
+  selectAll: getAllPlayers,
+  selectTotal: getTotalPlayers,
+} = fromPlayer.adapter.getSelectors(getPlayerState);
+export const getSelectedPlayer = createSelector(
+  getPlayerEntities,
+  getSelectedPlayerId,
+  (entities, selectedId) => {
+    return selectedId && entities[selectedId];
+  },
+);

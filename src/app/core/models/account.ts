@@ -17,6 +17,7 @@ export interface Jackpot {
 export enum Permission {
   CORE_ACCOUNT_WRITE = 'core:account:write',
   CORE_PASSWORD_WRITE = 'core:password:write',
+  CORE_TOTAL_CREDITS_READ = 'core:total-credits:read',
   GAME_BET_10 = 'game:bet:10',
   GAME_BET_20 = 'game:bet:20',
   GAME_BET_50 = 'game:bet:50',

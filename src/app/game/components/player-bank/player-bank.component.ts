@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl, Validators } from '@angular/forms';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 
-import { Transaction, TransactionPayload, TransactionType } from '@game/models';
+import { Transaction, TransactionPayload, TransactionType } from '@core/models';
 
 @Component({
   selector: 'app-player-bank',

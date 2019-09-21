@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Player, Score } from '@game/models';
+import { Player } from '@core/models';
+import { Score } from '@game/models';
 
 @Component({
   selector: 'app-current-player',

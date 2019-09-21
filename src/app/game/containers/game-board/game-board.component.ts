@@ -1,13 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, interval, Observable, Subject, timer } from 'rxjs';
-import { filter, first, map, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { interval, Observable, Subject, timer } from 'rxjs';
+import { filter, first, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
-import { Permission, Status } from '@core/models';
+import { Permission, Player, Status } from '@core/models';
 import { GameActions } from '@game/actions';
-import { Game, GameData, JackpotRound, Player, Score } from '@game/models';
+import { Game, GameData, JackpotRound, Score } from '@game/models';
 import {
   getGame,
   getGameData,
@@ -17,7 +17,7 @@ import {
   getPlayingJackpot,
   State,
 } from '@game/reducers';
-import { getJackpotValue, getLoadingAccount, hasPermission } from '@root/reducers';
+import { getJackpotValue, hasPermission } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',

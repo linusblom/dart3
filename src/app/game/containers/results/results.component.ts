@@ -2,11 +2,12 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { filter, first, map, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, first, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
+import { Player } from '@core/models';
 import { GameActions } from '@game/actions';
-import { Game, GameData, GamePlayer, Player } from '@game/models';
+import { Game, GameData, GamePlayer } from '@game/models';
 import { getGame, getGameData, getGamePlayers, getLoading, State } from '@game/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';

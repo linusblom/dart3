@@ -42,7 +42,7 @@ export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
     totalDisplay: '0',
     currentRound: 0,
     position: 0,
-    xp: bet + 10,
+    xp: bet * 10,
     win: 0,
     rounds: {},
   };

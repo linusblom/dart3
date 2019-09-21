@@ -1,6 +1,6 @@
 <app-box header="Settings">
   <app-box-group header="Account name">
-    <ng-container *ngIf="hasCoreAccountWrite$ | async; else noPermission">
+    <ng-container *ngIf="hasPermission(Permission.CORE_ACCOUNT_WRITE); else noPermission">
       <mat-form-field>
         <input
           matInput
@@ -13,7 +13,7 @@
   </app-box-group>
 
   <app-box-group header="Password">
-    <ng-container *ngIf="hasCorePasswordWrite$ | async; else noPermission">
+    <ng-container *ngIf="hasPermission(Permission.CORE_PASSWORD_WRITE); else noPermission">
       <div class="password-form" [formGroup]="passwordForm">
         <mat-form-field>
           <input
@@ -45,11 +45,28 @@
     [rightDisabled]="passwordForm.invalid"
     (rightClick)="onChangePassword()"
   ></app-box-buttons>
+
+  <app-box-group header="Credits in play">
+    <ng-container *ngIf="hasPermission(Permission.CORE_TOTAL_CREDITS_READ); else noPermission">
+      <div class="credits-in-play">
+        <div>
+          <div *ngFor="let credit of credits$ | async" class="credit">
+            <div class="name">{{ credit.name }}</div>
+            <div class="value">{{ credit.value | number: '1.2-2' }}</div>
+          </div>
+        </div>
+        <div class="turnover">
+          <div>Total turnover</div>
+          <div>{{ totalTurnover$ | async | number: '1.2-2' }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </app-box-group>
 </app-box>
 
 <ng-template #noPermission>
   <div class="no-permission">
     <fa-icon [icon]="noPermissionIcon" size="2x"></fa-icon>
-    <span>You dont have permission(s) to perform this operation.</span>
+    <span>You don't have permission(s) to perform this operation.</span>
   </div>
 </ng-template>

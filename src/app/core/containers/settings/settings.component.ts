@@ -2,13 +2,20 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
-import { Observable, race, Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, race, Subject } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
-import { Permission } from '@core/models';
+import { Jackpot, Permission, Player } from '@core/models';
 import { Actions, ofType } from '@ngrx/effects';
-import { getAuthLoading, getAuthUser, hasPermission, State } from '@root/reducers';
+import {
+  getAllPlayers,
+  getAuthLoading,
+  getAuthUser,
+  getJackpot,
+  getPermissions,
+  State,
+} from '@root/reducers';
 
 @Component({
   selector: 'app-settings',
@@ -16,10 +23,13 @@ import { getAuthLoading, getAuthUser, hasPermission, State } from '@root/reducer
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnDestroy {
-  loading$: Observable<boolean>;
-  hasCorePasswordWrite$: Observable<boolean>;
-  hasCoreAccountWrite$: Observable<boolean>;
+  Permission = Permission;
 
+  loading$: Observable<boolean>;
+  credits$: Observable<{ name: string; value: number }[]>;
+  totalTurnover$: Observable<number>;
+
+  permissions: Permission[] = [];
   noPermissionIcon = faTimesCircle;
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
@@ -38,8 +48,6 @@ export class SettingsComponent implements OnDestroy {
 
   constructor(private readonly store: Store<State>, private readonly actions$: Actions) {
     this.loading$ = store.pipe(select(getAuthLoading));
-    this.hasCoreAccountWrite$ = store.pipe(select(hasPermission(Permission.CORE_ACCOUNT_WRITE)));
-    this.hasCorePasswordWrite$ = store.pipe(select(hasPermission(Permission.CORE_PASSWORD_WRITE)));
 
     store
       .pipe(
@@ -48,11 +56,42 @@ export class SettingsComponent implements OnDestroy {
         filter(user => !!user),
       )
       .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
+
+    store
+      .pipe(
+        select(getPermissions),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(permissions => (this.permissions = permissions));
+
+    this.credits$ = combineLatest([
+      store.pipe(select(getAllPlayers)),
+      store.pipe(select(getJackpot)),
+    ]).pipe(
+      filter(() => this.hasPermission(Permission.CORE_TOTAL_CREDITS_READ)),
+      map(([players, jackpot]: [Player[], Jackpot]) => [
+        { name: 'Players', value: players.reduce((acc, { credits }) => acc + credits, 0) },
+        { name: 'Jackpot', value: jackpot.value },
+        { name: 'Next Jackpot', value: jackpot.next },
+      ]),
+      map(credits => [
+        ...credits,
+        { name: 'Total', value: credits.reduce((acc, { value }) => acc + value, 0) },
+      ]),
+    );
+
+    this.totalTurnover$ = store
+      .pipe(select(getAllPlayers))
+      .pipe(map(players => players.reduce((acc, { turnover }) => acc + turnover, 0)));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  hasPermission(permission: Permission) {
+    return this.permissions.includes(permission);
   }
 
   onChangeDisplayName() {

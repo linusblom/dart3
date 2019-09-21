@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { map, take } from 'rxjs/operators';
 
-import { Player, TransactionType } from '@game/models';
+import { Player, TransactionType } from '@core/models';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -83,7 +83,7 @@ export class PlayerService {
 
         if (newAmount < 0) {
           return Promise.reject({
-            message: `Player ${name} doesn't have enought credits for this transaction.`,
+            message: `Player ${name} doesn't have enough credits for this transaction.`,
           });
         }
 

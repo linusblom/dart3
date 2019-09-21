@@ -14,9 +14,8 @@ import {
 
 import { NotificationActions } from '@core/actions';
 import { PlayerActions } from '@core/actions';
-import { Status } from '@core/models';
+import { Player, Status, Transaction } from '@core/models';
 import { PlayerService } from '@core/services';
-import { Player, Transaction } from '@game/models';
 import { State } from '@game/reducers';
 import { getSelectedPlayer } from '@root/reducers';
 

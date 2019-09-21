@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { faGem } from '@fortawesome/free-regular-svg-icons';
 import { faBullseye, faCoins } from '@fortawesome/free-solid-svg-icons';
 
-import { Player } from '@game/models';
+import { Player } from '@core/models';
 
 @Component({
   selector: 'app-player-info',

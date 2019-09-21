@@ -16,6 +16,7 @@ export const onCreate = functions
       permissions: [
         'core:account:write',
         'core:password:write',
+        'core:total-credits:read',
         'game:bet:10',
         'game:bet:20',
         'game:bet:50',

@@ -2,11 +2,12 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Observable, race, Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
 import { Permission } from '@core/models';
+import { Actions, ofType } from '@ngrx/effects';
 import { getAuthLoading, getAuthUser, hasPermission, State } from '@root/reducers';
 
 @Component({
@@ -35,7 +36,7 @@ export class SettingsComponent implements OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store<State>) {
+  constructor(private readonly store: Store<State>, private readonly actions$: Actions) {
     this.loading$ = store.pipe(select(getAuthLoading));
     this.hasCoreAccountWrite$ = store.pipe(select(hasPermission(Permission.CORE_ACCOUNT_WRITE)));
     this.hasCorePasswordWrite$ = store.pipe(select(hasPermission(Permission.CORE_PASSWORD_WRITE)));
@@ -63,8 +64,26 @@ export class SettingsComponent implements OnDestroy {
   onChangePassword() {
     if (this.passwordForm.valid) {
       const { password, newPassword } = this.passwordForm.value;
-      const action = AuthActions.updatePassword({ newPassword });
-      this.store.dispatch(AuthActions.reauthenticate({ password, action }));
+      this.store.dispatch(
+        AuthActions.reauthenticate({
+          password,
+          action: AuthActions.updatePassword({ newPassword }),
+        }),
+      );
+
+      race(
+        this.actions$.pipe(ofType(AuthActions.reauthenticateFailure)),
+        this.actions$.pipe(ofType(AuthActions.updatePasswordSuccess)),
+        this.actions$.pipe(ofType(AuthActions.updatePasswordFailure)),
+      )
+        .pipe(take(1))
+        .subscribe(({ type }) => {
+          if (type === AuthActions.reauthenticateFailure.type) {
+            this.passwordForm.get('password').setErrors({ invalid: true });
+          } else if (type === AuthActions.updatePasswordSuccess.type) {
+            this.passwordForm.reset();
+          }
+        });
     }
   }
 }

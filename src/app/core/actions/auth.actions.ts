@@ -19,7 +19,7 @@ export const updateProfileSuccess = createAction(
   props<{ displayName: string }>(),
 );
 export const updateProfileFailure = createAction(
-  '[Auth] Update Profile Failre',
+  '[Auth] Update Profile Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

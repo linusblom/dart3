@@ -1,8 +1,8 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { PlayerActions } from '@core/actions';
-import { Player } from '@core/models';
+import { PlayerActions } from '@player/actions';
+import { Player } from '@player/models';
 
 export interface State extends EntityState<Player> {
   loadingPlayers: boolean;

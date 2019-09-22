@@ -5,7 +5,7 @@ import { interval, Observable, Subject, timer } from 'rxjs';
 import { filter, first, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
-import { Permission, Player, Status } from '@core/models';
+import { Permission, Status } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameData, JackpotRound, Score } from '@game/models';
 import {
@@ -17,6 +17,7 @@ import {
   getPlayingJackpot,
   State,
 } from '@game/reducers';
+import { Player } from '@player/models';
 import { getJackpotValue, hasPermission } from '@root/reducers';
 
 @Component({

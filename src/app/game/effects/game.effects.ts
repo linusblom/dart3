@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { from, race } from 'rxjs';
+import { from } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -16,13 +16,14 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AccountActions, PlayerActions } from '@core/actions';
+import { AccountActions } from '@core/actions';
 import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
 import { ControllerService } from '@game/controllers';
 import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getGame, getLoadingGame, State } from '@game/reducers';
 import { GameService } from '@game/services';
+import { PlayerActions } from '@player/actions';
 import { getAccount, hasPermission } from '@root/reducers';
 
 @Injectable()

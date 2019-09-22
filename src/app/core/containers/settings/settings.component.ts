@@ -6,8 +6,9 @@ import { combineLatest, Observable, race, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { AuthActions } from '@core/actions';
-import { Jackpot, Permission, Player } from '@core/models';
+import { Jackpot, Permission } from '@core/models';
 import { Actions, ofType } from '@ngrx/effects';
+import { Player } from '@player/models';
 import {
   getAllPlayers,
   getAuthLoading,

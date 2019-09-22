@@ -5,10 +5,10 @@ import { Chart } from 'chart.js';
 import { Observable, Subject } from 'rxjs';
 import { filter, first, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
-import { Player } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameData, GamePlayer } from '@game/models';
 import { getGame, getGameData, getGamePlayers, getLoading, State } from '@game/reducers';
+import { Player } from '@player/models';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
 

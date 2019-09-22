@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Player, Transaction, TransactionPayload } from '@core/models';
 import { Score } from '@game/models';
+import { Player, Transaction, TransactionPayload } from '@player/models';
 
 export const loadPlayers = createAction('[Player] Load Players');
 export const loadPlayersSuccess = createAction(

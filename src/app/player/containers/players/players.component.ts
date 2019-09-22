@@ -1,12 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { PlayerActions } from '@core/actions';
-import { Player, Transaction, TransactionPayload } from '@core/models';
+import { PlayerActions } from '@player/actions';
+import { Player, Transaction, TransactionPayload } from '@player/models';
 import {
   getAllPlayers,
   getLoadingCreatePlayer,
@@ -32,7 +33,6 @@ export class PlayersComponent implements OnDestroy {
   loadingCreatePlayer$: Observable<boolean>;
   loadingPlayers$: Observable<boolean>;
   playersListItem$: Observable<BoxListItem[]>;
-  selectedPlayerId$: Observable<string>;
   transactions$: Observable<Transaction[]>;
 
   Tabs = Tabs;
@@ -50,10 +50,13 @@ export class PlayersComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store<State>) {
+  constructor(
+    private readonly store: Store<State>,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+  ) {
     this.loadingCreatePlayer$ = this.store.pipe(select(getLoadingCreatePlayer));
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
-    this.selectedPlayerId$ = this.store.pipe(select(getSelectedPlayerId));
     this.playersListItem$ = this.store.pipe(
       select(getAllPlayers),
       map(players =>
@@ -63,7 +66,8 @@ export class PlayersComponent implements OnDestroy {
       ),
     );
 
-    this.selectedPlayerId$
+    this.store
+      .pipe(select(getSelectedPlayerId))
       .pipe(
         takeUntil(this.destroy$),
         filter(playerId => !!playerId),
@@ -72,7 +76,6 @@ export class PlayersComponent implements OnDestroy {
       )
       .subscribe(playerId => {
         this.store.dispatch(PlayerActions.loadTransactions({ playerId }));
-        this.selectedPlayerId = playerId;
       });
 
     this.store
@@ -81,6 +84,16 @@ export class PlayersComponent implements OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(selectedPlayer => (this.selectedPlayer = selectedPlayer));
+
+    this.route.params
+      .pipe(
+        takeUntil(this.destroy$),
+        map(({ id }) => id),
+      )
+      .subscribe(id => {
+        this.selectedPlayerId = id;
+        this.store.dispatch(PlayerActions.selectPlayer({ id }));
+      });
   }
 
   ngOnDestroy() {
@@ -95,7 +108,7 @@ export class PlayersComponent implements OnDestroy {
   }
 
   onSelectPlayer(id: string) {
-    this.store.dispatch(PlayerActions.selectPlayer({ id }));
+    this.router.navigate(['players', id]);
   }
 
   onUpdate(data: Partial<Player>) {

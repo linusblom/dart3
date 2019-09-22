@@ -6,7 +6,7 @@ import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromNotification from '@core/reducers/notification.reducer';
-import * as fromPlayer from '@core/reducers/player.reducer';
+import * as fromPlayer from '@player/reducers/player.reducer';
 
 export interface State {
   auth: fromAuth.State;

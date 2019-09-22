@@ -11,8 +11,10 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { CoreModule } from '@core/core.module';
-import { effects } from '@core/effects';
+import { effects as coreEffects } from '@core/effects';
 import { environment } from '@envs/environment';
+import { effects as playerEffects } from '@player/effects';
+import { PlayerModule } from '@player/player.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { AppComponent } from './app.component';
@@ -36,12 +38,13 @@ import { ROOT_REDUCERS } from './reducers';
         strictActionSerializability: false,
       },
     }),
-    EffectsModule.forRoot(effects),
+    EffectsModule.forRoot([...coreEffects, ...playerEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
     }),
     CoreModule,
+    PlayerModule,
     AppRoutingModule,
     SharedModule,
   ],

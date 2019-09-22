@@ -1,8 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { Player } from '@core/models';
 import { GamePlayer } from '@game/models';
+import { Player } from '@player/models';
 
 @Component({
   selector: 'app-score-board',

@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import {
   GameBoardComponent,
   GameComponent,
-  PlayersComponent,
   ResultsComponent,
   StartGameComponent,
 } from './containers';
@@ -18,7 +17,6 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'start' },
       { path: 'start', component: StartGameComponent, canActivate: [StartGameGuard] },
       { path: 'game/:gameId', component: GameBoardComponent, canActivate: [GameGuard] },
-      { path: 'players', component: PlayersComponent },
       { path: 'results/:gameId', component: ResultsComponent },
     ],
   },

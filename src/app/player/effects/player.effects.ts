@@ -13,10 +13,11 @@ import {
 } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
-import { PlayerActions } from '@core/actions';
-import { Player, Status, Transaction } from '@core/models';
-import { PlayerService } from '@core/services';
-import { State } from '@game/reducers';
+import { Status } from '@core/models';
+import { PlayerActions } from '@player/actions';
+import { Player, Transaction } from '@player/models';
+import { PlayerService } from '@player/services';
+import { State } from '@root/reducers';
 import { getSelectedPlayer } from '@root/reducers';
 
 @Injectable()

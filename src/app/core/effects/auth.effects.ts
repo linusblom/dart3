@@ -16,9 +16,10 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AccountActions, AuthActions, PlayerActions } from '@core/actions';
+import { AccountActions, AuthActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Permission, Status } from '@core/models';
+import { PlayerActions } from '@player/actions';
 import { getAuthUser, getPermissions, State } from '@root/reducers';
 
 @Injectable()
@@ -48,7 +49,11 @@ export class AuthEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      switchMap(() => [CoreActions.openMenu(), AccountActions.loadAccount(), PlayerActions.loadPlayers()]),
+      switchMap(() => [
+        CoreActions.openMenu(),
+        AccountActions.loadAccount(),
+        PlayerActions.loadPlayers(),
+      ]),
     ),
   );
 

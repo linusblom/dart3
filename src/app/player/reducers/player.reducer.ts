@@ -18,7 +18,7 @@ export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
 export const initialState: State = adapter.getInitialState({
   loadingPlayers: false,
   loadingCreatePlayer: false,
-  selectedPlayerId: '',
+  selectedPlayerId: undefined,
 });
 
 export const reducer = createReducer(

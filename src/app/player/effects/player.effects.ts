@@ -80,8 +80,8 @@ export class PlayerEffects {
   createTransaction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.createTransaction),
-      exhaustMap(({ playerId, transaction: { type, amount } }) =>
-        from(this.service.createTransaction(playerId, type, amount)).pipe(
+      exhaustMap(({ id, transaction: { type, amount } }) =>
+        from(this.service.createTransaction(id, type, amount)).pipe(
           map(() => PlayerActions.createTransactionSuccess()),
           catchError(() => [PlayerActions.createTransactionFailure()]),
         ),
@@ -92,8 +92,8 @@ export class PlayerEffects {
   loadTransaction$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.loadTransactions),
-      switchMap(({ playerId }) =>
-        this.service.listenTransactions(playerId).pipe(
+      switchMap(({ id }) =>
+        this.service.listenTransactions(id).pipe(
           takeUntil(this.actions$.pipe(ofType(PlayerActions.loadTransactionsDestroy))),
           map((transactions: Transaction[]) =>
             transactions.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1)),

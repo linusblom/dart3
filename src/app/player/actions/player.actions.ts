@@ -40,15 +40,12 @@ export const selectPlayer = createAction('[Player] Select Player', props<{ id: s
 
 export const createTransaction = createAction(
   '[Player] Create Transaction',
-  props<{ playerId: string; transaction: TransactionPayload }>(),
+  props<{ id: string; transaction: TransactionPayload }>(),
 );
 export const createTransactionSuccess = createAction('[Player] Create Transaction Success');
 export const createTransactionFailure = createAction('[Player] Create Transaction Failure');
 
-export const loadTransactions = createAction(
-  '[Player] Load Transactions',
-  props<{ playerId: string }>(),
-);
+export const loadTransactions = createAction('[Player] Load Transactions', props<{ id: string }>());
 export const loadTransactionsSuccess = createAction(
   '[Player] Load Transactions Success',
   props<{ transactions: Transaction[] }>(),

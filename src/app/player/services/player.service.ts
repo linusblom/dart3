@@ -56,12 +56,12 @@ export class PlayerService {
       });
   }
 
-  listenTransactions(playerId: string) {
+  listenTransactions(id: string) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
-      .doc(playerId)
+      .doc(id)
       .collection('transactions')
       .snapshotChanges()
       .pipe(
@@ -69,12 +69,12 @@ export class PlayerService {
       );
   }
 
-  createTransaction(playerId: string, type: TransactionType, amount: number) {
+  createTransaction(id: string, type: TransactionType, amount: number) {
     const playerRef = this.db.firestore
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('players')
-      .doc(playerId);
+      .doc(id);
 
     return this.db.firestore.runTransaction(transaction =>
       transaction.get(playerRef).then(doc => {

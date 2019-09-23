@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
 import { PlayerActions } from '@player/actions';
 import { Player, Transaction, TransactionPayload } from '@player/models';
@@ -70,12 +70,12 @@ export class PlayersComponent implements OnDestroy {
       .pipe(select(getSelectedPlayerId))
       .pipe(
         takeUntil(this.destroy$),
-        filter(playerId => !!playerId),
         distinctUntilChanged(),
         tap(() => this.store.dispatch(PlayerActions.loadTransactionsDestroy())),
+        filter(id => !!id),
       )
-      .subscribe(playerId => {
-        this.store.dispatch(PlayerActions.loadTransactions({ playerId }));
+      .subscribe(id => {
+        this.store.dispatch(PlayerActions.loadTransactions({ id }));
       });
 
     this.store
@@ -88,7 +88,7 @@ export class PlayersComponent implements OnDestroy {
     this.route.params
       .pipe(
         takeUntil(this.destroy$),
-        map(({ id }) => id),
+        pluck('id'),
       )
       .subscribe(id => {
         this.selectedPlayerId = id;
@@ -121,7 +121,7 @@ export class PlayersComponent implements OnDestroy {
 
   onTransaction(transaction: TransactionPayload) {
     this.store.dispatch(
-      PlayerActions.createTransaction({ playerId: this.selectedPlayerId, transaction }),
+      PlayerActions.createTransaction({ id: this.selectedPlayerId, transaction }),
     );
   }
 }

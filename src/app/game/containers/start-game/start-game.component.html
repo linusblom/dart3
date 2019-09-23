@@ -37,38 +37,35 @@
     </div>
   </app-box-group>
 
-  <app-box-group
-    header="Select players"
-    [styled]="false"
-    class="players"
-    [loading]="loadingPlayers$ | async"
-  >
-    <div class="no-players" *ngIf="players.length === 0">
-      <fa-icon [icon]="noPlayersIcon" size="2x"></fa-icon>
-      <span>There are no players, click below to create one.</span>
-    </div>
-    <div
-      *ngFor="let player of players"
-      class="player"
-      (click)="togglePlayers(player)"
-      [ngClass]="{
-        selected: selectedPlayerIds.includes(player.id),
-        disabled: bet > player.credits || loading
-      }"
-    >
-      <fa-icon
-        [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
-        size="2x"
-      ></fa-icon>
-      <app-avatar
-        [avatarUrl]="player.avatarUrl"
-        [color]="player.color"
-        [name]="player.name"
-        size="60"
-      ></app-avatar>
-      <div class="name">
-        <div>{{ player.name }}</div>
-        <app-player-level [xp]="player.xp" justify="flex-start"></app-player-level>
+  <app-box-group header="Select players" [styled]="false" [loading]="loadingPlayers$ | async">
+    <div class="players" perfectScrollbar>
+      <div class="no-players" *ngIf="players.length === 0">
+        <fa-icon [icon]="noPlayersIcon" size="2x"></fa-icon>
+        <span>There are no players, click below to create one.</span>
+      </div>
+      <div
+        *ngFor="let player of players"
+        class="player"
+        (click)="togglePlayers(player)"
+        [ngClass]="{
+          selected: selectedPlayerIds.includes(player.id),
+          disabled: bet > player.credits || loading
+        }"
+      >
+        <fa-icon
+          [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
+          size="2x"
+        ></fa-icon>
+        <app-avatar
+          [avatarUrl]="player.avatarUrl"
+          [color]="player.color"
+          [name]="player.name"
+          size="60"
+        ></app-avatar>
+        <div class="name">
+          <div>{{ player.name }}</div>
+          <app-player-level [xp]="player.xp" justify="flex-start"></app-player-level>
+        </div>
       </div>
     </div>
   </app-box-group>
@@ -80,4 +77,7 @@
     [rightLoading]="loading"
     (rightClick)="createGame()"
   ></app-box-buttons>
+</app-box>
+<app-box width="400px">
+  <app-jackpot [value]="jackpot$ | async"></app-jackpot>
 </app-box>

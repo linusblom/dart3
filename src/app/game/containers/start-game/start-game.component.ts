@@ -10,8 +10,8 @@ import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
 import { Game, GameType } from '@game/models';
 import { getGame, State } from '@game/reducers';
-import { Player} from '@player/models';
-import { getAccount, getAllPlayers, getLoadingPlayers } from '@root/reducers';
+import { Player } from '@player/models';
+import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@root/reducers';
 
 @Component({
   selector: 'app-start-game',
@@ -20,6 +20,7 @@ import { getAccount, getAllPlayers, getLoadingPlayers } from '@root/reducers';
 })
 export class StartGameComponent implements OnDestroy {
   loadingPlayers$: Observable<boolean>;
+  jackpot$: Observable<number>;
 
   players: Player[];
   GameType = GameType;
@@ -60,6 +61,8 @@ export class StartGameComponent implements OnDestroy {
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
+    this.jackpot$ = this.store.pipe(select(getJackpotValue));
+
     this.store
       .pipe(
         select(getAllPlayers),

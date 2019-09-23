@@ -1,5 +1,9 @@
 @import '~variables.scss';
 
+:host {
+  display: flex;
+}
+
 .settings {
   display: flex;
   flex-direction: column;
@@ -20,6 +24,11 @@
   fa-icon {
     margin-right: 10px;
   }
+}
+
+.players {
+  position: relative;
+  max-height: 480px;
 }
 
 .player {

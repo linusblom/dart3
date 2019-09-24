@@ -21,15 +21,12 @@ export const createGame = createAction(
 export const createGameSuccess = createAction('[Game] Create Game Success');
 export const createGameFailure = createAction('[Game] Create Game Failure');
 
-export const loadGame = createAction('[Game] Load Game', props<{ gameId: string }>());
+export const loadGame = createAction('[Game] Load Game', props<{ id: string }>());
 export const loadGameSuccess = createAction('[Game] Load Game Success', props<{ game: Game }>());
 export const loadGameFailure = createAction('[Game] Load Game Failure');
 export const loadGameDestroy = createAction('[Game] Load Game Destroy');
 
-export const loadGamePlayers = createAction(
-  '[Game] Load Game Players',
-  props<{ gameId: string }>(),
-);
+export const loadGamePlayers = createAction('[Game] Load Game Players', props<{ id: string }>());
 export const loadGamePlayersSuccess = createAction(
   '[Game] Load Game Players Success',
   props<{ players: GamePlayer[] }>(),

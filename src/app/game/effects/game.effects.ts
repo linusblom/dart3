@@ -57,8 +57,8 @@ export class GameEffects {
   loadGame$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.loadGame),
-      switchMap(({ gameId }) =>
-        this.service.listen(gameId).pipe(
+      switchMap(({ id }) =>
+        this.service.listen(id).pipe(
           takeUntil(this.actions$.pipe(ofType(GameActions.loadGameDestroy))),
           map((game: Game) => GameActions.loadGameSuccess({ game })),
           catchError(() => [GameActions.loadGameFailure()]),
@@ -184,8 +184,8 @@ export class GameEffects {
   loadGamePlayers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.loadGamePlayers),
-      switchMap(({ gameId }) =>
-        this.service.listenGamePlayers(gameId).pipe(
+      switchMap(({ id }) =>
+        this.service.listenGamePlayers(id).pipe(
           takeUntil(this.actions$.pipe(ofType(GameActions.loadGamePlayersDestroy))),
           map((players: GamePlayer[]) => GameActions.loadGamePlayersSuccess({ players })),
           catchError(() => [GameActions.loadGamePlayersFailure()]),

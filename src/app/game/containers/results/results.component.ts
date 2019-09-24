@@ -38,10 +38,10 @@ export class ResultsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
-    const gameId = this.route.snapshot.params.gameId;
+    const id = this.route.snapshot.params.gameId;
 
-    this.store.dispatch(GameActions.loadGame({ gameId }));
-    this.store.dispatch(GameActions.loadGamePlayers({ gameId }));
+    this.store.dispatch(GameActions.loadGame({ id }));
+    this.store.dispatch(GameActions.loadGamePlayers({ id }));
 
     this.gameData$ = this.store.pipe(
       select(getGameData),

@@ -7,7 +7,7 @@ import {
   ResultsComponent,
   StartGameComponent,
 } from './containers';
-import { GameGuard, StartGameGuard } from './services';
+import { GameGuard, GameResolver, StartGameGuard } from './services';
 
 export const routes: Routes = [
   {
@@ -16,7 +16,13 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'start' },
       { path: 'start', component: StartGameComponent, canActivate: [StartGameGuard] },
-      { path: 'game/:gameId', component: GameBoardComponent, canActivate: [GameGuard] },
+      {
+        path: 'game',
+        component: GameBoardComponent,
+        canActivate: [GameGuard],
+        canDeactivate: [GameGuard],
+        resolve: { game: GameResolver },
+      },
       { path: 'results/:gameId', component: ResultsComponent },
     ],
   },

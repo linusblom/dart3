@@ -15,7 +15,7 @@ export class StartGameGuard implements CanActivate {
       filter(account => !account.loading),
       map(account => {
         if (account.currentGame) {
-          this.router.navigate(['game', account.currentGame]);
+          this.router.navigate(['game']);
           return false;
         }
 

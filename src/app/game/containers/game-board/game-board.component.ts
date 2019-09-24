@@ -44,16 +44,7 @@ export class GameBoardComponent implements OnDestroy {
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-  ) {
-    this.gameId = this.route.snapshot.params.gameId;
-
-    this.store.dispatch(GameActions.loadGame({ gameId: this.gameId }));
-    this.store.dispatch(GameActions.loadGamePlayers({ gameId: this.gameId }));
-
+  constructor(private readonly store: Store<State>, private readonly router: Router) {
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
     this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
     this.hasGameDevControls$ = this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)));
@@ -108,8 +99,6 @@ export class GameBoardComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-    this.store.dispatch(GameActions.loadGameDestroy());
-    this.store.dispatch(GameActions.loadGamePlayersDestroy());
   }
 
   endGame() {

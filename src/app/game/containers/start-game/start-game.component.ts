@@ -91,7 +91,7 @@ export class StartGameComponent implements OnDestroy {
         this.permissions = permissions;
 
         if (currentGame) {
-          this.router.navigate(['game', currentGame]);
+          this.router.navigate(['game']);
         }
       });
   }

@@ -1,8 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { filter } from 'rxjs/operators';
 
 import { GameType } from '@game/models';
-import { getGame, State } from '@game/reducers';
+import { getCurrentGame, State } from '@game/reducers';
 
 import { DefaultController } from './default.controller';
 import { GameController } from './game.controller';
@@ -14,7 +15,7 @@ export class ControllerService {
   private gameType: GameType;
 
   constructor(private readonly injector: Injector, private store: Store<State>) {
-    this.store.pipe(select(getGame)).subscribe(({ type }) => (this.gameType = type));
+    this.store.pipe(select(getCurrentGame)).subscribe(({ type }) => (this.gameType = type));
   }
 
   getController(): GameController {

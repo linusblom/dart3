@@ -13,6 +13,7 @@ export interface Game {
   currentTurn: number;
   currentRound: number;
   players: GamePlayer[];
+  boardData?: BoardData;
 }
 
 export enum GameType {

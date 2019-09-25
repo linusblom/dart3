@@ -2,12 +2,12 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
-import { Observable, Subject } from 'rxjs';
-import { filter, first, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, first, takeUntil, tap } from 'rxjs/operators';
 
 import { GameActions, GamePlayerActions } from '@game/actions';
-import { BoardData, Game, GamePlayer } from '@game/models';
-import { getBoardData, getGame, getGamePlayers, getLoading, State } from '@game/reducers';
+import { Game, GamePlayer } from '@game/models';
+import { getCurrentGame, getGamePlayers, getLoading, State } from '@game/reducers';
 import { Player } from '@player/models';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
@@ -20,8 +20,6 @@ import { boardLabels, colors } from '@utils/chart';
 export class ResultsComponent implements OnDestroy {
   @ViewChild('barChartRef', { static: true }) barChartRef: ElementRef;
   @ViewChild('pieChartRef', { static: true }) pieChartRef: ElementRef;
-
-  boardData$: Observable<BoardData>;
 
   barChart: Chart;
   pieChart: Chart;
@@ -43,11 +41,6 @@ export class ResultsComponent implements OnDestroy {
     this.store.dispatch(GameActions.valueChangesInit({ id }));
     this.store.dispatch(GamePlayerActions.valueChangesInit({ id }));
 
-    this.boardData$ = this.store.pipe(
-      select(getBoardData),
-      shareReplay(1),
-    );
-
     this.store
       .pipe(
         select(getGamePlayers),
@@ -63,7 +56,7 @@ export class ResultsComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getGame),
+        select(getCurrentGame),
         takeUntil(this.destroy$),
       )
       .subscribe(game => {

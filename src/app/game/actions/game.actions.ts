@@ -6,16 +6,16 @@ export const create = createAction(
   '[Game] Create Game',
   props<{ gameType: GameType; bet: number; playerIds: string[] }>(),
 );
-export const createSuccess = createAction('[Game] Create Game Success');
-export const createFailure = createAction('[Game] Create Game Failure');
+export const createSuccess = createAction('[Game] Create Success');
+export const createFailure = createAction('[Game] Create Failure');
 
-export const valueChangesInit = createAction('[Game] Load Game', props<{ id: string }>());
+export const valueChangesInit = createAction('[Game] Value Changes Init', props<{ id: string }>());
 export const valueChangesSuccess = createAction(
-  '[Game] Load Game Success',
+  '[Game] Value Changes Success',
   props<{ game: Game }>(),
 );
-export const valueChangesFailure = createAction('[Game] Load Game Failure');
-export const valueChangesDestroy = createAction('[Game] Load Game Destroy');
+export const valueChangesFailure = createAction('[Game] Value Changes Failure');
+export const valueChangesDestroy = createAction('[Game] Value Changes Destroy');
 
 export const endTurn = createAction('[Game] End Turn', props<{ scores: Score[] }>());
 export const endTurnSuccess = createAction('[Game] End Turn Success');
@@ -35,10 +35,10 @@ export const jackpotGameSetRound = createAction(
 );
 
 export const updateBoardData = createAction(
-  '[Game] Update Game Data',
+  '[Game] Update Board Data',
   props<{ boardData: BoardData }>(),
 );
 
-export const end = createAction('[Game] End Game');
+export const end = createAction('[Game] End');
 
-export const abort = createAction('[Game] Abort Game');
+export const abort = createAction('[Game] Abort');

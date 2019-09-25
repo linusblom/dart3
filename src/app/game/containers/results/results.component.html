@@ -84,8 +84,8 @@
     [disableAnimation]="true"
     [disablePosition]="true"
     [fullWidth]="true"
-    [roundHeaders]="(boardData$ | async).roundHeaders"
-    [totalHeader]="(boardData$ | async).totalHeader"
+    [roundHeaders]="game.boardData.roundHeaders"
+    [totalHeader]="game.boardData.totalHeader"
   ></app-score-board>
 
   <app-box-group header="Statistics" [styled]="false">

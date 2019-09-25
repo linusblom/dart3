@@ -22,7 +22,7 @@ import { Permission } from '@core/models';
 import { GameActions, GamePlayerActions } from '@game/actions';
 import { ControllerService } from '@game/controllers';
 import { Game, JackpotDrawType } from '@game/models';
-import { getGame, getLoadingGame, State } from '@game/reducers';
+import { getCurrentGame, getCurrentGameLoading, State } from '@game/reducers';
 import { GamePlayerService, GameService } from '@game/services';
 import { PlayerActions } from '@player/actions';
 import { getAccount, hasPermission } from '@root/reducers';
@@ -57,7 +57,7 @@ export class GameEffects {
   updateGameData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.valueChangesSuccess, GamePlayerActions.valueChangesSuccess),
-      withLatestFrom(this.store.pipe(select(getLoadingGame))),
+      withLatestFrom(this.store.pipe(select(getCurrentGameLoading))),
       filter(([_, loading]) => !loading),
       map(() =>
         GameActions.updateBoardData({ boardData: this.controllerService.getController().getBoardData() }),
@@ -68,7 +68,7 @@ export class GameEffects {
   endTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.endTurn),
-      withLatestFrom(this.store.pipe(select(getGame))),
+      withLatestFrom(this.store.pipe(select(getCurrentGame))),
       concatMap(([{ scores }, game]) => {
         const { id, ...data } = this.controllerService.getController().endTurn(scores);
 
@@ -140,7 +140,7 @@ export class GameEffects {
   nextTurn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GameActions.nextTurn),
-      withLatestFrom(this.store.pipe(select(getGame))),
+      withLatestFrom(this.store.pipe(select(getCurrentGame))),
       concatMap(([_, { id, currentRound, currentTurn, players, playerIds }]) => {
         const getNextTurn = (turn: number, round: number) => {
           if (++turn === players.length) {
@@ -171,7 +171,7 @@ export class GameEffects {
   jackpotGameCheck$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GamePlayerActions.valueChangesSuccess),
-      withLatestFrom(this.store.select(getGame)),
+      withLatestFrom(this.store.select(getCurrentGame)),
       map(([{ players }, game]) => {
         const player = players.find(({ id }) => id === game.playerIds[game.currentTurn]);
         return player.currentRound === game.currentRound && player.rounds[player.currentRound];

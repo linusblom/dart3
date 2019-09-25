@@ -1,13 +1,13 @@
 import { select, Store } from '@ngrx/store';
 
 import { BoardData, Game, GamePlayer, Score } from '@game/models';
-import { getGame, State } from '@game/reducers';
+import { getCurrentGame, State } from '@game/reducers';
 
 export abstract class GameController {
   game: Game;
 
   constructor(private readonly store: Store<State>) {
-    this.store.pipe(select(getGame)).subscribe(game => (this.game = game));
+    this.store.pipe(select(getCurrentGame)).subscribe(game => (this.game = game));
   }
 
   abstract endTurn(scores: Score[]): Partial<GamePlayer>;

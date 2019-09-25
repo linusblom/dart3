@@ -1,9 +1,11 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '@root/reducers';
 
-import * as fromCurrentGame from './game.reducer';
+import * as fromCurrentGame from './current-game.reducer';
+import * as fromGame from './game.reducer';
 
 export interface GameState {
+  game: fromGame.State;
   currentGame: fromCurrentGame.State;
 }
 
@@ -13,44 +15,78 @@ export interface State extends fromRoot.State {
 
 export function reducers(state: GameState | undefined, action: Action) {
   return combineReducers({
+    game: fromGame.reducer,
     currentGame: fromCurrentGame.reducer,
   })(state, action);
 }
 
 export const getGameModuleState = createFeatureSelector<State, GameState>('game');
 
-export const getCurrentGame = createSelector(
+export const getGameState = createSelector(
+  getGameModuleState,
+  state => state.game,
+);
+
+export const getGameLoading = createSelector(
+  getGameState,
+  state => state.loading,
+);
+
+export const getSelectedGameId = createSelector(
+  getGameState,
+  state => state.selectedGameId,
+);
+
+export const {
+  selectIds: getGameIds,
+  selectEntities: getGameEntities,
+  selectAll: getAllGames,
+  selectTotal: getTotalGames,
+} = fromGame.adapter.getSelectors(getGameState);
+
+export const getSelectedGame = createSelector(
+  getGameEntities,
+  getSelectedGameId,
+  (entities, selectedId) => {
+    return selectedId && entities[selectedId];
+  },
+);
+
+export const getCurrentGameState = createSelector(
   getGameModuleState,
   state => state.currentGame,
 );
-export const getGame = createSelector(
-  getCurrentGame,
+
+export const getCurrentGame = createSelector(
+  getCurrentGameState,
   state => state.game,
 );
-export const getLoadingGame = createSelector(
-  getCurrentGame,
+
+export const getCurrentGameLoading = createSelector(
+  getCurrentGameState,
   state => state.loadingGame || state.loadingPlayers,
 );
+
 export const getLoading = createSelector(
-  getLoadingGame,
+  getGameLoading,
+  getCurrentGameLoading,
   fromRoot.getLoadingPlayers,
   fromRoot.getLoadingAccount,
-  (game, players, account) => game || players || account,
+  (game, currentGame, players, account) => game || currentGame || players || account,
 );
+
 export const getPlayingJackpot = createSelector(
-  getCurrentGame,
+  getCurrentGameState,
   state => state.playingJackpot,
 );
+
 export const getGameJackpotRound = createSelector(
-  getCurrentGame,
+  getCurrentGameState,
   state => state.jackpotRound,
 );
-export const getBoardData = createSelector(
-  getCurrentGame,
-  state => state.boardData,
-);
+
 export const getGamePlayers = createSelector(
-  getGame,
+  getCurrentGame,
   fromRoot.getAllPlayers,
   ({ playerIds }, players) =>
     players

@@ -1,38 +1,21 @@
 import { createAction, props } from '@ngrx/store';
 
-import {
-  Game,
-  GameData,
-  GamePlayer,
-  GameType,
-  JackpotDrawType,
-  JackpotRound,
-  Score,
-} from '@game/models';
+import { Game, GameData, GameType, JackpotDrawType, JackpotRound, Score } from '@game/models';
 
-export const updateGame = createAction('[Game] Update Game', props<{ data: Partial<Game> }>());
-export const updateGameSuccess = createAction('[Game] Update Game Success');
-export const updateGameFailure = createAction('[Game] Update Game Failure');
-
-export const createGame = createAction(
+export const create = createAction(
   '[Game] Create Game',
   props<{ gameType: GameType; bet: number; playerIds: string[] }>(),
 );
-export const createGameSuccess = createAction('[Game] Create Game Success');
-export const createGameFailure = createAction('[Game] Create Game Failure');
+export const createSuccess = createAction('[Game] Create Game Success');
+export const createFailure = createAction('[Game] Create Game Failure');
 
-export const loadGame = createAction('[Game] Load Game', props<{ id: string }>());
-export const loadGameSuccess = createAction('[Game] Load Game Success', props<{ game: Game }>());
-export const loadGameFailure = createAction('[Game] Load Game Failure');
-export const loadGameDestroy = createAction('[Game] Load Game Destroy');
-
-export const loadGamePlayers = createAction('[Game] Load Game Players', props<{ id: string }>());
-export const loadGamePlayersSuccess = createAction(
-  '[Game] Load Game Players Success',
-  props<{ players: GamePlayer[] }>(),
+export const valueChangesInit = createAction('[Game] Load Game', props<{ id: string }>());
+export const valueChangesSuccess = createAction(
+  '[Game] Load Game Success',
+  props<{ game: Game }>(),
 );
-export const loadGamePlayersFailure = createAction('[Game] Load Game Players Failure');
-export const loadGamePlayersDestroy = createAction('[Game] Load Game Players Destroy');
+export const valueChangesFailure = createAction('[Game] Load Game Failure');
+export const valueChangesDestroy = createAction('[Game] Load Game Destroy');
 
 export const endTurn = createAction('[Game] End Turn', props<{ scores: Score[] }>());
 export const endTurnSuccess = createAction('[Game] End Turn Success');
@@ -53,4 +36,6 @@ export const jackpotGameSetRound = createAction(
 
 export const updateGameData = createAction('[Game] Update Game Data', props<{ data: GameData }>());
 
-export const abortGame = createAction('[Game] Abort Game');
+export const end = createAction('[Game] End Game');
+
+export const abort = createAction('[Game] Abort Game');

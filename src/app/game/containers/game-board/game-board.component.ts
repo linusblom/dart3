@@ -37,7 +37,6 @@ export class GameBoardComponent implements OnDestroy {
   game = {} as Game;
   loading = false;
   scores: Score[] = [];
-  gameId = '';
   countDown = -1;
   ended = false;
 
@@ -104,16 +103,7 @@ export class GameBoardComponent implements OnDestroy {
   endGame() {
     this.ended = true;
     this.scores = [];
-    this.store.dispatch(
-      NotificationActions.push({
-        status: Status.SUCCESS,
-        message: 'Game complete! Well played.',
-      }),
-    );
-
-    timer(5000)
-      .pipe(first())
-      .subscribe(() => this.router.navigate(['results', this.gameId]));
+    this.store.dispatch(GameActions.end());
   }
 
   updateScores(scores: Score[]) {
@@ -153,6 +143,6 @@ export class GameBoardComponent implements OnDestroy {
   }
 
   abortGame() {
-    this.store.dispatch(GameActions.abortGame());
+    this.store.dispatch(GameActions.abort());
   }
 }

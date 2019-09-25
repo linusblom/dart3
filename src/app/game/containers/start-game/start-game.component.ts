@@ -8,8 +8,8 @@ import { map, takeUntil } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
-import { Game, GameType } from '@game/models';
-import { getGame, State } from '@game/reducers';
+import { GameType } from '@game/models';
+import { State } from '@game/reducers';
 import { Player } from '@player/models';
 import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@root/reducers';
 
@@ -26,7 +26,7 @@ export class StartGameComponent implements OnDestroy {
   GameType = GameType;
   type = GameType.HALVEIT;
   bet = 0;
-  selectedPlayerIds: string[] = [];
+  playerIds: string[] = [];
   loading = false;
   permissions: Permission[] = [];
 
@@ -73,17 +73,6 @@ export class StartGameComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getGame),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(({ type, bet, playerIds }) => {
-        this.type = type;
-        this.bet = bet;
-        this.selectedPlayerIds = playerIds;
-      });
-
-    this.store
-      .pipe(
         select(getAccount),
         takeUntil(this.destroy$),
       )
@@ -105,15 +94,11 @@ export class StartGameComponent implements OnDestroy {
     return this.permissions.includes(permission);
   }
 
-  updateGame(data: Partial<Game>) {
-    this.store.dispatch(GameActions.updateGame({ data }));
-  }
-
   changeBet(bet: number) {
-    const playerIds = this.selectedPlayerIds.filter(
+    this.playerIds = this.playerIds.filter(
       playerId => this.players.find(player => player.id === playerId).credits >= bet,
     );
-    this.updateGame({ bet, playerIds });
+    this.bet = bet;
   }
 
   togglePlayers({ id, credits }: Player) {
@@ -121,21 +106,19 @@ export class StartGameComponent implements OnDestroy {
       return;
     }
 
-    const playerIds = this.selectedPlayerIds.includes(id)
-      ? this.selectedPlayerIds.filter(playerId => playerId !== id)
-      : [...this.selectedPlayerIds, id];
-
-    this.updateGame({ playerIds });
+    this.playerIds = this.playerIds.includes(id)
+      ? this.playerIds.filter(playerId => playerId !== id)
+      : [...this.playerIds, id];
   }
 
   createGame() {
     this.loading = true;
 
     this.store.dispatch(
-      GameActions.createGame({
+      GameActions.create({
         gameType: this.type,
         bet: this.bet,
-        playerIds: this.selectedPlayerIds,
+        playerIds: this.playerIds,
       }),
     );
   }

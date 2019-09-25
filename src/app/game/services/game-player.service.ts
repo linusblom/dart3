@@ -3,27 +3,21 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-import { Game, GamePlayer, GameType } from '@game/models';
+import { GamePlayer } from '@game/models';
 
 @Injectable()
-export class GameService {
+export class GamePlayerService {
   constructor(private readonly db: AngularFirestore, private readonly auth: AngularFireAuth) {}
 
-  create(type: GameType, bet: number, playerIds: string[]) {
+  update(gameId: string, playerId: string, data: Partial<GamePlayer>) {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
-      .add({ type, bet, playerIds });
-  }
-
-  update(id: string, data: Partial<Game>) {
-    return this.db
-      .collection('accounts')
-      .doc(this.auth.auth.currentUser.uid)
-      .collection('games')
-      .doc(id)
-      .update(data);
+      .doc(gameId)
+      .collection('players')
+      .doc(playerId)
+      .set(data, { merge: true });
   }
 
   valueChanges(gameId: string) {
@@ -32,7 +26,10 @@ export class GameService {
       .doc(this.auth.auth.currentUser.uid)
       .collection('games')
       .doc(gameId)
+      .collection('players')
       .snapshotChanges()
-      .pipe(map(({ payload }) => ({ id: payload.id, ...payload.data() })));
+      .pipe(
+        map(action => action.map(({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() }))),
+      );
   }
 }

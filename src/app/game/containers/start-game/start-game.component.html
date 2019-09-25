@@ -6,7 +6,7 @@
           name="gameType"
           aria-label="Game Type"
           [value]="type"
-          (change)="updateGame({ type: $event.value })"
+          (change)="type = $event.value"
         >
           <mat-button-toggle
             *ngFor="let game of games"
@@ -48,12 +48,12 @@
         class="player"
         (click)="togglePlayers(player)"
         [ngClass]="{
-          selected: selectedPlayerIds.includes(player.id),
+          selected: playerIds.includes(player.id),
           disabled: bet > player.credits || loading
         }"
       >
         <fa-icon
-          [icon]="selectedPlayerIds.includes(player.id) ? selectedIcon : unselectedIcon"
+          [icon]="playerIds.includes(player.id) ? selectedIcon : unselectedIcon"
           size="2x"
         ></fa-icon>
         <app-avatar
@@ -73,7 +73,7 @@
     leftText="Create player"
     (leftClick)="navigateToPlayers()"
     rightText="Lets play"
-    [rightDisabled]="selectedPlayerIds.length < 2 || !bet || !type"
+    [rightDisabled]="playerIds.length < 2 || !bet || !type"
     [rightLoading]="loading"
     (rightClick)="createGame()"
   ></app-box-buttons>

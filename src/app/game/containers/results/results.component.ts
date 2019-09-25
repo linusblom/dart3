@@ -5,7 +5,7 @@ import { Chart } from 'chart.js';
 import { Observable, Subject } from 'rxjs';
 import { filter, first, shareReplay, takeUntil, tap } from 'rxjs/operators';
 
-import { GameActions } from '@game/actions';
+import { GameActions, GamePlayerActions } from '@game/actions';
 import { Game, GameData, GamePlayer } from '@game/models';
 import { getGame, getGameData, getGamePlayers, getLoading, State } from '@game/reducers';
 import { Player } from '@player/models';
@@ -40,8 +40,8 @@ export class ResultsComponent implements OnDestroy {
   constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
     const id = this.route.snapshot.params.gameId;
 
-    this.store.dispatch(GameActions.loadGame({ id }));
-    this.store.dispatch(GameActions.loadGamePlayers({ id }));
+    this.store.dispatch(GameActions.valueChangesInit({ id }));
+    this.store.dispatch(GamePlayerActions.valueChangesInit({ id }));
 
     this.gameData$ = this.store.pipe(
       select(getGameData),
@@ -87,8 +87,8 @@ export class ResultsComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-    this.store.dispatch(GameActions.loadGameDestroy());
-    this.store.dispatch(GameActions.loadGamePlayersDestroy());
+    this.store.dispatch(GameActions.valueChangesDestroy());
+    this.store.dispatch(GamePlayerActions.valueChangesDestroy());
   }
 
   get sortedGamePlayers() {

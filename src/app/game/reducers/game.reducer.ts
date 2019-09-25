@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { GameActions } from '@game/actions';
+import { GameActions, GamePlayerActions } from '@game/actions';
 import { Game, GameData, JackpotRound } from '@game/models';
 
 export interface State {
@@ -38,25 +38,22 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(GameActions.updateGame, (state, { data }) => ({ ...state, game: { ...state.game, ...data } })),
-  on(GameActions.updateGameSuccess, state => ({ ...state, loadingGame: false })),
-  on(GameActions.loadGame, state => ({ ...state, loadingGame: true })),
-  on(GameActions.loadGameSuccess, (state, { game }) => ({
+  on(GameActions.valueChangesInit, state => ({ ...state, loadingGame: true })),
+  on(GameActions.valueChangesSuccess, (state, { game }) => ({
     ...state,
     game: { ...state.game, ...game },
     loadingGame: false,
   })),
-  on(GameActions.loadGameFailure, state => ({ ...state, loadingGame: false })),
+  on(GameActions.valueChangesFailure, state => ({ ...state, loadingGame: false })),
   on(GameActions.endTurn, state => ({ ...state, loadingPlayers: true })),
   on(GameActions.nextTurn, state => ({ ...state, loadingGame: true, playingJackpot: false })),
-  on(GameActions.loadGamePlayers, state => ({ ...state, loadingPlayers: true })),
-  on(GameActions.loadGamePlayersSuccess, (state, { players }) => ({
+  on(GamePlayerActions.valueChangesInit, state => ({ ...state, loadingPlayers: true })),
+  on(GamePlayerActions.valueChangesSuccess, (state, { players }) => ({
     ...state,
     game: { ...state.game, players },
     loadingPlayers: false,
   })),
-  on(GameActions.loadGamePlayersFailure, state => ({ ...state, loadingPlayers: false })),
-  on(GameActions.loadGameDestroy, () => initialState),
+  on(GamePlayerActions.valueChangesFailure, state => ({ ...state, loadingPlayers: false })),
   on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
   on(GameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
   on(GameActions.updateGameData, (state, { data }) => ({ ...state, data })),

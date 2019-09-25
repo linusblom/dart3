@@ -1,3 +1,4 @@
+import * as GamePlayerActions from './game-player.actions';
 import * as GameActions from './game.actions';
 
-export { GameActions };
+export { GamePlayerActions, GameActions };

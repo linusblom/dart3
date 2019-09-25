@@ -60,7 +60,7 @@ export class GameEffects {
       withLatestFrom(this.store.pipe(select(getLoadingGame))),
       filter(([_, loading]) => !loading),
       map(() =>
-        GameActions.updateGameData({ data: this.controllerService.getController().getGameData() }),
+        GameActions.updateBoardData({ boardData: this.controllerService.getController().getBoardData() }),
       ),
     ),
   );

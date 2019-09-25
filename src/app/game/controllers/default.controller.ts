@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { GameData, GamePlayer, Score } from '@game/models';
+import { BoardData, GamePlayer, Score } from '@game/models';
 import { State } from '@game/reducers';
 
 import { GameController } from './game.controller';
@@ -20,7 +20,7 @@ export class DefaultController extends GameController {
     return false;
   }
 
-  getGameData(): GameData {
+  getBoardData(): BoardData {
     return {
       roundHeaders: [],
       totalHeader: '',

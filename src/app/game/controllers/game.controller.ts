@@ -1,6 +1,6 @@
 import { select, Store } from '@ngrx/store';
 
-import { Game, GameData, GamePlayer, Score } from '@game/models';
+import { BoardData, Game, GamePlayer, Score } from '@game/models';
 import { getGame, State } from '@game/reducers';
 
 export abstract class GameController {
@@ -12,7 +12,7 @@ export abstract class GameController {
 
   abstract endTurn(scores: Score[]): Partial<GamePlayer>;
   abstract shouldGameEnd(): boolean;
-  abstract getGameData(): GameData;
+  abstract getBoardData(): BoardData;
 
   protected getPlayerById(id: string) {
     return this.game.players.find(player => player.id === id);

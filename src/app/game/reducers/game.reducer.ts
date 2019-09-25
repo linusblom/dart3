@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { GameActions, GamePlayerActions } from '@game/actions';
-import { Game, GameData, JackpotRound } from '@game/models';
+import { BoardData, Game, JackpotRound } from '@game/models';
 
 export interface State {
   game: Game;
-  data: GameData;
+  boardData: BoardData;
   loadingGame: boolean;
   loadingPlayers: boolean;
   jackpotRound: JackpotRound;
@@ -25,7 +25,7 @@ export const initialState: State = {
     currentTurn: 0,
     currentRound: 0,
   },
-  data: {
+  boardData: {
     roundHeaders: [],
     totalHeader: '',
     turnText: '',
@@ -56,5 +56,5 @@ export const reducer = createReducer(
   on(GamePlayerActions.valueChangesFailure, state => ({ ...state, loadingPlayers: false })),
   on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
   on(GameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
-  on(GameActions.updateGameData, (state, { data }) => ({ ...state, data })),
+  on(GameActions.updateBoardData, (state, { boardData }) => ({ ...state, boardData })),
 );

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { GameData, GamePlayer, JackpotDrawType, Score, UNUSED } from '@game/models';
+import { BoardData, GamePlayer, JackpotDrawType, Score, UNUSED } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
 
@@ -35,7 +35,7 @@ export class HalveItController extends GameController {
     );
   }
 
-  getGameData(): GameData {
+  getBoardData(): BoardData {
     const turnText = [
       UNUSED,
       'Nineteen',

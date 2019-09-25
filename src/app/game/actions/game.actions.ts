@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GameData, GameType, JackpotDrawType, JackpotRound, Score } from '@game/models';
+import { BoardData, Game, GameType, JackpotDrawType, JackpotRound, Score } from '@game/models';
 
 export const create = createAction(
   '[Game] Create Game',
@@ -34,7 +34,10 @@ export const jackpotGameSetRound = createAction(
   props<{ jackpotRound: JackpotRound }>(),
 );
 
-export const updateGameData = createAction('[Game] Update Game Data', props<{ data: GameData }>());
+export const updateBoardData = createAction(
+  '[Game] Update Game Data',
+  props<{ boardData: BoardData }>(),
+);
 
 export const end = createAction('[Game] End Game');
 

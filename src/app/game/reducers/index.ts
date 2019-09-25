@@ -45,9 +45,9 @@ export const getGameJackpotRound = createSelector(
   getCurrentGame,
   state => state.jackpotRound,
 );
-export const getGameData = createSelector(
+export const getBoardData = createSelector(
   getCurrentGame,
-  state => state.data,
+  state => state.boardData,
 );
 export const getGamePlayers = createSelector(
   getGame,

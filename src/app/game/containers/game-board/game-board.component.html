@@ -14,8 +14,8 @@
       [players]="players"
       [currentTurn]="game.currentTurn"
       [currentRound]="game.currentRound"
-      [roundHeaders]="(gameData$ | async).roundHeaders"
-      [totalHeader]="(gameData$ | async).totalHeader"
+      [roundHeaders]="(boardData$ | async).roundHeaders"
+      [totalHeader]="(boardData$ | async).totalHeader"
       [disableAnimation]="disableBoard"
       [disablePosition]="ended"
     ></app-score-board>
@@ -25,7 +25,7 @@
         [scores]="scores"
         [disableEndTurn]="disableBoard"
         [countDown]="countDown"
-        [turnText]="(gameData$ | async).turnText"
+        [turnText]="(boardData$ | async).turnText"
         (endTurn)="endTurn()"
         (abortAutoEndTurn)="abortAutoEndTurn()"
       ></app-current-player>

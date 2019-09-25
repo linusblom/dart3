@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { GameData, GamePlayer, JackpotDrawType, Score } from '@game/models';
+import { BoardData, GamePlayer, JackpotDrawType, Score } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
 
@@ -38,7 +38,7 @@ export class LegsController extends GameController {
     return this.getActivePlayers() === 1;
   }
 
-  getGameData(): GameData {
+  getBoardData(): BoardData {
     const turnText = `Score to beat ${this.getTurnTotal(this.getPreviousPlayerScores())}`;
 
     return {

@@ -1,16 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { interval, Observable, Subject, timer } from 'rxjs';
-import { filter, first, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, shareReplay, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
-import { NotificationActions } from '@core/actions';
-import { Permission, Status } from '@core/models';
+import { Permission } from '@core/models';
 import { GameActions } from '@game/actions';
-import { Game, GameData, JackpotRound, Score } from '@game/models';
+import { BoardData, Game, JackpotRound, Score } from '@game/models';
 import {
+  getBoardData,
   getGame,
-  getGameData,
   getGameJackpotRound,
   getGamePlayers,
   getLoading,
@@ -29,7 +28,7 @@ export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
   jackpotRound$: Observable<JackpotRound>;
   hasGameDevControls$: Observable<boolean>;
-  gameData$: Observable<GameData>;
+  boardData$: Observable<BoardData>;
 
   betweenTurns = false;
   playingJackpot = false;
@@ -47,8 +46,8 @@ export class GameBoardComponent implements OnDestroy {
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
     this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
     this.hasGameDevControls$ = this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)));
-    this.gameData$ = this.store.pipe(
-      select(getGameData),
+    this.boardData$ = this.store.pipe(
+      select(getBoardData),
       shareReplay(1),
     );
 

@@ -66,7 +66,7 @@ export interface DartHit extends Score {
   type: DartHitType;
 }
 
-export interface GameData {
+export interface BoardData {
   roundHeaders: string[];
   totalHeader: string;
   turnText: string;

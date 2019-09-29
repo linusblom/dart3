@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
-import { GameActions } from '@game/actions';
+import { CurrentGameActions } from '@game/actions';
 import { GameType } from '@game/models';
 import { State } from '@game/reducers';
 import { Player } from '@player/models';
@@ -115,7 +115,7 @@ export class StartGameComponent implements OnDestroy {
     this.loading = true;
 
     this.store.dispatch(
-      GameActions.create({
+      CurrentGameActions.start({
         gameType: this.type,
         bet: this.bet,
         playerIds: this.playerIds,

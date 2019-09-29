@@ -4,12 +4,12 @@ import { interval, Observable, Subject } from 'rxjs';
 import { filter, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
-import { GameActions } from '@game/actions';
+import { CurrentGameActions } from '@game/actions';
 import { Game, JackpotRound, Score } from '@game/models';
 import {
   getCurrentGame,
+  getCurrentGamePlayers,
   getGameJackpotRound,
-  getGamePlayers,
   getLoading,
   getPlayingJackpot,
   State,
@@ -48,7 +48,7 @@ export class GameBoardComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getGamePlayers),
+        select(getCurrentGamePlayers),
         takeUntil(this.destroy$),
       )
       .subscribe(players => (this.players = players));
@@ -95,7 +95,7 @@ export class GameBoardComponent implements OnDestroy {
   endGame() {
     this.ended = true;
     this.scores = [];
-    this.store.dispatch(GameActions.end());
+    this.store.dispatch(CurrentGameActions.end());
   }
 
   updateScores(scores: Score[]) {
@@ -122,7 +122,7 @@ export class GameBoardComponent implements OnDestroy {
 
     this.abortAutoEndTurn();
     this.betweenTurns = true;
-    this.store.dispatch(GameActions.endTurn({ scores }));
+    this.store.dispatch(CurrentGameActions.endTurn({ scores }));
   }
 
   abortAutoEndTurn() {
@@ -131,10 +131,10 @@ export class GameBoardComponent implements OnDestroy {
   }
 
   nextTurn() {
-    this.store.dispatch(GameActions.nextTurn());
+    this.store.dispatch(CurrentGameActions.nextTurn());
   }
 
   abortGame() {
-    this.store.dispatch(GameActions.abort());
+    this.store.dispatch(CurrentGameActions.abort());
   }
 }

@@ -1,4 +1,4 @@
-import { GamePlayerEffects } from './game-player.effects';
+import { CurrentGameEffects } from './current-game.effects';
 import { GameEffects } from './game.effects';
 
-export const effects = [GamePlayerEffects, GameEffects];
+export const effects = [CurrentGameEffects, GameEffects];

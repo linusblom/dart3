@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { GameActions, GamePlayerActions } from '@game/actions';
-import { Game, JackpotRound } from '@game/models';
+import { CurrentGameActions } from '@game/actions';
+import { createGame, Game, JackpotRound } from '@game/models';
 
 export interface State {
   game: Game;
@@ -12,23 +12,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  game: {
-    id: null,
-    type: null,
-    bet: 0,
-    started: 0,
-    ended: 0,
-    players: [],
-    playerIds: [],
-    prizePool: 0,
-    currentTurn: 0,
-    currentRound: 0,
-    boardData: {
-      roundHeaders: [],
-      totalHeader: '',
-      turnText: '',
-    },
-  },
+  game: createGame(),
   loadingGame: false,
   loadingPlayers: false,
   playingJackpot: false,
@@ -37,23 +21,36 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(GameActions.valueChangesInit, state => ({ ...state, loadingGame: true })),
-  on(GameActions.valueChangesSuccess, (state, { game }) => ({
+  on(CurrentGameActions.valueChangesGameInit, state => ({ ...state, loadingGame: true })),
+  on(CurrentGameActions.valueChangesGameSuccess, (state, { game }) => ({
     ...state,
     game: { ...state.game, ...game },
     loadingGame: false,
   })),
-  on(GameActions.valueChangesFailure, state => ({ ...state, loadingGame: false })),
-  on(GameActions.endTurn, state => ({ ...state, loadingPlayers: true })),
-  on(GameActions.nextTurn, state => ({ ...state, loadingGame: true, playingJackpot: false })),
-  on(GamePlayerActions.valueChangesInit, state => ({ ...state, loadingPlayers: true })),
-  on(GamePlayerActions.valueChangesSuccess, (state, { players }) => ({
+  on(CurrentGameActions.valueChangesGameFailure, state => ({ ...state, loadingGame: false })),
+  on(CurrentGameActions.endTurn, state => ({ ...state, loadingPlayers: true })),
+  on(CurrentGameActions.nextTurn, state => ({
+    ...state,
+    loadingGame: true,
+    playingJackpot: false,
+  })),
+  on(CurrentGameActions.valueChangesGamePlayerInit, state => ({ ...state, loadingPlayers: true })),
+  on(CurrentGameActions.valueChangesGamePlayerSuccess, (state, { players }) => ({
     ...state,
     game: { ...state.game, players },
     loadingPlayers: false,
   })),
-  on(GamePlayerActions.valueChangesFailure, state => ({ ...state, loadingPlayers: false })),
-  on(GameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({ ...state, jackpotRound })),
-  on(GameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
-  on(GameActions.updateBoardData, (state, { boardData }) => ({ ...state, game: { ...state.game, boardData} })),
+  on(CurrentGameActions.valueChangesGamePlayerFailure, state => ({
+    ...state,
+    loadingPlayers: false,
+  })),
+  on(CurrentGameActions.jackpotGameSetRound, (state, { jackpotRound }) => ({
+    ...state,
+    jackpotRound,
+  })),
+  on(CurrentGameActions.jackpotGameStart, state => ({ ...state, playingJackpot: true })),
+  on(CurrentGameActions.updateBoardData, (state, { boardData }) => ({
+    ...state,
+    game: { ...state.game, boardData },
+  })),
 );

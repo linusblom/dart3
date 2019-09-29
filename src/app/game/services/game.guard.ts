@@ -3,7 +3,7 @@ import { CanActivate, CanDeactivate, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { filter, map } from 'rxjs/operators';
 
-import { GameActions, GamePlayerActions } from '@game/actions';
+import { CurrentGameActions } from '@game/actions';
 import { GameBoardComponent } from '@game/containers';
 import { State } from '@game/reducers';
 import { getAccount } from '@root/reducers';
@@ -28,8 +28,8 @@ export class GameGuard implements CanActivate, CanDeactivate<GameBoardComponent>
   }
 
   canDeactivate() {
-    this.store.dispatch(GameActions.valueChangesDestroy());
-    this.store.dispatch(GamePlayerActions.valueChangesDestroy());
+    this.store.dispatch(CurrentGameActions.valueChangesGameDestroy());
+    this.store.dispatch(CurrentGameActions.valueChangesGamePlayerDestroy());
 
     return true;
   }

@@ -72,3 +72,22 @@ export interface BoardData {
   totalHeader: string;
   turnText: string;
 }
+
+export const createGame = (values: Partial<Game> = {}) => ({
+  id: null,
+  type: null,
+  bet: 0,
+  started: 0,
+  ended: 0,
+  players: [],
+  playerIds: [],
+  prizePool: 0,
+  currentTurn: 0,
+  currentRound: 0,
+  boardData: {
+    roundHeaders: [],
+    totalHeader: '',
+    turnText: '',
+  },
+  ...values,
+});

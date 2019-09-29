@@ -1,6 +1,9 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '@root/reducers';
 
+import { createGame } from '@game/models';
+import { StoreState } from '@shared/models';
+
 import * as fromCurrentGame from './current-game.reducer';
 import * as fromGame from './game.reducer';
 
@@ -27,9 +30,9 @@ export const getGameState = createSelector(
   state => state.game,
 );
 
-export const getGameLoading = createSelector(
+export const getGameStoreState = createSelector(
   getGameState,
-  state => state.loading,
+  state => state.state,
 );
 
 export const getSelectedGameId = createSelector(
@@ -48,7 +51,7 @@ export const getSelectedGame = createSelector(
   getGameEntities,
   getSelectedGameId,
   (entities, selectedId) => {
-    return selectedId && entities[selectedId];
+    return (selectedId && entities[selectedId]) || createGame();
   },
 );
 
@@ -68,11 +71,12 @@ export const getCurrentGameLoading = createSelector(
 );
 
 export const getLoading = createSelector(
-  getGameLoading,
+  getGameStoreState,
   getCurrentGameLoading,
   fromRoot.getLoadingPlayers,
   fromRoot.getLoadingAccount,
-  (game, currentGame, players, account) => game || currentGame || players || account,
+  (state, currentGame, players, account) =>
+    state !== StoreState.NONE || currentGame || players || account,
 );
 
 export const getPlayingJackpot = createSelector(
@@ -85,8 +89,17 @@ export const getGameJackpotRound = createSelector(
   state => state.jackpotRound,
 );
 
-export const getGamePlayers = createSelector(
+export const getCurrentGamePlayers = createSelector(
   getCurrentGame,
+  fromRoot.getAllPlayers,
+  ({ playerIds }, players) =>
+    players
+      .filter(player => playerIds.includes(player.id))
+      .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
+);
+
+export const getSelectedGamePlayers = createSelector(
+  getSelectedGame,
   fromRoot.getAllPlayers,
   ({ playerIds }, players) =>
     players

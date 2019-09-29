@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { forkJoin, race } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
-import { GameActions, GamePlayerActions } from '@game/actions';
+import { CurrentGameActions } from '@game/actions';
 import { State } from '@game/reducers';
 import { getAccount } from '@root/reducers';
 
@@ -26,20 +26,20 @@ export class GameResolver implements Resolve<boolean> {
   }
 
   loadGame(id: string) {
-    this.store.dispatch(GameActions.valueChangesInit({ id }));
+    this.store.dispatch(CurrentGameActions.valueChangesGameInit({ id }));
 
     return race(
-      this.actions$.pipe(ofType(GameActions.valueChangesSuccess)),
-      this.actions$.pipe(ofType(GameActions.valueChangesFailure)),
+      this.actions$.pipe(ofType(CurrentGameActions.valueChangesGameSuccess)),
+      this.actions$.pipe(ofType(CurrentGameActions.valueChangesGameFailure)),
     ).pipe(take(1));
   }
 
   loadGamePlayers(id: string) {
-    this.store.dispatch(GamePlayerActions.valueChangesInit({ id }));
+    this.store.dispatch(CurrentGameActions.valueChangesGamePlayerInit({ id }));
 
     return race(
-      this.actions$.pipe(ofType(GameActions.valueChangesSuccess)),
-      this.actions$.pipe(ofType(GameActions.valueChangesFailure)),
+      this.actions$.pipe(ofType(CurrentGameActions.valueChangesGamePlayerSuccess)),
+      this.actions$.pipe(ofType(CurrentGameActions.valueChangesGamePlayerFailure)),
     ).pipe(take(1));
   }
 }

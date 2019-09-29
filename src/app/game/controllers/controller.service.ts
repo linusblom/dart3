@@ -18,8 +18,8 @@ export class ControllerService {
     this.store.pipe(select(getCurrentGame)).subscribe(({ type }) => (this.gameType = type));
   }
 
-  getController(): GameController {
-    switch (this.gameType) {
+  getController(type: GameType = this.gameType): GameController {
+    switch (type) {
       case GameType.HALVEIT:
         return this.injector.get<HalveItController>(HalveItController);
       case GameType.LEGS:

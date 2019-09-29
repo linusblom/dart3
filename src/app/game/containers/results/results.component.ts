@@ -5,9 +5,9 @@ import { Chart } from 'chart.js';
 import { Subject } from 'rxjs';
 import { filter, first, takeUntil, tap } from 'rxjs/operators';
 
-import { GameActions, GamePlayerActions } from '@game/actions';
+import { GameActions } from '@game/actions';
 import { Game, GamePlayer } from '@game/models';
-import { getCurrentGame, getGamePlayers, getLoading, State } from '@game/reducers';
+import { getLoading, getSelectedGame, getSelectedGamePlayers, State } from '@game/reducers';
 import { Player } from '@player/models';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
@@ -25,6 +25,7 @@ export class ResultsComponent implements OnDestroy {
   pieChart: Chart;
   players: Player[] = [];
   game = {} as Game;
+  sortedGamePlayers: GamePlayer[] = [];
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = {
@@ -38,12 +39,11 @@ export class ResultsComponent implements OnDestroy {
   constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
     const id = this.route.snapshot.params.gameId;
 
-    this.store.dispatch(GameActions.valueChangesInit({ id }));
-    this.store.dispatch(GamePlayerActions.valueChangesInit({ id }));
+    this.store.dispatch(GameActions.get({ id }));
 
     this.store
       .pipe(
-        select(getGamePlayers),
+        select(getSelectedGamePlayers),
         takeUntil(this.destroy$),
       )
       .subscribe(players => {
@@ -56,15 +56,16 @@ export class ResultsComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getCurrentGame),
+        select(getSelectedGame),
         takeUntil(this.destroy$),
       )
       .subscribe(game => {
         this.game = game;
+        this.sortedGamePlayers = game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
       });
 
     this.store
-      .select(getLoading)
+      .pipe(select(getLoading))
       .pipe(
         takeUntil(this.destroy$),
         filter(loading => !loading),
@@ -80,12 +81,6 @@ export class ResultsComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-    this.store.dispatch(GameActions.valueChangesDestroy());
-    this.store.dispatch(GamePlayerActions.valueChangesDestroy());
-  }
-
-  get sortedGamePlayers() {
-    return this.game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
   }
 
   changeTab(playerId: string) {
@@ -229,6 +224,6 @@ export class ResultsComponent implements OnDestroy {
   }
 
   getPlayer(id: string) {
-    return this.players.find(player => player.id === id);
+    return this.players.find(player => player.id === id) || {};
   }
 }

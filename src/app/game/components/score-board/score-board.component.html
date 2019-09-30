@@ -1,66 +1,47 @@
 <app-box-group header="Scoreboard" [styled]="false">
-  <div class="wrapper">
-    <div class="column">
-      <div class="field"></div>
-      <div
-        *ngFor="let player of players; let index = index"
-        class="field avatar"
-        [ngClass]="{ active: index === currentTurn && !disableAnimation }"
-      >
-        <app-avatar
-          [avatarUrl]="player.avatarUrl"
-          [color]="player.color"
-          [name]="player.name"
-          size="25"
-        ></app-avatar>
-      </div>
-    </div>
-    <div class="score-columns" [ngClass]="{ 'full-width': fullWidth }">
+  <div class="row">
+    <div class="field"></div>
+    <div class="score-wrapper" [ngClass]="{ 'full-width': fullWidth }">
       <div class="scores">
-        <div @slideIn *ngFor="let round of roundsPlaceHolder" class="column">
-          <div class="field placeholder"></div>
-          <div
-            *ngFor="let player of players; let playerIndex = index"
-            class="field placeholder"
-            [ngClass]="{ 'active-placeholder': playerIndex === currentTurn && !disableAnimation }"
-          ></div>
-        </div>
-        <div @slideIn *ngFor="let round of rounds" class="column">
-          <div
-            class="field header"
-            [ngClass]="{ active: round === currentRound && !disableAnimation }"
-          >
-            <bdi>{{ roundHeaders[round] }}</bdi>
-          </div>
-          <div
-            *ngFor="let player of players; let playerIndex = index"
-            class="field"
-            [ngClass]="{
-              active: playerIndex === currentTurn && !disableAnimation,
-              position: getGamePlayer(player.id).position && !disablePosition
-            }"
-          >
-            <app-score-board-score-field
-              [round]="getGamePlayer(player.id).rounds[round]"
-            ></app-score-board-score-field>
-          </div>
+        <div class="field spacer"></div>
+        <div
+          *ngFor="let round of rounds; trackBy: trackByFn"
+          class="field header"
+          [ngClass]="{ active: round === currentRound && !disableAnimation }"
+          @slideIn
+        >
+          {{ getRoundHeader(round) }}
         </div>
       </div>
     </div>
-    <div class="column">
-      <div class="field total header">{{ totalHeader }}</div>
-      <div
-        *ngFor="let player of players; let index = index"
-        class="field total"
-        [ngClass]="{
-          active: index === currentTurn && !disableAnimation,
-          position: getGamePlayer(player.id).position && !disablePosition
-        }"
-      >
-        <app-score-board-score-field
-          [display]="getGamePlayer(player.id).totalDisplay"
-        ></app-score-board-score-field>
+    <div class="field header total">{{ getTotalHeader() }}</div>
+  </div>
+  <div
+    *ngFor="let player of players; trackBy: trackByFn; let index = index"
+    class="row"
+    [ngClass]="{
+      active: index === currentTurn && !disableAnimation,
+      position: player.position && !disablePosition
+    }"
+  >
+    <div class="field">
+      <app-avatar
+        [avatarUrl]="player.base.avatarUrl"
+        [color]="player.base.color"
+        [name]="player.base.name"
+        size="25"
+      ></app-avatar>
+    </div>
+    <div class="score-wrapper" [ngClass]="{ 'full-width': fullWidth }">
+      <div class="scores">
+        <div class="field spacer"></div>
+        <div *ngFor="let round of rounds; trackBy: trackByFn" class="field header" @slideIn>
+          <app-score-board-score-field [round]="player.rounds[round]"></app-score-board-score-field>
+        </div>
       </div>
+    </div>
+    <div class="field header total">
+      <app-score-board-score-field [display]="player.totalDisplay"></app-score-board-score-field>
     </div>
   </div>
 </app-box-group>

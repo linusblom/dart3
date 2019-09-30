@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
 import { Subject } from 'rxjs';
-import { filter, first, takeUntil, tap } from 'rxjs/operators';
+import { filter, first, map, takeUntil, tap } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { Game, GamePlayer } from '@game/models';
-import { getLoading, getSelectedGame, getSelectedGamePlayers, State } from '@game/reducers';
-import { Player } from '@player/models';
+import { createGame, GamePlayer } from '@game/models';
+import { getLoading, getSelectedGame, State } from '@game/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
 
@@ -23,9 +22,7 @@ export class ResultsComponent implements OnDestroy {
 
   barChart: Chart;
   pieChart: Chart;
-  players: Player[] = [];
-  game = {} as Game;
-  sortedGamePlayers: GamePlayer[] = [];
+  game = createGame();
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = {
@@ -43,25 +40,19 @@ export class ResultsComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getSelectedGamePlayers),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(players => {
-        this.players = players;
-        this.tabs = [
-          { name: 'All', value: '' },
-          ...players.map(player => ({ name: player.name, value: player.id })),
-        ];
-      });
-
-    this.store
-      .pipe(
         select(getSelectedGame),
         takeUntil(this.destroy$),
+        map(game => ({
+          ...game,
+          players: game.players.sort((a, b) => (a.position > b.position ? 1 : -1)),
+        })),
       )
       .subscribe(game => {
         this.game = game;
-        this.sortedGamePlayers = game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
+        this.tabs = [
+          { name: 'All', value: '' },
+          ...game.players.map(player => ({ name: player.base.name, value: player.id })),
+        ];
       });
 
     this.store
@@ -223,7 +214,7 @@ export class ResultsComponent implements OnDestroy {
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   }
 
-  getPlayer(id: string) {
-    return this.players.find(player => player.id === id) || {};
-  }
+  // getPlayer(id: string) {
+  //   return this.players.find(player => player.id === id) || {};
+  // }
 }

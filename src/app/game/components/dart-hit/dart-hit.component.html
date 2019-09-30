@@ -1,9 +1,9 @@
 <ng-container [ngSwitch]="type">
   <app-avatar
     *ngSwitchCase="DartHitType.AVATAR"
-    [avatarUrl]="player.avatarUrl"
-    [color]="player.color"
-    [name]="player.name"
+    [avatarUrl]="player.base.avatarUrl"
+    [color]="player.base.color"
+    [name]="player.base.name"
     size="22"
   ></app-avatar>
   <app-emoji *ngSwitchCase="DartHitType.DIAMOND" hex="1F48E" size="40"></app-emoji>

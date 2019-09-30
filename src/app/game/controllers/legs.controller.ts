@@ -39,14 +39,8 @@ export class LegsController extends GameController {
   }
 
   getBoardData(): BoardData {
-    const turnText = `Score to beat ${this.getTurnTotal(this.getPreviousPlayerScores())}`;
-
     return {
-      roundHeaders: Array(this.game.currentRound + 1)
-        .fill(null)
-        .map((_, index) => `${index}`),
-      totalHeader: 'Legs',
-      turnText,
+      turnText: `Score to beat ${this.getTurnTotal(this.getPreviousPlayerScores())}`,
     };
   }
 

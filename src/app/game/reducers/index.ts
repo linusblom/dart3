@@ -88,21 +88,3 @@ export const getGameJackpotRound = createSelector(
   getCurrentGameState,
   state => state.jackpotRound,
 );
-
-export const getCurrentGamePlayers = createSelector(
-  getCurrentGame,
-  fromRoot.getAllPlayers,
-  ({ playerIds }, players) =>
-    players
-      .filter(player => playerIds.includes(player.id))
-      .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
-);
-
-export const getSelectedGamePlayers = createSelector(
-  getSelectedGame,
-  fromRoot.getAllPlayers,
-  ({ playerIds }, players) =>
-    players
-      .filter(player => playerIds.includes(player.id))
-      .sort((a, b) => playerIds.indexOf(a.id) - playerIds.indexOf(b.id)),
-);

@@ -23,6 +23,13 @@ export enum GameType {
   THREE_HUNDRED_ONE = 'three-hundred-one',
 }
 
+export interface PlayerBase {
+  name: string;
+  xp: number;
+  color: string;
+  avatarUrl: string;
+}
+
 export interface GamePlayer {
   id: string;
   total: number;
@@ -34,6 +41,7 @@ export interface GamePlayer {
   rounds: {
     [key: string]: Round;
   };
+  base: PlayerBase;
 }
 
 export interface Score {
@@ -68,12 +76,10 @@ export interface DartHit extends Score {
 }
 
 export interface BoardData {
-  roundHeaders: string[];
-  totalHeader: string;
   turnText: string;
 }
 
-export const createGame = (values: Partial<Game> = {}) => ({
+export const createGame = (values: Partial<Game> = {}): Game => ({
   id: null,
   type: null,
   bet: 0,
@@ -85,8 +91,6 @@ export const createGame = (values: Partial<Game> = {}) => ({
   currentTurn: 0,
   currentRound: 0,
   boardData: {
-    roundHeaders: [],
-    totalHeader: '',
     turnText: '',
   },
   ...values,

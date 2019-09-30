@@ -3,25 +3,23 @@
     [disabled]="disableBoard"
     [scores]="scores"
     [jackpotRound]="jackpotRound$ | async"
-    [player]="currentPlayer"
+    [player]="game.players[game.currentTurn]"
     [playingJackpot]="playingJackpot"
     (updateScores)="updateScores($event)"
     (jackpotGameComplete)="nextTurn()"
   ></app-dart-board>
   <div class="side-board">
     <app-score-board
-      [gamePlayers]="game.players"
-      [players]="players"
+      [type]="game.type"
+      [players]="game.players"
       [currentTurn]="game.currentTurn"
       [currentRound]="game.currentRound"
-      [roundHeaders]="game.boardData.roundHeaders"
-      [totalHeader]="game.boardData.totalHeader"
       [disableAnimation]="disableBoard"
       [disablePosition]="ended"
     ></app-score-board>
     <div class="side-board-row">
       <app-current-player
-        [player]="currentPlayer"
+        [player]="game.players[game.currentTurn]"
         [scores]="scores"
         [disableEndTurn]="disableBoard"
         [countDown]="countDown"

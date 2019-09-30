@@ -24,8 +24,10 @@ import { ControllerService } from '@game/controllers';
 import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getCurrentGame, getCurrentGameLoading, State } from '@game/reducers';
 import { GamePlayerService, GameService } from '@game/services';
+import { mergePlayer } from '@game/utils/merge-player';
 import { PlayerActions } from '@player/actions';
-import { getAccount, hasPermission } from '@root/reducers';
+import { Player } from '@player/models';
+import { getAccount, getAllPlayers, hasPermission } from '@root/reducers';
 
 @Injectable()
 export class CurrentGameEffects {
@@ -60,9 +62,11 @@ export class CurrentGameEffects {
       switchMap(({ id }) =>
         this.gamePlayerService.valueChanges(id).pipe(
           takeUntil(this.actions$.pipe(ofType(CurrentGameActions.valueChangesGamePlayerDestroy))),
-          map((players: GamePlayer[]) =>
-            CurrentGameActions.valueChangesGamePlayerSuccess({ players }),
+          withLatestFrom(this.store.pipe(select(getAllPlayers))),
+          map(([gamePlayers, players]: [Omit<GamePlayer, 'base'>[], Player[]]) =>
+            mergePlayer(gamePlayers, players),
           ),
+          map(players => CurrentGameActions.valueChangesGamePlayerSuccess({ players })),
           catchError(() => [CurrentGameActions.valueChangesGamePlayerFailure()]),
         ),
       ),

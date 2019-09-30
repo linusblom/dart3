@@ -1,8 +1,17 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { GamePlayer } from '@game/models';
-import { Player } from '@player/models';
+import { GamePlayer, GameType } from '@game/models';
+
+const roundHeaders = {
+  [GameType.HALVEIT]: (round: number) => ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1],
+  [GameType.LEGS]: (round: number) => `${round}`,
+};
+
+const totalHeader = {
+  [GameType.HALVEIT]: 'Total',
+  [GameType.LEGS]: 'Legs',
+};
 
 @Component({
   selector: 'app-score-board',
@@ -19,18 +28,15 @@ import { Player } from '@player/models';
   ],
 })
 export class ScoreBoardComponent implements OnChanges {
-  @Input() gamePlayers: GamePlayer[];
-  @Input() players: Player[] = [];
+  @Input() type = GameType.HALVEIT;
+  @Input() players: GamePlayer[];
   @Input() currentTurn = 0;
   @Input() disableAnimation = false;
   @Input() disablePosition = false;
   @Input() currentRound = 0;
   @Input() fullWidth = false;
-  @Input() roundHeaders = [];
-  @Input() totalHeader = 'Total';
 
   rounds: number[] = [];
-  roundsPlaceHolder = Array(30).fill(0);
 
   ngOnChanges({ currentRound }: SimpleChanges) {
     if (currentRound && currentRound.currentValue) {
@@ -40,7 +46,15 @@ export class ScoreBoardComponent implements OnChanges {
     }
   }
 
-  getGamePlayer(playerId: string) {
-    return this.gamePlayers.find(({ id }) => id === playerId) || { rounds: {} };
+  getTotalHeader() {
+    return totalHeader[this.type];
+  }
+
+  getRoundHeader(round: number) {
+    return roundHeaders[this.type](round);
+  }
+
+  trackByFn(index: number) {
+    return index;
   }
 }

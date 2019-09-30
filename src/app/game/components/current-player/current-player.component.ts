@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Score } from '@game/models';
-import { Player } from '@player/models';
+import { GamePlayer, Score } from '@game/models';
 
 @Component({
   selector: 'app-current-player',
@@ -10,7 +9,7 @@ import { Player } from '@player/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CurrentPlayerComponent {
-  @Input() player: Player;
+  @Input() player: GamePlayer;
   @Input() scores: Score[] = [];
   @Input() disableEndTurn = false;
   @Input() countDown = -1;

@@ -1,20 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { interval, Observable, Subject } from 'rxjs';
-import { filter, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
 import { CurrentGameActions } from '@game/actions';
-import { Game, JackpotRound, Score } from '@game/models';
+import { createGame, GamePlayer, JackpotRound, Score } from '@game/models';
 import {
   getCurrentGame,
-  getCurrentGamePlayers,
   getGameJackpotRound,
   getLoading,
   getPlayingJackpot,
   State,
 } from '@game/reducers';
-import { Player } from '@player/models';
 import { getJackpotValue, hasPermission } from '@root/reducers';
 
 @Component({
@@ -29,8 +27,7 @@ export class GameBoardComponent implements OnDestroy {
 
   betweenTurns = false;
   playingJackpot = false;
-  players: Player[] = [];
-  game = {} as Game;
+  game = createGame();
   loading = false;
   scores: Score[] = [];
   countDown = -1;
@@ -48,15 +45,14 @@ export class GameBoardComponent implements OnDestroy {
 
     this.store
       .pipe(
-        select(getCurrentGamePlayers),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(players => (this.players = players));
-
-    this.store
-      .pipe(
         select(getCurrentGame),
         takeUntil(this.destroy$),
+        map(game => ({
+          ...game,
+          players: game.players.sort(
+            (a, b) => game.playerIds.indexOf(a.id) - game.playerIds.indexOf(b.id),
+          ),
+        })),
       )
       .subscribe(game => {
         if (game.currentTurn !== this.game.currentTurn) {
@@ -77,10 +73,6 @@ export class GameBoardComponent implements OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(playingJackpot => (this.playingJackpot = playingJackpot));
-  }
-
-  get currentPlayer() {
-    return this.players[this.game.currentTurn] || ({} as Player);
   }
 
   get disableBoard() {

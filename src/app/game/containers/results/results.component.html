@@ -45,47 +45,45 @@
           Win
         </div>
       </div>
-      <div *ngFor="let gamePlayer of sortedGamePlayers" class="row">
+      <div *ngFor="let player of game.players" class="row">
         <div class="field rank small">
           <app-emoji
-            *ngIf="gamePlayer.position < 4; else position"
-            [hex]="medalEmojiHex[gamePlayer.position]"
+            *ngIf="player.position < 4; else position"
+            [hex]="medalEmojiHex[player.position]"
             size="40"
           ></app-emoji>
-          <ng-template #position>{{ gamePlayer.position }}.</ng-template>
+          <ng-template #position>{{ player.position }}.</ng-template>
         </div>
         <div class="field small">
           <app-avatar
-            [avatarUrl]="getPlayer(gamePlayer.id).avatarUrl"
-            [color]="getPlayer(gamePlayer.id).color"
-            [name]="getPlayer(gamePlayer.id).name"
+            [avatarUrl]="player.base.avatarUrl"
+            [color]="player.base.color"
+            [name]="player.base.name"
             size="40"
           ></app-avatar>
         </div>
         <div class="field">
-          <div>{{ getPlayer(gamePlayer.id).name }}</div>
-          <app-player-level [xp]="getPlayer(gamePlayer.id).xp"></app-player-level>
+          <div>{{ player.base.name }}</div>
+          <app-player-level [xp]="player.base.xp"></app-player-level>
         </div>
         <div class="field">
-          <div>{{ gamePlayer.xp }}</div>
-          <app-player-level-progress [xp]="getPlayer(gamePlayer.id).xp"></app-player-level-progress>
+          <div>{{ player.xp }}</div>
+          <app-player-level-progress [xp]="player.base.xp"></app-player-level-progress>
         </div>
         <div class="field small">
-          {{ gamePlayer.win > 0 ? (gamePlayer.win | number: '1.2-2') : '-' }}
+          {{ player.win > 0 ? (player.win | number: '1.2-2') : '-' }}
         </div>
       </div>
     </div>
   </app-box-group>
 
   <app-score-board
-    [gamePlayers]="game.players"
-    [players]="players"
+    [type]="game.type"
+    [players]="game.players"
     [currentRound]="game.currentRound"
     [disableAnimation]="true"
     [disablePosition]="true"
     [fullWidth]="true"
-    [roundHeaders]="game.boardData.roundHeaders"
-    [totalHeader]="game.boardData.totalHeader"
   ></app-score-board>
 
   <app-box-group header="Statistics" [styled]="false">

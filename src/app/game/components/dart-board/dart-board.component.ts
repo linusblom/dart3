@@ -2,8 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 import { from, of, timer } from 'rxjs';
 import { concatMap, delay, finalize, first, tap } from 'rxjs/operators';
 
-import { DartHit, DartHitType, JackpotRound, Score } from '@game/models';
-import { Player } from '@player/models';
+import { DartHit, DartHitType, GamePlayer, JackpotRound, Score } from '@game/models';
 import { generateId } from '@utils/generateId';
 
 enum BoardFieldColor {
@@ -19,7 +18,7 @@ enum BoardFieldColor {
   styleUrls: ['./dart-board.component.scss'],
 })
 export class DartBoardComponent {
-  @Input() player: Player;
+  @Input() player: GamePlayer;
   @Input() playingJackpot = false;
   @Input() set scores(scores: Score[]) {
     if (!scores.length) {

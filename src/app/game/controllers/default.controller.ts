@@ -22,8 +22,6 @@ export class DefaultController extends GameController {
 
   getBoardData(): BoardData {
     return {
-      roundHeaders: [],
-      totalHeader: '',
       turnText: '',
     };
   }

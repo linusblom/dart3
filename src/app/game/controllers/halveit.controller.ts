@@ -49,8 +49,6 @@ export class HalveItController extends GameController {
     ][this.game.currentRound];
 
     return {
-      roundHeaders: [UNUSED, '19', '18', 'D', '17', '41', 'T', '20', 'B'],
-      totalHeader: 'Total',
       turnText,
     };
   }

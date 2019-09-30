@@ -103,3 +103,8 @@ export const getSelectedPlayer = createSelector(
     return selectedId && entities[selectedId];
   },
 );
+export const getPlayersByIds = (ids: string[]) =>
+  createSelector(
+    getAllPlayers,
+    players => players.filter(player => ids.includes(player.id)),
+  );

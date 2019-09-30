@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
-import { DartHitType } from '@game/models';
-import { Player } from '@player/models';
+import { DartHitType, GamePlayer } from '@game/models';
 
 @Component({
   selector: 'app-dart-hit',
@@ -9,7 +8,7 @@ import { Player } from '@player/models';
   styleUrls: ['./dart-hit.component.scss'],
 })
 export class DartHitComponent {
-  @Input() player: Player;
+  @Input() player: GamePlayer;
   @Input() type = DartHitType.AVATAR;
   @Output() remove = new EventEmitter<void>();
 

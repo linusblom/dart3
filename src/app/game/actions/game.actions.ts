@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Game, GameType } from '@game/models';
+import { Game } from '@game/models';
 
 export const get = createAction('[Game] Get Game', props<{ id: string }>());
 export const getSuccess = createAction('[Game] Get Success', props<{ game: Game }>());

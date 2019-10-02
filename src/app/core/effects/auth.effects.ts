@@ -16,7 +16,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { AccountActions, AuthActions } from '@core/actions';
+import { AccountActions, AuthActions, JackpotActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
 import { Permission, Status } from '@core/models';
 import { PlayerActions } from '@player/actions';
@@ -51,8 +51,8 @@ export class AuthEffects {
       ofType(AuthActions.loginSuccess),
       switchMap(() => [
         CoreActions.openMenu(),
-        AccountActions.loadAccount(),
-        PlayerActions.loadPlayers(),
+        AccountActions.valueChangesInit(),
+        PlayerActions.valueChangesInit(),
       ]),
     ),
   );
@@ -132,9 +132,9 @@ export class AuthEffects {
       }),
       switchMap(() => [
         CoreActions.closeMenu(),
-        AccountActions.loadAccountDestroy(),
-        AccountActions.loadJackpotDestroy(),
-        PlayerActions.loadPlayersDestroy(),
+        AccountActions.valueChangesDestroy(),
+        JackpotActions.valueChangesDestroy(),
+        PlayerActions.valueChangesDestroy(),
       ]),
     ),
   );

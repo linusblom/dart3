@@ -13,23 +13,18 @@ export const initialState: State = {
   currentJackpot: null,
   loading: false,
   permissions: [],
-  jackpot: {
-    value: 0,
-    next: 0,
-    started: 0,
-    ended: 0,
-    playerId: null,
-  },
 };
 
 export const reducer = createReducer(
   initialState,
-  on(AccountActions.loadAccount, AccountActions.update, state => ({ ...state, loading: true })),
-  on(AccountActions.loadAccountSuccess, (state, { account }) => ({
+  on(AccountActions.valueChangesInit, AccountActions.update, state => ({
+    ...state,
+    loading: true,
+  })),
+  on(AccountActions.valueChangesSuccess, (state, { account }) => ({
     ...state,
     ...account,
     loading: false,
   })),
-  on(AccountActions.loadJackpotSuccess, (state, { jackpot }) => ({ ...state, jackpot })),
-  on(AccountActions.loadAccountFailure, AccountActions.loadAccountDestroy, () => initialState),
+  on(AccountActions.valueChangesFailure, AccountActions.valueChangesDestroy, () => initialState),
 );

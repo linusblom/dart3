@@ -213,8 +213,4 @@ export class ResultsComponent implements OnDestroy {
     const seconds = Math.floor((millis % 60000) / 1000);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   }
-
-  // getPlayer(id: string) {
-  //   return this.players.find(player => player.id === id) || {};
-  // }
 }

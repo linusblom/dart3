@@ -2,29 +2,21 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { from } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  exhaustMap,
-  map,
-  switchMap,
-  takeUntil,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
 import { Status } from '@core/models';
 import { PlayerActions } from '@player/actions';
-import { Player, Transaction } from '@player/models';
+import { Player } from '@player/models';
 import { PlayerService } from '@player/services';
 import { State } from '@root/reducers';
 import { getSelectedPlayer } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {
-  createPlayer$ = createEffect(() =>
+  create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.createPlayer),
+      ofType(PlayerActions.create),
       concatMap(({ name }) =>
         from(this.service.create(name)).pipe(
           switchMap(() => [
@@ -32,40 +24,40 @@ export class PlayerEffects {
               status: Status.SUCCESS,
               message: `Player ${name} created!`,
             }),
-            PlayerActions.createPlayerSuccess(),
+            PlayerActions.createSuccess(),
           ]),
-          catchError(() => [PlayerActions.createPlayerFailure()]),
+          catchError(() => [PlayerActions.createFailure()]),
         ),
       ),
     ),
   );
 
-  loadPlayers$ = createEffect(() =>
+  valueChanges$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.loadPlayers),
+      ofType(PlayerActions.valueChangesInit),
       switchMap(() =>
-        this.service.listen().pipe(
-          takeUntil(this.actions$.pipe(ofType(PlayerActions.loadPlayersDestroy))),
-          map((players: Player[]) => PlayerActions.loadPlayersSuccess({ players })),
-          catchError(() => [PlayerActions.loadPlayersFailure()]),
+        this.service.valueChanges().pipe(
+          takeUntil(this.actions$.pipe(ofType(PlayerActions.valueChangesDestroy))),
+          map((players: Player[]) => PlayerActions.valueChangesSuccess({ players })),
+          catchError(() => [PlayerActions.valueChangesFailure()]),
         ),
       ),
     ),
   );
 
-  updatePlayer$ = createEffect(() =>
+  update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.updatePlayer),
+      ofType(PlayerActions.update),
       concatMap(({ id, data }) =>
         from(this.service.update(id, data)).pipe(
-          map(() => PlayerActions.updatePlayerSuccess()),
-          catchError(() => [PlayerActions.updatePlayerFailure()]),
+          map(() => PlayerActions.updateSuccess()),
+          catchError(() => [PlayerActions.updateFailure()]),
         ),
       ),
     ),
   );
 
-  uploadImage$ = createEffect(() =>
+  updateAvatar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.updateAvatar),
       concatMap(({ id, file }) =>
@@ -77,39 +69,9 @@ export class PlayerEffects {
     ),
   );
 
-  createTransaction$ = createEffect(() =>
+  updateStats$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.createTransaction),
-      exhaustMap(({ id, transaction: { type, amount } }) =>
-        from(this.service.createTransaction(id, type, amount)).pipe(
-          map(() => PlayerActions.createTransactionSuccess()),
-          catchError(() => [PlayerActions.createTransactionFailure()]),
-        ),
-      ),
-    ),
-  );
-
-  loadTransaction$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PlayerActions.loadTransactions),
-      switchMap(({ id }) =>
-        this.service.listenTransactions(id).pipe(
-          takeUntil(this.actions$.pipe(ofType(PlayerActions.loadTransactionsDestroy))),
-          map((transactions: Transaction[]) =>
-            transactions.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1)),
-          ),
-          map((transactions: Transaction[]) =>
-            PlayerActions.loadTransactionsSuccess({ transactions }),
-          ),
-          catchError(() => [PlayerActions.loadTransactionsFailure()]),
-        ),
-      ),
-    ),
-  );
-
-  updatePlayerStats$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PlayerActions.updatePlayerStats),
+      ofType(PlayerActions.updateStats),
       withLatestFrom(this.store.pipe(select(getSelectedPlayer))),
       concatMap(([{ id, scores }, player]) => {
         const { total, hits, misses } = scores.reduce(
@@ -137,8 +99,8 @@ export class PlayerEffects {
             oneHundredEighties: player.oneHundredEighties + (total === 180 ? 1 : 0),
           }),
         ).pipe(
-          map(() => PlayerActions.updatePlayerStatsSuccess()),
-          catchError(() => [PlayerActions.updatePlayerStatsFailure()]),
+          map(() => PlayerActions.updateStatsSuccess()),
+          catchError(() => [PlayerActions.updateStatsFailure()]),
         );
       }),
     ),

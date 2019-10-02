@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
-import { PlayerActions } from '@player/actions';
+import { PlayerActions, TransactionActions } from '@player/actions';
 import { Player, Transaction, TransactionPayload } from '@player/models';
 import {
   getAllPlayers,
@@ -71,11 +71,11 @@ export class PlayersComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged(),
-        tap(() => this.store.dispatch(PlayerActions.loadTransactionsDestroy())),
+        tap(() => this.store.dispatch(TransactionActions.valueChangesDestroy())),
         filter(id => !!id),
       )
       .subscribe(id => {
-        this.store.dispatch(PlayerActions.loadTransactions({ id }));
+        this.store.dispatch(TransactionActions.valueChangesInit({ id }));
       });
 
     this.store
@@ -92,18 +92,18 @@ export class PlayersComponent implements OnDestroy {
       )
       .subscribe(id => {
         this.selectedPlayerId = id;
-        this.store.dispatch(PlayerActions.selectPlayer({ id }));
+        this.store.dispatch(PlayerActions.select({ id }));
       });
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-    this.store.dispatch(PlayerActions.loadTransactionsDestroy());
+    this.store.dispatch(TransactionActions.valueChangesDestroy());
   }
 
   onCreate() {
-    this.store.dispatch(PlayerActions.createPlayer({ name: this.name.value }));
+    this.store.dispatch(PlayerActions.create({ name: this.name.value }));
     this.name.reset();
   }
 
@@ -112,7 +112,7 @@ export class PlayersComponent implements OnDestroy {
   }
 
   onUpdate(data: Partial<Player>) {
-    this.store.dispatch(PlayerActions.updatePlayer({ id: this.selectedPlayerId, data }));
+    this.store.dispatch(PlayerActions.update({ id: this.selectedPlayerId, data }));
   }
 
   onUpdateAvatar(file: File) {
@@ -120,8 +120,6 @@ export class PlayersComponent implements OnDestroy {
   }
 
   onTransaction(transaction: TransactionPayload) {
-    this.store.dispatch(
-      PlayerActions.createTransaction({ id: this.selectedPlayerId, transaction }),
-    );
+    this.store.dispatch(TransactionActions.create({ id: this.selectedPlayerId, transaction }));
   }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { GamePlayer } from '@game/models';
-import { Observable } from 'rxjs';
 
 type DbGamePlayer = Omit<GamePlayer, 'base'>;
 

@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
-import { PlayerActions } from '@player/actions';
+import { PlayerActions, TransactionActions } from '@player/actions';
 import { Player } from '@player/models';
 
 export interface State extends EntityState<Player> {
@@ -23,22 +23,22 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
   initialState,
-  on(PlayerActions.createPlayer, state => ({ ...state, loadingCreatePlayer: true })),
-  on(PlayerActions.createPlayerSuccess, PlayerActions.createPlayerFailure, state => ({
+  on(PlayerActions.create, state => ({ ...state, loadingCreatePlayer: true })),
+  on(PlayerActions.createSuccess, PlayerActions.createFailure, state => ({
     ...state,
     loadingCreatePlayer: false,
   })),
-  on(PlayerActions.loadPlayers, state => ({ ...state, loadingPlayers: true })),
-  on(PlayerActions.loadPlayersSuccess, (state, { players }) =>
+  on(PlayerActions.valueChangesInit, state => ({ ...state, loadingPlayers: true })),
+  on(PlayerActions.valueChangesSuccess, (state, { players }) =>
     adapter.upsertMany(players, { ...state, loadingPlayers: false }),
   ),
-  on(PlayerActions.loadPlayersFailure, state => ({ ...state, loadingPlayers: false })),
-  on(PlayerActions.loadPlayersDestroy, state => adapter.removeAll(state)),
-  on(PlayerActions.selectPlayer, PlayerActions.updatePlayerStats, (state, { id }) => ({
+  on(PlayerActions.valueChangesFailure, state => ({ ...state, loadingPlayers: false })),
+  on(PlayerActions.valueChangesDestroy, state => adapter.removeAll(state)),
+  on(PlayerActions.select, PlayerActions.updateStats, (state, { id }) => ({
     ...state,
     selectedPlayerId: id,
   })),
-  on(PlayerActions.loadTransactionsSuccess, (state, { transactions }) =>
+  on(TransactionActions.valueChangesSuccess, (state, { transactions }) =>
     adapter.updateOne({ id: state.selectedPlayerId, changes: { transactions } }, state),
   ),
 );

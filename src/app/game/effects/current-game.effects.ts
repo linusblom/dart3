@@ -43,7 +43,7 @@ export class CurrentGameEffects {
     ),
   );
 
-  valueChangesGameInit$ = createEffect(() =>
+  valueChangesGame$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.valueChangesGameInit),
       switchMap(({ id }) =>
@@ -56,7 +56,7 @@ export class CurrentGameEffects {
     ),
   );
 
-  valueChangesGamePlayerInit$ = createEffect(() =>
+  valueChangesGamePlayer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.valueChangesGamePlayerInit),
       switchMap(({ id }) =>
@@ -99,7 +99,7 @@ export class CurrentGameEffects {
         return from(this.gamePlayerService.update(game.id, id, data)).pipe(
           switchMap(() => [
             CurrentGameActions.endTurnSuccess(),
-            PlayerActions.updatePlayerStats({ id: id, scores }),
+            PlayerActions.updateStats({ id: id, scores }),
           ]),
           catchError(() => [CurrentGameActions.endTurnFailure()]),
         );

@@ -1,33 +1,33 @@
 import { createAction, props } from '@ngrx/store';
 
 import { Score } from '@game/models';
-import { Player, Transaction, TransactionPayload } from '@player/models';
+import { Player } from '@player/models';
 
-export const loadPlayers = createAction('[Player] Load Players');
-export const loadPlayersSuccess = createAction(
-  '[Player] Load Players Success',
+export const valueChangesInit = createAction('[Player] Value Changes Player Init');
+export const valueChangesSuccess = createAction(
+  '[Player] Value Changes Player Success',
   props<{ players: Player[] }>(),
 );
-export const loadPlayersFailure = createAction('[Player] Load Players Failure');
-export const loadPlayersDestroy = createAction('[Player] Load Players Destroy');
+export const valueChangesFailure = createAction('[Player] Value Changes Player Failure');
+export const valueChangesDestroy = createAction('[Player] Value Changes Player Destroy');
 
-export const createPlayer = createAction('[Player] Create Player', props<{ name: string }>());
-export const createPlayerSuccess = createAction('[Player] Create Player Success');
-export const createPlayerFailure = createAction('[Player] Create Player Failure');
+export const create = createAction('[Player] Create', props<{ name: string }>());
+export const createSuccess = createAction('[Player] Create Success');
+export const createFailure = createAction('[Player] Create Failure');
 
-export const updatePlayer = createAction(
-  '[Player] Update player',
+export const update = createAction(
+  '[Player] Update',
   props<{ id: string; data: Partial<Player> }>(),
 );
-export const updatePlayerSuccess = createAction('[Player] Update player Success');
-export const updatePlayerFailure = createAction('[Player] Update player Failure');
+export const updateSuccess = createAction('[Player] Update Success');
+export const updateFailure = createAction('[Player] Update Failure');
 
-export const updatePlayerStats = createAction(
-  '[Player] Update Player Stats',
+export const updateStats = createAction(
+  '[Player] Update Stats',
   props<{ id: string; scores: Score[] }>(),
 );
-export const updatePlayerStatsSuccess = createAction('[Player] Update Player Stats Success');
-export const updatePlayerStatsFailure = createAction('[Player] Update Player Stats Failure');
+export const updateStatsSuccess = createAction('[Player] Update Stats Success');
+export const updateStatsFailure = createAction('[Player] Update Stats Failure');
 
 export const updateAvatar = createAction(
   '[Player] Update Avatar',
@@ -36,19 +36,4 @@ export const updateAvatar = createAction(
 export const updateAvatarSuccess = createAction('[Player] Update Avatar Success');
 export const updateAvatarFailure = createAction('[Player] Update Avatar Failure');
 
-export const selectPlayer = createAction('[Player] Select Player', props<{ id: string }>());
-
-export const createTransaction = createAction(
-  '[Player] Create Transaction',
-  props<{ id: string; transaction: TransactionPayload }>(),
-);
-export const createTransactionSuccess = createAction('[Player] Create Transaction Success');
-export const createTransactionFailure = createAction('[Player] Create Transaction Failure');
-
-export const loadTransactions = createAction('[Player] Load Transactions', props<{ id: string }>());
-export const loadTransactionsSuccess = createAction(
-  '[Player] Load Transactions Success',
-  props<{ transactions: Transaction[] }>(),
-);
-export const loadTransactionsFailure = createAction('[Player] Load Transactions Failure');
-export const loadTransactionsDestroy = createAction('[Player] Load Transactions Destroy');
+export const select = createAction('[Player] Select', props<{ id: string }>());

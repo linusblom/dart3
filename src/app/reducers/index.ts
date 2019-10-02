@@ -5,6 +5,7 @@ import { Permission } from '@core/models';
 import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
+import * as fromJackpot from '@core/reducers/jackpot.reducer';
 import * as fromNotification from '@core/reducers/notification.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
 
@@ -14,6 +15,7 @@ export interface State {
   core: fromCore.State;
   account: fromAccount.State;
   player: fromPlayer.State;
+  jackpot: fromJackpot.State;
 }
 
 export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>(
@@ -25,6 +27,7 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       core: fromCore.reducer,
       account: fromAccount.reducer,
       player: fromPlayer.reducer,
+      jackpot: fromJackpot.reducer,
     }),
   },
 );
@@ -50,18 +53,20 @@ export const getMenuOpen = createSelector(
   state => state.menuOpen,
 );
 
+export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
+export const getJackpot = createSelector(
+  getJackpotState,
+  state => state,
+);
+export const getJackpotValue = createSelector(
+  getJackpotState,
+  state => state.value,
+);
+
 export const getAccountState = createFeatureSelector<fromAccount.State>('account');
 export const getAccount = createSelector(
   getAccountState,
   state => state,
-);
-export const getJackpot = createSelector(
-  getAccountState,
-  state => state.jackpot,
-);
-export const getJackpotValue = createSelector(
-  getAccountState,
-  state => state.jackpot.value,
 );
 export const getLoadingAccount = createSelector(
   getAccountState,

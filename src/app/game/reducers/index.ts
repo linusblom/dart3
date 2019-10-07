@@ -1,7 +1,8 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '@root/reducers';
+import { orderBy } from 'lodash';
 
-import { createGame } from '@game/models';
+import { createGame, ListOptions } from '@game/models';
 import { StoreState } from '@shared/models';
 
 import * as fromCurrentGame from './current-game.reducer';
@@ -88,3 +89,19 @@ export const getGameJackpotRound = createSelector(
   getCurrentGameState,
   state => state.jackpotRound,
 );
+
+export const list = (options: ListOptions) =>
+  createSelector(
+    getAllGames,
+    games => {
+      if (options.orderBy) {
+        games = orderBy(games, options.orderBy.fieldPath, options.orderBy.direction);
+      }
+
+      if (options.limit) {
+        games = games.slice(0, options.limit);
+      }
+
+      return games;
+    },
+  );

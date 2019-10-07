@@ -5,7 +5,7 @@ import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
 import { CurrentGameActions } from '@game/actions';
-import { createGame, GamePlayer, JackpotRound, Score } from '@game/models';
+import { createGame, JackpotRound, Score } from '@game/models';
 import {
   getCurrentGame,
   getGameJackpotRound,

@@ -79,6 +79,26 @@ export interface BoardData {
   turnText: string;
 }
 
+export interface ListOptions {
+  where?: {
+    fieldPath: string;
+    operator: '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
+    value: any;
+  };
+  orderBy?: {
+    fieldPath: string;
+    direction: 'asc' | 'desc';
+  };
+  limit?: number;
+}
+
+export interface Result {
+  type: GameType;
+  name: string;
+  win: number;
+  ended: number;
+}
+
 export const createGame = (values: Partial<Game> = {}): Game => ({
   id: null,
   type: null,

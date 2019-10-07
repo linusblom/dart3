@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { forkJoin } from 'rxjs';
-import { catchError, concatMap, map, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { createGame, Game, GamePlayer } from '@game/models';
+import { Game, GamePlayer } from '@game/models';
 import { State } from '@game/reducers';
 import { GamePlayerService, GameService } from '@game/services';
 import { mergePlayer } from '@game/utils/merge-player';
@@ -18,14 +18,53 @@ export class GameEffects {
     this.actions$.pipe(
       ofType(GameActions.get),
       concatMap(({ id }) =>
-        forkJoin(this.gameService.get(id), this.gamePlayerService.list(id)).pipe(
-          withLatestFrom(this.store.pipe(select(getAllPlayers))),
-          map(([[game, gamePlayers], players]: [[Game, Omit<GamePlayer, 'base'>[]], Player[]]) => ({
-            ...game,
-            players: mergePlayer(gamePlayers, players),
-          })),
-          map(game => GameActions.getSuccess({ game: createGame(game) })),
+        this.gameService.get(id).pipe(
+          map((game: Game) => GameActions.getSuccess({ game })),
           catchError(() => [GameActions.getFailure()]),
+        ),
+      ),
+    ),
+  );
+
+  list$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.list),
+      concatMap(({ options }) =>
+        this.gameService.list(options).pipe(
+          map((games: Game[]) => GameActions.listSuccess({ games })),
+          catchError(() => [GameActions.listFailure()]),
+        ),
+      ),
+    ),
+  );
+
+  getSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.getSuccess),
+      map(({ game: { id } }) => GameActions.getGamePlayers({ ids: [id] })),
+    ),
+  );
+
+  listSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.listSuccess),
+      map(({ games }) => GameActions.getGamePlayers({ ids: games.map(({ id }) => id) })),
+    ),
+  );
+
+  getGamePlayers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.getGamePlayers),
+      concatMap(({ ids }) =>
+        forkJoin(ids.map(id => this.gamePlayerService.list(id))).pipe(
+          withLatestFrom(this.store.pipe(select(getAllPlayers))),
+          map(([gamesGamePlayers, players]: [Omit<GamePlayer, 'base'>[][], Player[]]) =>
+            gamesGamePlayers.map((gamePlayers, index) => ({
+              id: ids[index],
+              changes: { players: mergePlayer(gamePlayers, players) },
+            })),
+          ),
+          map(updates => GameActions.getGamePlayersSuccess({ updates })),
         ),
       ),
     ),

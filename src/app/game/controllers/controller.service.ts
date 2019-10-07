@@ -1,6 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
 
 import { GameType } from '@game/models';
 import { getCurrentGame, State } from '@game/reducers';

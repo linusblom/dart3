@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-import { Game, GamePlayer, GameType } from '@game/models';
+import { createGame, Game, GameType, ListOptions } from '@game/models';
 import { throwError } from 'rxjs';
 
 @Injectable()
@@ -19,7 +19,9 @@ export class GameService {
       .get()
       .pipe(
         map(doc =>
-          doc.exists ? { id: doc.id, ...doc.data() } : throwError('Game does not exist'),
+          doc.exists
+            ? createGame({ id: doc.id, ...doc.data() })
+            : throwError('Game does not exist'),
         ),
       );
   }
@@ -49,5 +51,30 @@ export class GameService {
       .doc(gameId)
       .snapshotChanges()
       .pipe(map(({ payload }) => ({ id: payload.id, ...payload.data() })));
+  }
+
+  list(options: ListOptions) {
+    return this.db
+      .collection('accounts')
+      .doc(this.auth.auth.currentUser.uid)
+      .collection('games', ref => {
+        let query = ref as firebase.firestore.Query;
+
+        if (options.where) {
+          query = query.where(options.where.fieldPath, options.where.operator, options.where.value);
+        }
+
+        if (options.orderBy) {
+          query = query.orderBy(options.orderBy.fieldPath, options.orderBy.direction);
+        }
+
+        if (options.limit) {
+          query = query.limit(options.limit);
+        }
+
+        return query;
+      })
+      .get()
+      .pipe(map(({ docs }) => docs.map(doc => createGame({ id: doc.id, ...doc.data() }))));
   }
 }

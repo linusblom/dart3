@@ -80,4 +80,11 @@
 </app-box>
 <app-box width="400px">
   <app-jackpot [value]="jackpot$ | async"></app-jackpot>
+  <app-box-group header="Latest Winner">
+    <div *ngFor="let winner of latestWinners$ | async" class="winner">
+      <div class="date">{{ winner.ended | date: 'MMM dd HH:mm' }}</div>
+      <div class="name">{{ winner.name }}</div>
+      <div class="win">{{ winner.win | number: '1.2-2' }}</div>
+    </div>
+  </app-box-group>
 </app-box>

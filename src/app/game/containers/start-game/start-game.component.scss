@@ -31,6 +31,26 @@
   max-height: 480px;
 }
 
+.winner {
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 0.5;
+
+    &.date, &.name {
+      flex: 1;
+    }
+
+    &.win {
+      text-align: right;
+    }
+  }
+}
+
 .player {
   display: flex;
   align-items: center;

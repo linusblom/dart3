@@ -7,9 +7,9 @@ import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { Permission } from '@core/models';
-import { CurrentGameActions } from '@game/actions';
-import { GameType } from '@game/models';
-import { State } from '@game/reducers';
+import { CurrentGameActions, GameActions } from '@game/actions';
+import { GameType, ListOptions, Result } from '@game/models';
+import { list, State } from '@game/reducers';
 import { Player } from '@player/models';
 import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@root/reducers';
 
@@ -21,6 +21,7 @@ import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@
 export class StartGameComponent implements OnDestroy {
   loadingPlayers$: Observable<boolean>;
   jackpot$: Observable<number>;
+  latestWinners$: Observable<Result[]>;
 
   players: Player[];
   GameType = GameType;
@@ -60,8 +61,27 @@ export class StartGameComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
+    const options: ListOptions = { orderBy: { fieldPath: 'ended', direction: 'desc' }, limit: 3 };
+
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
+    this.latestWinners$ = this.store.pipe(
+      select(list(options)),
+      map(games =>
+        games.map(game => {
+          const winner = game.players.find(({ position }) => position === 1);
+
+          return {
+            type: game.type,
+            ended: game.ended,
+            name: winner ? winner.base.name : '',
+            win: winner ? winner.win : 0,
+          };
+        }),
+      ),
+    );
+
+    this.store.dispatch(GameActions.list({ options }));
 
     this.store
       .pipe(

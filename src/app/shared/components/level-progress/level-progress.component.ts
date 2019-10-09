@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { getLevelXP, MAX_LEVEL } from '@utils/level';
 
 @Component({
-  selector: 'app-player-level-progress',
-  templateUrl: './player-level-progress.component.html',
-  styleUrls: ['./player-level-progress.component.scss'],
+  selector: 'app-level-progress',
+  templateUrl: './level-progress.component.html',
+  styleUrls: ['./level-progress.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerLevelProgressComponent {
+export class LevelProgressComponent {
   @Input() set xp(xp: number) {
     this.progress = this.getProgress(xp);
     this.currentXP = xp;

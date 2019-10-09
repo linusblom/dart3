@@ -25,8 +25,8 @@
         <span>{{ player.credits | number: '1.2-2' }}</span>
       </div>
     </div>
-    <app-player-level-progress [xp]="player.xp"></app-player-level-progress>
-    <app-player-level [xp]="player.xp"></app-player-level>
+    <app-level-progress [xp]="player.xp"></app-level-progress>
+    <app-level [xp]="player.xp"></app-level>
   </div>
 </div>
 <div class="row stats">

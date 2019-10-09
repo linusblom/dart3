@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 import { DartHitType, GamePlayer } from '@game/models';
+import { DIAMOND } from '@utils/emojis';
 
 @Component({
   selector: 'app-dart-hit',
@@ -13,6 +14,7 @@ export class DartHitComponent {
   @Output() remove = new EventEmitter<void>();
 
   DartHitType = DartHitType;
+  DIAMOND = DIAMOND;
 
   @HostListener('click')
   onClick() {

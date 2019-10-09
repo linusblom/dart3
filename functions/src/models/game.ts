@@ -53,8 +53,7 @@ export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
     case GameType.LEGS:
       return {
         ...gamePlayerBase,
-        total: 3,
-        totalDisplay: '&#x1f9b5; &#x1f9b5; &#x1f9b5;',
+        totalDisplay: '',
       };
     default:
       return gamePlayerBase;

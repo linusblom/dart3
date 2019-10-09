@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BoardData, GamePlayer, JackpotDrawType, Score, UNUSED } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
+import { GREEN } from '@utils/colors';
+import { SKULL } from '@utils/emojis';
 
 import { GameController } from './game.controller';
 
@@ -103,7 +105,7 @@ export class HalveItController extends GameController {
           round: {
             score,
             scoreDisplay: `${score}`,
-            color: '#9ACB34',
+            color: GREEN,
           },
           total: currentTotal + score,
           totalDisplay: `${currentTotal + score}`,
@@ -111,7 +113,7 @@ export class HalveItController extends GameController {
       : {
           round: {
             score: 0,
-            scoreDisplay: '&#x2620;',
+            scoreDisplay: SKULL,
           },
           total: Math.ceil(currentTotal / 2),
           totalDisplay: `${Math.ceil(currentTotal / 2)}`,

@@ -49,7 +49,7 @@
         <div class="field rank small">
           <app-emoji
             *ngIf="player.position < 4; else position"
-            [hex]="medalEmojiHex[player.position]"
+            [hex]="medalEmojiHex[player.position - 1]"
             size="40"
           ></app-emoji>
           <ng-template #position>{{ player.position }}.</ng-template>
@@ -64,11 +64,11 @@
         </div>
         <div class="field">
           <div>{{ player.base.name }}</div>
-          <app-player-level [xp]="player.base.xp"></app-player-level>
+          <app-level [xp]="player.base.xp"></app-level>
         </div>
         <div class="field">
           <div>{{ player.xp }}</div>
-          <app-player-level-progress [xp]="player.base.xp"></app-player-level-progress>
+          <app-level-progress [xp]="player.base.xp"></app-level-progress>
         </div>
         <div class="field small">
           {{ player.win > 0 ? (player.win | number: '1.2-2') : '-' }}

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BoardData, GamePlayer, JackpotDrawType, Score } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
+import { GREEN, RED } from '@utils/colors';
+import { SKULL } from '@utils/emojis';
 
 import { GameController } from './game.controller';
 
@@ -54,21 +56,18 @@ export class LegsController extends GameController {
     const previousPlayerTotal = this.getTurnTotal(previousPlayerScores);
 
     if (currentPlayerTotal <= previousPlayerTotal) {
-      const legsLeft = currentPlayer.total - 1;
+      const total = currentPlayer.total + 1;
 
       return {
-        position: legsLeft === 0 ? activePlayers : 0,
-        total: legsLeft,
-        totalDisplay:
-          legsLeft > 0
-            ? Array(legsLeft)
-                .fill('&#x1f9b5;')
-                .join(' ')
-            : '&#x274C',
+        position: total === 3 ? activePlayers : 0,
+        total,
+        totalDisplay: Array(total)
+          .fill(SKULL)
+          .join(' '),
         round: {
           score: currentPlayerTotal,
           scoreDisplay: `${currentPlayerTotal}`,
-          color: '#bf340a',
+          color: RED,
         },
       };
     }
@@ -79,7 +78,7 @@ export class LegsController extends GameController {
       round: {
         score: currentPlayerTotal,
         scoreDisplay: `${currentPlayerTotal}`,
-        color: '#9ACB34',
+        color: GREEN,
       },
     };
   }

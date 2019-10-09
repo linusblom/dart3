@@ -8,11 +8,6 @@ const roundHeaders = {
   [GameType.LEGS]: (round: number) => `${round}`,
 };
 
-const totalHeader = {
-  [GameType.HALVEIT]: 'Total',
-  [GameType.LEGS]: 'Legs',
-};
-
 @Component({
   selector: 'app-score-board',
   templateUrl: './score-board.component.html',
@@ -44,10 +39,6 @@ export class ScoreBoardComponent implements OnChanges {
         .fill(0)
         .map((_, index) => index + 1);
     }
-  }
-
-  getTotalHeader() {
-    return totalHeader[this.type];
   }
 
   getRoundHeader(round: number) {

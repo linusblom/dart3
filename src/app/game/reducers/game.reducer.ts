@@ -27,7 +27,7 @@ export const reducer = createReducer(
     state: StoreState.FETCHING,
   })),
   on(GameActions.getSuccess, (state, { game }) =>
-    adapter.addOne(game, { ...state, state: StoreState.NONE, selectedGameId: game.id }),
+    adapter.addOne(game, { ...state, selectedGameId: game.id }),
   ),
   on(GameActions.getFailure, state => ({ ...state, state: StoreState.NONE })),
   on(GameActions.listSuccess, (state, { games }) =>

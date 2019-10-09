@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
 import { Subject } from 'rxjs';
-import { filter, first, map, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
 import { createGame, GamePlayer } from '@game/models';
 import { getLoading, getSelectedGame, State } from '@game/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
+import { MEDAL_1ST, MEDAL_2ND, MEDAL_3RD } from '@utils/emojis';
 
 @Component({
   selector: 'app-results',
@@ -25,11 +26,7 @@ export class ResultsComponent implements OnDestroy {
   game = createGame();
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
-  medalEmojiHex = {
-    '1': '1F947',
-    '2': '1F948',
-    '3': '1F949',
-  };
+  medalEmojiHex = [MEDAL_1ST, MEDAL_2ND, MEDAL_3RD];
 
   private destroy$ = new Subject<void>();
 
@@ -58,15 +55,13 @@ export class ResultsComponent implements OnDestroy {
     this.store
       .pipe(select(getLoading))
       .pipe(
-        takeUntil(this.destroy$),
         filter(loading => !loading),
-        first(),
-        tap(() => {
-          this.barChart = this.getBarChart();
-          this.pieChart = this.getPieChart();
-        }),
+        take(1),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.barChart = this.getBarChart();
+        this.pieChart = this.getPieChart();
+      });
   }
 
   ngOnDestroy() {

@@ -7,9 +7,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmojiComponent {
-  @Input() set hex(hex: string) {
-    this.emojiHex = `&#x${hex};`;
-  }
+  @Input() hex = '';
 
   @Input()
   @HostBinding('style.font-size.px')

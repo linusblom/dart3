@@ -13,12 +13,12 @@
 
       <div class="info-item">
         <div class="description">bet</div>
-        <div class="value">{{ game.bet | number: '1.2-2' }}</div>
+        <div class="value">{{ game.bet | number: '1.2-2' | currency }}</div>
       </div>
 
       <div class="info-item">
         <div class="description">prizepool</div>
-        <div class="value">{{ game.prizePool | number: '1.2-2' }}</div>
+        <div class="value">{{ game.prizePool | number: '1.2-2' | currency }}</div>
       </div>
 
       <div class="info-item">
@@ -71,7 +71,7 @@
           <app-level-progress [xp]="player.base.xp"></app-level-progress>
         </div>
         <div class="field small">
-          {{ player.win > 0 ? (player.win | number: '1.2-2') : '-' }}
+          {{ player.win > 0 ? (player.win | number: '1.2-2' | currency) : '-' }}
         </div>
       </div>
     </div>

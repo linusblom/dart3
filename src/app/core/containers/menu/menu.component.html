@@ -16,6 +16,13 @@
   </div>
   <div
     class="item"
+    [ngClass]="{ active: isRouteActive('/statistics') }"
+    (click)="onNavigate(['statistics'])"
+  >
+    <fa-icon [icon]="statsIcon" size="2x"></fa-icon>
+  </div>
+  <div
+    class="item"
     [ngClass]="{ active: isRouteActive('/settings') }"
     (click)="onNavigate(['settings'])"
   >

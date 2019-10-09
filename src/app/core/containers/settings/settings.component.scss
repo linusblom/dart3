@@ -2,6 +2,15 @@
 
 mat-form-field {
   width: 45%;
+
+  &.currency {
+    width: 100px;
+  }
+}
+
+.account {
+  display: flex;
+  flex-direction: column;
 }
 
 .password-form {
@@ -24,36 +33,3 @@ mat-form-field {
     color: $error;
   }
 }
-
-.credits-in-play {
-  display: flex;
-
-  > div {
-    flex: 1;
-  }
-
-  .credit {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border: solid $white90;
-    border-width: 0 0 1px;
-  
-    &:last-child {
-      font-size: 22px;
-      padding-top: 10px; 
-      border-width: 0;
-    }
-  }
-
-  .turnover {
-    text-align: center;
-    font-size: 28px;
-    align-self: center;
-
-    > div {
-      padding: 5px 0;
-    }
-  }
-}
-

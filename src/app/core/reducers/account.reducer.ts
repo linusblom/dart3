@@ -13,6 +13,7 @@ export const initialState: State = {
   currentJackpot: null,
   loading: false,
   permissions: [],
+  currency: 'Ð',
 };
 
 export const reducer = createReducer(

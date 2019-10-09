@@ -1,7 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { faBullseye, faCog, faSignOutAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBullseye,
+  faChartPie,
+  faCog,
+  faSignOutAlt,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -27,6 +33,7 @@ export class MenuComponent {
   userIcon = faUsers;
   settingsIcon = faCog;
   logoutIcon = faSignOutAlt;
+  statsIcon = faChartPie;
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
     this.menuOpen$ = this.store.pipe(select(getMenuOpen));

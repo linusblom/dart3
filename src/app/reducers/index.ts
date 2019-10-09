@@ -72,6 +72,10 @@ export const getLoadingAccount = createSelector(
   getAccountState,
   state => state.loading,
 );
+export const getAccountCurrency = createSelector(
+  getAccountState,
+  state => state.currency,
+);
 export const getPermissions = createSelector(
   getAccountState,
   state => state.permissions,

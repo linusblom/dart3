@@ -3,6 +3,7 @@ export interface Account {
   currentGame: string;
   currentJackpot: string;
   permissions: Permission[];
+  currency: string;
 }
 
 export interface Jackpot {

@@ -2,18 +2,16 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable, race, Subject } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { Observable, race, Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
-import { AuthActions } from '@core/actions';
-import { Jackpot, Permission } from '@core/models';
+import { AccountActions, AuthActions } from '@core/actions';
+import { Permission } from '@core/models';
 import { Actions, ofType } from '@ngrx/effects';
-import { Player } from '@player/models';
 import {
-  getAllPlayers,
+  getAccountCurrency,
   getAuthLoading,
   getAuthUser,
-  getJackpot,
   getPermissions,
   State,
 } from '@root/reducers';
@@ -27,8 +25,6 @@ export class SettingsComponent implements OnDestroy {
   Permission = Permission;
 
   loading$: Observable<boolean>;
-  credits$: Observable<{ name: string; value: number }[]>;
-  totalTurnover$: Observable<number>;
 
   permissions: Permission[] = [];
   noPermissionIcon = faTimesCircle;
@@ -44,6 +40,7 @@ export class SettingsComponent implements OnDestroy {
       return newPassword !== confirmPassword ? { passwordInvalid: true } : null;
     },
   );
+  currency = new FormControl('', [Validators.required, Validators.maxLength(3)]);
 
   private readonly destroy$ = new Subject<void>();
 
@@ -60,30 +57,17 @@ export class SettingsComponent implements OnDestroy {
 
     store
       .pipe(
+        select(getAccountCurrency),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(currency => this.currency.setValue(currency, { emitEvent: false }));
+
+    store
+      .pipe(
         select(getPermissions),
         takeUntil(this.destroy$),
       )
       .subscribe(permissions => (this.permissions = permissions));
-
-    this.credits$ = combineLatest([
-      store.pipe(select(getAllPlayers)),
-      store.pipe(select(getJackpot)),
-    ]).pipe(
-      filter(() => this.hasPermission(Permission.CORE_TOTAL_CREDITS_READ)),
-      map(([players, jackpot]: [Player[], Jackpot]) => [
-        { name: 'Players', value: players.reduce((acc, { credits }) => acc + credits, 0) },
-        { name: 'Jackpot', value: jackpot.value },
-        { name: 'Next Jackpot', value: jackpot.next },
-      ]),
-      map(credits => [
-        ...credits,
-        { name: 'Total', value: credits.reduce((acc, { value }) => acc + value, 0) },
-      ]),
-    );
-
-    this.totalTurnover$ = store
-      .pipe(select(getAllPlayers))
-      .pipe(map(players => players.reduce((acc, { turnover }) => acc + turnover, 0)));
   }
 
   ngOnDestroy() {
@@ -98,6 +82,12 @@ export class SettingsComponent implements OnDestroy {
   onChangeDisplayName() {
     if (this.displayName.valid) {
       this.store.dispatch(AuthActions.updateProfile({ displayName: this.displayName.value }));
+    }
+  }
+
+  onChangeCurrency() {
+    if (this.currency.valid) {
+      this.store.dispatch(AccountActions.update({ data: { currency: this.currency.value } }));
     }
   }
 

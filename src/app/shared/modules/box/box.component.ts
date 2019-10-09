@@ -10,5 +10,5 @@ export class BoxComponent {
 
   @Input()
   @HostBinding('style.width')
-  width = '750px';
+  width = '900px';
 }

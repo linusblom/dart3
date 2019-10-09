@@ -65,6 +65,7 @@ export class StartGameComponent implements OnDestroy {
 
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
+
     this.latestWinners$ = this.store.pipe(
       select(list(options)),
       map(games =>
@@ -145,5 +146,9 @@ export class StartGameComponent implements OnDestroy {
 
   navigateToPlayers() {
     this.router.navigate(['players']);
+  }
+
+  getGameName(gameType: GameType) {
+    return this.games.find(({ type }) => type === gameType).name;
   }
 }

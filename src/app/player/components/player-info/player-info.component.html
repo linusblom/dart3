@@ -22,7 +22,7 @@
     <div class="icons">
       <div class="icon">
         <fa-icon [icon]="iconCoins" size="lg"></fa-icon>
-        <span>{{ player.credits | number: '1.2-2' }}</span>
+        <span>{{ player.credits | number: '1.2-2' | currency }}</span>
       </div>
     </div>
     <app-level-progress [xp]="player.xp"></app-level-progress>
@@ -51,7 +51,7 @@
     <div class="description">highest</div>
   </div>
   <div class="stats-item">
-    <div class="value">{{ player.turnover | number: '1.2-2' }}</div>
+    <div class="value">{{ player.turnover | number: '1.2-2' | currency }}</div>
     <div class="description">turnover</div>
   </div>
   <div class="stats-item">
@@ -59,7 +59,7 @@
     <div class="description">180's</div>
   </div>
   <div class="stats-item">
-    <div class="value">{{ player.net | number: '1.2-2' }}</div>
+    <div class="value">{{ player.net | number: '1.2-2' | currency }}</div>
     <div class="description">net</div>
   </div>
 </div>

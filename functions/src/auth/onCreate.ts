@@ -13,6 +13,7 @@ export const onCreate = functions
       created: Date.now(),
       currentJackpot: null,
       currentGame: null,
+      currency: 'Ð',
       permissions: [
         'core:account:write',
         'core:password:write',
@@ -24,6 +25,7 @@ export const onCreate = functions
         'game:bet:200',
         'game:bet:500',
         'game:type:halveit',
+        'game:type:legs',
       ],
     });
 

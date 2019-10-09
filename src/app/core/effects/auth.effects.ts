@@ -11,6 +11,7 @@ import {
   concatMap,
   exhaustMap,
   filter,
+  map,
   switchMap,
   tap,
   withLatestFrom,
@@ -64,13 +65,7 @@ export class AuthEffects {
       filter(([_, permissions]) => permissions.includes(Permission.CORE_ACCOUNT_WRITE)),
       concatMap(([{ displayName }]) =>
         from(this.fireAuth.auth.currentUser.updateProfile({ displayName })).pipe(
-          switchMap(() => [
-            AuthActions.updateProfileSuccess({ displayName }),
-            NotificationActions.push({
-              status: Status.SUCCESS,
-              message: 'Account name updated',
-            }),
-          ]),
+          map(() => AuthActions.updateProfileSuccess({ displayName })),
           catchError(error => [
             AuthActions.updateProfileFailure({ error }),
             NotificationActions.push({ status: Status.ERROR, message: error.message }),

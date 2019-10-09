@@ -5,7 +5,7 @@ import { AuthGuard } from '@core/services';
 import { PlayerRoutes } from '@player/player.routing';
 import { NotFoundComponent } from '@shared/components';
 
-import { SettingsComponent } from './core/containers';
+import { SettingsComponent, StatisticsComponent } from './core/containers';
 
 export const routes: Routes = [
   {
@@ -14,6 +14,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'players', children: PlayerRoutes, canActivate: [AuthGuard] },
+  { path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];

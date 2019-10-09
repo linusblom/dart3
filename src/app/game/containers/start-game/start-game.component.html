@@ -1,4 +1,4 @@
-<app-box header="Start game">
+<app-box header="Start game" width="800px">
   <app-box-group header="Game and bet">
     <div class="settings">
       <div class="game">
@@ -30,7 +30,7 @@
             [value]="bet.value"
             [disabled]="!hasPermission(bet.permission) || loading"
           >
-            {{ bet.value | number: '1.2-2' }}
+            {{ bet.value | number: '1.2-2' | currency }}
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
@@ -82,9 +82,10 @@
   <app-jackpot [value]="jackpot$ | async"></app-jackpot>
   <app-box-group header="Latest Winner">
     <div *ngFor="let winner of latestWinners$ | async" class="winner">
-      <div class="date">{{ winner.ended | date: 'MMM dd HH:mm' }}</div>
-      <div class="name">{{ winner.name }}</div>
-      <div class="win">{{ winner.win | number: '1.2-2' }}</div>
+      <div>{{ winner.ended | date: 'MMM dd' }}</div>
+      <div>{{ getGameName(winner.type) }}</div>
+      <div>{{ winner.name }}</div>
+      <div class="win">{{ winner.win | number: '1.2-2' | currency }}</div>
     </div>
   </app-box-group>
 </app-box>

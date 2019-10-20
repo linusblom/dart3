@@ -53,4 +53,5 @@ export const reducer = createReducer(
     ...state,
     game: { ...state.game, boardData },
   })),
+  on(CurrentGameActions.clear, () => initialState),
 );

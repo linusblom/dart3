@@ -68,3 +68,5 @@ export const updateBoardData = createAction(
 export const end = createAction('[Current Game] End');
 
 export const abort = createAction('[Current Game] Abort');
+
+export const clear = createAction('[Current Game] Clear');

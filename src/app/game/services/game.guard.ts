@@ -30,6 +30,7 @@ export class GameGuard implements CanActivate, CanDeactivate<GameBoardComponent>
   canDeactivate() {
     this.store.dispatch(CurrentGameActions.valueChangesGameDestroy());
     this.store.dispatch(CurrentGameActions.valueChangesGamePlayerDestroy());
+    this.store.dispatch(CurrentGameActions.clear());
 
     return true;
   }

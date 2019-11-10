@@ -61,7 +61,7 @@ export class StartGameComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
-    const options: ListOptions = { orderBy: { fieldPath: 'ended', direction: 'desc' }, limit: 3 };
+    const options: ListOptions = { orderBy: { fieldPath: 'ended', direction: 'desc' }, limit: 5 };
 
     this.loadingPlayers$ = this.store.pipe(select(getLoadingPlayers));
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
@@ -73,6 +73,7 @@ export class StartGameComponent implements OnDestroy {
           const winner = game.players.find(({ position }) => position === 1);
 
           return {
+            id: game.id,
             type: game.type,
             ended: game.ended,
             name: winner ? winner.base.name : '',
@@ -150,5 +151,9 @@ export class StartGameComponent implements OnDestroy {
 
   getGameName(gameType: GameType) {
     return this.games.find(({ type }) => type === gameType).name;
+  }
+
+  navigateToResults(id: string) {
+    this.router.navigate(['results', id]);
   }
 }

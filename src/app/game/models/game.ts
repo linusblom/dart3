@@ -93,6 +93,7 @@ export interface ListOptions {
 }
 
 export interface Result {
+  id: string;
   type: GameType;
   name: string;
   win: number;

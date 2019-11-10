@@ -20,7 +20,7 @@
   align-items: center;
   padding: 20px;
   background: $white30;
-  
+
   fa-icon {
     margin-right: 10px;
   }
@@ -41,6 +41,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
+
+    &.results {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
 
     &.win {
       text-align: right;
@@ -68,7 +76,7 @@
     color: $white30;
 
     app-avatar {
-      opacity: .3;
+      opacity: 0.3;
     }
   }
 

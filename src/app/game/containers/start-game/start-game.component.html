@@ -83,7 +83,9 @@
   <app-box-group header="Latest Winner">
     <div *ngFor="let winner of latestWinners$ | async" class="winner">
       <div>{{ winner.ended | date: 'MMM dd' }}</div>
-      <div>{{ getGameName(winner.type) }}</div>
+      <div class="results" (click)="navigateToResults(winner.id)">
+        {{ getGameName(winner.type) }}
+      </div>
       <div>{{ winner.name }}</div>
       <div class="win">{{ winner.win | number: '1.2-2' | currency }}</div>
     </div>

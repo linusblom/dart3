@@ -1,13 +1,8 @@
 import { GamePlayerMap } from '../models/game';
-
-interface ResultHalveIt {
-  id: string;
-  total: number;
-  position: number;
-}
+import { Result } from '../models/result';
 
 export const resultsHalveIt = (players: FirebaseFirestore.QuerySnapshot): GamePlayerMap => {
-  const results: ResultHalveIt[] = [];
+  const results: Result[] = [];
 
   players.forEach(player => {
     results.push({ id: player.id, total: player.data().total, position: 0 });
@@ -16,23 +11,20 @@ export const resultsHalveIt = (players: FirebaseFirestore.QuerySnapshot): GamePl
   let position = 0;
   return results
     .sort((a, b) => (a.total < b.total ? 1 : -1))
-    .reduce(
-      (resultsMap, result, index, array) => {
-        position++;
+    .reduce((resultsMap, result, index, array) => {
+      position++;
 
-        if (index === 0) {
-          return { [result.id]: { position } };
-        }
+      if (index === 0) {
+        return { [result.id]: { position } };
+      }
 
-        if (result.total === array[index - 1].total) {
-          return {
-            ...resultsMap,
-            [result.id]: { position: resultsMap[array[index - 1].id].position },
-          };
-        }
+      if (result.total === array[index - 1].total) {
+        return {
+          ...resultsMap,
+          [result.id]: { position: resultsMap[array[index - 1].id].position },
+        };
+      }
 
-        return { ...resultsMap, [result.id]: { position } };
-      },
-      {} as GamePlayerMap,
-    );
+      return { ...resultsMap, [result.id]: { position } };
+    }, {} as GamePlayerMap);
 };

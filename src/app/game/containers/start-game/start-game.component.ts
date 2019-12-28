@@ -35,14 +35,19 @@ export class StartGameComponent implements OnDestroy {
     { type: GameType.HALVEIT, name: 'Halve it', permission: Permission.GAME_TYPE_HALVEIT },
     { type: GameType.LEGS, name: 'Legs', permission: Permission.GAME_TYPE_LEGS },
     {
-      type: GameType.LEGS_CLASSIC,
-      name: 'Legs Classic',
-      permission: Permission.GAME_TYPE_LEGS_CLASSIC,
-    },
-    {
       type: GameType.THREE_HUNDRED_ONE,
       name: '301',
       permission: Permission.GAME_TYPE_THREEHUNDREDONE,
+    },
+    {
+      type: GameType.FIVE_HUNDRED_ONE,
+      name: '501',
+      permission: Permission.GAME_TYPE_FIVEHUNDREDONE,
+    },
+    {
+      type: GameType.LEGS_CLASSIC,
+      name: 'Legs Classic',
+      permission: Permission.GAME_TYPE_LEGS_CLASSIC,
     },
   ];
   bets: { value: number; permission: string }[] = [
@@ -94,10 +99,7 @@ export class StartGameComponent implements OnDestroy {
       .subscribe(players => (this.players = players));
 
     this.store
-      .pipe(
-        select(getAccount),
-        takeUntil(this.destroy$),
-      )
+      .pipe(select(getAccount), takeUntil(this.destroy$))
       .subscribe(({ permissions, currentGame }) => {
         this.permissions = permissions;
 

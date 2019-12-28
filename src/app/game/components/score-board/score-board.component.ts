@@ -6,6 +6,8 @@ import { GamePlayer, GameType } from '@game/models';
 const roundHeaders = {
   [GameType.HALVEIT]: (round: number) => ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1],
   [GameType.LEGS]: (round: number) => `${round}`,
+  [GameType.THREE_HUNDRED_ONE]: (round: number) => `${round}`,
+  [GameType.FIVE_HUNDRED_ONE]: (round: number) => `${round}`,
 };
 
 @Component({

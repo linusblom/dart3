@@ -28,5 +28,6 @@ export enum Permission {
   GAME_TYPE_LEGS = 'game:type:legs',
   GAME_TYPE_LEGS_CLASSIC = 'game:type:legs-classic',
   GAME_TYPE_THREEHUNDREDONE = 'game:type:three-hundred-one',
+  GAME_TYPE_FIVEHUNDREDONE = 'game:type:five-hundred-one',
   GAME_DEV_CONTROLS = 'game:dev:controls',
 }

@@ -21,6 +21,7 @@ export enum GameType {
   LEGS = 'legs',
   LEGS_CLASSIC = 'legs-classic',
   THREE_HUNDRED_ONE = 'three-hundred-one',
+  FIVE_HUNDRED_ONE = 'five-hundred-one',
 }
 
 export interface PlayerBase {

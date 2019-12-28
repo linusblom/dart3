@@ -203,12 +203,10 @@ export class CurrentGameEffects {
       filter(round => !!round),
       distinctUntilKeyChanged('jackpotDraw'),
       filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.PENDING),
-      map(
-        ({ jackpotDraw, scores }) =>
-          // scores.filter(({ score }) => score === 0).length
-          // ?
-          CurrentGameActions.nextTurn(),
-        // : CurrentGameActions.jackpotGameStart({ jackpotDraw, scores }),
+      map(({ jackpotDraw, scores }) =>
+        scores.filter(({ score }) => score === 0).length
+          ? CurrentGameActions.nextTurn()
+          : CurrentGameActions.jackpotGameStart({ jackpotDraw, scores }),
       ),
     ),
   );

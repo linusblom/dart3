@@ -3,7 +3,7 @@
     <div class="info">
       <div class="info-item">
         <div class="description">type</div>
-        <div class="value">{{ game.type }}</div>
+        <div class="value">{{ getGameNiceName(game.type) }}</div>
       </div>
 
       <div class="info-item">
@@ -45,7 +45,7 @@
           Win
         </div>
       </div>
-      <div *ngFor="let player of game.players" class="row">
+      <div *ngFor="let player of sortedGamePlayers" class="row">
         <div class="field rank small">
           <app-emoji
             *ngIf="player.position < 4; else position"

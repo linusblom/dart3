@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
 import { Subject } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { createGame, GamePlayer } from '@game/models';
+import { createGame, GamePlayer, GameType } from '@game/models';
 import { getLoading, getSelectedGame, State } from '@game/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
@@ -24,6 +24,7 @@ export class ResultsComponent implements OnDestroy {
   barChart: Chart;
   pieChart: Chart;
   game = createGame();
+  sortedGamePlayers: GamePlayer[] = [];
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = [MEDAL_1ST, MEDAL_2ND, MEDAL_3RD];
@@ -35,22 +36,14 @@ export class ResultsComponent implements OnDestroy {
 
     this.store.dispatch(GameActions.get({ id }));
 
-    this.store
-      .pipe(
-        select(getSelectedGame),
-        takeUntil(this.destroy$),
-        map(game => ({
-          ...game,
-          players: game.players.sort((a, b) => (a.position > b.position ? 1 : -1)),
-        })),
-      )
-      .subscribe(game => {
-        this.game = game;
-        this.tabs = [
-          { name: 'All', value: '' },
-          ...game.players.map(player => ({ name: player.base.name, value: player.id })),
-        ];
-      });
+    this.store.pipe(select(getSelectedGame), takeUntil(this.destroy$)).subscribe(game => {
+      this.game = game;
+      this.sortedGamePlayers = game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
+      this.tabs = [
+        { name: 'All', value: '' },
+        ...game.players.map(player => ({ name: player.base.name, value: player.id })),
+      ];
+    });
 
     this.store
       .pipe(select(getLoading))
@@ -207,5 +200,18 @@ export class ResultsComponent implements OnDestroy {
     const minutes = Math.floor(millis / 60000);
     const seconds = Math.floor((millis % 60000) / 1000);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  getGameNiceName(type: GameType) {
+    switch (type) {
+      case GameType.HALVEIT:
+        return 'halve it';
+      case GameType.THREE_HUNDRED_ONE:
+        return '301';
+      case GameType.FIVE_HUNDRED_ONE:
+        return '501';
+      default:
+        return type;
+    }
   }
 }

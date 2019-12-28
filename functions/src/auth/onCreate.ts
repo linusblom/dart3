@@ -26,7 +26,8 @@ export const onCreate = functions
         'game:bet:500',
         'game:type:halveit',
         'game:type:legs',
-        'game:type:three-hundred-one',
+        'game:type:301',
+        'game:type:501',
       ],
     });
 

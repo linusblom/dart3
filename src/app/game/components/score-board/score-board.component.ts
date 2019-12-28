@@ -3,13 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 
 import { GamePlayer, GameType } from '@game/models';
 
-const roundHeaders = {
-  [GameType.HALVEIT]: (round: number) => ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1],
-  [GameType.LEGS]: (round: number) => `${round}`,
-  [GameType.THREE_HUNDRED_ONE]: (round: number) => `${round}`,
-  [GameType.FIVE_HUNDRED_ONE]: (round: number) => `${round}`,
-};
-
 @Component({
   selector: 'app-score-board',
   templateUrl: './score-board.component.html',
@@ -44,7 +37,12 @@ export class ScoreBoardComponent implements OnChanges {
   }
 
   getRoundHeader(round: number) {
-    return roundHeaders[this.type](round);
+    switch (this.type) {
+      case GameType.HALVEIT:
+        return ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1];
+      default:
+        return round;
+    }
   }
 
   trackByFn(index: number) {

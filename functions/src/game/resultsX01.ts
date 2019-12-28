@@ -1,7 +1,7 @@
 import { GamePlayerMap } from '../models/game';
 import { Result } from '../models/result';
 
-export const resultsXHundredOne = (players: FirebaseFirestore.QuerySnapshot): GamePlayerMap => {
+export const resultsX01 = (players: FirebaseFirestore.QuerySnapshot): GamePlayerMap => {
   const results: Result[] = [];
 
   players.forEach(player => {

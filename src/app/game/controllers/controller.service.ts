@@ -8,7 +8,7 @@ import { DefaultController } from './default.controller';
 import { GameController } from './game.controller';
 import { HalveItController } from './halveit.controller';
 import { LegsController } from './legs.controller';
-import { XHundredOneController } from './x-hundred-one';
+import { X01Controller } from './x01.controller';
 
 @Injectable()
 export class ControllerService {
@@ -26,7 +26,7 @@ export class ControllerService {
         return this.injector.get<LegsController>(LegsController);
       case GameType.THREE_HUNDRED_ONE:
       case GameType.FIVE_HUNDRED_ONE:
-        return this.injector.get<XHundredOneController>(XHundredOneController);
+        return this.injector.get<X01Controller>(X01Controller);
       default:
         return this.injector.get<DefaultController>(DefaultController);
     }

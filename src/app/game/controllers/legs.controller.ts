@@ -19,7 +19,12 @@ export class LegsController extends GameController {
     const previousPlayerScores = this.getPreviousPlayerScores();
     const activePlayers = this.getActivePlayers();
 
-    const { round, ...rest } = this.checkScore(player, scores, previousPlayerScores, activePlayers);
+    const { round, ...rest } = this.getRoundTotalScore(
+      player,
+      scores,
+      previousPlayerScores,
+      activePlayers,
+    );
 
     return {
       id: player.id,
@@ -46,7 +51,7 @@ export class LegsController extends GameController {
     };
   }
 
-  private checkScore(
+  private getRoundTotalScore(
     currentPlayer: GamePlayer,
     currentPlayerScores: Score[],
     previousPlayerScores: Score[],

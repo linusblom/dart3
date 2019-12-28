@@ -7,14 +7,14 @@ import { GREEN, RED } from '@utils/colors';
 import { GameController } from './game.controller';
 
 @Injectable()
-export class XHundredOneController extends GameController {
+export class X01Controller extends GameController {
   constructor(store: Store<State>) {
     super(store);
   }
 
   endTurn(scores: Score[]): Partial<GamePlayer> {
     const player = this.getCurrentPlayer();
-    const { round, ...rest } = this.checkScore(scores, player.total);
+    const { round, ...rest } = this.getRoundTotalScore(scores, player.total);
 
     return {
       id: player.id,
@@ -41,7 +41,7 @@ export class XHundredOneController extends GameController {
     };
   }
 
-  private checkScore(scores: Score[], currentTotal: number) {
+  private getRoundTotalScore(scores: Score[], currentTotal: number) {
     const { total, score, bust } = scores.reduce(
       (acc, hit) => {
         if (acc.total === 0 && !acc.bust) {

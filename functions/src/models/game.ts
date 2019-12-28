@@ -4,8 +4,8 @@ export enum GameType {
   HALVEIT = 'halveit',
   LEGS = 'legs',
   LEGS_CLASSIC = 'legs-classic',
-  THREE_HUNDRED_ONE = 'three-hundred-one',
-  FIVE_HUNDRED_ONE = 'five-hundred-one',
+  THREE_HUNDRED_ONE = '301',
+  FIVE_HUNDRED_ONE = '501',
 }
 
 export interface GamePlayer {
@@ -65,7 +65,7 @@ export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
     case GameType.FIVE_HUNDRED_ONE:
       return {
         ...gamePlayerBase,
-        total: 301,
+        total: 501,
         totalDisplay: '501',
       };
     default:

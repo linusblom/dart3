@@ -10,6 +10,7 @@ import { Permission } from '@core/models';
 import { CurrentGameActions, GameActions } from '@game/actions';
 import { GameType, ListOptions, Result } from '@game/models';
 import { list, State } from '@game/reducers';
+import { getGameNiceName } from '@game/utils/game-nice-name';
 import { Player } from '@player/models';
 import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@root/reducers';
 
@@ -37,12 +38,12 @@ export class StartGameComponent implements OnDestroy {
     {
       type: GameType.THREE_HUNDRED_ONE,
       name: '301',
-      permission: Permission.GAME_TYPE_THREEHUNDREDONE,
+      permission: Permission.GAME_TYPE_301,
     },
     {
       type: GameType.FIVE_HUNDRED_ONE,
       name: '501',
-      permission: Permission.GAME_TYPE_FIVEHUNDREDONE,
+      permission: Permission.GAME_TYPE_501,
     },
     {
       type: GameType.LEGS_CLASSIC,
@@ -62,6 +63,7 @@ export class StartGameComponent implements OnDestroy {
   selectedIcon = faCheckCircle;
   unselectedIcon = faCircle;
   noPlayersIcon = faUserTimes;
+  getGameNiceName = getGameNiceName;
 
   private destroy$ = new Subject<void>();
 
@@ -149,10 +151,6 @@ export class StartGameComponent implements OnDestroy {
 
   navigateToPlayers() {
     this.router.navigate(['players']);
-  }
-
-  getGameName(gameType: GameType) {
-    return this.games.find(({ type }) => type === gameType).name;
   }
 
   navigateToResults(id: string) {

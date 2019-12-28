@@ -6,8 +6,9 @@ import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { createGame, GamePlayer, GameType } from '@game/models';
+import { createGame, GamePlayer } from '@game/models';
 import { getLoading, getSelectedGame, State } from '@game/reducers';
+import { getGameNiceName } from '@game/utils/game-nice-name';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
 import { MEDAL_1ST, MEDAL_2ND, MEDAL_3RD } from '@utils/emojis';
@@ -28,6 +29,8 @@ export class ResultsComponent implements OnDestroy {
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = [MEDAL_1ST, MEDAL_2ND, MEDAL_3RD];
+
+  getGameNiceName = getGameNiceName;
 
   private destroy$ = new Subject<void>();
 
@@ -200,18 +203,5 @@ export class ResultsComponent implements OnDestroy {
     const minutes = Math.floor(millis / 60000);
     const seconds = Math.floor((millis % 60000) / 1000);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
-
-  getGameNiceName(type: GameType) {
-    switch (type) {
-      case GameType.HALVEIT:
-        return 'halve it';
-      case GameType.THREE_HUNDRED_ONE:
-        return '301';
-      case GameType.FIVE_HUNDRED_ONE:
-        return '501';
-      default:
-        return type;
-    }
   }
 }

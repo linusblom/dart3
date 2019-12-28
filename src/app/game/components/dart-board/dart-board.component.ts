@@ -122,20 +122,13 @@ export class DartBoardComponent {
     );
 
     const removalOrder = this.getRandomizedBoardFieldScores(this.hits[this.currentJackpotRound]);
-    const delayOrder = [
-      ...Array(removalOrder.length - 10).fill(20),
-      ...Array(4).fill(250),
-      ...Array(4).fill(500),
-      ...Array(1).fill(1000),
-      ...Array(1).fill(2000),
-    ];
 
     from(removalOrder)
       .pipe(
         concatMap((score, index) =>
           of(score).pipe(
-            delay(delayOrder[index]),
-            tap(() => (this.pulse = index === 59)),
+            tap(() => (this.pulse = index === 60)),
+            delay(index === 60 ? 2000 : 20),
           ),
         ),
         delay(500),

@@ -44,6 +44,7 @@
 
     &.results {
       cursor: pointer;
+      text-transform: capitalize;
 
       &:hover {
         text-decoration: underline;

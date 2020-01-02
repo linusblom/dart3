@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { Game, GamePlayer, Player } from 'dart3-sdk';
 import { forkJoin } from 'rxjs';
 import { catchError, concatMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { Game, GamePlayer } from '@game/models';
 import { State } from '@game/reducers';
 import { GamePlayerService, GameService } from '@game/services';
 import { mergePlayer } from '@game/utils/merge-player';
-import { Player } from '@player/models';
 import { getAllPlayers } from '@root/reducers';
 
 @Injectable()

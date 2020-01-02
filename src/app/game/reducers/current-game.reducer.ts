@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
+import { Game } from 'dart3-sdk';
 
 import { CurrentGameActions } from '@game/actions';
-import { createGame, Game, JackpotRound } from '@game/models';
+import { createGame, JackpotRound } from '@game/models';
 
 export interface State {
   game: Game;

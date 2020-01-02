@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { BoardData, GamePlayer, JackpotDrawType, Score } from 'dart3-sdk';
 
-import { BoardData, GamePlayer, JackpotDrawType, Score, UNUSED } from '@game/models';
+import { UNUSED } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
 import { GREEN } from '@utils/colors';
@@ -25,7 +26,7 @@ export class HalveItController extends GameController {
       xp: player.xp + this.getTurnTotal(scores),
       ...rest,
       rounds: {
-        [this.game.currentRound]: { scores, jackpotDraw: JackpotDrawType.PENDING, ...round },
+        [this.game.currentRound]: { scores, jackpotDraw: JackpotDrawType.Pending, ...round },
       },
     };
   }

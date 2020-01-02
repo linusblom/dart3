@@ -3,15 +3,14 @@ import { Router } from '@angular/router';
 import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import { faUserTimes } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
+import { GameType, Permission, Player } from 'dart3-sdk';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { Permission } from '@core/models';
 import { CurrentGameActions, GameActions } from '@game/actions';
-import { GameType, ListOptions, Result } from '@game/models';
+import { ListOptions, Result } from '@game/models';
 import { list, State } from '@game/reducers';
 import { getGameNiceName } from '@game/utils/game-nice-name';
-import { Player } from '@player/models';
 import { getAccount, getAllPlayers, getJackpotValue, getLoadingPlayers } from '@root/reducers';
 
 @Component({
@@ -26,38 +25,38 @@ export class StartGameComponent implements OnDestroy {
 
   players: Player[];
   GameType = GameType;
-  type = GameType.HALVEIT;
+  type = GameType.HalveIt;
   bet = 0;
   playerIds: string[] = [];
   loading = false;
   permissions: Permission[] = [];
 
   games: { type: GameType; name: string; permission: string }[] = [
-    { type: GameType.HALVEIT, name: 'Halve it', permission: Permission.GAME_TYPE_HALVEIT },
-    { type: GameType.LEGS, name: 'Legs', permission: Permission.GAME_TYPE_LEGS },
+    { type: GameType.HalveIt, name: 'Halve it', permission: Permission.GameTypeHalveIt },
+    { type: GameType.Legs, name: 'Legs', permission: Permission.GameTypeLegs },
     {
-      type: GameType.THREE_HUNDRED_ONE,
+      type: GameType.Three01,
       name: '301',
-      permission: Permission.GAME_TYPE_301,
+      permission: Permission.GameTypeThree01,
     },
     {
-      type: GameType.FIVE_HUNDRED_ONE,
+      type: GameType.Five01,
       name: '501',
-      permission: Permission.GAME_TYPE_501,
+      permission: Permission.GameTypeFive01,
     },
     {
-      type: GameType.LEGS_CLASSIC,
+      type: GameType.LegsClassic,
       name: 'Legs Classic',
-      permission: Permission.GAME_TYPE_LEGS_CLASSIC,
+      permission: Permission.GameTypeLegsClassic,
     },
   ];
   bets: { value: number; permission: string }[] = [
-    { value: 10, permission: Permission.GAME_BET_10 },
-    { value: 20, permission: Permission.GAME_BET_20 },
-    { value: 50, permission: Permission.GAME_BET_50 },
-    { value: 100, permission: Permission.GAME_BET_100 },
-    { value: 200, permission: Permission.GAME_BET_200 },
-    { value: 500, permission: Permission.GAME_BET_500 },
+    { value: 10, permission: Permission.GameBet10 },
+    { value: 20, permission: Permission.GameBet20 },
+    { value: 50, permission: Permission.GameBet50 },
+    { value: 100, permission: Permission.GameBet100 },
+    { value: 200, permission: Permission.GameBet200 },
+    { value: 500, permission: Permission.GameBet500 },
   ];
 
   selectedIcon = faCheckCircle;

@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { GamePlayer } from 'dart3-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { GamePlayer } from '@game/models';
-
-type DbGamePlayer = Omit<GamePlayer, 'base'>;
 
 @Injectable()
 export class GamePlayerService {
   constructor(private readonly db: AngularFirestore, private readonly auth: AngularFireAuth) {}
 
-  list(gameId: string): Observable<DbGamePlayer[]> {
+  list(gameId: string): Observable<GamePlayer[]> {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
@@ -22,7 +19,7 @@ export class GamePlayerService {
       .get()
       .pipe(
         map(collection =>
-          collection.docs.map(doc => ({ id: doc.id, ...doc.data() } as DbGamePlayer)),
+          collection.docs.map(doc => ({ id: doc.id, ...doc.data() } as GamePlayer)),
         ),
       );
   }
@@ -38,7 +35,7 @@ export class GamePlayerService {
       .set(data, { merge: true });
   }
 
-  valueChanges(gameId: string): Observable<DbGamePlayer[]> {
+  valueChanges(gameId: string): Observable<GamePlayer[]> {
     return this.db
       .collection('accounts')
       .doc(this.auth.auth.currentUser.uid)
@@ -49,7 +46,7 @@ export class GamePlayerService {
       .pipe(
         map(action =>
           action.map(
-            ({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() } as DbGamePlayer),
+            ({ payload }) => ({ id: payload.doc.id, ...payload.doc.data() } as GamePlayer),
           ),
         ),
       );

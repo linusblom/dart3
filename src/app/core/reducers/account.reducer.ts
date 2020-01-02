@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
+import { Account } from 'dart3-sdk';
 
 import { AccountActions } from '@core/actions';
-import { Account } from '@core/models';
 
 export interface State extends Account {
   loading: boolean;

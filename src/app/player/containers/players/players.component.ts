@@ -3,11 +3,12 @@ import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUserPlus, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
+import { Player, Transaction } from 'dart3-sdk';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, pluck, takeUntil, tap } from 'rxjs/operators';
 
 import { PlayerActions, TransactionActions } from '@player/actions';
-import { Player, Transaction, TransactionPayload } from '@player/models';
+import { TransactionPayload } from '@player/models';
 import {
   getAllPlayers,
   getLoadingCreatePlayer,
@@ -79,21 +80,13 @@ export class PlayersComponent implements OnDestroy {
       });
 
     this.store
-      .pipe(
-        select(getSelectedPlayer),
-        takeUntil(this.destroy$),
-      )
+      .pipe(select(getSelectedPlayer), takeUntil(this.destroy$))
       .subscribe(selectedPlayer => (this.selectedPlayer = selectedPlayer));
 
-    this.route.params
-      .pipe(
-        takeUntil(this.destroy$),
-        pluck('id'),
-      )
-      .subscribe(id => {
-        this.selectedPlayerId = id;
-        this.store.dispatch(PlayerActions.select({ id }));
-      });
+    this.route.params.pipe(takeUntil(this.destroy$), pluck('id')).subscribe(id => {
+      this.selectedPlayerId = id;
+      this.store.dispatch(PlayerActions.select({ id }));
+    });
   }
 
   ngOnDestroy() {

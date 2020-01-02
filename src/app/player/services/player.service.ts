@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Player } from 'dart3-sdk';
 import { map, take } from 'rxjs/operators';
-
-import { Player } from '@player/models';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {

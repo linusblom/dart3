@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { TransactionType } from 'dart3-sdk';
 import { map } from 'rxjs/operators';
-
-import { TransactionType } from '@player/models';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {

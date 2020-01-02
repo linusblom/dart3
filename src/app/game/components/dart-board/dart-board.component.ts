@@ -1,8 +1,9 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { GamePlayer, Score } from 'dart3-sdk';
 import { from, of, timer } from 'rxjs';
 import { concatMap, delay, finalize, first, tap } from 'rxjs/operators';
 
-import { DartHit, DartHitType, GamePlayer, JackpotRound, Score } from '@game/models';
+import { DartHit, DartHitType, JackpotRound } from '@game/models';
 import { generateId } from '@utils/generateId';
 
 enum BoardFieldColor {

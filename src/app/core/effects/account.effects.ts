@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { Account, Permission } from 'dart3-sdk';
 import { from } from 'rxjs';
 import {
   catchError,
@@ -13,7 +14,6 @@ import {
 } from 'rxjs/operators';
 
 import { AccountActions } from '@core/actions';
-import { Account, Permission } from '@core/models';
 import { AccountService } from '@core/services';
 import { getPermissions, State } from '@root/reducers';
 
@@ -36,7 +36,7 @@ export class AccountEffects {
     this.actions$.pipe(
       ofType(AccountActions.update),
       withLatestFrom(this.store.pipe(select(getPermissions))),
-      filter(([_, permissions]) => permissions.includes(Permission.CORE_ACCOUNT_WRITE)),
+      filter(([_, permissions]) => permissions.includes(Permission.CoreAccountWrite)),
       concatMap(([{ data }]) =>
         from(this.service.update(data)).pipe(
           map(() => AccountActions.updateSuccess()),

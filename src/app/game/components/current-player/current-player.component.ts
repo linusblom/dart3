@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { GamePlayer, Score } from '@game/models';
+import { GamePlayer, Score } from 'dart3-sdk';
 
 @Component({
   selector: 'app-current-player',

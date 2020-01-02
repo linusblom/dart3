@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { Permission } from 'dart3-sdk';
 
-import { Permission } from '@core/models';
 import * as fromAccount from '@core/reducers/account.reducer';
 import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
@@ -33,14 +33,8 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
 );
 
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-export const getAuthLoading = createSelector(
-  getAuthState,
-  state => state.loading,
-);
-export const getAuthUser = createSelector(
-  getAuthState,
-  state => state.user,
-);
+export const getAuthLoading = createSelector(getAuthState, state => state.loading);
+export const getAuthUser = createSelector(getAuthState, state => state.user);
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
 export const { selectAll: getAllNotifications } = fromNotification.adapter.getSelectors(
@@ -48,57 +42,27 @@ export const { selectAll: getAllNotifications } = fromNotification.adapter.getSe
 );
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
-export const getMenuOpen = createSelector(
-  getCoreState,
-  state => state.menuOpen,
-);
+export const getMenuOpen = createSelector(getCoreState, state => state.menuOpen);
 
 export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
-export const getJackpot = createSelector(
-  getJackpotState,
-  state => state,
-);
-export const getJackpotValue = createSelector(
-  getJackpotState,
-  state => state.value,
-);
+export const getJackpot = createSelector(getJackpotState, state => state);
+export const getJackpotValue = createSelector(getJackpotState, state => state.value);
 
 export const getAccountState = createFeatureSelector<fromAccount.State>('account');
-export const getAccount = createSelector(
-  getAccountState,
-  state => state,
-);
-export const getLoadingAccount = createSelector(
-  getAccountState,
-  state => state.loading,
-);
-export const getAccountCurrency = createSelector(
-  getAccountState,
-  state => state.currency,
-);
-export const getPermissions = createSelector(
-  getAccountState,
-  state => state.permissions,
-);
+export const getAccount = createSelector(getAccountState, state => state);
+export const getLoadingAccount = createSelector(getAccountState, state => state.loading);
+export const getAccountCurrency = createSelector(getAccountState, state => state.currency);
+export const getPermissions = createSelector(getAccountState, state => state.permissions);
 export const hasPermission = (permission: Permission) =>
-  createSelector(
-    getAccountState,
-    state => state.permissions.includes(permission),
-  );
+  createSelector(getAccountState, state => state.permissions.includes(permission));
 
 export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
-export const getLoadingPlayers = createSelector(
-  getPlayerState,
-  state => state.loadingPlayers,
-);
+export const getLoadingPlayers = createSelector(getPlayerState, state => state.loadingPlayers);
 export const getLoadingCreatePlayer = createSelector(
   getPlayerState,
   state => state.loadingCreatePlayer,
 );
-export const getSelectedPlayerId = createSelector(
-  getPlayerState,
-  state => state.selectedPlayerId,
-);
+export const getSelectedPlayerId = createSelector(getPlayerState, state => state.selectedPlayerId);
 export const {
   selectIds: getPlayerIds,
   selectEntities: getPlayerEntities,
@@ -113,7 +77,4 @@ export const getSelectedPlayer = createSelector(
   },
 );
 export const getPlayersByIds = (ids: string[]) =>
-  createSelector(
-    getAllPlayers,
-    players => players.filter(player => ids.includes(player.id)),
-  );
+  createSelector(getAllPlayers, players => players.filter(player => ids.includes(player.id)));

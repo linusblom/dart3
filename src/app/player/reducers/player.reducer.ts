@@ -1,8 +1,8 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Player } from 'dart3-sdk';
 
 import { PlayerActions, TransactionActions } from '@player/actions';
-import { Player } from '@player/models';
 
 export interface State extends EntityState<Player> {
   loadingPlayers: boolean;

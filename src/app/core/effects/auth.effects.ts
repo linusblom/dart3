@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { Permission } from 'dart3-sdk';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { from } from 'rxjs';
@@ -19,7 +20,7 @@ import {
 
 import { AccountActions, AuthActions, JackpotActions } from '@core/actions';
 import { CoreActions, NotificationActions } from '@core/actions';
-import { Permission, Status } from '@core/models';
+import { Status } from '@core/models/notification';
 import { PlayerActions } from '@player/actions';
 import { getAuthUser, getPermissions, State } from '@root/reducers';
 
@@ -62,7 +63,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.updateProfile),
       withLatestFrom(this.store.pipe(select(getPermissions))),
-      filter(([_, permissions]) => permissions.includes(Permission.CORE_ACCOUNT_WRITE)),
+      filter(([_, permissions]) => permissions.includes(Permission.CoreAccountWrite)),
       concatMap(([{ displayName }]) =>
         from(this.fireAuth.auth.currentUser.updateProfile({ displayName })).pipe(
           map(() => AuthActions.updateProfileSuccess({ displayName })),
@@ -96,7 +97,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.updatePassword),
       withLatestFrom(this.store.pipe(select(getPermissions))),
-      filter(([_, permissions]) => permissions.includes(Permission.CORE_PASSWORD_WRITE)),
+      filter(([_, permissions]) => permissions.includes(Permission.CoreAccountWrite)),
       switchMap(([{ newPassword }]) =>
         from(this.fireAuth.auth.currentUser.updatePassword(newPassword)).pipe(
           switchMap(() => [

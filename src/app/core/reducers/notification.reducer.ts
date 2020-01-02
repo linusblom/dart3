@@ -2,7 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { NotificationActions } from '@core/actions';
-import { Notification } from '@core/models';
+import { Notification } from '@core/models/notification';
 import { generateId } from '@utils/generateId';
 
 export interface State extends EntityState<Notification> {}

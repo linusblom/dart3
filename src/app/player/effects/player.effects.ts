@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { Player } from 'dart3-sdk';
 import { from } from 'rxjs';
 import { catchError, concatMap, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { NotificationActions } from '@core/actions';
-import { Status } from '@core/models';
+import { Status } from '@core/models/notification';
 import { PlayerActions } from '@player/actions';
-import { Player } from '@player/models';
 import { PlayerService } from '@player/services';
 import { State } from '@root/reducers';
 import { getSelectedPlayer } from '@root/reducers';

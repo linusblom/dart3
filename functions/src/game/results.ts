@@ -1,4 +1,6 @@
-import { GameType, GamePlayerMap } from '../models/game';
+import { GameType } from 'dart3-sdk';
+
+import { GamePlayerMap } from '../models/game';
 import { resultsHalveIt } from './resultsHalveIt';
 import { resultsLegs } from './resultsLegs';
 import { resultsX01 } from './resultsX01';
@@ -8,12 +10,12 @@ export const getGameResults = (
   type: GameType,
 ): GamePlayerMap => {
   switch (type) {
-    case GameType.HALVEIT:
+    case GameType.HalveIt:
       return resultsHalveIt(players);
-    case GameType.LEGS:
+    case GameType.Legs:
       return resultsLegs(players);
-    case GameType.THREE_HUNDRED_ONE:
-    case GameType.FIVE_HUNDRED_ONE:
+    case GameType.Three01:
+    case GameType.Five01:
       return resultsX01(players);
     default:
       return {};

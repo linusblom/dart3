@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-
-import { Account } from '@core/models';
+import { Account } from 'dart3-sdk';
 
 export const valueChangesInit = createAction('[Account] Value Changes Init');
 export const valueChangesSuccess = createAction(

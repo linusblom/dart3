@@ -2,11 +2,12 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
+import { GamePlayer } from 'dart3-sdk';
 import { Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { GameActions } from '@game/actions';
-import { createGame, GamePlayer } from '@game/models';
+import { createGame } from '@game/models';
 import { getLoading, getSelectedGame, State } from '@game/reducers';
 import { getGameNiceName } from '@game/utils/game-nice-name';
 import { BoxTab } from '@shared/modules/box/box.models';
@@ -25,7 +26,7 @@ export class ResultsComponent implements OnDestroy {
   barChart: Chart;
   pieChart: Chart;
   game = createGame();
-  sortedGamePlayers: GamePlayer[] = [];
+  positionSortedPlayers: GamePlayer[] = [];
   activeTab = '';
   tabs: BoxTab[] = [{ name: 'All', value: '' }];
   medalEmojiHex = [MEDAL_1ST, MEDAL_2ND, MEDAL_3RD];
@@ -39,14 +40,32 @@ export class ResultsComponent implements OnDestroy {
 
     this.store.dispatch(GameActions.get({ id }));
 
-    this.store.pipe(select(getSelectedGame), takeUntil(this.destroy$)).subscribe(game => {
-      this.game = game;
-      this.sortedGamePlayers = game.players.sort((a, b) => (a.position > b.position ? 1 : -1));
-      this.tabs = [
-        { name: 'All', value: '' },
-        ...game.players.map(player => ({ name: player.base.name, value: player.id })),
-      ];
-    });
+    this.store
+      .pipe(
+        select(getSelectedGame),
+        takeUntil(this.destroy$),
+        map(game => ({
+          game: {
+            ...game,
+            players: [
+              ...game.players.sort(
+                (a, b) => game.playerIds.indexOf(a.id) - game.playerIds.indexOf(b.id),
+              ),
+            ],
+          },
+          positionSortedPlayers: [
+            ...game.players.sort((a, b) => (a.position > b.position ? 1 : -1)),
+          ],
+        })),
+      )
+      .subscribe(({ game, positionSortedPlayers }) => {
+        this.game = game;
+        this.positionSortedPlayers = positionSortedPlayers;
+        this.tabs = [
+          { name: 'All', value: '' },
+          ...game.players.map(player => ({ name: player.base.name, value: player.id })),
+        ];
+      });
 
     this.store
       .pipe(select(getLoading))

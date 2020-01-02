@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BoardData, GamePlayer, JackpotDrawType, Score } from 'dart3-sdk';
 
-import { BoardData, GamePlayer, JackpotDrawType, Score } from '@game/models';
 import { State } from '@game/reducers';
 import { Store } from '@ngrx/store';
 import { GREEN, RED } from '@utils/colors';
@@ -34,7 +34,7 @@ export class LegsController extends GameController {
       rounds: {
         [this.game.currentRound]: {
           scores,
-          jackpotDraw: JackpotDrawType.PENDING,
+          jackpotDraw: JackpotDrawType.Pending,
           ...round,
         },
       },

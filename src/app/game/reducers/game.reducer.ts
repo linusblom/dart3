@@ -1,8 +1,8 @@
 import { GameActions } from '@game/actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Game } from 'dart3-sdk';
 
-import { Game } from '@game/models';
 import { StoreState } from '@shared/models';
 
 export interface State extends EntityState<Game> {

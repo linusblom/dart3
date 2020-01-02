@@ -2,17 +2,17 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
+import { Permission } from 'dart3-sdk';
 import { Observable, race, Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, shareReplay, take, takeUntil } from 'rxjs/operators';
 
 import { AccountActions, AuthActions } from '@core/actions';
-import { Permission } from '@core/models';
 import { Actions, ofType } from '@ngrx/effects';
 import {
   getAccountCurrency,
   getAuthLoading,
   getAuthUser,
-  getPermissions,
+  hasPermission,
   State,
 } from '@root/reducers';
 
@@ -25,8 +25,8 @@ export class SettingsComponent implements OnDestroy {
   Permission = Permission;
 
   loading$: Observable<boolean>;
+  coreAccountWrite$: Observable<boolean>;
 
-  permissions: Permission[] = [];
   noPermissionIcon = faTimesCircle;
   displayName = new FormControl('', Validators.required);
   passwordForm = new FormGroup(
@@ -46,6 +46,10 @@ export class SettingsComponent implements OnDestroy {
 
   constructor(private readonly store: Store<State>, private readonly actions$: Actions) {
     this.loading$ = store.pipe(select(getAuthLoading));
+    this.coreAccountWrite$ = store.pipe(
+      select(hasPermission(Permission.CoreAccountWrite)),
+      shareReplay(1),
+    );
 
     store
       .pipe(
@@ -56,27 +60,13 @@ export class SettingsComponent implements OnDestroy {
       .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
 
     store
-      .pipe(
-        select(getAccountCurrency),
-        takeUntil(this.destroy$),
-      )
+      .pipe(select(getAccountCurrency), takeUntil(this.destroy$))
       .subscribe(currency => this.currency.setValue(currency, { emitEvent: false }));
-
-    store
-      .pipe(
-        select(getPermissions),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(permissions => (this.permissions = permissions));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
-  }
-
-  hasPermission(permission: Permission) {
-    return this.permissions.includes(permission);
   }
 
   onChangeDisplayName() {

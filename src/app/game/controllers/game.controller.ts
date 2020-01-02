@@ -1,6 +1,6 @@
 import { select, Store } from '@ngrx/store';
+import { BoardData, Game, GamePlayer, Score } from 'dart3-sdk';
 
-import { BoardData, Game, GamePlayer, Score } from '@game/models';
 import { getCurrentGame, State } from '@game/reducers';
 
 export abstract class GameController {

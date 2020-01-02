@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { GameType } from 'dart3-sdk';
 
-import { GameType } from '@game/models';
 import { getCurrentGame, State } from '@game/reducers';
 
 import { DefaultController } from './default.controller';
@@ -20,12 +20,12 @@ export class ControllerService {
 
   getController(type: GameType = this.gameType): GameController {
     switch (type) {
-      case GameType.HALVEIT:
+      case GameType.HalveIt:
         return this.injector.get<HalveItController>(HalveItController);
-      case GameType.LEGS:
+      case GameType.Legs:
         return this.injector.get<LegsController>(LegsController);
-      case GameType.THREE_HUNDRED_ONE:
-      case GameType.FIVE_HUNDRED_ONE:
+      case GameType.Three01:
+      case GameType.Five01:
         return this.injector.get<X01Controller>(X01Controller);
       default:
         return this.injector.get<DefaultController>(DefaultController);

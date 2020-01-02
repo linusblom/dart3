@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Jackpot } from 'dart3-sdk';
 import { catchError, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AccountActions, JackpotActions } from '@core/actions';
-import { Jackpot } from '@core/models';
 import { AccountService } from '@core/services';
 
 @Injectable()

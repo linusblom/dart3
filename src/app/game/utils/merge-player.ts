@@ -1,5 +1,4 @@
-import { GamePlayer } from '@game/models';
-import { Player } from '@player/models';
+import { GamePlayer, Player } from 'dart3-sdk';
 
 export const mergePlayer = (
   gamePlayers: Omit<GamePlayer, 'base'>[],

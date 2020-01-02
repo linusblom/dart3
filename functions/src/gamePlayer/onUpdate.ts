@@ -1,8 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as seedrandom from 'seedrandom';
-
-import { JackpotDrawType } from '../models/jackpot';
-import { Score } from '../models/game';
+import { Score, JackpotDrawType } from 'dart3-sdk';
 
 export const onUpdate = functions
   .region('europe-west1')
@@ -37,7 +35,7 @@ export const onUpdate = functions
         playerId: null,
       });
       batch.update(change.after.ref, {
-        [`rounds.${data.currentRound}.jackpotDraw`]: JackpotDrawType.WIN,
+        [`rounds.${data.currentRound}.jackpotDraw`]: JackpotDrawType.Win,
         xp: data.xp + 10000,
         win: data.win + value,
       });
@@ -57,7 +55,7 @@ export const onUpdate = functions
       });
     } else {
       batch.update(change.after.ref, {
-        [`rounds.${data.currentRound}.jackpotDraw`]: JackpotDrawType.BLANK,
+        [`rounds.${data.currentRound}.jackpotDraw`]: JackpotDrawType.Blank,
       });
     }
 

@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
+import { Transaction } from 'dart3-sdk';
 
-import { Transaction, TransactionPayload } from '@player/models';
+import { TransactionPayload } from '@player/models';
 
 export const create = createAction(
   '[Transaction] Create',

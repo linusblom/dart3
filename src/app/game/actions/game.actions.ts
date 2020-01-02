@@ -1,7 +1,8 @@
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
+import { Game } from 'dart3-sdk';
 
-import { Game, ListOptions } from '@game/models';
+import { ListOptions } from '@game/models';
 
 export const get = createAction('[Game] Get', props<{ id: string }>());
 export const getSuccess = createAction('[Game] Get Success', props<{ game: Game }>());

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Status } from '@core/models';
+import { Status } from '@core/models/notification';
 
 export const push = createAction(
   '[Notification] Push',

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
-
-import { Round } from '@game/models';
+import { Round } from 'dart3-sdk';
 
 @Component({
   selector: 'app-score-board-score-field',

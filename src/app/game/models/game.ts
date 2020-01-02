@@ -1,62 +1,6 @@
-import { JackpotDrawType } from './jackpot';
+import { Game, GameType, Round, Score } from 'dart3-sdk';
 
 export const UNUSED = 'unused';
-
-export interface Game {
-  id: string;
-  type: GameType;
-  bet: number;
-  started: number;
-  ended: number;
-  playerIds: string[];
-  prizePool: number;
-  currentTurn: number;
-  currentRound: number;
-  players: GamePlayer[];
-  boardData?: BoardData;
-}
-
-export enum GameType {
-  HALVEIT = 'halveit',
-  LEGS = 'legs',
-  LEGS_CLASSIC = 'legs-classic',
-  THREE_HUNDRED_ONE = '301',
-  FIVE_HUNDRED_ONE = '501',
-}
-
-export interface PlayerBase {
-  name: string;
-  xp: number;
-  color: string;
-  avatarUrl: string;
-}
-
-export interface GamePlayer {
-  id: string;
-  total: number;
-  totalDisplay: string;
-  currentRound: number;
-  position: number;
-  xp: number;
-  win: number;
-  rounds: {
-    [key: string]: Round;
-  };
-  base: PlayerBase;
-}
-
-export interface Score {
-  score: number;
-  multiplier: number;
-}
-
-export interface Round {
-  scores: Score[];
-  score: number;
-  scoreDisplay: string;
-  jackpotDraw: JackpotDrawType;
-  color?: string;
-}
 
 export interface RoundScore {
   round: Round;
@@ -74,10 +18,6 @@ export interface DartHit extends Score {
   top: number;
   left: number;
   type: DartHitType;
-}
-
-export interface BoardData {
-  turnText: string;
 }
 
 export interface ListOptions {

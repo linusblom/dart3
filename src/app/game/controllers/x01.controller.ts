@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { BoardData, GamePlayer, JackpotDrawType, Score } from 'dart3-sdk';
 
-import { BoardData, GamePlayer, JackpotDrawType, Score } from '@game/models';
 import { State } from '@game/reducers';
 import { GREEN, RED } from '@utils/colors';
 import { GameController } from './game.controller';
@@ -24,7 +24,7 @@ export class X01Controller extends GameController {
       rounds: {
         [this.game.currentRound]: {
           scores,
-          jackpotDraw: JackpotDrawType.PENDING,
+          jackpotDraw: JackpotDrawType.Pending,
           ...round,
         },
       },

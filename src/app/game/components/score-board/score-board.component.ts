@@ -1,7 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-import { GamePlayer, GameType } from '@game/models';
+import { GamePlayer, GameType } from 'dart3-sdk';
 
 @Component({
   selector: 'app-score-board',
@@ -18,7 +17,7 @@ import { GamePlayer, GameType } from '@game/models';
   ],
 })
 export class ScoreBoardComponent implements OnChanges {
-  @Input() type = GameType.HALVEIT;
+  @Input() type = GameType.HalveIt;
   @Input() players: GamePlayer[];
   @Input() currentTurn = 0;
   @Input() disableAnimation = false;
@@ -38,7 +37,7 @@ export class ScoreBoardComponent implements OnChanges {
 
   getRoundHeader(round: number) {
     switch (this.type) {
-      case GameType.HALVEIT:
+      case GameType.HalveIt:
         return ['19', '18', 'D', '17', '41', 'T', '20', 'B'][round - 1];
       default:
         return round;

@@ -1,7 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-
-import { Score } from '@game/models';
-import { Player } from '@player/models';
+import { Player, Score } from 'dart3-sdk';
 
 export const valueChangesInit = createAction('[Player] Value Changes Player Init');
 export const valueChangesSuccess = createAction(

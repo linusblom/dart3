@@ -1,43 +1,10 @@
-import { JackpotDrawType } from './jackpot';
-
-export enum GameType {
-  HALVEIT = 'halveit',
-  LEGS = 'legs',
-  LEGS_CLASSIC = 'legs-classic',
-  THREE_HUNDRED_ONE = '301',
-  FIVE_HUNDRED_ONE = '501',
-}
-
-export interface GamePlayer {
-  total: number;
-  totalDisplay: string;
-  currentRound: number;
-  position: number;
-  xp: number;
-  win: number;
-  rounds: {
-    [key: string]: Round;
-  };
-}
-
-export interface Score {
-  score: number;
-  multiplier: number;
-}
-
-export interface Round {
-  scores: Score[];
-  score: number;
-  scoreDisplay: string;
-  color: string;
-  jackpotDraw: JackpotDrawType;
-}
+import { GameType, GamePlayer } from 'dart3-sdk';
 
 export interface GamePlayerMap {
   [key: string]: Partial<GamePlayer>;
 }
 
-export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
+export const makeGamePlayer = (type: GameType, bet: number): Partial<GamePlayer> => {
   const gamePlayerBase = {
     total: 0,
     totalDisplay: '0',
@@ -49,20 +16,20 @@ export const makeGamePlayer = (type: GameType, bet: number): GamePlayer => {
   };
 
   switch (type) {
-    case GameType.HALVEIT:
+    case GameType.HalveIt:
       return gamePlayerBase;
-    case GameType.LEGS:
+    case GameType.Legs:
       return {
         ...gamePlayerBase,
         totalDisplay: '',
       };
-    case GameType.THREE_HUNDRED_ONE:
+    case GameType.Three01:
       return {
         ...gamePlayerBase,
         total: 301,
         totalDisplay: '301',
       };
-    case GameType.FIVE_HUNDRED_ONE:
+    case GameType.Five01:
       return {
         ...gamePlayerBase,
         total: 501,

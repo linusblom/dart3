@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-
-import { Account } from '@core/models';
+import { Account } from 'dart3-sdk';
 
 @Injectable({
   providedIn: 'root',

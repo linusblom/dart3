@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { Transaction, TransactionType } from 'dart3-sdk';
 
-import { Transaction, TransactionPayload, TransactionType } from '@player/models';
+import { TransactionPayload } from '@player/models';
 
 @Component({
   selector: 'app-player-bank',
@@ -21,7 +22,7 @@ export class PlayerBankComponent {
 
   onDeposit() {
     this.transaction.emit({
-      type: TransactionType.DEPOSIT,
+      type: TransactionType.Deposit,
       amount: this.amount.value,
     });
 
@@ -30,7 +31,7 @@ export class PlayerBankComponent {
 
   onWithdraw() {
     this.transaction.emit({
-      type: TransactionType.WITHDRAWAL,
+      type: TransactionType.Withdrawal,
       amount: this.amount.value * -1,
     });
 

@@ -1,10 +1,10 @@
-import { GameType } from '@game/models';
+import { GameType } from 'dart3-sdk';
 
 export const getGameNiceName = (type: GameType) => {
   switch (type) {
-    case GameType.HALVEIT:
+    case GameType.HalveIt:
       return 'halve it';
-    case GameType.LEGS_CLASSIC:
+    case GameType.LegsClassic:
       return 'legs classic';
     default:
       return type;

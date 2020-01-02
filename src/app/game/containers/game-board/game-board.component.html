@@ -29,10 +29,7 @@
       ></app-current-player>
       <div>
         <app-jackpot [value]="jackpot$ | async" [locked]="disableBoard"></app-jackpot>
-        <app-dev-controls
-          *ngIf="hasGameDevControls$ | async"
-          (abortGame)="abortGame()"
-        ></app-dev-controls>
+        <app-dev-controls *ngIf="local" (abortGame)="abortGame()"></app-dev-controls>
       </div>
     </div>
   </div>

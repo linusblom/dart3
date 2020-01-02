@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { BoardData, GamePlayer, Score } from 'dart3-sdk';
 
-import { BoardData, GamePlayer, Score } from '@game/models';
 import { State } from '@game/reducers';
 
 import { GameController } from './game.controller';

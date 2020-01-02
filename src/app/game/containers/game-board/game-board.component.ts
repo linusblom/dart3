@@ -1,11 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { Score } from 'dart3-sdk';
 import { interval, Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
-import { Permission } from '@core/models';
+import { environment } from '@envs/environment';
 import { CurrentGameActions } from '@game/actions';
-import { createGame, JackpotRound, Score } from '@game/models';
+import { createGame, JackpotRound } from '@game/models';
 import {
   getCurrentGame,
   getGameJackpotRound,
@@ -13,7 +14,7 @@ import {
   getPlayingJackpot,
   State,
 } from '@game/reducers';
-import { getJackpotValue, hasPermission } from '@root/reducers';
+import { getJackpotValue } from '@root/reducers';
 
 @Component({
   selector: 'app-game-board',
@@ -23,7 +24,6 @@ import { getJackpotValue, hasPermission } from '@root/reducers';
 export class GameBoardComponent implements OnDestroy {
   jackpot$: Observable<number>;
   jackpotRound$: Observable<JackpotRound>;
-  hasGameDevControls$: Observable<boolean>;
 
   betweenTurns = false;
   playingJackpot = false;
@@ -32,6 +32,7 @@ export class GameBoardComponent implements OnDestroy {
   scores: Score[] = [];
   countDown = -1;
   ended = false;
+  local = false;
 
   private abortAutoEndTurn$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -39,7 +40,7 @@ export class GameBoardComponent implements OnDestroy {
   constructor(private readonly store: Store<State>) {
     this.jackpot$ = this.store.pipe(select(getJackpotValue));
     this.jackpotRound$ = this.store.pipe(select(getGameJackpotRound));
-    this.hasGameDevControls$ = this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)));
+    this.local = environment.local;
 
     this.store.select(getLoading).subscribe(loading => (this.loading = loading));
 
@@ -49,9 +50,11 @@ export class GameBoardComponent implements OnDestroy {
         takeUntil(this.destroy$),
         map(game => ({
           ...game,
-          players: game.players.sort(
-            (a, b) => game.playerIds.indexOf(a.id) - game.playerIds.indexOf(b.id),
-          ),
+          players: [
+            ...game.players.sort(
+              (a, b) => game.playerIds.indexOf(a.id) - game.playerIds.indexOf(b.id),
+            ),
+          ],
         })),
       )
       .subscribe(game => {
@@ -68,10 +71,7 @@ export class GameBoardComponent implements OnDestroy {
       });
 
     this.store
-      .pipe(
-        select(getPlayingJackpot),
-        takeUntil(this.destroy$),
-      )
+      .pipe(select(getPlayingJackpot), takeUntil(this.destroy$))
       .subscribe(playingJackpot => (this.playingJackpot = playingJackpot));
   }
 

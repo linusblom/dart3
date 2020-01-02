@@ -45,7 +45,7 @@
           Win
         </div>
       </div>
-      <div *ngFor="let player of sortedGamePlayers" class="row">
+      <div *ngFor="let player of positionSortedPlayers" class="row">
         <div class="field rank small">
           <app-emoji
             *ngIf="player.position < 4; else position"

@@ -9,7 +9,7 @@ import {
 import { timer } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 
-import { Notification } from '@core/models';
+import { Notification } from '@core/models/notification';
 
 @Component({
   selector: 'app-notification-item',

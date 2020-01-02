@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl, Validators } from '@angular/forms';
 import { faGem } from '@fortawesome/free-regular-svg-icons';
 import { faBullseye, faCoins } from '@fortawesome/free-solid-svg-icons';
-
-import { Player } from '@player/models';
+import { Player } from 'dart3-sdk';
 
 @Component({
   selector: 'app-player-info',

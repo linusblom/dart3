@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { GamePlayer } from 'dart3-sdk';
 
-import { DartHitType, GamePlayer } from '@game/models';
+import { DartHitType } from '@game/models';
 import { DIAMOND } from '@utils/emojis';
 
 @Component({

@@ -1,25 +1,16 @@
 <app-box header="Statistics">
   <app-box-group header="Credits in play">
-    <ng-container *ngIf="hasPermission(Permission.CORE_TOTAL_CREDITS_READ); else noPermission">
-      <div class="credits-in-play">
-        <div>
-          <div *ngFor="let credit of credits$ | async" class="credit">
-            <div class="name">{{ credit.name }}</div>
-            <div class="value">{{ credit.value | number: '1.2-2' | currency }}</div>
-          </div>
-        </div>
-        <div class="turnover">
-          <div>Total turnover</div>
-          <div>{{ totalTurnover$ | async | number: '1.2-2' | currency }}</div>
+    <div class="credits-in-play">
+      <div>
+        <div *ngFor="let credit of credits$ | async" class="credit">
+          <div class="name">{{ credit.name }}</div>
+          <div class="value">{{ credit.value | number: '1.2-2' | currency }}</div>
         </div>
       </div>
-    </ng-container>
+      <div class="turnover">
+        <div>Total turnover</div>
+        <div>{{ totalTurnover$ | async | number: '1.2-2' | currency }}</div>
+      </div>
+    </div>
   </app-box-group>
 </app-box>
-
-<ng-template #noPermission>
-  <div class="no-permission">
-    <fa-icon [icon]="noPermissionIcon" size="2x"></fa-icon>
-    <span>You don't have permission(s) to perform this operation.</span>
-  </div>
-</ng-template>

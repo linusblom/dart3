@@ -1,14 +1,7 @@
 import { createAction, props } from '@ngrx/store';
+import { BoardData, Game, GamePlayer, GameType, JackpotDrawType, Score } from 'dart3-sdk';
 
-import {
-  BoardData,
-  Game,
-  GamePlayer,
-  GameType,
-  JackpotDrawType,
-  JackpotRound,
-  Score,
-} from '@game/models';
+import { JackpotRound } from '@game/models';
 
 export const start = createAction(
   '[Current Game] Start',

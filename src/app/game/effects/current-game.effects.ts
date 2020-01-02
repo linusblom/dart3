@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { Game, GamePlayer, JackpotDrawType, Player } from 'dart3-sdk';
 import { from } from 'rxjs';
 import {
   catchError,
@@ -18,16 +19,14 @@ import {
 } from 'rxjs/operators';
 
 import { AccountActions } from '@core/actions';
-import { Permission } from '@core/models';
+import { environment } from '@envs/environment';
 import { CurrentGameActions } from '@game/actions';
 import { ControllerService } from '@game/controllers';
-import { Game, GamePlayer, JackpotDrawType } from '@game/models';
 import { getCurrentGame, getCurrentGameLoading, State } from '@game/reducers';
 import { GamePlayerService, GameService } from '@game/services';
 import { mergePlayer } from '@game/utils/merge-player';
 import { PlayerActions } from '@player/actions';
-import { Player } from '@player/models';
-import { getAccount, getAllPlayers, hasPermission } from '@root/reducers';
+import { getAccount, getAllPlayers } from '@root/reducers';
 
 @Injectable()
 export class CurrentGameEffects {
@@ -153,8 +152,8 @@ export class CurrentGameEffects {
         };
 
         const jackpotRound = {
-          win: jackpotDraw === JackpotDrawType.WIN,
-          hits: jackpotDraw === JackpotDrawType.WIN ? scores : randomizeScores(),
+          win: jackpotDraw === JackpotDrawType.Win,
+          hits: jackpotDraw === JackpotDrawType.Win ? scores : randomizeScores(),
         };
         return CurrentGameActions.jackpotGameSetRound({ jackpotRound });
       }),
@@ -202,7 +201,7 @@ export class CurrentGameEffects {
       }),
       filter(round => !!round),
       distinctUntilKeyChanged('jackpotDraw'),
-      filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.PENDING),
+      filter(({ jackpotDraw }) => jackpotDraw !== JackpotDrawType.Pending),
       map(({ jackpotDraw, scores }) =>
         scores.filter(({ score }) => score === 0).length
           ? CurrentGameActions.nextTurn()
@@ -214,8 +213,7 @@ export class CurrentGameEffects {
   abort$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.abort),
-      withLatestFrom(this.store.pipe(select(hasPermission(Permission.GAME_DEV_CONTROLS)))),
-      filter(([_, hasGameDevControls]) => hasGameDevControls),
+      filter(() => environment.local),
       tap(() => this.router.navigate(['start'])),
       map(() => AccountActions.update({ data: { currentGame: null } })),
     ),

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Transaction } from 'dart3-sdk';
 import { from } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { TransactionActions } from '@player/actions';
-import { Transaction } from '@player/models';
 import { TransactionService } from '@player/services';
 
 @Injectable()

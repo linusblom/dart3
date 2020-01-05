@@ -1,14 +1,14 @@
 {
   "name": "dart3",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration local",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy:stage": "firebase use stage && ng build --aot && firebase deploy",
+    "deploy:stage": "firebase use stage && ng build --configuration stage && firebase deploy",
     "deploy:prod": "firebase use prod && ng build --prod && firebase deploy"
   },
   "private": true,

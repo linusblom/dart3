@@ -42,3 +42,4 @@ Thumbs.db
 /src/environments/environment.local.ts
 /src/environments/environment.prod.ts
 /src/environments/environment.stage.ts
+/src/assets/*.mp3

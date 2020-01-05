@@ -48,7 +48,7 @@
       <div *ngFor="let player of positionSortedPlayers" class="row">
         <div class="field rank small">
           <app-emoji
-            *ngIf="player.position < 4; else position"
+            *ngIf="player.position > 0 && player.position < 4; else position"
             [hex]="medalEmojiHex[player.position - 1]"
             size="40"
           ></app-emoji>

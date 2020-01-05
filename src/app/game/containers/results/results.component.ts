@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Chart } from 'chart.js';
-import { GamePlayer } from 'dart3-sdk';
+import { GamePlayer, Permission } from 'dart3-sdk';
 import { Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
@@ -10,6 +10,7 @@ import { GameActions } from '@game/actions';
 import { createGame } from '@game/models';
 import { getLoading, getSelectedGame, State } from '@game/reducers';
 import { getGameNiceName } from '@game/utils/game-nice-name';
+import { hasPermission } from '@root/reducers';
 import { BoxTab } from '@shared/modules/box/box.models';
 import { boardLabels, colors } from '@utils/chart';
 import { MEDAL_1ST, MEDAL_2ND, MEDAL_3RD } from '@utils/emojis';
@@ -35,8 +36,13 @@ export class ResultsComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
+  constructor(
+    private readonly store: Store<State>,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+  ) {
     const id = this.route.snapshot.params.gameId;
+    const navigationExtras = this.router.getCurrentNavigation().extras;
 
     this.store.dispatch(GameActions.get({ id }));
 
@@ -68,8 +74,9 @@ export class ResultsComponent implements OnDestroy {
       });
 
     this.store
-      .pipe(select(getLoading))
       .pipe(
+        select(getLoading),
+        takeUntil(this.destroy$),
         filter(loading => !loading),
         take(1),
       )
@@ -77,6 +84,15 @@ export class ResultsComponent implements OnDestroy {
         this.barChart = this.getBarChart();
         this.pieChart = this.getPieChart();
       });
+
+    this.store
+      .pipe(
+        select(hasPermission(Permission.CoreMusicPlay)),
+        takeUntil(this.destroy$),
+        filter(play => play && navigationExtras.state && navigationExtras.state.play),
+        take(1),
+      )
+      .subscribe(() => this.playAnthem());
   }
 
   ngOnDestroy() {
@@ -222,5 +238,11 @@ export class ResultsComponent implements OnDestroy {
     const minutes = Math.floor(millis / 60000);
     const seconds = Math.floor((millis % 60000) / 1000);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  playAnthem() {
+    const anthem = new Audio('../../../../assets/darts-anthem.mp3');
+    anthem.load();
+    anthem.play();
   }
 }

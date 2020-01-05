@@ -225,7 +225,9 @@ export class CurrentGameEffects {
         ofType(CurrentGameActions.end),
         withLatestFrom(this.store.pipe(select(getAccount))),
         delay(5000),
-        tap(([_, { currentGame }]) => this.router.navigate(['results', currentGame])),
+        tap(([_, { currentGame }]) =>
+          this.router.navigate(['results', currentGame], { state: { play: true } }),
+        ),
       ),
     { dispatch: false },
   );

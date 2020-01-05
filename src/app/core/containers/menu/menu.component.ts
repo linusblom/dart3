@@ -12,6 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { AuthActions } from '@core/actions';
+import { environment } from '@envs/environment';
 import { getMenuOpen, State } from '@root/reducers';
 
 @Component({
@@ -34,6 +35,7 @@ export class MenuComponent {
   settingsIcon = faCog;
   logoutIcon = faSignOutAlt;
   statsIcon = faChartPie;
+  version = environment.version;
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
     this.menuOpen$ = this.store.pipe(select(getMenuOpen));

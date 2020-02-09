@@ -51,7 +51,7 @@ export class GameService {
       .collection('games')
       .doc(gameId)
       .snapshotChanges()
-      .pipe(map(({ payload }) => ({ id: payload.id, ...payload.data() })));
+      .pipe(map(({ payload }) => ({ id: payload.id, ...(payload.data() as {}) })));
   }
 
   list(options: ListOptions) {

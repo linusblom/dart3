@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Game, GameType } from 'dart3-sdk';
+import { throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { createGame, ListOptions } from '@game/models';
-import { throwError } from 'rxjs';
 
 @Injectable()
 export class GameService {

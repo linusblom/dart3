@@ -1,3 +1,4 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -10,6 +11,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { AuthModule } from '@auth/auth.module';
+import { effects as authEffects } from '@auth/effects';
+import { RequestInterceptor } from '@auth/services';
 import { CoreModule } from '@core/core.module';
 import { effects as coreEffects } from '@core/effects';
 import { environment } from '@envs/environment';
@@ -38,18 +42,23 @@ import { ROOT_REDUCERS } from './reducers';
         strictActionSerializability: false,
       },
     }),
-    EffectsModule.forRoot([...coreEffects, ...playerEffects]),
+    EffectsModule.forRoot([...coreEffects, ...playerEffects, ...authEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
     }),
+    AuthModule,
     CoreModule,
     PlayerModule,
     AppRoutingModule,
     SharedModule,
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: RequestInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

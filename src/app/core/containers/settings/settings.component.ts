@@ -4,17 +4,11 @@ import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { select, Store } from '@ngrx/store';
 import { Permission } from 'dart3-sdk';
 import { Observable, race, Subject } from 'rxjs';
-import { filter, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { shareReplay, take, takeUntil } from 'rxjs/operators';
 
 import { AccountActions, AuthActions } from '@core/actions';
 import { Actions, ofType } from '@ngrx/effects';
-import {
-  getAccountCurrency,
-  getAuthLoading,
-  getAuthUser,
-  hasPermission,
-  State,
-} from '@root/reducers';
+import { getAccountCurrency, hasPermission, State } from '@root/reducers';
 
 @Component({
   selector: 'app-settings',
@@ -45,19 +39,10 @@ export class SettingsComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly store: Store<State>, private readonly actions$: Actions) {
-    this.loading$ = store.pipe(select(getAuthLoading));
     this.coreAccountWrite$ = store.pipe(
       select(hasPermission(Permission.CoreAccountWrite)),
       shareReplay(1),
     );
-
-    store
-      .pipe(
-        select(getAuthUser),
-        takeUntil(this.destroy$),
-        filter(user => !!user),
-      )
-      .subscribe(({ displayName }) => this.displayName.setValue(displayName, { emitEvent: false }));
 
     store
       .pipe(select(getAccountCurrency), takeUntil(this.destroy$))

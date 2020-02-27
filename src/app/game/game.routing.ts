@@ -6,6 +6,7 @@ import {
   GameComponent,
   ResultsComponent,
   StartGameComponent,
+  WelcomeComponent,
 } from './containers';
 import { GameGuard, GameResolver, StartGameGuard } from './services';
 
@@ -14,16 +15,16 @@ export const routes: Routes = [
     path: '',
     component: GameComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'start' },
-      { path: 'start', component: StartGameComponent, canActivate: [StartGameGuard] },
-      {
-        path: 'game',
-        component: GameBoardComponent,
-        canActivate: [GameGuard],
-        canDeactivate: [GameGuard],
-        resolve: { game: GameResolver },
-      },
-      { path: 'results/:gameId', component: ResultsComponent },
+      { path: '', pathMatch: 'full', component: WelcomeComponent },
+      // { path: 'start', component: StartGameComponent, canActivate: [StartGameGuard] },
+      // {
+      //   path: 'game',
+      //   component: GameBoardComponent,
+      //   canActivate: [GameGuard],
+      //   canDeactivate: [GameGuard],
+      //   resolve: { game: GameResolver },
+      // },
+      // { path: 'results/:gameId', component: ResultsComponent },
     ],
   },
 ];

@@ -9,11 +9,10 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { AuthActions } from '@core/actions';
 import { environment } from '@envs/environment';
-import { getMenuOpen, State } from '@root/reducers';
+import { showMenu, State } from '@root/reducers';
 
 @Component({
   selector: 'app-menu',
@@ -28,7 +27,7 @@ import { getMenuOpen, State } from '@root/reducers';
   ],
 })
 export class MenuComponent {
-  menuOpen$: Observable<boolean>;
+  menu$ = this.store.pipe(select(showMenu));
 
   gameIcon = faBullseye;
   userIcon = faUsers;
@@ -37,9 +36,7 @@ export class MenuComponent {
   statsIcon = faChartPie;
   version = environment.version;
 
-  constructor(private readonly store: Store<State>, private readonly router: Router) {
-    this.menuOpen$ = this.store.pipe(select(getMenuOpen));
-  }
+  constructor(private readonly store: Store<State>, private readonly router: Router) {}
 
   onNavigate(path: string[]) {
     this.router.navigate(path);

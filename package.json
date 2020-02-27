@@ -4,11 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-local": "ng serve --configuration local",
     "build": "ng build",
-    "lint": "ng lint",
-    "deploy:stage": "firebase use stage && ng build --configuration stage && firebase deploy",
-    "deploy:prod": "firebase use prod && ng build --prod && firebase deploy"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +20,7 @@
     "@angular/platform-browser": "^9.0.0",
     "@angular/platform-browser-dynamic": "^9.0.0",
     "@angular/router": "^9.0.0",
+    "@auth0/auth0-spa-js": "^1.6.3",
     "@fortawesome/angular-fontawesome": "^0.6.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-regular-svg-icons": "^5.12.1",
@@ -58,10 +56,10 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
-    "protractor": "~5.4.3",
     "prettier": "^1.19.1",
+    "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
+    "tslint": "~5.20.0",
     "typescript": "~3.7.5"
   }
 }

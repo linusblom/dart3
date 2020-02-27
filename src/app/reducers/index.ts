@@ -2,8 +2,8 @@ import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Permission } from 'dart3-sdk';
 
+import * as fromAuth from '@auth/reducers/auth.reducer';
 import * as fromAccount from '@core/reducers/account.reducer';
-import * as fromAuth from '@core/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromJackpot from '@core/reducers/jackpot.reducer';
 import * as fromNotification from '@core/reducers/notification.reducer';
@@ -33,8 +33,8 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
 );
 
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-export const getAuthLoading = createSelector(getAuthState, state => state.loading);
-export const getAuthUser = createSelector(getAuthState, state => state.user);
+export const isAuthenticated = createSelector(getAuthState, state => state.authenticated);
+export const getUser = createSelector(getAuthState, state => state.user);
 
 export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
 export const { selectAll: getAllNotifications } = fromNotification.adapter.getSelectors(
@@ -42,8 +42,11 @@ export const { selectAll: getAllNotifications } = fromNotification.adapter.getSe
 );
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
-export const getMenuOpen = createSelector(getCoreState, state => state.menuOpen);
+export const showMenu = createSelector(getCoreState, state => state.menu);
 
+export const showLoading = createSelector(isAuthenticated, authenticated => !authenticated);
+
+// Old Selectors
 export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
 export const getJackpot = createSelector(getJackpotState, state => state);
 export const getJackpotValue = createSelector(getJackpotState, state => state.value);

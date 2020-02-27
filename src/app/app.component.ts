@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+
+import { showLoading, State } from './reducers';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <app-menu></app-menu>
-    <app-notification></app-notification>
-    <router-outlet></router-outlet>
-  `,
-  styles: [':host { display: flex; height: 100vh; }'],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  loading$ = this.store.pipe(select(showLoading));
+
+  constructor(private readonly store: Store<State>) {}
 }

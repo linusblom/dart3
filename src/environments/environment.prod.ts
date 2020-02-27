@@ -1,14 +1,14 @@
 import { version } from '../../package.json';
 
 export const environment = {
-  production: false,
-  local: true,
-  siteUrl: 'http://localhost:4200/',
+  production: true,
+  local: false,
+  siteUrl: '',
   version,
   auto0: {
-    domain: 'dart3.eu.auth0.com',
-    clientId: '9wZ3rNbCqBoKuCfLK44ADhLCsGzebs4x',
-    audience: 'https://stage.dart3.linusblom.io',
+    domain: '',
+    clientId: '',
+    audience: '',
   },
   firebase: {
     apiKey: '<API_KEY>',

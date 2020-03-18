@@ -1,48 +1,50 @@
 @import '~variables.scss';
 
-.menu {
+:host {
   display: flex;
-  flex-direction: column;
-  width: 100px;
-  height: 100%;
-  border-right: 1px solid $white90;
-  box-sizing: border-box;
-  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  padding: 0 30px;
+  background: $white;
+}
 
-  .logo {
-    margin: 120px 5px;
-    font-family: $logo;
-    font-weight: 100;
-    font-size: 40px;
-    transform: rotate(-90deg);
-  }
+.menu-left {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  font-family: $base;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 
   .item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    box-sizing: border-box;
-    border-top: 1px solid $white90;
+    margin: 0 10px;
     cursor: pointer;
 
-    &.active {
-      background: $white30;
+    &:hover, &.active {
+      font-weight: bold;
     }
 
-    &:not(.active):hover {
-      background: $white15;
-    }
-
-    &.logout {
-      border-bottom: 1px solid $white90;
+    &:before {
+      display: block;
+      content: attr(data-title);
+      font-weight: bold;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
     }
   }
+}
 
-  .version {
-    position: absolute;
-    font-size: 10px;
-    left: 3px;
-    bottom: 3px;
-  }
+.logo {
+  font-family: $header;
+  font-weight: 100;
+  font-size: 40px;
+}
+
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
 }

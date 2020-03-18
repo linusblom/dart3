@@ -1,7 +1,17 @@
-$regular: 'Rubik', sans-serif;
-$logo: 'Montserrat Subrayada', sans-serif;
+$off-white: #f7f7f7;
+$white: #ffffff;
+$black: #181818;
 
-$white: #F8F8F8;
+// old
+
+$header: 'Montserrat', sans-serif;
+$base: 'Lora', sans-serif;
+
+$grey: #747474;
+$yellow: #ffe400;
+$green: #14a76c;
+$orange: #ff652f;
+
 $white08: rgba($white, .08);
 $white15: rgba($white, .15);
 $white30: rgba($white, .30);
@@ -10,7 +20,6 @@ $white60: rgba($white, .60);
 $white70: rgba($white, .70);
 $white90: rgba($white, .90);
 
-$black: #111D49;
 $real-black: #000000;
 $black40: rgba($black, .40);
 $real-black40: rgba($real-black, .40);

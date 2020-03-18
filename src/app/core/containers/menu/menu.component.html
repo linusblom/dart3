@@ -1,35 +1,20 @@
-<div class="menu" [@menuAnimation]="(menu$ | async) ? 'show' : 'hide'">
-  <div class="logo">DART3</div>
+<div class="menu-left">
+  <div class="item" data-title="Game">Game</div>
   <div
     class="item"
-    [ngClass]="{ active: isRouteActive('/start') || isRouteActive('/game') }"
-    (click)="onNavigate([''])"
+    data-title="Players"
+    [ngClass]="{ active: routeActive('/players') }"
+    (click)="navigate(['players'])"
   >
-    <fa-icon [icon]="gameIcon" size="2x"></fa-icon>
+    Players
   </div>
-  <div
-    class="item"
-    [ngClass]="{ active: isRouteActive('/players') }"
-    (click)="onNavigate(['players'])"
-  >
-    <fa-icon [icon]="userIcon" size="2x"></fa-icon>
-  </div>
-  <div
-    class="item"
-    [ngClass]="{ active: isRouteActive('/statistics') }"
-    (click)="onNavigate(['statistics'])"
-  >
-    <fa-icon [icon]="statsIcon" size="2x"></fa-icon>
-  </div>
-  <div
-    class="item"
-    [ngClass]="{ active: isRouteActive('/settings') }"
-    (click)="onNavigate(['settings'])"
-  >
-    <fa-icon [icon]="settingsIcon" size="2x"></fa-icon>
-  </div>
-  <div class="item logout" (click)="onLogout()">
-    <fa-icon [icon]="logoutIcon" size="2x"></fa-icon>
-  </div>
-  <div class="version">{{ version }}</div>
+  <div class="item" data-title="Statistics">Statistics</div>
+  <div class="item" data-title="Settings">Settings</div>
+</div>
+<div class="logo">
+  DART3
+</div>
+
+<div class="menu-right">
+  <button mat-stroked-button (click)="logout()">Logout</button>
 </div>

@@ -1,26 +1,26 @@
 /**
 * Generated theme by Material Theme Generator
-* https://material-theme-generator.travetto.io
+* https://materialtheme.arcsine.dev
 */
 
 @import '~@angular/material/theming';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
-
+     
 $fontConfig: (
-  display-4: mat-typography-level(112px, 112px, 300, 'Rubik', -0.0134em),
-  display-3: mat-typography-level(56px, 56px, 400, 'Rubik', -0.0089em),
-  display-2: mat-typography-level(45px, 48px, 400, 'Rubik', 0.0000em),
-  display-1: mat-typography-level(34px, 40px, 400, 'Rubik', 0.0074em),
-  headline: mat-typography-level(24px, 32px, 400, 'Rubik', 0.0000em),
-  title: mat-typography-level(20px, 32px, 500, 'Rubik', 0.0075em),
-  subheading-2: mat-typography-level(16px, 28px, 400, 'Rubik', 0.0094em),
-  subheading-1: mat-typography-level(15px, 24px, 500, 'Rubik', 0.0067em),
-  body-2: mat-typography-level(14px, 24px, 500, 'Rubik', 0.0179em),
-  body-1: mat-typography-level(14px, 20px, 400, 'Rubik', 0.0179em),
-  button: mat-typography-level(14px, 14px, 400, 'Rubik', 0.0893em),
-  caption: mat-typography-level(12px, 20px, 400, 'Rubik', 0.0333em),
-  input: mat-typography-level(inherits, 1.125, 400, 'Rubik', 1.5px)
+  display-4: mat-typography-level(112px, 112px, 300, 'Lora', -0.0134em),
+  display-3: mat-typography-level(56px, 56px, 400, 'Lora', -0.0089em),
+  display-2: mat-typography-level(45px, 48px, 400, 'Lora', 0.0000em),
+  display-1: mat-typography-level(34px, 40px, 400, 'Lora', 0.0074em),
+  headline: mat-typography-level(24px, 32px, 400, 'Lora', 0.0000em),
+  title: mat-typography-level(20px, 32px, 500, 'Lora', 0.0075em),
+  subheading-2: mat-typography-level(16px, 28px, 400, 'Lora', 0.0094em),
+  subheading-1: mat-typography-level(15px, 24px, 500, 'Lora', 0.0067em),
+  body-2: mat-typography-level(14px, 24px, 500, 'Lora', 0.0179em),
+  body-1: mat-typography-level(14px, 20px, 400, 'Lora', 0.0179em),
+  button: mat-typography-level(14px, 14px, 500, 'Lora', 0.0893em),
+  caption: mat-typography-level(12px, 20px, 400, 'Lora', 0.0333em),
+  input: mat-typography-level(inherit, 1.125, 400, 'Lora', 1.5px)
 );
 
 // Foreground Elements
@@ -139,31 +139,58 @@ $mat-dark-theme-background: (
 
 // Theme Config
 
-$mat-primary: (
-  main: #f8f8f8,
-  lighter: #fdfdfd,
-  darker: #f5f5f5,
-  200: #f8f8f8, // For slide toggle,
-  contrast : (
-    main: $dark-primary-text,
-    lighter: $dark-primary-text,
-    darker: $dark-primary-text,
-  )
-);
-$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+body {
+  --primary-color: #181818;
+  --primary-lighter-color: #bababa;
+  --primary-darker-color: #0e0e0e;
+  --text-primary-color: #{$light-primary-text};
+  --text-primary-lighter-color: #{$dark-primary-text};
+  --text-primary-darker-color: #{$light-primary-text};
+}
 
-$mat-accent: (
-  main: #797979,
-  lighter: #d7d7d7,
-  darker: #5c5c5c,
-  200: #797979, // For slide toggle,
+$mat-primary: (
+  main: #181818,
+  lighter: #bababa,
+  darker: #0e0e0e,
+  200: #181818, // For slide toggle,
   contrast : (
     main: $light-primary-text,
     lighter: $dark-primary-text,
     darker: $light-primary-text,
   )
 );
+$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+
+body {
+  --accent-color: #ffffff;
+  --accent-lighter-color: #ffffff;
+  --accent-darker-color: #ffffff;
+  --text-accent-color: #{$dark-primary-text};
+  --text-accent-lighter-color: #{$dark-primary-text};
+  --text-accent-darker-color: #{$dark-primary-text};
+}
+
+$mat-accent: (
+  main: #ffffff,
+  lighter: #ffffff,
+  darker: #ffffff,
+  200: #ffffff, // For slide toggle,
+  contrast : (
+    main: $dark-primary-text,
+    lighter: $dark-primary-text,
+    darker: $dark-primary-text,
+  )
+);
 $theme-accent: mat-palette($mat-accent, main, lighter, darker);
+
+body {
+  --warn-color: #ff6c6c;
+  --warn-lighter-color: #ffd3d3;
+  --warn-darker-color: #ff4f4f;
+  --text-warn-color: #{$dark-primary-text};
+  --text-warn-lighter-color: #{$dark-primary-text};
+  --text-warn-darker-color: #{$dark-primary-text};
+}
 
 $mat-warn: (
   main: #ff6c6c,
@@ -176,8 +203,7 @@ $mat-warn: (
     darker: $dark-primary-text,
   )
 );
-$theme-warn: mat-palette($mat-warn, main, lighter, darker);
-
+$theme-warn: mat-palette($mat-warn, main, lighter, darker);;
 
 $theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
@@ -197,38 +223,14 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
   padding: 0 1.15em;
   margin: 0 .65em;
   min-width: 3em;
-  line-height: 36.4px;
+  line-height: 36.4px
 }
 
 .mat-stroked-button:not([disabled]) {
-  border-color: $white90;
+  border-color: #181818;
 }
 
 .mat-standard-chip {
   padding: .5em .85em;
   min-height: 2.5em;
-}
-
-.mat-button-toggle-appearance-standard,
-.mat-button-toggle-disabled.mat-button-toggle-appearance-standard {
-  background: none;
-  outline: none;
-}
-
-.mat-button-toggle-checked {
-  background: $white30;
-}
-
-.mat-button-toggle-group-appearance-standard .mat-button-toggle + .mat-button-toggle {
-   border-left: 1px solid $white90;
-}
-
-.mat-button-toggle-label-content {
-  font-size: 14px;
-  font-family: $regular;
-}
-
-.mat-button-toggle-group-appearance-standard {
-  border-radius: 0 !important;
-  border: 1px solid $white90;
 }

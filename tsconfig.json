@@ -20,7 +20,6 @@
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
       "@game/*": ["app/game/*"],
-      "@player/*": ["app/player/*"],
       "@utils/*": ["app/utils/*"],
       "@root/*": ["app/*"]
     }

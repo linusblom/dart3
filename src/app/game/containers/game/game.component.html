@@ -1,2 +1,5 @@
-<mat-progress-bar *ngIf="loading$ | async" mode="indeterminate" color="accent"></mat-progress-bar>
-<router-outlet></router-outlet>
+<app-game-type-select
+  *ngFor="let game of games"
+  [game]="game"
+  (play)="selectGame($event)"
+></app-game-type-select>

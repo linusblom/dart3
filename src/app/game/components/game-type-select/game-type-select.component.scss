@@ -1,0 +1,32 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 300px;
+  color: $white;
+  padding: 50px;
+  box-sizing: border-box;
+
+  .header {
+    font-family: $header;
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 100;
+  }
+
+  .text {
+    flex: 1;
+  }
+
+  mat-form-field {
+    margin-top: 50px;
+  }
+
+  button {
+    margin-top: 50px;
+    font-size: 20px;
+  }
+}

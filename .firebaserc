@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "stage": "dart3-stage",
-    "prod": "dart3-prod"
-  }
-}

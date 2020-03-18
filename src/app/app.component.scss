@@ -1,6 +1,13 @@
 :host {
-  display: flex;
-  height: 100vh;
+  display: block;
+  margin-top: 100px;
+}
+
+app-menu {
+ position: fixed;
+ left: 0;
+ top: 0;
+ right: 0;
 }
 
 mat-progress-bar {

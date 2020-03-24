@@ -4,12 +4,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-const materialComponents = [MatButtonModule, MatInputModule, MatProgressBarModule, MatSelectModule];
+import { pipes } from './pipes';
+
+const materialComponents = [
+  MatButtonModule,
+  MatInputModule,
+  MatProgressBarModule,
+  MatSelectModule,
+  MatButtonToggleModule,
+];
 
 @NgModule({
   imports: [CommonModule, ...materialComponents],
-  exports: [...materialComponents],
-  declarations: [],
+  exports: [...materialComponents, ...pipes],
+  declarations: [...pipes],
 })
 export class SharedModule {}

@@ -1,0 +1,18 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 200px;
+}
+
+app-player-card {
+  cursor: pointer;
+}
+
+app-player-card, app-player-create {
+  flex: 1 0 300px;
+  height: 300px;
+  border-bottom: 1px solid $border;
+}

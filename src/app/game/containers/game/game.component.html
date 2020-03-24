@@ -1,5 +1,1 @@
-<app-game-type-select
-  *ngFor="let game of games"
-  [game]="game"
-  (play)="selectGame($event)"
-></app-game-type-select>
+<app-game-options *ngFor="let game of games" [(step)]="step" [game]="game"></app-game-options>

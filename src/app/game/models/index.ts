@@ -1,1 +1,1 @@
-export * from './game-select';
+export * from './game-option';

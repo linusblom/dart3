@@ -6,8 +6,10 @@
 @import '~@angular/material/theming';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
-     
+$font-family: 'Lora', sans-serif;
+
 $fontConfig: (
+  font-family: 'Lora, sans-serif',
   display-4: mat-typography-level(112px, 112px, 300, 'Lora', -0.0134em),
   display-3: mat-typography-level(56px, 56px, 400, 'Lora', -0.0089em),
   display-2: mat-typography-level(45px, 48px, 400, 'Lora', 0.0000em),
@@ -26,7 +28,7 @@ $fontConfig: (
 // Foreground Elements
 
 // Light Theme Text
-$dark-text: #000000;
+$dark-text: #181818;
 $dark-primary-text: rgba($dark-text, 0.87);
 $dark-accent-text: rgba($dark-primary-text, 0.54);
 $dark-disabled-text: rgba($dark-primary-text, 0.38);
@@ -53,7 +55,7 @@ $mat-light-theme-foreground: (
 );
 
 // Dark Theme text
-$light-text: #ffffff;
+$light-text: #f7f7f7;
 $light-primary-text: $light-text;
 $light-accent-text: rgba($light-primary-text, 0.7);
 $light-disabled-text: rgba($light-primary-text, 0.5);
@@ -140,19 +142,19 @@ $mat-dark-theme-background: (
 // Theme Config
 
 body {
-  --primary-color: #181818;
-  --primary-lighter-color: #bababa;
-  --primary-darker-color: #0e0e0e;
+  --primary-color: #797979;
+  --primary-lighter-color: #d7d7d7;
+  --primary-darker-color: #5c5c5c;
   --text-primary-color: #{$light-primary-text};
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$light-primary-text};
 }
 
 $mat-primary: (
-  main: #181818,
-  lighter: #bababa,
-  darker: #0e0e0e,
-  200: #181818, // For slide toggle,
+  main: #797979,
+  lighter: #d7d7d7,
+  darker: #5c5c5c,
+  200: #797979, // For slide toggle,
   contrast : (
     main: $light-primary-text,
     lighter: $dark-primary-text,
@@ -162,19 +164,19 @@ $mat-primary: (
 $theme-primary: mat-palette($mat-primary, main, lighter, darker);
 
 body {
-  --accent-color: #ffffff;
-  --accent-lighter-color: #ffffff;
-  --accent-darker-color: #ffffff;
+  --accent-color: #f7f7f7;
+  --accent-lighter-color: #fdfdfd;
+  --accent-darker-color: #f3f3f3;
   --text-accent-color: #{$dark-primary-text};
   --text-accent-lighter-color: #{$dark-primary-text};
   --text-accent-darker-color: #{$dark-primary-text};
 }
 
 $mat-accent: (
-  main: #ffffff,
-  lighter: #ffffff,
-  darker: #ffffff,
-  200: #ffffff, // For slide toggle,
+  main: #f7f7f7,
+  lighter: #fdfdfd,
+  darker: #f3f3f3,
+  200: #f7f7f7, // For slide toggle,
   contrast : (
     main: $dark-primary-text,
     lighter: $dark-primary-text,
@@ -189,7 +191,7 @@ body {
   --warn-darker-color: #ff4f4f;
   --text-warn-color: #{$dark-primary-text};
   --text-warn-lighter-color: #{$dark-primary-text};
-  --text-warn-darker-color: #{$dark-primary-text};
+  --text-warn-darker-color: #{$light-primary-text};
 }
 
 $mat-warn: (
@@ -198,15 +200,15 @@ $mat-warn: (
   darker: #ff4f4f,
   200: #ff6c6c, // For slide toggle,
   contrast : (
-    main: $dark-primary-text,
+    main: $light-primary-text,
     lighter: $dark-primary-text,
-    darker: $dark-primary-text,
+    darker: $light-primary-text,
   )
 );
 $theme-warn: mat-palette($mat-warn, main, lighter, darker);;
 
-$theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
-$altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+$theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+$altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 // Theme Init
 @include angular-material-theme($theme);
@@ -233,4 +235,28 @@ $altTheme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 .mat-standard-chip {
   padding: .5em .85em;
   min-height: 2.5em;
+}
+
+button {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 0 !important;
+}
+
+.mat-select-value-text {
+  line-height: 19px;
+}
+
+.light {
+  .mat-form-field-underline,
+  &.mat-form-field.mat-focused.mat-primary .mat-form-field-ripple {
+    background-color: $light-text;
+  }
+
+  mat-label,
+  .mat-select-value,
+  .mat-select-arrow,
+  &.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: $light-text;
+  }
 }

@@ -1,5 +1,12 @@
 <div class="menu-left">
-  <div class="item" data-title="Game">Game</div>
+  <div
+    class="item"
+    data-title="Game"
+    [ngClass]="{ active: routeActive('/', true) }"
+    (click)="navigate(['/'])"
+  >
+    Game
+  </div>
   <div
     class="item"
     data-title="Players"
@@ -11,7 +18,7 @@
   <div class="item" data-title="Statistics">Statistics</div>
   <div class="item" data-title="Settings">Settings</div>
 </div>
-<div class="logo">
+<div class="header">
   DART3
 </div>
 

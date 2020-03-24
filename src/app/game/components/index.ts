@@ -1,3 +1,3 @@
-import { GameTypeSelectComponent } from './game-type-select/game-type-select.component';
+import { GameOptionsComponent } from './game-options/game-options.component';
 
-export const components = [GameTypeSelectComponent];
+export const components = [GameOptionsComponent];

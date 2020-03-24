@@ -1,0 +1,14 @@
+<div class="header">NEW PLAYER</div>
+
+<div class="fields" [formGroup]="form">
+  <mat-form-field>
+    <input matInput formControlName="name" placeholder="Name" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput formControlName="email" placeholder="E-mail" />
+  </mat-form-field>
+</div>
+
+<button mat-stroked-button [disabled]="form.invalid" (click)="onCreate()">
+  Create
+</button>

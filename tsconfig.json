@@ -19,6 +19,7 @@
       "@auth/*": ["app/auth/*"],
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
+      "@player/*": ["app/player/*"],
       "@game/*": ["app/game/*"],
       "@utils/*": ["app/utils/*"],
       "@root/*": ["app/*"]

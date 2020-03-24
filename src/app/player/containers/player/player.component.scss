@@ -1,0 +1,16 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  padding: 50px 0 50px 50px;
+  color: $white;
+}
+
+app-player-avatar {
+  margin-right: 20px;
+}

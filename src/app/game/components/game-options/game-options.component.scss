@@ -1,0 +1,64 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  transition: width 500ms;
+  height: 600px;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  color: $white;
+  padding: 50px;
+  box-sizing: border-box;
+}
+
+.content {
+  flex: 1;
+  margin-bottom: 50px;
+
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+
+    div {
+      width: 100px;
+    }
+
+    mat-button-toggle-group {
+      margin-right: 30px;
+    }
+  }
+}
+
+mat-form-field {
+  margin-bottom: 50px;
+}
+
+button {
+  font-size: 20px;
+}
+
+.text, .header {
+  width: 250px;
+  max-width: 100%;
+}
+
+button, mat-form-field {
+  max-width: 250px;
+  width: 100%;
+  align-self: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin-left: 20px;
+  }
+}

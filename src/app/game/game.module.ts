@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
@@ -18,7 +17,6 @@ import { reducers } from './reducers';
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     GameRoutingModule,
     StoreModule.forFeature('game', reducers),
     EffectsModule.forFeature(effects),

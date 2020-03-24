@@ -9,8 +9,11 @@ body {
   font-family: $base;
 }
 
-button {
+.header {
+  font-family: $header;
+  font-size: 40px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  border-radius: 0 !important;
+  font-weight: 100;
+  white-space: nowrap;
 }

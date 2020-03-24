@@ -7,6 +7,7 @@
   height: 100px;
   padding: 0 30px;
   background: $white;
+  border-bottom: 1px solid $border;
 }
 
 .menu-left {
@@ -35,12 +36,6 @@
       visibility: hidden;
     }
   }
-}
-
-.logo {
-  font-family: $header;
-  font-weight: 100;
-  font-size: 40px;
 }
 
 .menu-right {

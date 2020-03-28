@@ -3,4 +3,5 @@ export enum StoreState {
   CREATING = 'creating',
   FETCHING = 'fetching',
   UPDATING = 'updating',
+  DELETING = 'deleting',
 }

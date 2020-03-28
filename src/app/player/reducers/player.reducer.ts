@@ -53,10 +53,27 @@ export const reducer = createReducer(
     adapter.upsertOne(player, { ...state, state: StoreState.NONE, selectedId: player.id }),
   ),
 
+  on(PlayerActions.updateRequest, PlayerActions.resetPinRequest, state => ({
+    ...state,
+    state: StoreState.UPDATING,
+  })),
+
+  on(PlayerActions.updateSuccess, (state, { player }) => adapter.upsertOne(player, state)),
+
+  on(PlayerActions.deleteRequest, state => ({ ...state, state: StoreState.DELETING })),
+
+  on(PlayerActions.deleteSuccess, (state, { id }) =>
+    adapter.removeOne(id, { ...state, state: StoreState.NONE }),
+  ),
+
   on(
     PlayerActions.createFailure,
     PlayerActions.getFailure,
     PlayerActions.getByIdFailure,
+    PlayerActions.updateFailure,
+    PlayerActions.resetPinSuccess,
+    PlayerActions.resetPinFailure,
+    PlayerActions.deleteFailure,
     state => ({
       ...state,
       loadingCreatePlayer: StoreState.NONE,

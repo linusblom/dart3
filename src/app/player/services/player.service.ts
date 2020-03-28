@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@envs/environment';
 import { HttpClient } from '@angular/common/http';
-import { Player, CreatePlayer } from 'dart3-sdk';
+import { Player, CreatePlayer, UpdatePlayer } from 'dart3-sdk';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -19,5 +19,17 @@ export class PlayerService {
 
   create(player: CreatePlayer) {
     return this.http.post<Player>(this.apiUrl, player);
+  }
+
+  update(id: number, player: UpdatePlayer) {
+    return this.http.patch<Player>(`${this.apiUrl}/${id}`, player);
+  }
+
+  resetPin(id: number) {
+    return this.http.patch(`${this.apiUrl}/${id}/reset-pin`, null);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

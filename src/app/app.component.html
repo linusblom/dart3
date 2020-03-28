@@ -1,3 +1,4 @@
 <mat-progress-bar *ngIf="loading$ | async" mode="indeterminate"></mat-progress-bar>
 <app-menu *ngIf="authenticated$ | async"></app-menu>
+<app-modal class="modal" *ngIf="showModal$ | async"></app-modal>
 <router-outlet></router-outlet>

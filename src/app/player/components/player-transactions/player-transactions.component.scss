@@ -1,0 +1,9 @@
+@import '~variables.scss';
+
+:host {
+  flex: 1 0 500px;
+  display: flex;
+  background: $grey;
+  padding: 20px;
+  box-sizing: border-box;
+}

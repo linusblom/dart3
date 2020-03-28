@@ -30,6 +30,8 @@ export const getUser = createSelector(getAuthState, state => state.user);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const showMenu = createSelector(getCoreState, state => state.menu);
+export const showModal = createSelector(getCoreState, state => !!state.modal);
+export const getModal = createSelector(getCoreState, state => state.modal);
 
 export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
 export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) => state);

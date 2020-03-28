@@ -1,7 +1,33 @@
-<div class="header" [style.background-color]="player.color">
+<div class="header padding" [style.background-color]="player.color">
   <app-player-avatar [avatar]="player.avatar"></app-player-avatar>
   <div>
     <div>{{ player.name }}</div>
     <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
+  </div>
+</div>
+<div class="content">
+  <app-player-stats></app-player-stats>
+  <app-player-transactions></app-player-transactions>
+</div>
+<div class="settings" [formGroup]="form">
+  <div class="header">Settings</div>
+  <mat-form-field class="light">
+    <input matInput formControlName="name" placeholder="Name" (change)="update()" />
+  </mat-form-field>
+</div>
+
+<div class="danger">
+  <div class="header">Danger zone</div>
+  <div class="row">
+    <div class="text">Lost PIN? Click to reset and a new PIN code will be sent to your email.</div>
+    <div class="button">
+      <button mat-flat-button (click)="resetPin()">Reset PIN</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="text">Delete player?</div>
+    <div class="button">
+      <button mat-flat-button (click)="delete()">Delete</button>
+    </div>
   </div>
 </div>

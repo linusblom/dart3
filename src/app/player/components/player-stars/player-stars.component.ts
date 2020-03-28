@@ -18,7 +18,7 @@ export class PlayerStarsComponent {
 
   @Input()
   @HostBinding('style.color')
-  color = '#d4af37';
+  color = '#949494';
 
   stars = Array(0);
 

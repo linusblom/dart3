@@ -1,0 +1,37 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba($black, 0.7);
+}
+
+.modal {
+  padding: 20px;
+  margin: auto;
+  background: $off-white;
+  max-width: 400px;
+}
+
+.text {
+  margin: 20px 0;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  margin: 0 -5px;
+
+  button {
+    flex: 1;
+    margin: 0 5px;
+  }
+} 

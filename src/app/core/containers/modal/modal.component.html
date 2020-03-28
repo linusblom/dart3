@@ -1,0 +1,28 @@
+<div class="modal" (click)="$event.stopPropagation()">
+  <div class="header">{{ modal.header }}</div>
+  <div class="text">{{ modal.text }}</div>
+  <div class="confirm" *ngIf="modal.confirm">
+    <mat-form-field>
+      <input matInput [formControl]="confirm" [placeholder]="modal.confirm.placeholder" />
+    </mat-form-field>
+  </div>
+  <div class="buttons">
+    <button
+      *ngIf="modal.cancel"
+      mat-stroked-button
+      [color]="modal.cancel.color"
+      (click)="action(modal.cancel)"
+    >
+      {{ modal.cancel.text || 'Cancel' }}
+    </button>
+    <button
+      *ngIf="modal.ok"
+      mat-stroked-button
+      [color]="modal.ok.color"
+      [disabled]="confirm.invalid"
+      (click)="action(modal.ok)"
+    >
+      {{ modal.ok.text || 'OK' }}
+    </button>
+  </div>
+</div>

@@ -6,15 +6,12 @@ export interface Modal {
   backdrop: ModalAction;
   cancel?: ModalAction;
   ok?: ModalAction;
-  confirm?: {
-    regexp: RegExp;
-    placeholder: string;
-  };
+  pin?: boolean;
 }
 
 export interface ModalAction {
   dismiss: boolean;
   text?: string;
   color?: string;
-  action?: Action;
+  action?: (pin?: string) => Action;
 }

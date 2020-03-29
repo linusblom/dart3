@@ -14,6 +14,7 @@ import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
 import { effects as authEffects } from '@auth/effects';
 import { effects as playerEffects } from '@player/effects';
+import { effects as coreEffects } from '@core/effects';
 import { PlayerModule } from '@player/player.module';
 
 import { AppComponent } from './app.component';
@@ -29,7 +30,7 @@ import { ROOT_REDUCERS } from './reducers';
     StoreModule.forRoot(ROOT_REDUCERS, {
       runtimeChecks: {},
     }),
-    EffectsModule.forRoot([...authEffects, ...playerEffects]),
+    EffectsModule.forRoot([...authEffects, ...playerEffects, ...coreEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,

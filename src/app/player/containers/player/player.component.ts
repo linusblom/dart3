@@ -64,7 +64,7 @@ export class PlayerComponent implements OnDestroy {
             text: 'Send PIN',
             color: 'error',
             dismiss: true,
-            action: PlayerActions.resetPinRequest({ id: this.id }),
+            action: () => PlayerActions.resetPinRequest({ id: this.id }),
           },
         },
       }),
@@ -76,7 +76,7 @@ export class PlayerComponent implements OnDestroy {
       CoreActions.showModal({
         modal: {
           header: 'Delete player',
-          text: `Are you sure you want to delete player ${this.player.name}? Please type player name below to confirm.`,
+          text: `Are you sure you want to delete player ${this.player.name}? Please enter PIN to confirm.`,
           backdrop: {
             dismiss: true,
           },
@@ -85,12 +85,9 @@ export class PlayerComponent implements OnDestroy {
             text: 'Delete',
             color: 'error',
             dismiss: true,
-            action: PlayerActions.deleteRequest({ id: this.id }),
+            action: (pin: string) => PlayerActions.deleteRequest({ id: this.id, pin }),
           },
-          confirm: {
-            regexp: new RegExp(`^${this.player.name}$`, 'i'),
-            placeholder: 'Player name',
-          },
+          pin: true,
         },
       }),
     );

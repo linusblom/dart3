@@ -2,7 +2,6 @@ import { Component, OnDestroy, HostListener } from '@angular/core';
 import { Store, select, Action } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
-import { FormControl, Validators } from '@angular/forms';
 
 import { State, getModal } from '@root/reducers';
 import { Modal, ModalAction } from '@core/models';
@@ -15,8 +14,7 @@ import { CoreActions } from '@core/actions';
 })
 export class ModalComponent implements OnDestroy {
   modal: Modal;
-
-  confirm = new FormControl('');
+  pin: string[] = [];
 
   private readonly destroy$ = new Subject();
 
@@ -27,6 +25,19 @@ export class ModalComponent implements OnDestroy {
     }
   }
 
+  @HostListener('document:keyup', ['$event.key'])
+  keyup(key: string) {
+    if (key === 'Escape') {
+      this.action(this.modal.backdrop);
+    } else if (/[0-9]/.test(key) && this.modal.pin) {
+      this.addPinNum(key);
+    } else if (key === 'Backspace' && this.modal.pin) {
+      this.removePinNum();
+    } else if (/Enter$/.test(key) && this.pinValid) {
+      this.action(this.modal.ok);
+    }
+  }
+
   constructor(private readonly store: Store<State>) {
     this.store
       .pipe(
@@ -34,22 +45,28 @@ export class ModalComponent implements OnDestroy {
         takeUntil(this.destroy$),
         filter(modal => !!modal),
       )
-      .subscribe(modal => {
-        this.modal = modal;
+      .subscribe(modal => (this.modal = modal));
+  }
 
-        if (modal.confirm) {
-          this.confirm.setValidators([
-            Validators.required,
-            Validators.pattern(modal.confirm.regexp),
-          ]);
-          this.confirm.updateValueAndValidity();
-        }
-      });
+  get pinValid() {
+    return !this.modal.pin || this.pin.length === 4;
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  addPinNum(num: string) {
+    if (this.pin.length < 4) {
+      this.pin.push(num);
+    }
+  }
+
+  removePinNum() {
+    if (this.pin.length > 0) {
+      this.pin.pop();
+    }
   }
 
   action(modalAction: ModalAction) {
@@ -63,9 +80,9 @@ export class ModalComponent implements OnDestroy {
     }
   }
 
-  dispatch(action: Action) {
+  dispatch(action: (pin?: string) => Action) {
     if (action) {
-      this.store.dispatch(action);
+      this.store.dispatch(action(this.pin.join('')));
     }
   }
 }

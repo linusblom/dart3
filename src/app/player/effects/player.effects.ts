@@ -15,7 +15,7 @@ export class PlayerEffects {
       concatMap(() =>
         this.service.get().pipe(
           map(players => PlayerActions.getSuccess({ players })),
-          catchError(() => [PlayerActions.getFailure()]),
+          catchError(error => [PlayerActions.getFailure({ error })]),
         ),
       ),
     ),
@@ -27,7 +27,7 @@ export class PlayerEffects {
       concatMap(({ id }) =>
         this.service.getById(id).pipe(
           map(player => PlayerActions.getByIdSuccess({ player })),
-          catchError(() => [PlayerActions.getByIdFailure()]),
+          catchError(error => [PlayerActions.getByIdFailure({ error })]),
         ),
       ),
     ),
@@ -39,7 +39,7 @@ export class PlayerEffects {
       concatMap(({ player }) =>
         this.service.create(player).pipe(
           map(player => PlayerActions.createSuccess({ player })),
-          catchError(() => [PlayerActions.createFailure()]),
+          catchError(error => [PlayerActions.createFailure({ error })]),
         ),
       ),
     ),
@@ -51,7 +51,7 @@ export class PlayerEffects {
       concatMap(({ id, player }) =>
         this.service.update(id, player).pipe(
           map(player => PlayerActions.updateSuccess({ player })),
-          catchError(() => [PlayerActions.updateFailure()]),
+          catchError(error => [PlayerActions.updateFailure({ error })]),
         ),
       ),
     ),
@@ -63,7 +63,7 @@ export class PlayerEffects {
       concatMap(({ id }) =>
         this.service.resetPin(id).pipe(
           map(() => PlayerActions.resetPinSuccess()),
-          catchError(() => [PlayerActions.resetPinFailure()]),
+          catchError(error => [PlayerActions.resetPinFailure({ error })]),
         ),
       ),
     ),
@@ -72,11 +72,11 @@ export class PlayerEffects {
   delete$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.deleteRequest),
-      concatMap(({ id }) =>
-        this.service.delete(id).pipe(
+      concatMap(({ id, pin }) =>
+        this.service.delete(id, pin).pipe(
           tap(() => this.router.navigate(['players'])),
           map(() => PlayerActions.deleteSuccess({ id })),
-          catchError(() => [PlayerActions.deleteFailure()]),
+          catchError(error => [PlayerActions.deleteFailure({ error })]),
         ),
       ),
     ),

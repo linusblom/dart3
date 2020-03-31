@@ -7,7 +7,7 @@ import { PlayerActions } from '@player/actions';
 
 export interface State extends EntityState<Player> {
   state: StoreState;
-  selectedId: string;
+  selectedId: number;
 }
 
 export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
@@ -58,7 +58,9 @@ export const reducer = createReducer(
     state: StoreState.UPDATING,
   })),
 
-  on(PlayerActions.updateSuccess, (state, { player }) => adapter.upsertOne(player, state)),
+  on(PlayerActions.updateSuccess, (state, { player }) =>
+    adapter.upsertOne(player, { ...state, state: StoreState.NONE }),
+  ),
 
   on(PlayerActions.deleteRequest, state => ({ ...state, state: StoreState.DELETING })),
 

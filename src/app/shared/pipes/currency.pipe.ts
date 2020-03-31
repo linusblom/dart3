@@ -6,7 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CurrencyPipe implements PipeTransform {
   private currency = 'SEK';
 
-  transform(value: number) {
-    return `${this.currency}${value.toFixed(2)}`;
+  transform(value: number | string) {
+    return typeof value === 'string' || value === undefined
+      ? `${this.currency}${value || '0.00'}`
+      : `${this.currency}${value.toFixed(2)}`;
   }
 }

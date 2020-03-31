@@ -5,12 +5,28 @@
   flex-direction: column;
 }
 
-.header {
+.header-wrapper {
   display: flex;
+  flex-wrap: wrap;
   color: $white;
+  padding: 50px;
 
-  &.padding {
-    padding: 50px 0 50px 50px;
+  .header-column, .header-row {
+    display: flex;
+    flex: 1 0 500px;
+  }
+
+  .header-column {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .buttons {
+    margin-top: 10px;
+
+    button {
+      margin-right: 10px;
+    }
   }
 }
 
@@ -66,4 +82,9 @@ app-player-avatar {
       }
     }
   }
+}
+
+.transaction {
+  display: flex;
+  flex-direction: column;
 }

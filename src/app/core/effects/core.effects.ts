@@ -15,7 +15,7 @@ export class CoreEffects {
         CoreActions.showModal({
           modal: {
             header: 'Invalid PIN',
-            text: 'The PIN entered is not valid for this player.',
+            text: 'The PIN entered is invalid for this player.',
             backdrop: {
               dismiss: true,
             },

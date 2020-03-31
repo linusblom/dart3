@@ -1,11 +1,11 @@
 import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { Player } from 'dart3-sdk';
 
 import * as fromAuth from '@auth/reducers/auth.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
 import { StoreState } from '@shared/models';
-import { Player } from 'dart3-sdk';
 
 export interface State {
   auth: fromAuth.State;
@@ -40,6 +40,7 @@ export const getSelectedPlayer = createSelector(
   getPlayerState,
   state => state.entities[state.selectedId] || ({} as Player),
 );
+export const getSelectedPlayerId = createSelector(getPlayerState, state => state.selectedId);
 
 export const showLoading = createSelector(
   isAuthenticated,

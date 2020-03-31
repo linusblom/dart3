@@ -1,15 +1,43 @@
-<div class="header padding" [style.background-color]="player.color">
-  <app-player-avatar [avatar]="player.avatar"></app-player-avatar>
-  <div>
-    <div>{{ player.name }}</div>
-    <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
+<div class="header-wrapper" [style.background-color]="player.color">
+  <div class="header-row">
+    <app-player-avatar [avatar]="player.avatar"></app-player-avatar>
+    <div>
+      <div class="header">{{ player.name }}</div>
+      <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
+    </div>
+  </div>
+  <div class="header-column">
+    <div class="header">BALANCE {{ player.balance | currency }}</div>
+    <div class="buttons">
+      <button
+        mat-flat-button
+        [tooltip]="transactionRef"
+        (click)="setTransactionType(TransactionType.Deposit)"
+      >
+        Deposit
+      </button>
+      <button
+        mat-flat-button
+        [tooltip]="transactionRef"
+        (click)="setTransactionType(TransactionType.Withdrawal)"
+      >
+        Withdrawal
+      </button>
+      <button
+        mat-flat-button
+        [tooltip]="transactionRef"
+        (click)="setTransactionType(TransactionType.Transfer)"
+      >
+        Transfer
+      </button>
+    </div>
   </div>
 </div>
 <div class="content">
   <app-player-stats></app-player-stats>
   <app-player-transactions></app-player-transactions>
 </div>
-<div class="settings" [formGroup]="form">
+<div class="settings" [formGroup]="settingsForm">
   <div class="header">Settings</div>
   <mat-form-field class="light">
     <input matInput formControlName="name" placeholder="Name" (change)="update()" />
@@ -31,3 +59,27 @@
     </div>
   </div>
 </div>
+
+<ng-template #transactionRef [formGroup]="transactionForm">
+  <div class="transaction">
+    <mat-form-field>
+      <input matInput type="number" formControlName="amount" placeholder="Amount" />
+    </mat-form-field>
+    <mat-form-field *ngIf="transactionForm.get('type').value === TransactionType.Transfer">
+      <mat-label>Transfer to</mat-label>
+      <mat-select formControlName="playerId">
+        <mat-option *ngFor="let player of players" [value]="player.id">
+          {{ player.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      class="close-tooltip"
+      mat-stroked-button
+      [disabled]="transactionForm.invalid"
+      (click)="executeTransaction()"
+    >
+      Ok
+    </button>
+  </div>
+</ng-template>

@@ -7,6 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { pipes } from './pipes';
+import { directives } from './directives';
+import { components } from './components';
 
 const materialComponents = [
   MatButtonModule,
@@ -18,7 +20,7 @@ const materialComponents = [
 
 @NgModule({
   imports: [CommonModule, ...materialComponents],
-  exports: [...materialComponents, ...pipes],
-  declarations: [...pipes],
+  exports: [...materialComponents, ...pipes, ...directives, ...components],
+  declarations: [...pipes, ...directives, ...components],
 })
 export class SharedModule {}

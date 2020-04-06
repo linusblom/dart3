@@ -3,7 +3,7 @@ import { Player } from 'dart3-sdk';
 import { createReducer, on } from '@ngrx/store';
 
 import { StoreState } from '@shared/models';
-import { PlayerActions } from '@player/actions';
+import { PlayerActions, TransactionActions } from '@player/actions';
 
 export interface State extends EntityState<Player> {
   state: StoreState;
@@ -21,7 +21,7 @@ export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
       return -1;
     }
 
-    return a.created_at > b.created_at ? 1 : -1;
+    return a.createdAt > b.createdAt ? 1 : -1;
   },
 });
 
@@ -68,6 +68,19 @@ export const reducer = createReducer(
     adapter.removeOne(id, { ...state, state: StoreState.NONE }),
   ),
 
+  on(TransactionActions.transactionSuccess, (state, { id, transaction }) =>
+    adapter.updateOne(
+      {
+        id,
+        changes: {
+          balance: transaction.balance,
+          transactions: [transaction, ...state.entities[id].transactions],
+        },
+      },
+      state,
+    ),
+  ),
+
   on(
     PlayerActions.createFailure,
     PlayerActions.getFailure,
@@ -78,7 +91,7 @@ export const reducer = createReducer(
     PlayerActions.deleteFailure,
     state => ({
       ...state,
-      loadingCreatePlayer: StoreState.NONE,
+      state: StoreState.NONE,
     }),
   ),
 );

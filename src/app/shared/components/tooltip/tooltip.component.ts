@@ -19,11 +19,12 @@ export class TooltipComponent implements OnInit {
   @ViewChild('content', { read: ViewContainerRef, static: true }) contentRef: ViewContainerRef;
 
   @Input() content: TemplateRef<any>;
+
   @Output() close = new EventEmitter<void>();
 
   @HostListener('click', ['$event.target'])
   click(target: HTMLElement) {
-    if (target.closest('.close-tooltip')) {
+    if (target.closest('.close-tooltip:not([disabled])')) {
       this.close.emit();
     }
   }

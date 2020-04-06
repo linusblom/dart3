@@ -1,6 +1,6 @@
 <div class="modal" (click)="$event.stopPropagation()">
   <div class="header">{{ modal.header }}</div>
-  <div class="text">{{ modal.text }}</div>
+  <div class="text" [innerHTML]="modal.text | safeHtml"></div>
   <div class="pin" *ngIf="modal.pin">
     <div *ngFor="let p of [0, 1, 2, 3]" class="num">{{ pin[p] >= 0 ? '*' : ' ' }}</div>
   </div>

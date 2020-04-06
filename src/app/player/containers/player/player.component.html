@@ -35,7 +35,7 @@
 </div>
 <div class="content">
   <app-player-stats></app-player-stats>
-  <app-player-transactions></app-player-transactions>
+  <app-player-transactions [transactions]="player.transactions"></app-player-transactions>
 </div>
 <div class="settings" [formGroup]="settingsForm">
   <div class="header">Settings</div>
@@ -53,7 +53,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="text">Delete player?</div>
+    <div class="text">Don't want to play anymore? Click to delete player.</div>
     <div class="button">
       <button mat-flat-button (click)="delete()">Delete</button>
     </div>
@@ -67,7 +67,7 @@
     </mat-form-field>
     <mat-form-field *ngIf="transactionForm.get('type').value === TransactionType.Transfer">
       <mat-label>Transfer to</mat-label>
-      <mat-select formControlName="playerId">
+      <mat-select formControlName="toPlayerId">
         <mat-option *ngFor="let player of players" [value]="player.id">
           {{ player.name }}
         </mat-option>

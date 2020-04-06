@@ -7,7 +7,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
 import { State, getSelectedPlayer, getAllPlayers, getSelectedPlayerId } from '@root/reducers';
-import { PlayerActions } from '@player/actions';
+import { PlayerActions, TransactionActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
@@ -30,12 +30,12 @@ export class PlayerComponent implements OnDestroy {
   transactionForm = new FormGroup(
     {
       type: new FormControl(TransactionType.Deposit, Validators.required),
-      amount: new FormControl(0, [Validators.required, Validators.min(1)]),
-      playerId: new FormControl(),
+      amount: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(99999)]),
+      toPlayerId: new FormControl(),
     },
     controls => {
-      const { type, playerId } = controls.value;
-      return type === TransactionType.Transfer && !playerId ? { playerIdError: true } : null;
+      const { type, toPlayerId } = controls.value;
+      return type === TransactionType.Transfer && !toPlayerId ? { playerIdError: true } : null;
     },
   );
 
@@ -86,7 +86,7 @@ export class PlayerComponent implements OnDestroy {
       CoreActions.showModal({
         modal: {
           header: 'Reset PIN',
-          text: `Are you sure you want to reset your PIN code? New PIN code will be sent to ${this.player.email}`,
+          text: `Are you sure you want to reset your PIN code? New PIN code will be sent to <strong>${this.player.email}</strong>.`,
           backdrop: {
             dismiss: true,
           },
@@ -107,7 +107,7 @@ export class PlayerComponent implements OnDestroy {
       CoreActions.showModal({
         modal: {
           header: 'Delete player',
-          text: `Are you sure you want to delete player ${this.player.name}? Please enter PIN to confirm.`,
+          text: `Are you sure you want to delete player <strong>${this.player.name}</strong>? Please enter PIN to confirm.`,
           backdrop: {
             dismiss: true,
           },
@@ -130,28 +130,33 @@ export class PlayerComponent implements OnDestroy {
   }
 
   executeTransaction() {
-    const { type, amount, playerId } = this.transactionForm.value;
-    const toPlayer =
-      type === TransactionType.Transfer
-        ? ` to ${this.players.find(({ id }) => id === playerId).name}`
-        : '';
+    const { type, amount, toPlayerId } = this.transactionForm.value;
+    const currencyAmount = this.currency.transform(amount);
+    const toPlayerName = toPlayerId
+      ? ` to <strong>${this.players.find(({ id }) => id === toPlayerId).name}</strong>`
+      : '';
 
     this.store.dispatch(
       CoreActions.showModal({
         modal: {
           header: 'Transaction',
-          text: `Are you sure you want to ${type} ${this.currency.transform(
-            amount,
-          )}${toPlayer}? Please enter PIN to confirm.`,
+          text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${toPlayerName}? Please enter PIN to confirm.`,
           backdrop: {
             dismiss: true,
           },
           cancel: { text: 'Cancel', dismiss: true },
+          pin: true,
           ok: {
             text: 'Confirm',
             dismiss: true,
+            action: (pin: string) =>
+              TransactionActions.transactionRequest({
+                id: this.id,
+                pin,
+                transaction: { type, amount },
+                toPlayerId,
+              }),
           },
-          pin: true,
         },
       }),
     );

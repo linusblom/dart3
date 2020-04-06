@@ -5,7 +5,7 @@ import { Player, CreatePlayer, UpdatePlayer } from 'dart3-sdk';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
-  private apiUrl = `${environment.apiUrl}/player`;
+  private apiUrl = `${environment.dart3ApiUrl}/player`;
 
   constructor(private readonly http: HttpClient) {}
 

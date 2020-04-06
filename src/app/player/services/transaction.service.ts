@@ -6,7 +6,7 @@ import { environment } from '@envs/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  private apiUrl = `${environment.apiUrl}/transaction`;
+  private apiUrl = `${environment.dart3ApiUrl}/transaction`;
 
   constructor(private readonly http: HttpClient) {}
 

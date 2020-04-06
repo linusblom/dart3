@@ -2,13 +2,13 @@ import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Player } from 'dart3-sdk';
 
-import * as fromAuth from '@auth/reducers/auth.reducer';
+import * as fromAccount from '@auth/reducers/account.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
 import { StoreState } from '@shared/models';
 
 export interface State {
-  auth: fromAuth.State;
+  account: fromAccount.State;
   core: fromCore.State;
   player: fromPlayer.State;
 }
@@ -17,16 +17,16 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
   'Root reducers token',
   {
     factory: () => ({
-      auth: fromAuth.reducer,
+      account: fromAccount.reducer,
       core: fromCore.reducer,
       player: fromPlayer.reducer,
     }),
   },
 );
 
-export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
+export const getAuthState = createFeatureSelector<fromAccount.State>('account');
 export const isAuthenticated = createSelector(getAuthState, state => state.authenticated);
-export const getUser = createSelector(getAuthState, state => state.user);
+export const getAccount = createSelector(getAuthState, (authenticated, ...state) => state);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const showMenu = createSelector(getCoreState, state => state.menu);

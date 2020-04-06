@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class PlayerEffects {
   get$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.getRequest, AuthActions.loginComplete),
+      ofType(PlayerActions.getRequest, AuthActions.login),
       concatMap(() =>
         this.service.get().pipe(
           map(players => PlayerActions.getSuccess({ players })),

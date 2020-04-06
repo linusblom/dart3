@@ -10,7 +10,7 @@ import { CoreActions } from '@core/actions';
 export class AuthEffects {
   loginComplete$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.loginComplete),
+      ofType(AuthActions.login),
       map(() => CoreActions.toggleMenu()),
     ),
   );

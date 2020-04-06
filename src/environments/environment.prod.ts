@@ -4,7 +4,8 @@ export const environment = {
   production: true,
   local: false,
   siteUrl: '',
-  apiUrl: '',
+  dart3ApiUrl: '',
+  auth0ApiUrl: '',
   version,
   auto0: {
     domain: '',

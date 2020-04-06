@@ -81,8 +81,8 @@ export class AuthService {
         concatMap(() => combineLatest([this.getUser$(), this.isAuthenticated$])),
       );
 
-      authComplete$.subscribe(([user, loggedIn]) => {
-        this.store.dispatch(AuthActions.loginComplete({ user }));
+      authComplete$.subscribe(() => {
+        this.store.dispatch(AuthActions.login());
         this.router.navigate([targetRoute]);
       });
     }

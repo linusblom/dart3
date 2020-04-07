@@ -1,10 +1,10 @@
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-import { AccountService } from './account.service';
+import { UserService } from './user.service';
 
 export { AuthGuard } from './auth.guard';
 export { AuthService } from './auth.service';
-export { AccountService } from './account.service';
+export { UserService } from './user.service';
 export { RequestInterceptor } from './request.interceptor';
 
-export const services = [AuthGuard, AuthService, AccountService];
+export const services = [AuthGuard, AuthService, UserService];

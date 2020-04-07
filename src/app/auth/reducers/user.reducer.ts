@@ -1,11 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import { Account } from 'dart3-sdk';
+import { User } from 'dart3-sdk';
 
-import { AuthActions, AccountActions } from '@auth/actions';
+import { AuthActions, UserActions } from '@auth/actions';
 
-export interface State extends Account {
-  authenticated: boolean;
-}
+export type State = User;
 
 export const initialState: State = {
   userId: '',
@@ -21,16 +19,15 @@ export const initialState: State = {
   lastLogin: undefined,
   loginCount: 0,
   userMetaData: {
-    currency: '$',
+    currency: '',
   },
   identities: [],
-  authenticated: false,
 };
 
 export const reducer = createReducer(
   initialState,
 
-  on(AccountActions.getSuccess, (state, { account }) => ({ ...state, ...account })),
+  on(UserActions.getSuccess, (state, { user }) => ({ ...state, ...user })),
 
   on(AuthActions.login, state => ({ ...state, authenticated: true })),
 

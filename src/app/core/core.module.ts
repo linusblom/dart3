@@ -9,6 +9,6 @@ import { containers } from './containers';
 @NgModule({
   imports: [CommonModule, SharedModule],
   declarations: [...components, ...containers],
-  exports: [...containers],
+  exports: [...containers, ...components],
 })
 export class CoreModule {}

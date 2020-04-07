@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, concatMap, catchError } from 'rxjs/operators';
 
-import { UserActions, AuthActions } from '@auth/actions';
-import { UserService } from '@auth/services';
+import { AuthActions } from '@auth/actions';
+import { UserService } from '@user/services';
+import { UserActions } from '@user/actions';
 
 @Injectable()
 export class UserEffects {
@@ -14,6 +15,18 @@ export class UserEffects {
         this.service.get().pipe(
           map(user => UserActions.getSuccess({ user })),
           catchError(() => [UserActions.getFailure()]),
+        ),
+      ),
+    ),
+  );
+
+  update$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.updateRequest),
+      concatMap(({ user }) =>
+        this.service.update(user).pipe(
+          map(user => UserActions.updateSuccess({ user })),
+          catchError(() => [UserActions.updateFailure()]),
         ),
       ),
     ),

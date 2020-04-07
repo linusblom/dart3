@@ -13,4 +13,8 @@ export class UserService {
   get() {
     return this.http.get<User>(this.apiUrl);
   }
+
+  update(user: Partial<User>) {
+    return this.http.patch<User>(this.apiUrl, user);
+  }
 }

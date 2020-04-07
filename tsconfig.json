@@ -22,6 +22,7 @@
       "@player/*": ["app/player/*"],
       "@game/*": ["app/game/*"],
       "@utils/*": ["app/utils/*"],
+      "@user/*": ["app/user/*"],
       "@root/*": ["app/*"]
     }
   }

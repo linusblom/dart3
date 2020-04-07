@@ -16,12 +16,11 @@
     Players
   </div>
   <div class="item" data-title="Statistics">Statistics</div>
-  <div class="item" data-title="Settings">Settings</div>
 </div>
 <div class="header">
   DART3
 </div>
 
 <div class="menu-right">
-  <button mat-stroked-button (click)="logout()">Logout</button>
+  <img [src]="picture$ | async" (click)="navigate(['user'])" />
 </div>

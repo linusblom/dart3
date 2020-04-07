@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '@auth/services/auth.guard';
 import { PlayerRoutes } from '@player/player.routing';
+import { UserRoutes } from '@user/user.routing';
 
 export const routes: Routes = [
   {
@@ -11,6 +12,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'players', children: PlayerRoutes, canActivate: [AuthGuard] },
+  { path: 'user', children: UserRoutes, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

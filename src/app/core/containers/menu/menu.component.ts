@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
 import { AuthActions } from '@auth/actions';
-import { showMenu, State } from '@root/reducers';
+import { showMenu, State, getUserPicture } from '@root/reducers';
 
 @Component({
   selector: 'app-menu',
@@ -12,6 +12,7 @@ import { showMenu, State } from '@root/reducers';
 })
 export class MenuComponent {
   menu$ = this.store.pipe(select(showMenu));
+  picture$ = this.store.pipe(select(getUserPicture));
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {}
 

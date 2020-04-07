@@ -1,0 +1,32 @@
+<div class="user" [formGroup]="userForm">
+  <div class="header">User</div>
+  <mat-form-field class="light">
+    <input matInput formControlName="name" placeholder="Name" (change)="updateUser()" />
+  </mat-form-field>
+  <mat-form-field class="light">
+    <input matInput formControlName="nickname" placeholder="Nickname" (change)="updateUser()" />
+  </mat-form-field>
+  <mat-form-field class="light">
+    <input matInput formControlName="email" placeholder="Email" (change)="updateUser()" />
+  </mat-form-field>
+  <div class="button">
+    <button mat-flat-button (click)="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="settings" [formGroup]="settingsForm">
+    <div class="header">Settings</div>
+    <mat-form-field>
+      <input
+        matInput
+        formControlName="currency"
+        placeholder="Currency"
+        (change)="updateSettings()"
+      />
+    </mat-form-field>
+  </div>
+  <div class="bank">
+    <div class="header">Bank</div>
+  </div>
+</div>

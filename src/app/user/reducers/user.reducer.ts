@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'dart3-sdk';
 
-import { AuthActions, UserActions } from '@auth/actions';
+import { AuthActions } from '@auth/actions';
+import { UserActions } from '@user/actions';
 
 export type State = User;
 
@@ -18,7 +19,7 @@ export const initialState: State = {
   lastIp: '',
   lastLogin: undefined,
   loginCount: 0,
-  userMetaData: {
+  userMetadata: {
     currency: '',
   },
   identities: [],
@@ -27,9 +28,10 @@ export const initialState: State = {
 export const reducer = createReducer(
   initialState,
 
-  on(UserActions.getSuccess, (state, { user }) => ({ ...state, ...user })),
-
-  on(AuthActions.login, state => ({ ...state, authenticated: true })),
+  on(UserActions.getSuccess, UserActions.updateSuccess, (state, { user }) => ({
+    ...state,
+    ...user,
+  })),
 
   on(AuthActions.logout, () => initialState),
 );

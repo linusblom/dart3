@@ -5,7 +5,6 @@ export const environment = {
   local: false,
   siteUrl: '',
   dart3ApiUrl: '',
-  auth0ApiUrl: '',
   version,
   auto0: {
     domain: '',

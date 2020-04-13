@@ -104,22 +104,12 @@ export class PlayerComponent implements OnDestroy {
 
   delete() {
     this.store.dispatch(
-      CoreActions.showModal({
-        modal: {
-          header: 'Delete player',
-          text: `Are you sure you want to delete player <strong>${this.player.name}</strong>? Please enter PIN to confirm.`,
-          backdrop: {
-            dismiss: true,
-          },
-          cancel: { text: 'Cancel', dismiss: true },
-          ok: {
-            text: 'Delete',
-            color: 'error',
-            dismiss: true,
-            action: (pin: string) => PlayerActions.deleteRequest({ id: this.id, pin }),
-          },
-          pin: true,
-        },
+      CoreActions.confirmPin({
+        header: 'Delete player',
+        text: `Are you sure you want to delete player <strong>${this.player.name}</strong>?`,
+        action: PlayerActions.deleteRequest({ id: this.id }),
+        okText: 'Delete',
+        okColor: 'error',
       }),
     );
   }
@@ -137,27 +127,14 @@ export class PlayerComponent implements OnDestroy {
       : '';
 
     this.store.dispatch(
-      CoreActions.showModal({
-        modal: {
-          header: 'Transaction',
-          text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${toPlayerName}? Please enter PIN to confirm.`,
-          backdrop: {
-            dismiss: true,
-          },
-          cancel: { text: 'Cancel', dismiss: true },
-          pin: true,
-          ok: {
-            text: 'Confirm',
-            dismiss: true,
-            action: (pin: string) =>
-              TransactionActions.transactionRequest({
-                id: this.id,
-                pin,
-                transaction: { type, amount },
-                toPlayerId,
-              }),
-          },
-        },
+      CoreActions.confirmPin({
+        header: 'Transaction',
+        text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${toPlayerName}?`,
+        action: TransactionActions.transactionRequest({
+          id: this.id,
+          transaction: { type, amount },
+          toPlayerId,
+        }),
       }),
     );
   }

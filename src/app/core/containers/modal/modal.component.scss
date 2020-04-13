@@ -13,6 +13,11 @@
   box-shadow: $box-shadow;
 }
 
+.header {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .text {
   margin: 20px 0;
 }
@@ -26,7 +31,7 @@ mat-form-field {
   justify-content: center;
   margin-bottom: 20px;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 50px;
+  font-size: 30px;
 
   .num {
     text-align: center;
@@ -34,6 +39,14 @@ mat-form-field {
     height: 50px;
     margin: 0 20px;
     border: 1px solid $black;
+    box-sizing: border-box;
+    background-clip: content-box;
+    padding: 10px 5px;
+
+    &.active {
+      animation: hit-pulse 1s ease-in-out;
+      animation-iteration-count: infinite;
+    }
   }
 }
 
@@ -45,4 +58,16 @@ mat-form-field {
     flex: 1;
     margin: 0 5px;
   }
-} 
+}
+
+@keyframes hit-pulse {
+  0% {
+    background-color: rgba($dark-grey, 0.1);
+  }
+  20% {
+    background-color: rgba($dark-grey, 1);
+  }
+  100% {
+    background-color: rgba($dark-grey, 0.1);
+  }
+}

@@ -1,0 +1,24 @@
+<div class="container" *ngIf="step === Step.SelectGame || selected">
+  <div class="header">{{ game.name }}</div>
+  <ng-container [ngSwitch]="step">
+    <app-game-wizard-select
+      *ngSwitchCase="Step.SelectGame"
+      [description]="game.description"
+      (next)="setGame(game.variants[0])"
+    ></app-game-wizard-select>
+
+    <app-game-wizard-settings
+      *ngSwitchCase="Step.GameSettings"
+      [variants]="game.variants"
+      [form]="form"
+      (back)="setGame('')"
+      (next)="create.emit()"
+    ></app-game-wizard-settings>
+
+    <app-game-wizard-players
+      *ngSwitchCase="Step.SelectPlayers"
+      [players]="players"
+      (cancel)="cancel.emit()"
+    ></app-game-wizard-players>
+  </ng-container>
+</div>

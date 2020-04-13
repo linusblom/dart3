@@ -1,6 +1,6 @@
 <div class="header-wrapper" [style.background-color]="player.color">
   <div class="header-row">
-    <app-player-avatar [avatar]="player.avatar"></app-player-avatar>
+    <img [src]="player.avatar" />
     <div>
       <div class="header">{{ player.name }}</div>
       <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
@@ -34,7 +34,7 @@
   </div>
 </div>
 <div class="content">
-  <app-player-stats></app-player-stats>
+  <app-player-stats [player]="player"></app-player-stats>
   <app-player-transactions [transactions]="player.transactions"></app-player-transactions>
 </div>
 <div class="settings" [formGroup]="settingsForm">

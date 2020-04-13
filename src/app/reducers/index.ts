@@ -31,6 +31,7 @@ export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
 export const isAuthenticated = createSelector(getAuthState, state => state.authenticated);
 
 export const getUserState = createFeatureSelector<fromUser.State>('user');
+export const getUserStoreState = createSelector(getUserState, ({ state }) => state);
 export const getUser = createSelector(getUserState, state => state);
 export const getUserCurrency = createSelector(
   getUserState,
@@ -42,6 +43,7 @@ export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const showMenu = createSelector(getCoreState, state => state.menu);
 export const showModal = createSelector(getCoreState, state => !!state.modal);
 export const getModal = createSelector(getCoreState, state => state.modal);
+export const getPin = createSelector(getCoreState, state => state.pin);
 
 export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
 export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) => state);
@@ -55,5 +57,7 @@ export const getSelectedPlayerId = createSelector(getPlayerState, state => state
 export const showLoading = createSelector(
   isAuthenticated,
   getPlayerStoreState,
-  (authenticated, playerStoreState) => !authenticated || playerStoreState !== StoreState.NONE,
+  getUserStoreState,
+  (authenticated, playerStoreState, userStoreState) =>
+    !authenticated || playerStoreState !== StoreState.NONE || userStoreState !== StoreState.NONE,
 );

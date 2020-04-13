@@ -4,13 +4,7 @@ import { TransactionPayload, Transaction } from 'dart3-sdk';
 
 export const transactionRequest = createAction(
   '[Transaction] Transaction Request',
-  props<{
-    id: number;
-    pin: string;
-    transaction: TransactionPayload;
-    toPlayerId?: number;
-    toGameId?: number;
-  }>(),
+  props<{ id: number; transaction: TransactionPayload; toPlayerId?: number; toGameId?: number }>(),
 );
 export const transactionSuccess = createAction(
   '[Transaction] Transaction Success',

@@ -1,0 +1,43 @@
+<div class="content" [formGroup]="form">
+  <div *ngIf="variants.length > 1" class="row">
+    <div>Variant:</div>
+    <mat-button-toggle-group formControlName="variant">
+      <mat-button-toggle *ngFor="let variant of variants" [value]="variant">
+        {{ gameName(variant) }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="row">
+    <div>Bet:</div>
+    <mat-button-toggle-group formControlName="bet">
+      <mat-button-toggle *ngFor="let bet of bets" [value]="bet">
+        {{ bet | currency }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="row">
+    <div>Legs:</div>
+    <mat-button-toggle-group formControlName="legs">
+      <mat-button-toggle *ngFor="let leg of legs" [value]="leg">
+        {{ leg }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div>Sets:</div>
+    <mat-button-toggle-group formControlName="sets">
+      <mat-button-toggle *ngFor="let set of sets" [value]="set">
+        {{ set }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<div class="buttons">
+  <button mat-flat-button (click)="back.emit()">
+    Back
+  </button>
+  <button mat-flat-button (click)="next.emit()">
+    Next
+  </button>
+</div>

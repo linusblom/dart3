@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SharedModule } from '@shared/shared.module';
 
@@ -11,6 +12,7 @@ import { containers } from './containers';
 import { effects } from './effects';
 import { GameRoutingModule } from './game.routing';
 import { reducers } from './reducers';
+import { services } from './services';
 
 @NgModule({
   imports: [
@@ -18,10 +20,11 @@ import { reducers } from './reducers';
     SharedModule,
     ReactiveFormsModule,
     GameRoutingModule,
+    DragDropModule,
     StoreModule.forFeature('game', reducers),
     EffectsModule.forFeature(effects),
   ],
   declarations: [...containers, ...components],
-  providers: [],
+  providers: [...services],
 })
 export class GameModule {}

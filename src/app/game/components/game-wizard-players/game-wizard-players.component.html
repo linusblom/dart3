@@ -1,0 +1,46 @@
+<div class="content">
+  <div class="title">Playing</div>
+  <div
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    id="playing"
+    [cdkDropListData]="playing"
+    [cdkDropListConnectedTo]="['available']"
+    (cdkDropListDropped)="onPlayerDrop($event)"
+    class="players"
+  >
+    <app-game-wizard-player
+      *ngFor="let player of playing"
+      cdkDrag
+      [cdkDragData]="player"
+      [player]="player"
+    ></app-game-wizard-player>
+  </div>
+
+  <div class="title">Available</div>
+  <div
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    id="available"
+    [cdkDropListData]="available"
+    [cdkDropListConnectedTo]="['playing']"
+    (cdkDropListDropped)="onPlayerDrop($event)"
+    class="players"
+  >
+    <app-game-wizard-player
+      *ngFor="let player of available"
+      cdkDrag
+      [cdkDragData]="player"
+      [player]="player"
+    ></app-game-wizard-player>
+  </div>
+</div>
+
+<div class="buttons">
+  <button mat-flat-button [disabled]="playing.length > 0" (click)="cancel.emit()">
+    Cancel
+  </button>
+  <button mat-flat-button [disabled]="playing.length < 2" (click)="start()">
+    Game On
+  </button>
+</div>

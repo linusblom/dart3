@@ -46,10 +46,7 @@ export const resetPinFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const deleteRequest = createAction(
-  '[Player] Delete Request',
-  props<{ id: number; pin: string }>(),
-);
+export const deleteRequest = createAction('[Player] Delete Request', props<{ id: number }>());
 export const deleteSuccess = createAction('[Player] Delete Success', props<{ id: number }>());
 export const deleteFailure = createAction(
   '[Player] Delete Failure',

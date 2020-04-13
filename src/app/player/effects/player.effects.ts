@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, tap, withLatestFrom } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
 
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
 import { AuthActions } from '@auth/actions';
 import { Router } from '@angular/router';
+import { State, getPin } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {
@@ -72,7 +74,8 @@ export class PlayerEffects {
   delete$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.deleteRequest),
-      concatMap(({ id, pin }) =>
+      withLatestFrom(this.store.pipe(select(getPin))),
+      concatMap(([{ id }, pin]) =>
         this.service.delete(id, pin).pipe(
           tap(() => this.router.navigate(['players'])),
           map(() => PlayerActions.deleteSuccess({ id })),
@@ -86,5 +89,6 @@ export class PlayerEffects {
     private readonly actions$: Actions,
     private readonly service: PlayerService,
     private readonly router: Router,
+    private readonly store: Store<State>,
   ) {}
 }

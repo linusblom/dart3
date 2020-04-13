@@ -6,11 +6,13 @@ import { Modal } from '@core/models';
 export interface State {
   menu: boolean;
   modal: Modal;
+  pin: string;
 }
 
 export const initialState: State = {
   menu: false,
   modal: undefined,
+  pin: undefined,
 };
 
 export const reducer = createReducer(
@@ -20,4 +22,8 @@ export const reducer = createReducer(
   on(CoreActions.showModal, (state, { modal }) => ({ ...state, modal })),
 
   on(CoreActions.dismissModal, state => ({ ...state, modal: undefined })),
+
+  on(CoreActions.confirmPinDispatch, (state, { pin }) => ({ ...state, pin })),
+
+  on(CoreActions.confirmPinComplete, state => ({ ...state, pin: undefined })),
 );

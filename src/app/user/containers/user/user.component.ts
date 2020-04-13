@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { State, getUser } from '@root/reducers';
 import { UserActions } from '@user/actions';
 import { AuthActions } from '@auth/actions';
+import { Bank } from 'dart3-sdk';
 
 @Component({
   selector: 'app-user',
@@ -14,6 +15,7 @@ import { AuthActions } from '@auth/actions';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnDestroy {
+  bank = {} as Bank;
   userForm = new FormGroup({
     name: new FormControl('', Validators.required),
     nickname: new FormControl('', Validators.required),
@@ -27,11 +29,13 @@ export class UserComponent implements OnDestroy {
   private readonly destroy$ = new Subject();
 
   constructor(private readonly store: Store<State>) {
+    this.store.dispatch(UserActions.getRequest());
     this.store
       .pipe(select(getUser), takeUntil(this.destroy$))
-      .subscribe(({ name, nickname, email, userMetadata }) => {
+      .subscribe(({ name, nickname, email, userMetadata, bank }) => {
         this.userForm.patchValue({ name, nickname, email });
         this.settingsForm.patchValue({ ...userMetadata });
+        this.bank = bank;
       });
   }
 

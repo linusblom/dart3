@@ -36,6 +36,22 @@
     
   .bank {
     background: $grey;
+
+    .row {
+      color: $black;
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+    
+      &.space {
+        margin-top: 20px;
+      }
+    
+      .name {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    }
   }
 }
 

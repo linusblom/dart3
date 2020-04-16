@@ -16,28 +16,28 @@ export enum GameWizardStep {
 export const availableGames: GameOption[] = [
   {
     variants: [GameType.HalveIt],
-    color: '#4056a1',
+    color: '#4fa7c4',
     name: 'Halve It',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
     variants: [GameType.Legs],
-    color: '#e27d60',
+    color: '#e86831',
     name: 'Legs',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
     variants: [GameType.Three01SingleInDoubleOut, GameType.Three01SDoubleInDoubleOut],
-    color: '#5cdb95',
+    color: '#4fb37b',
     name: '301',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
     variants: [GameType.Five01SingleInDoubleOut, GameType.Five01DoubleInDoubleOut],
-    color: '#557a95',
+    color: '#ad319f',
     name: '501',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',

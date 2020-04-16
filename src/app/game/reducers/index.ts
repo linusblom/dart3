@@ -42,3 +42,4 @@ export const getWizardValues = createSelector(getWizardState, ({ variant, bet, s
   sets,
   legs,
 }));
+export const getWizardPlayers = createSelector(getWizardState, state => state.players);

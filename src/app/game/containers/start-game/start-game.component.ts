@@ -4,12 +4,21 @@ import { Store, select } from '@ngrx/store';
 import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { isEqual } from 'lodash';
+import { Player } from 'dart3-sdk';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import { State, getWizardStep, getWizardValues, getWizardId } from '@game/reducers';
+import {
+  State,
+  getWizardStep,
+  getWizardValues,
+  getWizardId,
+  getWizardPlayers,
+} from '@game/reducers';
 import { availableGames, GameWizardStep } from '@game/models';
 import { getAllPlayers } from '@root/reducers';
 import { GameActions, WizardActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
+import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
 @Component({
   selector: 'app-start-game',
@@ -18,6 +27,7 @@ import { CoreActions } from '@core/actions';
 })
 export class StartGameComponent {
   players$ = this.store.pipe(select(getAllPlayers));
+  selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
 
   id: number = undefined;
@@ -31,7 +41,7 @@ export class StartGameComponent {
 
   private readonly destroy$ = new Subject();
 
-  constructor(private readonly store: Store<State>) {
+  constructor(private readonly store: Store<State>, private readonly currency: CurrencyPipe) {
     this.store
       .pipe(select(getWizardValues), takeUntil(this.destroy$), distinctUntilChanged(isEqual))
       .subscribe(({ variant, bet, sets, legs }) =>
@@ -69,12 +79,32 @@ export class StartGameComponent {
             ok: {
               text: 'Yes',
               dismiss: true,
-              action: () => GameActions.deleteRequest({ id: this.id }),
+              action: () => GameActions.deleteCurrentRequest(),
             },
           },
         }),
       );
     }
+  }
+
+  addPlayer(player: Player) {
+    const amount = this.currency.transform(this.form.get('bet').value);
+
+    this.store.dispatch(
+      CoreActions.confirmPin({
+        header: 'Payment',
+        text: `<strong>${amount}</strong> will be debited from your account.`,
+        action: GameActions.createCurrentGamePlayerRequest({ playerId: player.id }),
+        okText: 'Pay',
+        cancelAction: GameActions.createCurrentGamePlayerFailure({
+          error: {} as HttpErrorResponse,
+        }),
+      }),
+    );
+  }
+
+  removePlayer(player: Player) {
+    this.store.dispatch(GameActions.deleteCurrentGamePlayerRequest({ playerId: player.id }));
   }
 
   trackByFn(index: number) {

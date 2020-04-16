@@ -2,9 +2,12 @@
   *ngFor="let game of games; trackBy: trackByFn"
   [step]="step$ | async"
   [players]="players$ | async"
+  [selectedPlayers]="selectedPlayers$ | async"
   [game]="game"
   [form]="form"
   (changeStep)="changeStep($event)"
   (create)="create()"
   (cancel)="cancel()"
+  (addPlayer)="addPlayer($event)"
+  (removePlayer)="removePlayer($event)"
 ></app-game-wizard>

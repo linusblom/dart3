@@ -7,6 +7,7 @@ import { GameService } from '@game/services';
 import { GameActions, WizardActions } from '@game/actions';
 import { State, getWizardValues } from '@game/reducers';
 import { GameWizardStep } from '@game/models';
+import { getPin } from '@root/reducers';
 
 @Injectable()
 export class GameEffects {
@@ -39,13 +40,38 @@ export class GameEffects {
     ),
   );
 
-  delete$ = createEffect(() =>
+  deleteCurrent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(GameActions.deleteRequest),
-      concatMap(({ id }) =>
-        this.service.delete(id).pipe(
-          map(() => GameActions.deleteSuccess()),
-          catchError(() => [GameActions.deleteFailure()]),
+      ofType(GameActions.deleteCurrentRequest),
+      concatMap(() =>
+        this.service.deleteCurrent().pipe(
+          map(() => GameActions.deleteCurrentSuccess()),
+          catchError(() => [GameActions.deleteCurrentFailure()]),
+        ),
+      ),
+    ),
+  );
+
+  createCurrentGamePlayer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.createCurrentGamePlayerRequest),
+      withLatestFrom(this.store.pipe(select(getPin))),
+      concatMap(([{ playerId }, pin]) =>
+        this.service.createCurrentGamePlayer(playerId, pin).pipe(
+          map(({ players }) => GameActions.createCurrentGamePlayerSuccess({ players })),
+          catchError(error => [GameActions.createCurrentGamePlayerFailure({ error })]),
+        ),
+      ),
+    ),
+  );
+
+  deleteCurrentGamePlayer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.deleteCurrentGamePlayerRequest),
+      concatMap(({ playerId }) =>
+        this.service.deleteCurrentGamePlayer(playerId).pipe(
+          map(({ players }) => GameActions.deleteCurrentGamePlayerSuccess({ players })),
+          catchError(error => [GameActions.deleteCurrentGamePlayerFailure({ error })]),
         ),
       ),
     ),

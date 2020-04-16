@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SharedModule } from '@shared/shared.module';
+import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
 import { components } from './components';
 import { containers } from './containers';
@@ -25,6 +26,6 @@ import { services } from './services';
     EffectsModule.forFeature(effects),
   ],
   declarations: [...containers, ...components],
-  providers: [...services],
+  providers: [...services, CurrencyPipe],
 })
 export class GameModule {}

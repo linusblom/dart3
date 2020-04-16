@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { GameWizardStep } from '@game/models';
 import { WizardActions, GameActions } from '@game/actions';
-import { GameType } from 'dart3-sdk';
+import { GameType, GamePlayer } from 'dart3-sdk';
 
 export interface State {
   step: GameWizardStep;
@@ -11,6 +11,7 @@ export interface State {
   bet: number;
   sets: number;
   legs: number;
+  players: GamePlayer[];
 }
 
 export const initialState: State = {
@@ -20,6 +21,7 @@ export const initialState: State = {
   bet: 10,
   sets: 1,
   legs: 1,
+  players: [],
 };
 
 export const reducer = createReducer(
@@ -36,5 +38,14 @@ export const reducer = createReducer(
     legs,
   })),
 
-  on(GameActions.deleteSuccess, () => initialState),
+  on(GameActions.createCurrentGamePlayerSuccess, (state, { players }) => ({ ...state, players })),
+
+  on(GameActions.createCurrentGamePlayerFailure, state => ({
+    ...state,
+    players: [...state.players],
+  })),
+
+  on(GameActions.getCurrentSuccess, (state, { game: { players } }) => ({ ...state, players })),
+
+  on(GameActions.deleteCurrentSuccess, () => initialState),
 );

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { GameOption, GameWizardStep } from '@game/models';
-import { Player, GameType } from 'dart3-sdk';
+import { Player, GameType, GamePlayer } from 'dart3-sdk';
 
 @Component({
   selector: 'app-game-wizard',
@@ -22,10 +22,13 @@ export class GameWizardComponent {
   @Input() form: FormGroup;
   @Input() step = GameWizardStep.SelectGame;
   @Input() players: Player[] = [];
+  @Input() selectedPlayers: GamePlayer[] = [];
 
   @Output() changeStep = new EventEmitter<GameWizardStep>();
   @Output() create = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() addPlayer = new EventEmitter<number>();
+  @Output() removePlayer = new EventEmitter<number>();
 
   @HostBinding('style.background-color') get backgroundColor() {
     return this.game.color;

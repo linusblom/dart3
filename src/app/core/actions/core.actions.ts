@@ -7,7 +7,14 @@ export const showModal = createAction('[Core] Show Modal', props<{ modal: Modal 
 export const dismissModal = createAction('[Core] Dismiss Modal');
 export const confirmPin = createAction(
   '[Core] Confirm Pin',
-  props<{ header: string; text: string; action: Action; okText?: string; okColor?: string }>(),
+  props<{
+    header: string;
+    text: string;
+    action: Action;
+    okText?: string;
+    okColor?: string;
+    cancelAction?: Action;
+  }>(),
 );
 export const confirmPinDispatch = createAction(
   '[Core] Confirm Pin Dispatch',

@@ -18,7 +18,10 @@
     <app-game-wizard-players
       *ngSwitchCase="Step.SelectPlayers"
       [players]="players"
+      [selectedPlayers]="selectedPlayers"
       (cancel)="cancel.emit()"
+      (add)="addPlayer.emit($event)"
+      (remove)="removePlayer.emit($event)"
     ></app-game-wizard-players>
   </ng-container>
 </div>

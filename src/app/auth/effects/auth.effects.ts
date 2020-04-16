@@ -8,7 +8,7 @@ import { CoreActions } from '@core/actions';
 
 @Injectable()
 export class AuthEffects {
-  loginComplete$ = createEffect(() =>
+  login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
       map(() => CoreActions.toggleMenu()),

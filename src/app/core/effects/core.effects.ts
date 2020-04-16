@@ -4,19 +4,24 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import { PlayerActions, TransactionActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
+import { GameActions } from '@game/actions';
 
 @Injectable()
 export class CoreEffects {
   confirmPin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoreActions.confirmPin),
-      map(({ header, text, okText, okColor, action }) =>
+      map(({ header, text, okText, okColor, action, cancelAction }) =>
         CoreActions.showModal({
           modal: {
             header,
             text: `${text} Please enter PIN to confirm.`,
-            backdrop: { dismiss: true },
-            cancel: { text: 'Cancel', dismiss: true },
+            backdrop: { dismiss: true, ...(cancelAction && { action: () => cancelAction }) },
+            cancel: {
+              text: 'Cancel',
+              dismiss: true,
+              ...(cancelAction && { action: () => cancelAction }),
+            },
             ok: {
               text: okText || 'Confirm',
               color: okColor,
@@ -39,8 +44,12 @@ export class CoreEffects {
 
   invalidPin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.deleteFailure, TransactionActions.transactionFailure),
-      filter(({ error: { status } }) => status === 401),
+      ofType(
+        PlayerActions.deleteFailure,
+        TransactionActions.transactionFailure,
+        GameActions.createCurrentGamePlayerFailure,
+      ),
+      filter(({ error: { status } }) => status === 403),
       map(() =>
         CoreActions.showModal({
           modal: {
@@ -58,10 +67,10 @@ export class CoreEffects {
     ),
   );
 
-  insufficientCredits$ = createEffect(() =>
+  insufficientFunds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionActions.transactionFailure),
-      filter(({ error: { status } }) => status === 400),
+      ofType(TransactionActions.transactionFailure, GameActions.createCurrentGamePlayerFailure),
+      filter(({ error: { status } }) => status === 406),
       map(() =>
         CoreActions.showModal({
           modal: {

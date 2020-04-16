@@ -14,6 +14,8 @@
       cdkDrag
       [cdkDragData]="player"
       [player]="player"
+      (cdkDragStarted)="dragStarted()"
+      (cdkDragReleased)="dragReleased()"
     ></app-game-wizard-player>
   </div>
 
@@ -32,6 +34,8 @@
       cdkDrag
       [cdkDragData]="player"
       [player]="player"
+      (cdkDragStarted)="dragStarted()"
+      (cdkDragReleased)="dragReleased()"
     ></app-game-wizard-player>
   </div>
 </div>

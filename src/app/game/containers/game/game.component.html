@@ -1,0 +1,12 @@
+<div class="game-id">GAME #{{ game.id }}</div>
+
+<game-dart-board></game-dart-board>
+<div class="side-board">
+  <game-dart-overview [game]="game" [style.background]="options.color"></game-dart-overview>
+  <div class="headers">
+    <span>Score</span>
+    <span>Legs</span>
+    <span>Sets</span>
+  </div>
+  <game-dart-player *ngFor="let player of players" [player]="player"></game-dart-player>
+</div>

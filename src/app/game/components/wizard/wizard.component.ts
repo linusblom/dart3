@@ -12,13 +12,13 @@ import { GameOption, GameWizardStep } from '@game/models';
 import { Player, GameType, GamePlayer } from 'dart3-sdk';
 
 @Component({
-  selector: 'app-game-wizard',
-  templateUrl: './game-wizard.component.html',
-  styleUrls: ['./game-wizard.component.scss'],
+  selector: 'game-wizard',
+  templateUrl: './wizard.component.html',
+  styleUrls: ['./wizard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameWizardComponent {
-  @Input() game: GameOption;
+export class WizardComponent {
+  @Input() options: GameOption;
   @Input() form: FormGroup;
   @Input() step = GameWizardStep.SelectGame;
   @Input() players: Player[] = [];
@@ -27,11 +27,12 @@ export class GameWizardComponent {
   @Output() changeStep = new EventEmitter<GameWizardStep>();
   @Output() create = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() start = new EventEmitter<void>();
   @Output() addPlayer = new EventEmitter<number>();
   @Output() removePlayer = new EventEmitter<number>();
 
   @HostBinding('style.background-color') get backgroundColor() {
-    return this.game.color;
+    return this.options.color;
   }
 
   @HostBinding('style.width.%') get flexBasis() {
@@ -45,7 +46,7 @@ export class GameWizardComponent {
   Step = GameWizardStep;
 
   get selected() {
-    return this.game.variants.includes(this.form.get('variant').value);
+    return this.options.variants.includes(this.form.get('variant').value);
   }
 
   setGame(variant: GameType) {

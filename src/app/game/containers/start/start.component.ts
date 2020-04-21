@@ -7,31 +7,24 @@ import { isEqual } from 'lodash';
 import { Player } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import {
-  State,
-  getWizardStep,
-  getWizardValues,
-  getWizardId,
-  getWizardPlayers,
-} from '@game/reducers';
+import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
 import { availableGames, GameWizardStep } from '@game/models';
 import { getAllPlayers } from '@root/reducers';
-import { GameActions, WizardActions } from '@game/actions';
+import { GameActions, WizardActions, CurrentGameAction } from '@game/actions';
 import { CoreActions } from '@core/actions';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
 @Component({
-  selector: 'app-start-game',
-  templateUrl: './start-game.component.html',
-  styleUrls: ['./start-game.component.scss'],
+  selector: 'app-start',
+  templateUrl: './start.component.html',
+  styleUrls: ['./start.component.scss'],
 })
-export class StartGameComponent {
+export class StartComponent {
   players$ = this.store.pipe(select(getAllPlayers));
   selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
 
-  id: number = undefined;
-  games = availableGames;
+  gameOptions = availableGames;
   form = new FormGroup({
     variant: new FormControl('', Validators.required),
     bet: new FormControl(10, Validators.required),
@@ -47,8 +40,6 @@ export class StartGameComponent {
       .subscribe(({ variant, bet, sets, legs }) =>
         this.form.patchValue({ variant, bet, sets, legs }, { emitEvent: false }),
       );
-
-    this.store.pipe(select(getWizardId), takeUntil(this.destroy$)).subscribe(id => (this.id = id));
 
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))
@@ -66,25 +57,23 @@ export class StartGameComponent {
   }
 
   cancel() {
-    if (this.id) {
-      this.store.dispatch(
-        CoreActions.showModal({
-          modal: {
-            header: 'Cancel',
-            text: `Are you sure you want to cancel this game?`,
-            backdrop: {
-              dismiss: true,
-            },
-            cancel: { text: 'No', dismiss: true },
-            ok: {
-              text: 'Yes',
-              dismiss: true,
-              action: () => GameActions.deleteCurrentRequest(),
-            },
+    this.store.dispatch(
+      CoreActions.showModal({
+        modal: {
+          header: 'Cancel',
+          text: `Are you sure you want to cancel this game?`,
+          backdrop: {
+            dismiss: true,
           },
-        }),
-      );
-    }
+          cancel: { text: 'No', dismiss: true },
+          ok: {
+            text: 'Yes',
+            dismiss: true,
+            action: () => CurrentGameAction.deleteRequest(),
+          },
+        },
+      }),
+    );
   }
 
   addPlayer(player: Player) {
@@ -94,9 +83,9 @@ export class StartGameComponent {
       CoreActions.confirmPin({
         header: 'Payment',
         text: `<strong>${amount}</strong> will be debited from your account.`,
-        action: GameActions.createCurrentGamePlayerRequest({ playerId: player.id }),
+        action: CurrentGameAction.createGamePlayerRequest({ playerId: player.id }),
         okText: 'Pay',
-        cancelAction: GameActions.createCurrentGamePlayerFailure({
+        cancelAction: CurrentGameAction.createGamePlayerFailure({
           error: {} as HttpErrorResponse,
         }),
       }),
@@ -104,7 +93,11 @@ export class StartGameComponent {
   }
 
   removePlayer(player: Player) {
-    this.store.dispatch(GameActions.deleteCurrentGamePlayerRequest({ playerId: player.id }));
+    this.store.dispatch(CurrentGameAction.deleteGamePlayerRequest({ playerId: player.id }));
+  }
+
+  start() {
+    this.store.dispatch(CurrentGameAction.startRequest());
   }
 
   trackByFn(index: number) {

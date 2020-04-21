@@ -1,12 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { GameWizardStep } from '@game/models';
-import { WizardActions, GameActions } from '@game/actions';
+import { WizardActions, CurrentGameAction } from '@game/actions';
 import { GameType, GamePlayer } from 'dart3-sdk';
 
 export interface State {
   step: GameWizardStep;
-  id: number;
   variant: GameType;
   bet: number;
   sets: number;
@@ -16,7 +15,6 @@ export interface State {
 
 export const initialState: State = {
   step: GameWizardStep.SelectGame,
-  id: undefined,
   variant: '' as GameType,
   bet: 10,
   sets: 1,
@@ -28,8 +26,6 @@ export const reducer = createReducer(
   initialState,
   on(WizardActions.setStep, (state, { step }) => ({ ...state, step })),
 
-  on(WizardActions.setId, (state, { id }) => ({ ...state, id })),
-
   on(WizardActions.setValues, (state, { variant, bet, sets, legs }) => ({
     ...state,
     variant,
@@ -38,14 +34,14 @@ export const reducer = createReducer(
     legs,
   })),
 
-  on(GameActions.createCurrentGamePlayerSuccess, (state, { players }) => ({ ...state, players })),
+  on(CurrentGameAction.createGamePlayerSuccess, (state, { players }) => ({ ...state, players })),
 
-  on(GameActions.createCurrentGamePlayerFailure, state => ({
+  on(CurrentGameAction.createGamePlayerFailure, state => ({
     ...state,
     players: [...state.players],
   })),
 
-  on(GameActions.getCurrentSuccess, (state, { game: { players } }) => ({ ...state, players })),
+  on(CurrentGameAction.getSuccess, (state, { game: { players } }) => ({ ...state, players })),
 
-  on(GameActions.deleteCurrentSuccess, () => initialState),
+  on(CurrentGameAction.deleteSuccess, () => initialState),
 );

@@ -17,7 +17,7 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(CoreActions.toggleMenu, state => ({ ...state, menu: !state.menu })),
+  on(CoreActions.toggleMenu, (state, { menu }) => ({ ...state, menu })),
 
   on(CoreActions.showModal, (state, { modal }) => ({ ...state, modal })),
 

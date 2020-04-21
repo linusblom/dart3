@@ -11,7 +11,7 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      map(() => CoreActions.toggleMenu()),
+      map(() => CoreActions.toggleMenu({ menu: true })),
     ),
   );
 
@@ -19,7 +19,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.logout),
       tap(() => this.service.logout()),
-      map(() => CoreActions.toggleMenu()),
+      map(() => CoreActions.toggleMenu({ menu: false })),
     ),
   );
 

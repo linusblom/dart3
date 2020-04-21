@@ -4,7 +4,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import { PlayerActions, TransactionActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
-import { GameActions } from '@game/actions';
+import { CurrentGameAction } from '@game/actions';
 
 @Injectable()
 export class CoreEffects {
@@ -47,7 +47,7 @@ export class CoreEffects {
       ofType(
         PlayerActions.deleteFailure,
         TransactionActions.transactionFailure,
-        GameActions.createCurrentGamePlayerFailure,
+        CurrentGameAction.createGamePlayerFailure,
       ),
       filter(({ error: { status } }) => status === 403),
       map(() =>
@@ -69,7 +69,7 @@ export class CoreEffects {
 
   insufficientFunds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionActions.transactionFailure, GameActions.createCurrentGamePlayerFailure),
+      ofType(TransactionActions.transactionFailure, CurrentGameAction.createGamePlayerFailure),
       filter(({ error: { status } }) => status === 406),
       map(() =>
         CoreActions.showModal({

@@ -1,13 +1,14 @@
-<app-game-wizard
-  *ngFor="let game of games; trackBy: trackByFn"
+<game-wizard
+  *ngFor="let options of gameOptions; trackBy: trackByFn"
   [step]="step$ | async"
   [players]="players$ | async"
   [selectedPlayers]="selectedPlayers$ | async"
-  [game]="game"
+  [options]="options"
   [form]="form"
   (changeStep)="changeStep($event)"
   (create)="create()"
   (cancel)="cancel()"
+  (start)="start()"
   (addPlayer)="addPlayer($event)"
   (removePlayer)="removePlayer($event)"
-></app-game-wizard>
+></game-wizard>

@@ -1,0 +1,30 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+  padding: 20px;
+  color: $white;
+}
+
+.row {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  margin: 3px 0;
+
+  .name {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+  }
+
+  .value {
+    font-size: 16px;
+    font-weight: 100;
+    font-family: $header;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+}

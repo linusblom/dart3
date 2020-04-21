@@ -1,0 +1,45 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  position: relative;
+  background-color: $dark-blue;
+  height: calc(100vh - 30px);
+}
+
+.side-board {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 400px;
+  padding: 50px 0 0 50px;
+}
+
+.headers {
+  display: flex;
+  padding: 0 20px 10px 160px;
+  color: $grey;
+
+  span {
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+  }
+}
+
+.game-id {
+  margin: 5px;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  width: 100px;
+  text-align: center;
+  margin: auto;
+  bottom: -22px;
+  position: absolute;
+  color: $dark-grey;
+  font-size: 10px;
+  font-family: $header;
+}

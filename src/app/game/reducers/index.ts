@@ -32,10 +32,13 @@ export const {
   selectAll: getAllGames,
   selectTotal: getTotalGames,
 } = fromGame.adapter.getSelectors(getGameState);
+export const getSelectedGame = createSelector(
+  getGameState,
+  state => state.entities[state.selectedGameId],
+);
 
 export const getWizardState = createSelector(getGameModuleState, state => state.wizard);
 export const getWizardStep = createSelector(getWizardState, state => state.step);
-export const getWizardId = createSelector(getWizardState, state => state.id);
 export const getWizardValues = createSelector(getWizardState, ({ variant, bet, sets, legs }) => ({
   variant,
   bet,

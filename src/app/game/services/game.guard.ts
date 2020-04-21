@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { State } from '@game/reducers';
-import { GameActions, WizardActions } from '@game/actions';
+import { WizardActions, CurrentGameAction } from '@game/actions';
 import { GameWizardStep } from '@game/models';
 
 interface CurrentGame {
@@ -27,11 +27,11 @@ export class GameGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot) {
     const { path } = route.routeConfig;
 
-    this.store.dispatch(GameActions.getCurrentRequest());
+    this.store.dispatch(CurrentGameAction.getRequest());
 
     return race([
-      this.actions$.pipe(ofType(GameActions.getCurrentSuccess)),
-      this.actions$.pipe(ofType(GameActions.getCurrentFailure)),
+      this.actions$.pipe(ofType(CurrentGameAction.getSuccess)),
+      this.actions$.pipe(ofType(CurrentGameAction.getFailure)),
     ]).pipe(
       map(({ game, error }: CurrentGame) => {
         let navigate = '';
@@ -50,13 +50,13 @@ export class GameGuard implements CanActivate {
           case path === 'start' && game && !game.startedAt:
             const { type: variant, bet, sets, legs } = game;
             allowed = true;
-            this.store.dispatch(WizardActions.setId({ id: game.id }));
             this.store.dispatch(WizardActions.setValues({ variant, bet, sets, legs }));
             this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectPlayers }));
             break;
           case path === 'play' && !!error:
             allowed = false;
             navigate = 'start';
+            this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectGame }));
             break;
           default:
             allowed = false;

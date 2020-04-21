@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { StartGameComponent } from './containers/start-game/start-game.component';
 import { GameGuard } from './services';
+import { GameComponent, StartComponent } from './containers';
 
 export const routes: Routes = [
   {
@@ -12,12 +12,12 @@ export const routes: Routes = [
   },
   {
     path: 'start',
-    component: StartGameComponent,
+    component: StartComponent,
     canActivate: [GameGuard],
   },
   {
     path: 'play',
-    component: StartGameComponent,
+    component: GameComponent,
     canActivate: [GameGuard],
   },
 ];

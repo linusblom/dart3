@@ -1,13 +1,19 @@
-import { GameWizardComponent } from './game-wizard/game-wizard.component';
-import { GameWizardSelectComponent } from './game-wizard-select/game-wizard-select.component';
-import { GameWizardSettingsComponent } from './game-wizard-settings/game-wizard-settings.component';
-import { GameWizardPlayersComponent } from './game-wizard-players/game-wizard-players.component';
-import { GameWizardPlayerComponent } from './game-wizard-player/game-wizard-player.component';
+import { DartBoardComponent } from './dart-board/dart-board.component';
+import { DartPlayerComponent } from './dart-player/dart-player.component';
+import { DartOverviewComponent } from './dart-overview/dart-overview.component';
+import { WizardComponent } from './wizard/wizard.component';
+import { WizardSelectComponent } from './wizard-select/wizard-select.component';
+import { WizardSettingsComponent } from './wizard-settings/wizard-settings.component';
+import { WizardPlayersComponent } from './wizard-players/wizard-players.component';
+import { WizardPlayerComponent } from './wizard-player/wizard-player.component';
 
 export const components = [
-  GameWizardComponent,
-  GameWizardPlayerComponent,
-  GameWizardPlayersComponent,
-  GameWizardSelectComponent,
-  GameWizardSettingsComponent,
+  DartBoardComponent,
+  DartPlayerComponent,
+  DartOverviewComponent,
+  WizardComponent,
+  WizardPlayerComponent,
+  WizardPlayersComponent,
+  WizardSelectComponent,
+  WizardSettingsComponent,
 ];

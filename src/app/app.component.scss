@@ -1,9 +1,12 @@
 :host {
   position: relative;
   display: block;
-  padding: 100px 0 200px;
   box-sizing: border-box;
   min-height: 100vh;
+
+  &.padding {
+    padding: 100px 0 200px;
+  }
 }
 
 app-menu {

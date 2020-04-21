@@ -1,0 +1,47 @@
+@import '~variables.scss';
+
+:host {
+  display: block;
+  height: 100%;
+  width: auto;
+
+  &:not(.locked) {
+    path, circle {
+      stroke: transparent;
+      stroke-width: 5;
+
+      &:hover {
+        fill: rgba($white, .5);
+      }
+    }
+  }
+}
+
+svg {
+  height: 100%;
+}
+
+.light {
+  fill: $board-light;
+}
+
+.red {
+  fill: $board-red;
+}
+
+.green {
+  fill: $board-green;
+}
+
+.dark {
+  fill: $board-black;
+}
+
+.text {
+  transition: opacity 200ms ease-in-out;
+  font-family: $header;
+  fill: $white;
+  stroke: $black;
+  stroke-width: 1;
+  font-size: 36px;
+}

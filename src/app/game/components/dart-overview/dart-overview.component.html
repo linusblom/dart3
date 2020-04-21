@@ -1,0 +1,19 @@
+<div class="header">
+  {{ gameName(game.type) }}
+</div>
+<div class="row">
+  <div class="name">Variant</div>
+  <div class="value">{{ gameVariant(game.type) }}</div>
+</div>
+<div class="row">
+  <div class="name">Leg</div>
+  <div class="value">1/{{ game.legs }}</div>
+</div>
+<div class="row">
+  <div class="name">Set</div>
+  <div class="value">1/{{ game.sets }}</div>
+</div>
+<div class="row">
+  <div class="name">Prize</div>
+  <div class="value">{{ game.bet * game.players.length | currency }}</div>
+</div>

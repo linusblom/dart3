@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Game } from 'dart3-sdk';
 
 import { StoreState } from '@shared/models';
-import { GameActions } from '@game/actions';
+import { GameActions, CurrentGameAction } from '@game/actions';
 
 export interface State extends EntityState<Game> {
   state: StoreState;
@@ -28,16 +28,16 @@ export const reducer = createReducer(
     state: StoreState.CREATING,
   })),
 
-  on(GameActions.getCurrentRequest, state => ({
+  on(CurrentGameAction.getRequest, state => ({
     ...state,
     state: StoreState.FETCHING,
   })),
 
-  on(GameActions.createSuccess, GameActions.getCurrentSuccess, (state, { game }) =>
+  on(GameActions.createSuccess, CurrentGameAction.getSuccess, (state, { game }) =>
     adapter.upsertOne(game, { ...state, selectedGameId: game.id, state: StoreState.NONE }),
   ),
 
-  on(GameActions.createFailure, GameActions.getCurrentFailure, state => ({
+  on(GameActions.createFailure, CurrentGameAction.getFailure, state => ({
     ...state,
     state: StoreState.NONE,
   })),

@@ -3,7 +3,7 @@
     <div>Variant:</div>
     <mat-button-toggle-group formControlName="variant">
       <mat-button-toggle *ngFor="let variant of variants" [value]="variant">
-        {{ gameName(variant) }}
+        {{ gameVariant(variant) }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

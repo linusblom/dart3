@@ -35,4 +35,8 @@ export class GameService {
   deleteCurrentGamePlayer(playerId: number) {
     return this.http.delete<{ players: GamePlayer[] }>(`${this.apiUrl}/current/player/${playerId}`);
   }
+
+  start() {
+    return this.http.patch<void>(`${this.apiUrl}/current/start`, null);
+  }
 }

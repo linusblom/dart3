@@ -5,12 +5,12 @@ import { Player, GamePlayer } from 'dart3-sdk';
 import { GameWizardStep } from '@game/models';
 
 @Component({
-  selector: 'app-game-wizard-players',
-  templateUrl: './game-wizard-players.component.html',
-  styleUrls: ['./game-wizard-players.component.scss'],
+  selector: 'game-wizard-players',
+  templateUrl: './wizard-players.component.html',
+  styleUrls: ['./wizard-players.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameWizardPlayersComponent {
+export class WizardPlayersComponent {
   @Input() players: Player[] = [];
   @Input() set selectedPlayers(players: GamePlayer[]) {
     const allPlayingIds = players.map(({ playerId }) => playerId);
@@ -28,12 +28,14 @@ export class GameWizardPlayersComponent {
     ];
   }
 
+  @Output() start = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
   @Output() add = new EventEmitter<Player>();
   @Output() remove = new EventEmitter<Player>();
 
   playing: Player[] = [];
   available: Player[] = [];
+  dragging = false;
 
   Step = GameWizardStep;
 
@@ -58,13 +60,11 @@ export class GameWizardPlayersComponent {
 
   dragStarted() {
     document.body.style.cursor = 'grabbing';
+    this.dragging = true;
   }
 
   dragReleased() {
     document.body.style.cursor = 'initial';
-  }
-
-  start() {
-    console.log(this.playing);
+    this.dragging = false;
   }
 }

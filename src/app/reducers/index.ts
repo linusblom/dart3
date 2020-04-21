@@ -35,7 +35,7 @@ export const getUserStoreState = createSelector(getUserState, ({ state }) => sta
 export const getUser = createSelector(getUserState, state => state);
 export const getUserCurrency = createSelector(
   getUserState,
-  state => state.userMetadata.currency || 'Ð',
+  state => state.userMetadata.currency || '',
 );
 export const getUserPicture = createSelector(getUserState, state => state.picture);
 

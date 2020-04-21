@@ -27,7 +27,7 @@ export class PlayerService {
   }
 
   resetPin(id: number) {
-    return this.http.post(`${this.apiUrl}/${id}/reset-pin`, null);
+    return this.http.patch(`${this.apiUrl}/${id}/reset-pin`, null);
   }
 
   delete(id: number, pin: string) {

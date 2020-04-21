@@ -1,5 +1,7 @@
-import { StartGameComponent } from './start-game/start-game.component';
+import { StartComponent } from './start/start.component';
+import { GameComponent } from './game/game.component';
 
-export { StartGameComponent } from './start-game/start-game.component';
+export { StartComponent } from './start/start.component';
+export { GameComponent } from './game/game.component';
 
-export const containers = [StartGameComponent];
+export const containers = [StartComponent, GameComponent];

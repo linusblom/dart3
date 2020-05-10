@@ -23,7 +23,7 @@ export class PlayerService {
   }
 
   update(id: number, player: UpdatePlayer) {
-    return this.http.patch<Player>(`${this.apiUrl}/${id}`, player);
+    return this.http.put<Player>(`${this.apiUrl}/${id}`, player);
   }
 
   resetPin(id: number) {

@@ -25,6 +25,7 @@ export class PlayerComponent implements OnDestroy {
 
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    pro: new FormControl(false),
   });
 
   transactionForm = new FormGroup(
@@ -51,9 +52,13 @@ export class PlayerComponent implements OnDestroy {
     this.store.dispatch(PlayerActions.getByIdRequest({ id: this.id }));
 
     this.store.pipe(select(getSelectedPlayer), takeUntil(this.destroy$)).subscribe(player => {
-      this.settingsForm.patchValue({
-        name: player.name,
-      });
+      this.settingsForm.patchValue(
+        {
+          name: player.name,
+          pro: player.pro,
+        },
+        { emitEvent: false },
+      );
       this.player = player;
     });
 
@@ -74,6 +79,7 @@ export class PlayerComponent implements OnDestroy {
   }
 
   update() {
+    console.log(this.settingsForm.value);
     if (this.settingsForm.valid) {
       this.store.dispatch(
         PlayerActions.updateRequest({ id: this.id, player: this.settingsForm.value }),

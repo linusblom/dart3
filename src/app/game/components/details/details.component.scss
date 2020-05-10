@@ -8,10 +8,16 @@
   color: $white;
 }
 
+.sub {
+  font-size: 16px;
+  font-weight: 100;
+  margin-bottom: 10px;
+}
+
 .row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  display: flex;
   margin: 3px 0;
 
   .name {
@@ -20,7 +26,16 @@
     font-size: 12px;
   }
 
+  .divider {
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: 100;
+    font-family: $header;
+  }
+
   .value {
+    flex: 1;
+    text-align: end;
     font-size: 16px;
     font-weight: 100;
     font-family: $header;

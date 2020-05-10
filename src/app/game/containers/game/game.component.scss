@@ -4,42 +4,107 @@
   display: flex;
   position: relative;
   background-color: $dark-blue;
-  height: calc(100vh - 30px);
+  height: 100vh;
 }
 
 .side-board {
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 400px;
+  max-width: 450px;
   padding: 50px 0 0 50px;
+  position: relative;
 }
 
 .headers {
   display: flex;
-  padding: 0 20px 10px 160px;
+  align-items: center;
+  margin: 0 10px 10px auto;
   color: $grey;
+  height: 25px;
 
-  span {
-    flex: 1;
+  div {
+    width: 70px;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 12px;
+
+    img {
+      width: 30px;
+      height: auto;
+    }
+  }
+}
+
+.jackpot {
+  position: relative;
+
+  .value {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    color: $black;
+    width: 130px;
+    height: 50px;
+    background: $grey;
+    top: -60px;
+    left: -30px;
+    font-family: $header;
+
+    box-shadow: $box-shadow;
+
+    &:after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: $off-white transparent transparent transparent;
+    }
+  }
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .arrow {
+    position: absolute;
+    left: -45px;
+    width: 0; 
+    height: 0; 
+    border-top: 25px solid transparent;
+    border-bottom: 25px solid transparent;
+    border-left: 25px solid $grey;
+    animation: active-pulse 1s ease-in-out;
+    animation-iteration-count: infinite;
+    transition: top 500ms ease-in-out;
   }
 }
 
 .game-id {
   margin: 5px;
+  top: 0;
   right: 0;
-  left: 0;
-  z-index: 10;
-  width: 100px;
-  text-align: center;
-  margin: auto;
-  bottom: -22px;
   position: absolute;
   color: $dark-grey;
   font-size: 10px;
   font-family: $header;
+}
+
+@keyframes active-pulse {
+  0% {
+    opacity: .1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .1;
+  }
 }

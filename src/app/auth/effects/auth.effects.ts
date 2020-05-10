@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 import { AuthActions } from '@auth/actions';
 import { AuthService } from '@auth/services';
@@ -11,7 +11,10 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      map(() => CoreActions.toggleMenu({ menu: true })),
+      switchMap(() => [
+        CoreActions.toggleMenu({ menu: true }),
+        CoreActions.toggleFooter({ footer: true }),
+      ]),
     ),
   );
 
@@ -19,7 +22,10 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.logout),
       tap(() => this.service.logout()),
-      map(() => CoreActions.toggleMenu({ menu: false })),
+      switchMap(() => [
+        CoreActions.toggleMenu({ menu: false }),
+        CoreActions.toggleFooter({ footer: false }),
+      ]),
     ),
   );
 

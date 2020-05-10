@@ -44,7 +44,7 @@ mat-form-field {
     padding: 10px 5px;
 
     &.active {
-      animation: hit-pulse 1s ease-in-out;
+      animation: caret-pulse 1s ease-in-out;
       animation-iteration-count: infinite;
     }
   }
@@ -60,7 +60,7 @@ mat-form-field {
   }
 }
 
-@keyframes hit-pulse {
+@keyframes caret-pulse {
   0% {
     background-color: rgba($dark-grey, 0.1);
   }

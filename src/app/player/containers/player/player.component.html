@@ -2,7 +2,10 @@
   <div class="header-row">
     <img [src]="player.avatar" />
     <div>
-      <div class="header">{{ player.name }}</div>
+      <div class="header">
+        {{ player.name }}
+        <span *ngIf="player.pro"><i class="pro fab fa-product-hunt"></i></span>
+      </div>
       <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
     </div>
   </div>
@@ -42,6 +45,9 @@
   <mat-form-field class="light">
     <input matInput formControlName="name" placeholder="Name" (change)="update()" />
   </mat-form-field>
+  <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
+    Professional
+  </mat-checkbox>
 </div>
 
 <div class="danger">

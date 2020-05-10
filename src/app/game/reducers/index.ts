@@ -39,10 +39,14 @@ export const getSelectedGame = createSelector(
 
 export const getWizardState = createSelector(getGameModuleState, state => state.wizard);
 export const getWizardStep = createSelector(getWizardState, state => state.step);
-export const getWizardValues = createSelector(getWizardState, ({ variant, bet, sets, legs }) => ({
-  variant,
-  bet,
-  sets,
-  legs,
-}));
+export const getWizardValues = createSelector(
+  getWizardState,
+  ({ type, variant, bet, sets, legs }) => ({
+    type,
+    variant,
+    bet,
+    sets,
+    legs,
+  }),
+);
 export const getWizardPlayers = createSelector(getWizardState, state => state.players);

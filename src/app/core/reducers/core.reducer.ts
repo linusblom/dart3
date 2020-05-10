@@ -5,12 +5,14 @@ import { Modal } from '@core/models';
 
 export interface State {
   menu: boolean;
+  footer: boolean;
   modal: Modal;
   pin: string;
 }
 
 export const initialState: State = {
   menu: false,
+  footer: false,
   modal: undefined,
   pin: undefined,
 };

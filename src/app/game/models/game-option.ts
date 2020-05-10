@@ -1,7 +1,8 @@
-import { GameType } from 'dart3-sdk';
+import { GameType, GameVariant } from 'dart3-sdk';
 
 export interface GameOption {
-  variants: GameType[];
+  types: GameType[];
+  variants: GameVariant[];
   color: string;
   name: string;
   description: string;
@@ -15,28 +16,32 @@ export enum GameWizardStep {
 
 export const availableGames: GameOption[] = [
   {
-    variants: [GameType.HalveIt],
+    types: [GameType.HalveIt],
+    variants: [GameVariant.Single],
     color: '#4fa7c4',
     name: 'Halve It',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
-    variants: [GameType.Legs],
+    types: [GameType.Legs],
+    variants: [GameVariant.Single],
     color: '#e86831',
     name: 'Legs',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
-    variants: [GameType.Three01SingleInDoubleOut, GameType.Three01SDoubleInDoubleOut],
+    types: [GameType.Three01SingleInDoubleOut, GameType.Three01SDoubleInDoubleOut],
+    variants: [GameVariant.Single, GameVariant.Double],
     color: '#4fb37b',
     name: '301',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
-    variants: [GameType.Five01SingleInDoubleOut, GameType.Five01DoubleInDoubleOut],
+    types: [GameType.Five01SingleInDoubleOut, GameType.Five01DoubleInDoubleOut],
+    variants: [GameVariant.Single, GameVariant.Double],
     color: '#ad319f',
     name: '501',
     description:

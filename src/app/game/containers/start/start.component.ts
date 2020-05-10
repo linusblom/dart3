@@ -4,13 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { isEqual } from 'lodash';
-import { Player } from 'dart3-sdk';
+import { Player, GameVariant } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
 import { availableGames, GameWizardStep } from '@game/models';
 import { getAllPlayers } from '@root/reducers';
-import { GameActions, WizardActions, CurrentGameAction } from '@game/actions';
+import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
@@ -24,9 +24,10 @@ export class StartComponent {
   selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
 
-  gameOptions = availableGames;
+  options = availableGames;
   form = new FormGroup({
-    variant: new FormControl('', Validators.required),
+    type: new FormControl('', Validators.required),
+    variant: new FormControl(GameVariant.Single, Validators.required),
     bet: new FormControl(10, Validators.required),
     sets: new FormControl(1, Validators.required),
     legs: new FormControl(1, Validators.required),
@@ -37,14 +38,14 @@ export class StartComponent {
   constructor(private readonly store: Store<State>, private readonly currency: CurrencyPipe) {
     this.store
       .pipe(select(getWizardValues), takeUntil(this.destroy$), distinctUntilChanged(isEqual))
-      .subscribe(({ variant, bet, sets, legs }) =>
-        this.form.patchValue({ variant, bet, sets, legs }, { emitEvent: false }),
+      .subscribe(({ type, variant, bet, sets, legs }) =>
+        this.form.patchValue({ type, variant, bet, sets, legs }, { emitEvent: false }),
       );
 
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({ variant, bet, sets, legs }) =>
-        this.store.dispatch(WizardActions.setValues({ variant, bet, sets, legs })),
+      .subscribe(({ type, variant, bet, sets, legs }) =>
+        this.store.dispatch(WizardActions.setValues({ _type: type, variant, bet, sets, legs })),
       );
   }
 
@@ -69,7 +70,7 @@ export class StartComponent {
           ok: {
             text: 'Yes',
             dismiss: true,
-            action: () => CurrentGameAction.deleteRequest(),
+            action: () => CurrentGameActions.deleteRequest(),
           },
         },
       }),
@@ -83,9 +84,9 @@ export class StartComponent {
       CoreActions.confirmPin({
         header: 'Payment',
         text: `<strong>${amount}</strong> will be debited from your account.`,
-        action: CurrentGameAction.createGamePlayerRequest({ playerId: player.id }),
+        action: CurrentGameActions.createGamePlayerRequest({ playerId: player.id }),
         okText: 'Pay',
-        cancelAction: CurrentGameAction.createGamePlayerFailure({
+        cancelAction: CurrentGameActions.createGamePlayerFailure({
           error: {} as HttpErrorResponse,
         }),
       }),
@@ -93,11 +94,11 @@ export class StartComponent {
   }
 
   removePlayer(player: Player) {
-    this.store.dispatch(CurrentGameAction.deleteGamePlayerRequest({ playerId: player.id }));
+    this.store.dispatch(CurrentGameActions.deleteGamePlayerRequest({ playerId: player.id }));
   }
 
   start() {
-    this.store.dispatch(CurrentGameAction.startRequest());
+    this.store.dispatch(CurrentGameActions.startRequest());
   }
 
   trackByFn(index: number) {

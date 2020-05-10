@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { GameType, gameVariant } from 'dart3-sdk';
+import { GameType, gameSubName, GameVariant } from 'dart3-sdk';
 
 import { availableBets, availableSets, availableLegs } from '@game/models';
 
@@ -11,13 +11,14 @@ import { availableBets, availableSets, availableLegs } from '@game/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardSettingsComponent {
-  @Input() variants: GameType[] = [];
+  @Input() types: GameType[] = [];
+  @Input() variants: GameVariant[] = [];
   @Input() form: FormGroup;
 
   @Output() back = new EventEmitter<void>();
   @Output() next = new EventEmitter<void>();
 
-  gameVariant = gameVariant;
+  gameSubName = gameSubName;
   bets = availableBets;
   sets = availableSets;
   legs = availableLegs;

@@ -4,8 +4,10 @@
   display: block;
   height: 100%;
   width: auto;
+  position: relative;
+  user-select: none;
 
-  &:not(.locked) {
+  &:not(.disabled) {
     path, circle {
       stroke: transparent;
       stroke-width: 5;
@@ -15,6 +17,63 @@
       }
     }
   }
+}
+
+game-board-hit {
+  position: absolute;
+}
+
+.bubble {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 23%;
+  width: 23%;
+  box-sizing: border-box;
+  color: $white;
+
+  .small-text {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.top {
+  padding: 20px 50px 50px 20px;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  border-bottom-right-radius: 100%;
+
+  .player {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }  
+}
+
+.score {
+  text-align: center;
+  font-size: 85px;
+  font-family: $header;
+  font-weight: 100;
+}
+
+.bottom {
+  padding: 50px 50px 20px 20px;
+  justify-content: flex-end;
+  left: 0;
+  bottom: 0;
+  border-top-right-radius: 100%;
 }
 
 svg {
@@ -41,7 +100,6 @@ svg {
   transition: opacity 200ms ease-in-out;
   font-family: $header;
   fill: $white;
-  stroke: $black;
-  stroke-width: 1;
   font-size: 36px;
+  font-weight: 100;
 }

@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { pipes } from './pipes';
 import { directives } from './directives';
@@ -16,6 +17,7 @@ const materialComponents = [
   MatProgressBarModule,
   MatSelectModule,
   MatButtonToggleModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({

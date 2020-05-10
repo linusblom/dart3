@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { tap, delay } from 'rxjs/operators';
 
-import { showLoading, State, showModal, showMenu } from './reducers';
+import { showLoading, State, showModal, showMenu, showFooter } from './reducers';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +26,7 @@ export class AppComponent {
     tap(padding => (this.padding = padding)),
   );
   showModal$ = this.store.pipe(select(showModal));
+  showFooter$ = this.store.pipe(select(showFooter));
 
   @HostBinding('class.padding') padding = false;
 

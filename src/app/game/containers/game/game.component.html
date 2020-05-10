@@ -1,12 +1,27 @@
 <div class="game-id">GAME #{{ game.id }}</div>
 
-<game-dart-board></game-dart-board>
+<game-dart-board
+  [player]="players[activePlayerIndex]"
+  [color]="options.color"
+  [timer]="timer"
+  [disabled]="disabled"
+  (updateScores)="updateScores($event)"
+  (endRound)="endRound($event)"
+  (cancel)="abortAutoEndRound$.next()"
+></game-dart-board>
 <div class="side-board">
-  <game-dart-overview [game]="game" [style.background]="options.color"></game-dart-overview>
+  <game-details [game]="game" [style.background]="options.color"></game-details>
   <div class="headers">
-    <span>Score</span>
-    <span>Legs</span>
-    <span>Sets</span>
+    <div>Score</div>
+    <div>Legs</div>
+    <div>Sets</div>
+    <div class="jackpot">
+      <div class="value">{{ 1000 | currency }}</div>
+      <img class="gem" src="../../../../assets/gem.gif" />
+    </div>
   </div>
-  <game-dart-player *ngFor="let player of players" [player]="player"></game-dart-player>
+  <div class="players">
+    <div class="arrow" [style.top.px]="activePlayerIndex * 95"></div>
+    <game-player *ngFor="let player of players; trackBy: trackByFn" [player]="player"></game-player>
+  </div>
 </div>

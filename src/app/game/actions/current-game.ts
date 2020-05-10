@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Game, GamePlayer } from 'dart3-sdk';
+import { Game, GamePlayer, Score, ScoreResponse } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const getRequest = createAction('[Current Game] Get Request');
@@ -42,3 +42,13 @@ export const deleteGamePlayerFailure = createAction(
 export const startRequest = createAction('[Current Game] Start Request');
 export const startSuccess = createAction('[Current Game] Start Success');
 export const startFailure = createAction('[Current Game] Start Failure');
+
+export const submitRoundRequest = createAction(
+  '[Current Game] Submit Round Request',
+  props<{ scores: Score[] }>(),
+);
+export const submitRoundSuccess = createAction(
+  '[Current Game] Submit Round Success',
+  props<{ response: ScoreResponse }>(),
+);
+export const submitRoundFailure = createAction('[Current Game] Submit Round Failure');

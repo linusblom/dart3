@@ -253,6 +253,10 @@ button {
     background-color: $light-text;
   }
 
+  .mat-checkbox-frame {
+    border-color: $light-text;
+  }
+
   mat-label,
   .mat-select-value,
   .mat-select-arrow,

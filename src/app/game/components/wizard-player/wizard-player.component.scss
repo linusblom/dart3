@@ -16,17 +16,21 @@
 }
 
 img {
-  margin-right: 10px;
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
 
 div {
+  margin: 0 10px;
   white-space: nowrap;
   letter-spacing: 2px;
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.pro {
+  font-size: 12px;
 }
 

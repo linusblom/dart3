@@ -41,6 +41,7 @@ export const getUserPicture = createSelector(getUserState, state => state.pictur
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const showMenu = createSelector(getCoreState, state => state.menu);
+export const showFooter = createSelector(getCoreState, state => state.footer);
 export const showModal = createSelector(getCoreState, state => !!state.modal);
 export const getModal = createSelector(getCoreState, state => state.modal);
 export const getPin = createSelector(getCoreState, state => state.pin);

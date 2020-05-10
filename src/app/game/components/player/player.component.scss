@@ -1,11 +1,17 @@
 @import '~variables.scss';
 
 :host {
+  margin-bottom: 20px;
+}
+
+.player {
+  position: relative;
   display: flex;
   align-items: center;
+  padding: 10px;
   background: $grey;
-  padding: 20px;
-  margin-bottom: 20px;
+  z-index: 20;
+  border-bottom: 1px solid $dark-blue;
 }
 
 img {
@@ -16,7 +22,7 @@ img {
 }
 
 .name {
-  width: 100px;
+  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -25,10 +31,17 @@ img {
 }
 
 .score {
-  flex: 1;
+  width: 70px;
   text-align: center;
   font-family: $header;
   font-size: 20px;
   font-weight: 100;
   letter-spacing: 2px;
+}
+
+.scores {
+  position: relative;
+  display: flex;
+  height: 25px;
+  z-index: 10;
 }

@@ -18,7 +18,7 @@ import { Player, GameType, GamePlayer } from 'dart3-sdk';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent {
-  @Input() options: GameOption;
+  @Input() option: GameOption;
   @Input() form: FormGroup;
   @Input() step = GameWizardStep.SelectGame;
   @Input() players: Player[] = [];
@@ -32,7 +32,7 @@ export class WizardComponent {
   @Output() removePlayer = new EventEmitter<number>();
 
   @HostBinding('style.background-color') get backgroundColor() {
-    return this.options.color;
+    return this.option.color;
   }
 
   @HostBinding('style.width.%') get flexBasis() {
@@ -46,11 +46,11 @@ export class WizardComponent {
   Step = GameWizardStep;
 
   get selected() {
-    return this.options.variants.includes(this.form.get('variant').value);
+    return this.option.types.includes(this.form.get('type').value);
   }
 
-  setGame(variant: GameType) {
-    this.form.patchValue({ variant });
-    this.changeStep.emit(variant ? GameWizardStep.GameSettings : GameWizardStep.SelectGame);
+  setGame(type: GameType) {
+    this.form.patchValue({ type });
+    this.changeStep.emit(type ? GameWizardStep.GameSettings : GameWizardStep.SelectGame);
   }
 }

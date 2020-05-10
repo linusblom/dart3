@@ -1,15 +1,16 @@
 <div class="container" *ngIf="step === Step.SelectGame || selected">
-  <div class="header">{{ options.name }}</div>
+  <div class="header">{{ option.name }}</div>
   <ng-container [ngSwitch]="step">
     <game-wizard-select
       *ngSwitchCase="Step.SelectGame"
-      [description]="options.description"
-      (next)="setGame(options.variants[0])"
+      [description]="option.description"
+      (next)="setGame(option.types[0])"
     ></game-wizard-select>
 
     <game-wizard-settings
       *ngSwitchCase="Step.GameSettings"
-      [variants]="options.variants"
+      [types]="option.types"
+      [variants]="option.variants"
       [form]="form"
       (back)="setGame('')"
       (next)="create.emit()"

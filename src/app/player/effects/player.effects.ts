@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
+import { Transaction, TransactionType } from 'dart3-sdk';
+import { Observable } from 'rxjs';
 
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
 import { AuthActions } from '@auth/actions';
-import { Router } from '@angular/router';
 import { State, getPin } from '@root/reducers';
 
 @Injectable()
@@ -82,6 +84,35 @@ export class PlayerEffects {
           catchError(error => [PlayerActions.deleteFailure({ error })]),
         ),
       ),
+    ),
+  );
+
+  transaction$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.transactionRequest),
+      withLatestFrom(this.store.pipe(select(getPin))),
+      concatMap(([{ id, _type, transaction, receiverPlayerId }, pin]) => {
+        let service: () => Observable<Transaction>;
+
+        switch (_type) {
+          case TransactionType.Deposit:
+            service = () => this.service.deposit(id, pin, transaction);
+            break;
+          case TransactionType.Withdrawal:
+            service = () => this.service.withdrawal(id, pin, transaction);
+            break;
+          case TransactionType.Transfer:
+            service = () => this.service.transfer(id, pin, receiverPlayerId, transaction);
+            break;
+          default:
+            return [];
+        }
+
+        return service().pipe(
+          map(transaction => PlayerActions.transactionSuccess({ id, transaction })),
+          catchError(error => [PlayerActions.transactionFailure({ error })]),
+        );
+      }),
     ),
   );
 

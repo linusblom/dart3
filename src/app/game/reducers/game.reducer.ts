@@ -7,7 +7,7 @@ import { GameActions, CurrentGameActions } from '@game/actions';
 
 export interface State extends EntityState<Game> {
   state: StoreState;
-  selectedGameId: number;
+  selectedId: number;
 }
 
 export const adapter: EntityAdapter<Game> = createEntityAdapter<Game>({
@@ -17,7 +17,7 @@ export const adapter: EntityAdapter<Game> = createEntityAdapter<Game>({
 
 export const initialState: State = adapter.getInitialState({
   state: StoreState.NONE,
-  selectedGameId: null,
+  selectedId: null,
 });
 
 export const reducer = createReducer(
@@ -34,34 +34,35 @@ export const reducer = createReducer(
   })),
 
   on(GameActions.createSuccess, CurrentGameActions.getSuccess, (state, { game }) =>
-    adapter.upsertOne(game, { ...state, selectedGameId: game.id, state: StoreState.NONE }),
+    adapter.upsertOne(game, { ...state, selectedId: game.id, state: StoreState.NONE }),
   ),
 
-  on(CurrentGameActions.submitRoundRequest, state => ({ ...state, state: StoreState.UPDATING })),
+  on(CurrentGameActions.createRoundRequest, state => ({ ...state, state: StoreState.UPDATING })),
 
   on(
     GameActions.createFailure,
     CurrentGameActions.getFailure,
-    CurrentGameActions.submitRoundFailure,
+    CurrentGameActions.createRoundFailure,
+    CurrentGameActions.createRoundSuccess,
     state => ({
       ...state,
       state: StoreState.NONE,
     }),
   ),
 
-  on(CurrentGameActions.submitRoundSuccess, (state, { response }) => ({
-    ...state,
-    state: StoreState.NONE,
-    entities: {
-      ...state.entities,
-      [state.selectedGameId]: {
-        ...state.entities[state.selectedGameId],
-        gamePlayerId: response.gamePlayerId,
-        players: state.entities[state.selectedGameId].players.map(player => ({
-          ...player,
-          ...(response.player.playerId === player.playerId && response.player),
-        })),
-      },
-    },
-  })),
+  // on(CurrentGameActions.submitRoundSuccess, (state, { response }) => ({
+  //   ...state,
+  //   state: StoreState.NONE,
+  //   entities: {
+  //     ...state.entities,
+  //     [state.selectedGameId]: {
+  //       ...state.entities[state.selectedGameId],
+  //       gamePlayerId: response.gamePlayerId,
+  //       players: state.entities[state.selectedGameId].players.map(player => ({
+  //         ...player,
+  //         ...(response.player.playerId === player.playerId && response.player),
+  //       })),
+  //     },
+  //   },
+  // })),
 );

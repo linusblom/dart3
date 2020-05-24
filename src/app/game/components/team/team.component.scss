@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 }
 
-.player {
+.team {
   position: relative;
   display: flex;
   align-items: center;
@@ -14,20 +14,32 @@
   border-bottom: 1px solid $dark-blue;
 }
 
+.players {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  height: 45px;
+}
+
+.player {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
 img {
   margin-right: 10px;
-  width: 30px;
-  height: 30px;
   border-radius: 50%;
 }
 
 .name {
-  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;
   letter-spacing: 2px;
+  width: 110px;
 }
 
 .score {

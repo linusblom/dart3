@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game, GamePlayer, Score, ScoreResponse } from 'dart3-sdk';
+import { Game, TeamPlayer, Score, ScoreResponse, Match } from 'dart3-sdk';
 
 import { environment } from '@envs/environment';
 
@@ -18,25 +18,29 @@ export class CurrentGameService {
     return this.http.delete<void>(this.apiUrl);
   }
 
-  createGamePlayer(playerId: number, pin: string) {
+  createTeamPlayer(playerId: number, pin: string) {
     const headers = new HttpHeaders().append('x-pin', pin);
 
-    return this.http.post<{ players: GamePlayer[] }>(
+    return this.http.post<{ players: TeamPlayer[] }>(
       `${this.apiUrl}/player`,
       { playerId },
       { headers },
     );
   }
 
-  deleteGamePlayer(playerId: number) {
-    return this.http.delete<{ players: GamePlayer[] }>(`${this.apiUrl}/player/${playerId}`);
+  deleteTeamPlayer(playerId: number) {
+    return this.http.delete<{ players: TeamPlayer[] }>(`${this.apiUrl}/player/${playerId}`);
   }
 
   start() {
     return this.http.patch<void>(`${this.apiUrl}/start`, null);
   }
 
-  submitRound(scores: Score[]) {
-    return this.http.post<ScoreResponse>(`${this.apiUrl}/round`, { scores });
+  createRound(scores: Score[]) {
+    return this.http.post<ScoreResponse>(`${this.apiUrl}/round`, scores);
+  }
+
+  getMatches() {
+    return this.http.get<Match[]>(`${this.apiUrl}/match`);
   }
 }

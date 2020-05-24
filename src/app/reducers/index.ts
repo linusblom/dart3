@@ -7,6 +7,7 @@ import * as fromUser from '@user/reducers/user.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
 import { StoreState } from '@shared/models';
+import { getGameModuleLoading } from '@game/reducers';
 
 export interface State {
   auth: fromAuth.State;
@@ -59,6 +60,10 @@ export const showLoading = createSelector(
   isAuthenticated,
   getPlayerStoreState,
   getUserStoreState,
-  (authenticated, playerStoreState, userStoreState) =>
-    !authenticated || playerStoreState !== StoreState.NONE || userStoreState !== StoreState.NONE,
+  getGameModuleLoading,
+  (authenticated, playerStoreState, userStoreState, gameModuleLoading) =>
+    !authenticated ||
+    playerStoreState !== StoreState.NONE ||
+    userStoreState !== StoreState.NONE ||
+    gameModuleLoading,
 );

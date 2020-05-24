@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Player, GamePlayer } from 'dart3-sdk';
+import { Player, TeamPlayer } from 'dart3-sdk';
 
 import { GameWizardStep } from '@game/models';
 
@@ -12,7 +12,7 @@ import { GameWizardStep } from '@game/models';
 })
 export class WizardPlayersComponent {
   @Input() players: Player[] = [];
-  @Input() set selectedPlayers(players: GamePlayer[]) {
+  @Input() set selectedPlayers(players: TeamPlayer[]) {
     const allPlayingIds = players.map(({ playerId }) => playerId);
     const curPlayingIds = this.playing.map(({ id }) => id);
     const curAvailableIds = this.available.map(({ id }) => id);

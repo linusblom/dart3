@@ -1,0 +1,32 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba($dark-blue, .7);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 80%;
+  box-shadow: $box-shadow;
+  padding: 20px;
+}
+
+.matches {
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}

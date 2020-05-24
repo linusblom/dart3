@@ -3,7 +3,7 @@ import { Player } from 'dart3-sdk';
 import { createReducer, on } from '@ngrx/store';
 
 import { StoreState } from '@shared/models';
-import { PlayerActions, TransactionActions } from '@player/actions';
+import { PlayerActions } from '@player/actions';
 
 export interface State extends EntityState<Player> {
   state: StoreState;
@@ -68,7 +68,7 @@ export const reducer = createReducer(
     adapter.removeOne(id, { ...state, state: StoreState.NONE }),
   ),
 
-  on(TransactionActions.transactionSuccess, (state, { id, transaction }) =>
+  on(PlayerActions.transactionSuccess, (state, { id, transaction }) =>
     adapter.updateOne(
       {
         id,

@@ -36,6 +36,7 @@ export class GameGuard implements CanActivate {
       map(({ game, error }: CurrentGame) => {
         let navigate = '';
         let allowed = false;
+        let state = {};
 
         switch (true) {
           case path === 'play' && game && !!game.startedAt:
@@ -45,14 +46,27 @@ export class GameGuard implements CanActivate {
           case path === 'start' && game && !!game.startedAt:
             allowed = false;
             navigate = 'play';
+            state = { showMatches: true };
             break;
-          case path === 'play' && game && !game.startedAt:
-          case path === 'start' && game && !game.startedAt:
-            const { type: _type, variant, bet, sets, legs } = game;
-            allowed = true;
-            this.store.dispatch(WizardActions.setValues({ _type, variant, bet, sets, legs }));
+          case path === 'play' && game && !game.startedAt: {
+            const { type: _type, tournament, team, bet, sets, legs } = game;
+            allowed = false;
+            navigate = 'start';
+            this.store.dispatch(
+              WizardActions.setValues({ _type, tournament, team, bet, sets, legs }),
+            );
             this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectPlayers }));
             break;
+          }
+          case path === 'start' && game && !game.startedAt: {
+            const { type: _type, tournament, team, bet, sets, legs } = game;
+            allowed = true;
+            this.store.dispatch(
+              WizardActions.setValues({ _type, tournament, team, bet, sets, legs }),
+            );
+            this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectPlayers }));
+            break;
+          }
           case path === 'play' && !!error:
             allowed = false;
             navigate = 'start';
@@ -64,7 +78,7 @@ export class GameGuard implements CanActivate {
         }
 
         if (navigate) {
-          this.router.navigate([navigate]);
+          this.router.navigate([navigate], { state });
         }
 
         return allowed;

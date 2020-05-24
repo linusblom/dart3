@@ -10,7 +10,6 @@
     <game-wizard-settings
       *ngSwitchCase="Step.GameSettings"
       [types]="option.types"
-      [variants]="option.variants"
       [form]="form"
       (back)="setGame('')"
       (next)="create.emit()"

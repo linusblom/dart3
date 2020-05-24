@@ -1,8 +1,7 @@
-import { GameType, GameVariant } from 'dart3-sdk';
+import { GameType } from 'dart3-sdk';
 
 export interface GameOption {
   types: GameType[];
-  variants: GameVariant[];
   color: string;
   name: string;
   description: string;
@@ -17,7 +16,6 @@ export enum GameWizardStep {
 export const availableGames: GameOption[] = [
   {
     types: [GameType.HalveIt],
-    variants: [GameVariant.Single],
     color: '#4fa7c4',
     name: 'Halve It',
     description:
@@ -25,7 +23,6 @@ export const availableGames: GameOption[] = [
   },
   {
     types: [GameType.Legs],
-    variants: [GameVariant.Single],
     color: '#e86831',
     name: 'Legs',
     description:
@@ -33,7 +30,6 @@ export const availableGames: GameOption[] = [
   },
   {
     types: [GameType.Three01SingleInDoubleOut, GameType.Three01SDoubleInDoubleOut],
-    variants: [GameVariant.Single, GameVariant.Double],
     color: '#4fb37b',
     name: '301',
     description:
@@ -41,7 +37,6 @@ export const availableGames: GameOption[] = [
   },
   {
     types: [GameType.Five01SingleInDoubleOut, GameType.Five01DoubleInDoubleOut],
-    variants: [GameVariant.Single, GameVariant.Double],
     color: '#ad319f',
     name: '501',
     description:

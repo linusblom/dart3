@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Game, GamePlayer, Score, ScoreResponse } from 'dart3-sdk';
+import { Game, TeamPlayer, Score, Match } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const getRequest = createAction('[Current Game] Get Request');
@@ -13,28 +13,28 @@ export const deleteRequest = createAction('[Current Game] Delete Request');
 export const deleteSuccess = createAction('[Current Game] Delete Success');
 export const deleteFailure = createAction('[Current Game] Delete Failure');
 
-export const createGamePlayerRequest = createAction(
+export const createTeamPlayerRequest = createAction(
   '[Current Game] Create Game Player Request',
   props<{ playerId: number }>(),
 );
-export const createGamePlayerSuccess = createAction(
+export const createTeamPlayerSuccess = createAction(
   '[Current Game] Create Game Player Success',
-  props<{ players: GamePlayer[] }>(),
+  props<{ players: TeamPlayer[] }>(),
 );
-export const createGamePlayerFailure = createAction(
+export const createTeamPlayerFailure = createAction(
   '[Current Game] Create Game Player Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const deleteGamePlayerRequest = createAction(
+export const deleteTeamPlayerRequest = createAction(
   '[Current Game] Delete Game Player Request',
   props<{ playerId: number }>(),
 );
-export const deleteGamePlayerSuccess = createAction(
+export const deleteTeamPlayerSuccess = createAction(
   '[Current Game] Delete Game Player Success',
-  props<{ players: GamePlayer[] }>(),
+  props<{ players: TeamPlayer[] }>(),
 );
-export const deleteGamePlayerFailure = createAction(
+export const deleteTeamPlayerFailure = createAction(
   '[Current Game] Delete Game Player Failure',
   props<{ error: HttpErrorResponse }>(),
 );
@@ -43,12 +43,16 @@ export const startRequest = createAction('[Current Game] Start Request');
 export const startSuccess = createAction('[Current Game] Start Success');
 export const startFailure = createAction('[Current Game] Start Failure');
 
-export const submitRoundRequest = createAction(
-  '[Current Game] Submit Round Request',
+export const createRoundRequest = createAction(
+  '[Current Game] Create Round Request',
   props<{ scores: Score[] }>(),
 );
-export const submitRoundSuccess = createAction(
-  '[Current Game] Submit Round Success',
-  props<{ response: ScoreResponse }>(),
+export const createRoundSuccess = createAction('[Current Game] Create Round Success');
+export const createRoundFailure = createAction('[Current Game] Create Round Failure');
+
+export const getMatchesRequest = createAction('[Current Game] Get Matches Request');
+export const getMatchesSuccess = createAction(
+  '[Current Game] Get Matches Success',
+  props<{ matches: Match[] }>(),
 );
-export const submitRoundFailure = createAction('[Current Game] Submit Round Failure');
+export const getMatchesFailure = createAction('[Current Game] Get Matches Failure');

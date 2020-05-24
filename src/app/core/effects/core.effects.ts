@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { PlayerActions, TransactionActions } from '@player/actions';
+import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { CurrentGameActions } from '@game/actions';
 
@@ -46,8 +46,8 @@ export class CoreEffects {
     this.actions$.pipe(
       ofType(
         PlayerActions.deleteFailure,
-        TransactionActions.transactionFailure,
-        CurrentGameActions.createGamePlayerFailure,
+        PlayerActions.transactionFailure,
+        CurrentGameActions.createTeamPlayerFailure,
       ),
       filter(({ error: { status } }) => status === 403),
       map(() =>
@@ -69,7 +69,7 @@ export class CoreEffects {
 
   insufficientFunds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionActions.transactionFailure, CurrentGameActions.createGamePlayerFailure),
+      ofType(PlayerActions.transactionFailure, CurrentGameActions.createTeamPlayerFailure),
       filter(({ error: { status } }) => status === 406),
       map(() =>
         CoreActions.showModal({

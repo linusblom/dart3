@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Game, Score } from 'dart3-sdk';
+import { Game, Score, MatchTeam } from 'dart3-sdk';
 import { Store, select } from '@ngrx/store';
-import { takeUntil, map, filter, tap, takeWhile } from 'rxjs/operators';
-import { Subject, combineLatest, interval } from 'rxjs';
+import { takeUntil, filter, tap, takeWhile, map, startWith } from 'rxjs/operators';
+import { Subject, interval, combineLatest } from 'rxjs';
+import { Router } from '@angular/router';
 
-import { State, getSelectedGame } from '@game/reducers';
+import { State, getSelectedGame, getSelectedMatch, getGameMatches } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { getAllPlayers } from '@root/reducers';
-import { availableGames, GameOption, GamePlayerScore } from '@game/models';
+import { availableGames, GameOption } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
+import { getAllPlayers } from '@root/reducers';
 
 @Component({
   selector: 'app-game',
@@ -16,45 +17,49 @@ import { CurrentGameActions } from '@game/actions';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit, OnDestroy {
-  game$ = this.store.pipe(select(getSelectedGame));
   abortAutoEndRound$ = new Subject<void>();
+  game$ = this.store.pipe(select(getSelectedGame));
+  players$ = this.store.pipe(select(getAllPlayers));
+  currentMatch$ = this.store.pipe(
+    select(getSelectedMatch),
+    filter(match => !!match),
+  );
+  matches$ = this.store.pipe(select(getGameMatches));
+  teams$ = combineLatest(this.currentMatch$, this.players$).pipe(
+    tap(([match]) => this.setArrowTop(match.teams, match.activeMatchTeamId)),
+    map(([match, players]) =>
+      match.teams.map(team => ({
+        ...team,
+        players: players
+          .filter(({ id }) => team.playerIds.includes(id))
+          .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
+      })),
+    ),
+    startWith([]),
+  );
+  activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
+    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
+    startWith({}),
+  );
 
   game: Game;
-  options: GameOption;
-  players: GamePlayerScore[] = [];
-  currentPlayer: GamePlayerScore;
-  activePlayerIndex = 0;
+  option: GameOption;
+  arrowTop = 0;
   timer = -1;
   disabled = false;
+  showMatches = false;
 
   private readonly destroy$ = new Subject();
 
-  constructor(private readonly store: Store<State>) {
-    this.game$.pipe(takeUntil(this.destroy$)).subscribe(game => {
-      if (this.game && this.game.gamePlayerId !== game.gamePlayerId) {
-        this.disabled = false;
-      }
+  constructor(private readonly store: Store<State>, private readonly router: Router) {
+    this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
-      this.options = availableGames.find(({ types }) => types.includes(game.type));
+    this.game$.pipe(takeUntil(this.destroy$)).subscribe(game => {
+      this.option = availableGames.find(({ types }) => types.includes(game.type));
       this.game = game;
     });
 
     this.abortAutoEndRound$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.timer = -1));
-
-    combineLatest([this.game$, this.store.pipe(select(getAllPlayers))])
-      .pipe(
-        takeUntil(this.destroy$),
-        map(([game, players]) =>
-          game.players.map(gp => ({
-            ...players.find(({ id }) => id === gp.playerId),
-            ...gp,
-          })),
-        ),
-      )
-      .subscribe(players => {
-        this.players = players;
-        this.activePlayerIndex = players.findIndex(player => player.id === this.game.gamePlayerId);
-      });
   }
 
   ngOnInit() {
@@ -67,6 +72,10 @@ export class GameComponent implements OnInit, OnDestroy {
     this.store.dispatch(CoreActions.toggleFooter({ footer: true }));
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  setArrowTop(teams: MatchTeam[], activeMatchTeamId: number) {
+    this.arrowTop = teams.findIndex(({ id }) => id === activeMatchTeamId) * 86 + 8;
   }
 
   updateScores(scores: Score[]) {
@@ -88,11 +97,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   endRound(scores: Score[]) {
-    this.store.dispatch(CurrentGameActions.submitRoundRequest({ scores }));
+    this.store.dispatch(CurrentGameActions.createRoundRequest({ scores }));
     this.disabled = true;
   }
 
-  trackByFn(_: number, { id }: GamePlayerScore) {
+  trackByFn(_: number, { id }: MatchTeam) {
     return id;
   }
 }

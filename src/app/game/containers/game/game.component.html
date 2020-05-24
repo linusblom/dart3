@@ -1,8 +1,15 @@
 <div class="game-id">GAME #{{ game.id }}</div>
 
+<game-matches
+  *ngIf="showMatches"
+  [matches]="matches$ | async"
+  [color]="option.color"
+  (close)="showMatches = false"
+></game-matches>
+
 <game-dart-board
-  [player]="players[activePlayerIndex]"
-  [color]="options.color"
+  [player]="activePlayer$ | async"
+  [color]="option.color"
   [timer]="timer"
   [disabled]="disabled"
   (updateScores)="updateScores($event)"
@@ -10,7 +17,12 @@
   (cancel)="abortAutoEndRound$.next()"
 ></game-dart-board>
 <div class="side-board">
-  <game-details [game]="game" [style.background]="options.color"></game-details>
+  <game-details
+    [game]="game"
+    [match]="currentMatch$ | async"
+    [style.background]="option.color"
+    (matches)="showMatches = true"
+  ></game-details>
   <div class="headers">
     <div>Score</div>
     <div>Legs</div>
@@ -20,8 +32,8 @@
       <img class="gem" src="../../../../assets/gem.gif" />
     </div>
   </div>
-  <div class="players">
-    <div class="arrow" [style.top.px]="activePlayerIndex * 95"></div>
-    <game-player *ngFor="let player of players; trackBy: trackByFn" [player]="player"></game-player>
+  <div class="teams">
+    <div class="arrow" *ngIf="arrowTop >= 0" [style.top.px]="arrowTop"></div>
+    <game-team *ngFor="let team of teams$ | async; trackBy: trackByFn" [team]="team"></game-team>
   </div>
 </div>

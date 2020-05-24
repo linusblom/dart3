@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { isEqual } from 'lodash';
-import { Player, GameVariant } from 'dart3-sdk';
+import { Player } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
@@ -27,7 +27,8 @@ export class StartComponent {
   options = availableGames;
   form = new FormGroup({
     type: new FormControl('', Validators.required),
-    variant: new FormControl(GameVariant.Single, Validators.required),
+    tournament: new FormControl(false, Validators.required),
+    team: new FormControl(false, Validators.required),
     bet: new FormControl(10, Validators.required),
     sets: new FormControl(1, Validators.required),
     legs: new FormControl(1, Validators.required),
@@ -38,14 +39,12 @@ export class StartComponent {
   constructor(private readonly store: Store<State>, private readonly currency: CurrencyPipe) {
     this.store
       .pipe(select(getWizardValues), takeUntil(this.destroy$), distinctUntilChanged(isEqual))
-      .subscribe(({ type, variant, bet, sets, legs }) =>
-        this.form.patchValue({ type, variant, bet, sets, legs }, { emitEvent: false }),
-      );
+      .subscribe(values => this.form.patchValue({ ...values }, { emitEvent: false }));
 
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({ type, variant, bet, sets, legs }) =>
-        this.store.dispatch(WizardActions.setValues({ _type: type, variant, bet, sets, legs })),
+      .subscribe(({ type: _type, ...rest }) =>
+        this.store.dispatch(WizardActions.setValues({ _type, ...rest })),
       );
   }
 
@@ -84,9 +83,9 @@ export class StartComponent {
       CoreActions.confirmPin({
         header: 'Payment',
         text: `<strong>${amount}</strong> will be debited from your account.`,
-        action: CurrentGameActions.createGamePlayerRequest({ playerId: player.id }),
+        action: CurrentGameActions.createTeamPlayerRequest({ playerId: player.id }),
         okText: 'Pay',
-        cancelAction: CurrentGameActions.createGamePlayerFailure({
+        cancelAction: CurrentGameActions.createTeamPlayerFailure({
           error: {} as HttpErrorResponse,
         }),
       }),
@@ -94,7 +93,7 @@ export class StartComponent {
   }
 
   removePlayer(player: Player) {
-    this.store.dispatch(CurrentGameActions.deleteGamePlayerRequest({ playerId: player.id }));
+    this.store.dispatch(CurrentGameActions.deleteTeamPlayerRequest({ playerId: player.id }));
   }
 
   start() {

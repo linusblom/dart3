@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
 
-import { GameScore } from 'dart3-sdk';
+import { Hit } from 'dart3-sdk';
 
 @Component({
   selector: 'game-round-score',
@@ -9,8 +9,8 @@ import { GameScore } from 'dart3-sdk';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoundScoreComponent {
-  @Input() set scores(scores: GameScore[]) {
-    this.total = scores.reduce((acc, { total }) => acc + total, 0);
+  @Input() set hits(hits: Hit[]) {
+    // this.total = hits.reduce((acc, { total }) => acc + total, 0);
     this.background = this.total > 0 ? '#daf2dc' : '#f2dada';
   }
 

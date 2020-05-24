@@ -7,7 +7,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
 import { State, getSelectedPlayer, getAllPlayers, getSelectedPlayerId } from '@root/reducers';
-import { PlayerActions, TransactionActions } from '@player/actions';
+import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
@@ -32,11 +32,13 @@ export class PlayerComponent implements OnDestroy {
     {
       type: new FormControl(TransactionType.Deposit, Validators.required),
       amount: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(99999)]),
-      toPlayerId: new FormControl(),
+      receiverPlayerId: new FormControl(),
     },
     controls => {
-      const { type, toPlayerId } = controls.value;
-      return type === TransactionType.Transfer && !toPlayerId ? { playerIdError: true } : null;
+      const { type, receiverPlayerId } = controls.value;
+      return type === TransactionType.Transfer && !receiverPlayerId
+        ? { playerIdError: true }
+        : null;
     },
   );
 
@@ -55,7 +57,7 @@ export class PlayerComponent implements OnDestroy {
       this.settingsForm.patchValue(
         {
           name: player.name,
-          pro: player.pro,
+          pro: player.seed === 1,
         },
         { emitEvent: false },
       );
@@ -79,10 +81,10 @@ export class PlayerComponent implements OnDestroy {
   }
 
   update() {
-    console.log(this.settingsForm.value);
     if (this.settingsForm.valid) {
+      const { name, pro } = this.settingsForm.value;
       this.store.dispatch(
-        PlayerActions.updateRequest({ id: this.id, player: this.settingsForm.value }),
+        PlayerActions.updateRequest({ id: this.id, player: { name, seed: pro ? 1 : 2 } }),
       );
     }
   }
@@ -126,20 +128,21 @@ export class PlayerComponent implements OnDestroy {
   }
 
   executeTransaction() {
-    const { type, amount, toPlayerId } = this.transactionForm.value;
+    const { type, amount, receiverPlayerId } = this.transactionForm.value;
     const currencyAmount = this.currency.transform(amount);
-    const toPlayerName = toPlayerId
-      ? ` to <strong>${this.players.find(({ id }) => id === toPlayerId).name}</strong>`
+    const receiverPlayerName = receiverPlayerId
+      ? ` to <strong>${this.players.find(({ id }) => id === receiverPlayerId).name}</strong>`
       : '';
 
     this.store.dispatch(
       CoreActions.confirmPin({
         header: 'Transaction',
-        text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${toPlayerName}?`,
-        action: TransactionActions.transactionRequest({
+        text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${receiverPlayerName}?`,
+        action: PlayerActions.transactionRequest({
           id: this.id,
-          transaction: { type, amount },
-          toPlayerId,
+          _type: type,
+          transaction: { amount },
+          receiverPlayerId,
         }),
       }),
     );

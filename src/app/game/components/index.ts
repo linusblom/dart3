@@ -1,5 +1,5 @@
 import { DartBoardComponent } from './dart-board/dart-board.component';
-import { PlayerComponent } from './player/player.component';
+import { TeamComponent } from './team/team.component';
 import { DetailsComponent } from './details/details.component';
 import { WizardComponent } from './wizard/wizard.component';
 import { WizardSelectComponent } from './wizard-select/wizard-select.component';
@@ -8,10 +8,11 @@ import { WizardPlayersComponent } from './wizard-players/wizard-players.componen
 import { WizardPlayerComponent } from './wizard-player/wizard-player.component';
 import { BoardHitComponent } from './board-hit/board-hit.component';
 import { RoundScoreComponent } from './round-score/round-score.component';
+import { MatchesComponent } from './matches/matches.component';
 
 export const components = [
   DartBoardComponent,
-  PlayerComponent,
+  TeamComponent,
   RoundScoreComponent,
   BoardHitComponent,
   DetailsComponent,
@@ -20,4 +21,5 @@ export const components = [
   WizardPlayersComponent,
   WizardSelectComponent,
   WizardSettingsComponent,
+  MatchesComponent,
 ];

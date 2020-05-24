@@ -8,6 +8,17 @@
   color: $white;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .icon {
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
 .sub {
   font-size: 16px;
   font-weight: 100;

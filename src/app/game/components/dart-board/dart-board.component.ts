@@ -6,9 +6,9 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Score } from 'dart3-sdk';
+import { Score, Player } from 'dart3-sdk';
 
-import { Hit, GamePlayerScore } from '@game/models';
+import { Hit } from '@game/models';
 import { generateId } from '@utils/generate-id';
 
 @Component({
@@ -18,7 +18,7 @@ import { generateId } from '@utils/generate-id';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DartBoardComponent {
-  @Input() player = {} as GamePlayerScore;
+  @Input() player = {} as Player;
   @Input() color = '#ffffff';
   @Input() timer = -1;
   @Input() set disabled(disabled: boolean) {

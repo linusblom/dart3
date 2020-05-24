@@ -4,7 +4,7 @@
     <div>
       <div class="header">
         {{ player.name }}
-        <span *ngIf="player.pro"><i class="pro fab fa-product-hunt"></i></span>
+        <span *ngIf="player.seed === 1"><i class="pro fab fa-themeco"></i></span>
       </div>
       <app-player-stars [xp]="player.xp" color="white" size="30"></app-player-stars>
     </div>
@@ -73,7 +73,7 @@
     </mat-form-field>
     <mat-form-field *ngIf="transactionForm.get('type').value === TransactionType.Transfer">
       <mat-label>Transfer to</mat-label>
-      <mat-select formControlName="toPlayerId">
+      <mat-select formControlName="receiverPlayerId">
         <mat-option *ngFor="let player of players" [value]="player.id">
           {{ player.name }}
         </mat-option>

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { GameOption, GameWizardStep } from '@game/models';
-import { Player, GameType, GamePlayer } from 'dart3-sdk';
+import { Player, GameType, TeamPlayer } from 'dart3-sdk';
 
 @Component({
   selector: 'game-wizard',
@@ -22,7 +22,7 @@ export class WizardComponent {
   @Input() form: FormGroup;
   @Input() step = GameWizardStep.SelectGame;
   @Input() players: Player[] = [];
-  @Input() selectedPlayers: GamePlayer[] = [];
+  @Input() selectedPlayers: TeamPlayer[] = [];
 
   @Output() changeStep = new EventEmitter<GameWizardStep>();
   @Output() create = new EventEmitter<void>();
@@ -50,7 +50,7 @@ export class WizardComponent {
   }
 
   setGame(type: GameType) {
-    this.form.patchValue({ type });
+    this.form.patchValue({ type, teamSize: 1 });
     this.changeStep.emit(type ? GameWizardStep.GameSettings : GameWizardStep.SelectGame);
   }
 }

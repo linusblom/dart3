@@ -1,5 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { Player, CreatePlayer, UpdatePlayer } from 'dart3-sdk';
+import {
+  Player,
+  CreatePlayer,
+  UpdatePlayer,
+  TransactionType,
+  CreateTransaction,
+  Transaction,
+} from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const getRequest = createAction('[Player] Get Request');
@@ -50,5 +57,23 @@ export const deleteRequest = createAction('[Player] Delete Request', props<{ id:
 export const deleteSuccess = createAction('[Player] Delete Success', props<{ id: number }>());
 export const deleteFailure = createAction(
   '[Player] Delete Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const transactionRequest = createAction(
+  '[Player] Transaction Request',
+  props<{
+    id: number;
+    _type: TransactionType;
+    transaction: CreateTransaction;
+    receiverPlayerId?: number;
+  }>(),
+);
+export const transactionSuccess = createAction(
+  '[Player] Transaction Success',
+  props<{ id: number; transaction: Transaction }>(),
+);
+export const transactionFailure = createAction(
+  '[Player] Transaction Failure',
   props<{ error: HttpErrorResponse }>(),
 );

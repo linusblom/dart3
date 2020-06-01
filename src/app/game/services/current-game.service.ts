@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game, TeamPlayer, Score, ScoreResponse, Match } from 'dart3-sdk';
+import { Game, TeamPlayer, Score, MatchResponse, RoundResponse } from 'dart3-sdk';
 
 import { environment } from '@envs/environment';
 
@@ -37,10 +37,10 @@ export class CurrentGameService {
   }
 
   createRound(scores: Score[]) {
-    return this.http.post<ScoreResponse>(`${this.apiUrl}/round`, scores);
+    return this.http.post<RoundResponse>(`${this.apiUrl}/round`, scores);
   }
 
   getMatches() {
-    return this.http.get<Match[]>(`${this.apiUrl}/match`);
+    return this.http.get<MatchResponse>(`${this.apiUrl}/match`);
   }
 }

@@ -5,7 +5,13 @@ import { takeUntil, filter, tap, takeWhile, map, startWith } from 'rxjs/operator
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { State, getSelectedGame, getSelectedMatch, getGameMatches } from '@game/reducers';
+import {
+  State,
+  getSelectedGame,
+  getSelectedMatch,
+  getGameMatches,
+  getSelectedMatchTeams,
+} from '@game/reducers';
 import { CoreActions } from '@core/actions';
 import { availableGames, GameOption } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
@@ -25,17 +31,15 @@ export class GameComponent implements OnInit, OnDestroy {
     filter(match => !!match),
   );
   matches$ = this.store.pipe(select(getGameMatches));
-  teams$ = combineLatest(this.currentMatch$, this.players$).pipe(
-    tap(([match]) => this.setArrowTop(match.teams, match.activeMatchTeamId)),
-    map(([match, players]) =>
-      match.teams.map(team => ({
+  teams$ = combineLatest([this.store.pipe(select(getSelectedMatchTeams)), this.players$]).pipe(
+    map(([teams, players]) =>
+      teams.map(team => ({
         ...team,
         players: players
           .filter(({ id }) => team.playerIds.includes(id))
           .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
       })),
     ),
-    startWith([]),
   );
   activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
     map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
@@ -60,6 +64,13 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.abortAutoEndRound$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.timer = -1));
+
+    combineLatest([this.currentMatch$, this.store.pipe(select(getSelectedMatchTeams))])
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(([match, teams]) => this.setArrowTop(teams, match.activeMatchTeamId)),
+      )
+      .subscribe();
   }
 
   ngOnInit() {
@@ -75,7 +86,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   setArrowTop(teams: MatchTeam[], activeMatchTeamId: number) {
-    this.arrowTop = teams.findIndex(({ id }) => id === activeMatchTeamId) * 86 + 8;
+    this.arrowTop = teams.findIndex(({ id }) => id === activeMatchTeamId) * 111 + 8;
   }
 
   updateScores(scores: Score[]) {

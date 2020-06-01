@@ -11,7 +11,6 @@ export interface State extends EntityState<Player> {
 }
 
 export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
-  selectId: (player: Player) => player.id,
   sortComparer: (a, b) => {
     if (a.xp < b.xp) {
       return 1;
@@ -96,4 +95,4 @@ export const reducer = createReducer(
   ),
 );
 
-export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
+export const { selectAll } = adapter.getSelectors();

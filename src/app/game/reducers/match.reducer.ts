@@ -10,10 +10,7 @@ export interface State extends EntityState<Match> {
   selectedId: number;
 }
 
-export const adapter: EntityAdapter<Match> = createEntityAdapter<Match>({
-  selectId: (match: Match) => match.id,
-  sortComparer: false,
-});
+export const adapter: EntityAdapter<Match> = createEntityAdapter<Match>();
 
 export const initialState: State = adapter.getInitialState({
   state: StoreState.NONE,
@@ -34,4 +31,6 @@ export const reducer = createReducer(
   ),
 
   on(CurrentGameActions.getMatchesFailure, state => ({ ...state, state: StoreState.NONE })),
+
+  on(CurrentGameActions.createRoundSuccess, (state, { match }) => adapter.upsertOne(match, state)),
 );

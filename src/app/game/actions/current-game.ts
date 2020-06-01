@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Game, TeamPlayer, Score, Match } from 'dart3-sdk';
+import { Game, TeamPlayer, Score, MatchResponse, RoundResponse } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const getRequest = createAction('[Current Game] Get Request');
@@ -47,12 +47,15 @@ export const createRoundRequest = createAction(
   '[Current Game] Create Round Request',
   props<{ scores: Score[] }>(),
 );
-export const createRoundSuccess = createAction('[Current Game] Create Round Success');
+export const createRoundSuccess = createAction(
+  '[Current Game] Create Round Success',
+  props<RoundResponse>(),
+);
 export const createRoundFailure = createAction('[Current Game] Create Round Failure');
 
 export const getMatchesRequest = createAction('[Current Game] Get Matches Request');
 export const getMatchesSuccess = createAction(
   '[Current Game] Get Matches Success',
-  props<{ matches: Match[] }>(),
+  props<MatchResponse>(),
 );
 export const getMatchesFailure = createAction('[Current Game] Get Matches Failure');

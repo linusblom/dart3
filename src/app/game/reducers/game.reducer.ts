@@ -10,10 +10,7 @@ export interface State extends EntityState<Game> {
   selectedId: number;
 }
 
-export const adapter: EntityAdapter<Game> = createEntityAdapter<Game>({
-  selectId: (game: Game) => game.id,
-  sortComparer: false,
-});
+export const adapter: EntityAdapter<Game> = createEntityAdapter<Game>();
 
 export const initialState: State = adapter.getInitialState({
   state: StoreState.NONE,
@@ -49,20 +46,4 @@ export const reducer = createReducer(
       state: StoreState.NONE,
     }),
   ),
-
-  // on(CurrentGameActions.submitRoundSuccess, (state, { response }) => ({
-  //   ...state,
-  //   state: StoreState.NONE,
-  //   entities: {
-  //     ...state.entities,
-  //     [state.selectedGameId]: {
-  //       ...state.entities[state.selectedGameId],
-  //       gamePlayerId: response.gamePlayerId,
-  //       players: state.entities[state.selectedGameId].players.map(player => ({
-  //         ...player,
-  //         ...(response.player.playerId === player.playerId && response.player),
-  //       })),
-  //     },
-  //   },
-  // })),
 );

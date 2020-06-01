@@ -7,13 +7,13 @@ import { WizardSettingsComponent } from './wizard-settings/wizard-settings.compo
 import { WizardPlayersComponent } from './wizard-players/wizard-players.component';
 import { WizardPlayerComponent } from './wizard-player/wizard-player.component';
 import { BoardHitComponent } from './board-hit/board-hit.component';
-import { RoundScoreComponent } from './round-score/round-score.component';
+import { RoundHitComponent } from './round-hit/round-hit.component';
 import { MatchesComponent } from './matches/matches.component';
 
 export const components = [
   DartBoardComponent,
   TeamComponent,
-  RoundScoreComponent,
+  RoundHitComponent,
   BoardHitComponent,
   DetailsComponent,
   WizardComponent,

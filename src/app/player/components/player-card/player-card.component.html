@@ -2,7 +2,7 @@
   <img [src]="player.avatar" />
   <div class="name">
     {{ player.name }}
-    <i *ngIf="player.seed === 1" class="pro fab fa-themeco"></i>
+    <i *ngIf="player.pro" class="pro fab fa-themeco"></i>
   </div>
   <app-player-stars [xp]="player.xp"></app-player-stars>
 </div>

@@ -57,7 +57,7 @@ export class PlayerComponent implements OnDestroy {
       this.settingsForm.patchValue(
         {
           name: player.name,
-          pro: player.seed === 1,
+          pro: player.pro,
         },
         { emitEvent: false },
       );
@@ -83,9 +83,7 @@ export class PlayerComponent implements OnDestroy {
   update() {
     if (this.settingsForm.valid) {
       const { name, pro } = this.settingsForm.value;
-      this.store.dispatch(
-        PlayerActions.updateRequest({ id: this.id, player: { name, seed: pro ? 1 : 2 } }),
-      );
+      this.store.dispatch(PlayerActions.updateRequest({ id: this.id, player: { name, pro } }));
     }
   }
 

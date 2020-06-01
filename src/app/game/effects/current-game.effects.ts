@@ -78,8 +78,7 @@ export class CurrentGameEffects {
       ofType(CurrentGameActions.createRoundRequest),
       concatMap(({ scores }) =>
         this.service.createRound(scores).pipe(
-          tap(r => console.log(r)),
-          map(response => CurrentGameActions.createRoundSuccess()),
+          map(response => CurrentGameActions.createRoundSuccess(response)),
           catchError(() => [CurrentGameActions.createRoundFailure()]),
         ),
       ),
@@ -99,7 +98,7 @@ export class CurrentGameEffects {
       ofType(CurrentGameActions.getMatchesRequest),
       concatMap(() =>
         this.service.getMatches().pipe(
-          map(matches => CurrentGameActions.getMatchesSuccess({ matches })),
+          map(response => CurrentGameActions.getMatchesSuccess(response)),
           catchError(() => [CurrentGameActions.getMatchesFailure()]),
         ),
       ),

@@ -14,12 +14,12 @@
   <div class="score">{{ team.score }}</div>
   <div class="score">{{ team.legs }}</div>
   <div class="score">{{ team.sets }}</div>
-  <div class="score">{{ team.sets }}</div>
+  <div class="score">{{ team.gems }}</div>
 </div>
-<!-- <div class="scores">
-  <game-round-score
+<div class="scores">
+  <game-round-hit
     [@fadeIn]
-    *ngFor="let hits of roundScores; trackBy: trackByFn"
-    [hits]="hits"
-  ></game-round-score>
-</div> -->
+    *ngFor="let hit of team.hits; trackBy: trackByFn"
+    [hit]="hit"
+  ></game-round-hit>
+</div>

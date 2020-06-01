@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { RoundHit } from 'dart3-sdk';
 
 import { MatchTeamPlayer } from '@game/models';
 
@@ -23,10 +24,8 @@ import { MatchTeamPlayer } from '@game/models';
 })
 export class TeamComponent {
   @Input() team: MatchTeamPlayer;
-  // roundScores: GameScore[][];
-  // gems = 0;
 
-  // trackByFn(_: number, { id }: GameScore) {
-  //   return id;
-  // }
+  trackByFn(_: number, { round }: RoundHit) {
+    return round;
+  }
 }

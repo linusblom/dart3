@@ -27,11 +27,11 @@ export class PlayerEffects {
 
   getById$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.getByIdRequest),
-      concatMap(({ id }) =>
-        this.service.getById(id).pipe(
-          map(player => PlayerActions.getByIdSuccess({ player })),
-          catchError(error => [PlayerActions.getByIdFailure({ error })]),
+      ofType(PlayerActions.getByUidRequest),
+      concatMap(({ uid }) =>
+        this.service.getById(uid).pipe(
+          map(player => PlayerActions.getByUidSuccess({ player })),
+          catchError(error => [PlayerActions.getByUidFailure({ error })]),
         ),
       ),
     ),
@@ -52,8 +52,8 @@ export class PlayerEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.updateRequest),
-      concatMap(({ id, player }) =>
-        this.service.update(id, player).pipe(
+      concatMap(({ uid, player }) =>
+        this.service.update(uid, player).pipe(
           map(player => PlayerActions.updateSuccess({ player })),
           catchError(error => [PlayerActions.updateFailure({ error })]),
         ),
@@ -64,8 +64,8 @@ export class PlayerEffects {
   resetPin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.resetPinRequest),
-      concatMap(({ id }) =>
-        this.service.resetPin(id).pipe(
+      concatMap(({ uid }) =>
+        this.service.resetPin(uid).pipe(
           map(() => PlayerActions.resetPinSuccess()),
           catchError(error => [PlayerActions.resetPinFailure({ error })]),
         ),
@@ -77,10 +77,10 @@ export class PlayerEffects {
     this.actions$.pipe(
       ofType(PlayerActions.deleteRequest),
       withLatestFrom(this.store.pipe(select(getPin))),
-      concatMap(([{ id }, pin]) =>
-        this.service.delete(id, pin).pipe(
+      concatMap(([{ uid }, pin]) =>
+        this.service.delete(uid, pin).pipe(
           tap(() => this.router.navigate(['players'])),
-          map(() => PlayerActions.deleteSuccess({ id })),
+          map(() => PlayerActions.deleteSuccess({ uid })),
           catchError(error => [PlayerActions.deleteFailure({ error })]),
         ),
       ),
@@ -91,25 +91,25 @@ export class PlayerEffects {
     this.actions$.pipe(
       ofType(PlayerActions.transactionRequest),
       withLatestFrom(this.store.pipe(select(getPin))),
-      concatMap(([{ id, _type, transaction, receiverPlayerId }, pin]) => {
+      concatMap(([{ uid, _type, transaction, receiverUid }, pin]) => {
         let service: () => Observable<Transaction>;
 
         switch (_type) {
           case TransactionType.Deposit:
-            service = () => this.service.deposit(id, pin, transaction);
+            service = () => this.service.deposit(uid, pin, transaction);
             break;
           case TransactionType.Withdrawal:
-            service = () => this.service.withdrawal(id, pin, transaction);
+            service = () => this.service.withdrawal(uid, pin, transaction);
             break;
           case TransactionType.Transfer:
-            service = () => this.service.transfer(id, pin, receiverPlayerId, transaction);
+            service = () => this.service.transfer(uid, pin, receiverUid, transaction);
             break;
           default:
             return [];
         }
 
         return service().pipe(
-          map(transaction => PlayerActions.transactionSuccess({ id, transaction })),
+          map(transaction => PlayerActions.transactionSuccess({ uid, transaction })),
           catchError(error => [PlayerActions.transactionFailure({ error })]),
         );
       }),

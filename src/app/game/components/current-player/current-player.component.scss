@@ -1,0 +1,67 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0;
+  color: $dark-blue;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+  }
+}
+
+.timer {
+  font-family: $header;
+  font-weight: 100;
+  font-size: 20px;
+  color: $grey;
+}
+
+.player {
+  background: $grey;
+  height: 180px;
+  padding: 10px 0;
+  margin-bottom: 1px;
+
+  .name {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    overflow: hidden;
+  }
+  
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+}
+
+.icon {
+  background: $grey;
+  cursor: pointer;
+  justify-content: center;
+  height: 36px;
+  margin-bottom: 1px;
+
+  &.disabled {
+    background: rgba($grey, .2);
+    cursor: initial;
+  }
+}
+
+.hits {
+  height: 108px;
+  background: rgba($grey, .2);
+
+  game-score {
+    margin-bottom: 1px;
+  }
+}

@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
-import { State, getSelectedPlayer, getAllPlayers, getSelectedPlayerId } from '@root/reducers';
+import { State, getSelectedPlayer, getAllPlayers, getSelectedPlayerUid } from '@root/reducers';
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
@@ -17,7 +17,7 @@ import { CurrencyPipe } from '@shared/pipes/currency.pipe';
   styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnDestroy {
-  id = 0;
+  uid: string;
   player = {} as Player;
   players: Player[] = [];
 
@@ -32,13 +32,11 @@ export class PlayerComponent implements OnDestroy {
     {
       type: new FormControl(TransactionType.Deposit, Validators.required),
       amount: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(99999)]),
-      receiverPlayerId: new FormControl(),
+      receiverUid: new FormControl(),
     },
     controls => {
-      const { type, receiverPlayerId } = controls.value;
-      return type === TransactionType.Transfer && !receiverPlayerId
-        ? { playerIdError: true }
-        : null;
+      const { type, receiverUid } = controls.value;
+      return type === TransactionType.Transfer && !receiverUid ? { playerIdError: true } : null;
     },
   );
 
@@ -49,9 +47,9 @@ export class PlayerComponent implements OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly currency: CurrencyPipe,
   ) {
-    this.id = this.route.snapshot.params.id;
+    this.uid = this.route.snapshot.params.uid;
 
-    this.store.dispatch(PlayerActions.getByIdRequest({ id: this.id }));
+    this.store.dispatch(PlayerActions.getByUidRequest({ uid: this.uid }));
 
     this.store.pipe(select(getSelectedPlayer), takeUntil(this.destroy$)).subscribe(player => {
       this.settingsForm.patchValue(
@@ -66,11 +64,11 @@ export class PlayerComponent implements OnDestroy {
 
     combineLatest([
       this.store.pipe(select(getAllPlayers)),
-      this.store.pipe(select(getSelectedPlayerId)),
+      this.store.pipe(select(getSelectedPlayerUid)),
     ])
       .pipe(
         takeUntil(this.destroy$),
-        map(([players, selectedId]) => players.filter(({ id }) => id !== selectedId)),
+        map(([players, selectedUid]) => players.filter(({ uid }) => uid !== selectedUid)),
       )
       .subscribe(players => (this.players = players));
   }
@@ -83,7 +81,7 @@ export class PlayerComponent implements OnDestroy {
   update() {
     if (this.settingsForm.valid) {
       const { name, pro } = this.settingsForm.value;
-      this.store.dispatch(PlayerActions.updateRequest({ id: this.id, player: { name, pro } }));
+      this.store.dispatch(PlayerActions.updateRequest({ uid: this.uid, player: { name, pro } }));
     }
   }
 
@@ -101,7 +99,7 @@ export class PlayerComponent implements OnDestroy {
             text: 'Send PIN',
             color: 'error',
             dismiss: true,
-            action: () => PlayerActions.resetPinRequest({ id: this.id }),
+            action: () => PlayerActions.resetPinRequest({ uid: this.uid }),
           },
         },
       }),
@@ -113,7 +111,7 @@ export class PlayerComponent implements OnDestroy {
       CoreActions.confirmPin({
         header: 'Delete player',
         text: `Are you sure you want to delete player <strong>${this.player.name}</strong>?`,
-        action: PlayerActions.deleteRequest({ id: this.id }),
+        action: PlayerActions.deleteRequest({ uid: this.uid }),
         okText: 'Delete',
         okColor: 'error',
       }),
@@ -126,10 +124,10 @@ export class PlayerComponent implements OnDestroy {
   }
 
   executeTransaction() {
-    const { type, amount, receiverPlayerId } = this.transactionForm.value;
+    const { type, amount, receiverUid } = this.transactionForm.value;
     const currencyAmount = this.currency.transform(amount);
-    const receiverPlayerName = receiverPlayerId
-      ? ` to <strong>${this.players.find(({ id }) => id === receiverPlayerId).name}</strong>`
+    const receiverPlayerName = receiverUid
+      ? ` to <strong>${this.players.find(({ uid }) => uid === receiverUid).name}</strong>`
       : '';
 
     this.store.dispatch(
@@ -137,10 +135,10 @@ export class PlayerComponent implements OnDestroy {
         header: 'Transaction',
         text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${receiverPlayerName}?`,
         action: PlayerActions.transactionRequest({
-          id: this.id,
+          uid: this.uid,
           _type: type,
           transaction: { amount },
-          receiverPlayerId,
+          receiverUid,
         }),
       }),
     );

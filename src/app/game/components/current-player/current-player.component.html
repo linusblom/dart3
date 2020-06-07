@@ -1,0 +1,30 @@
+<div class="player">
+  <img [src]="player.avatar" />
+  <div class="name">{{ player.name }}</div>
+</div>
+
+<div *ngIf="timer === -1; else timerRef" class="icon" (click)="endRound.emit()" title="End">
+  <i class="fas fa-step-forward fa-lg"></i>
+</div>
+
+<ng-template #timerRef>
+  <div class="icon timer disabled">{{ timer }}</div>
+</ng-template>
+
+<div
+  class="icon"
+  (click)="timer > -1 && cancel.emit()"
+  title="Cancel"
+  [ngClass]="{ disabled: timer === -1 }"
+>
+  <i class="fas fa-stop fa-lg"></i>
+</div>
+
+<div class="hits">
+  <game-score
+    *ngFor="let score of scores; trackBy: trackByFn"
+    [@slideInOut]
+    [score]="score"
+  ></game-score>
+</div>
+<game-score [score]="total" [total]="true"></game-score>

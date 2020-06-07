@@ -83,7 +83,7 @@ export class StartComponent {
       CoreActions.confirmPin({
         header: 'Payment',
         text: `<strong>${amount}</strong> will be debited from your account.`,
-        action: CurrentGameActions.createTeamPlayerRequest({ playerId: player.id }),
+        action: CurrentGameActions.createTeamPlayerRequest({ uid: player.uid }),
         okText: 'Pay',
         cancelAction: CurrentGameActions.createTeamPlayerFailure({
           error: {} as HttpErrorResponse,
@@ -93,7 +93,7 @@ export class StartComponent {
   }
 
   removePlayer(player: Player) {
-    this.store.dispatch(CurrentGameActions.deleteTeamPlayerRequest({ playerId: player.id }));
+    this.store.dispatch(CurrentGameActions.deleteTeamPlayerRequest({ uid: player.uid }));
   }
 
   start() {

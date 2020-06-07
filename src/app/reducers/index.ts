@@ -52,9 +52,9 @@ export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) =>
 export const getAllPlayers = createSelector(getPlayerState, fromPlayer.selectAll);
 export const getSelectedPlayer = createSelector(
   getPlayerState,
-  state => state.entities[state.selectedId] || ({} as Player),
+  state => state.entities[state.selectedUid] || ({} as Player),
 );
-export const getSelectedPlayerId = createSelector(getPlayerState, state => state.selectedId);
+export const getSelectedPlayerUid = createSelector(getPlayerState, state => state.selectedUid);
 
 export const showLoading = createSelector(
   isAuthenticated,

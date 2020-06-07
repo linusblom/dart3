@@ -20,7 +20,7 @@ export class PlayersComponent {
     this.store.dispatch(PlayerActions.createRequest({ player }));
   }
 
-  navigateToPlayer(id: number) {
-    this.router.navigate(['players', id]);
+  navigateToPlayer(uid: string) {
+    this.router.navigate(['players', uid]);
   }
 }

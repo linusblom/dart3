@@ -6,24 +6,15 @@
   [style.left.px]="hit.left"
   (remove)="removeHit(hit.id)"
 ></game-board-hit>
-<div class="bubble top" [style.background]="color">
-  <div class="player">
-    <img [src]="player.avatar" />
-    <div class="small-text">{{ player.name }}</div>
-  </div>
-  <div class="score">{{ totalScore }}</div>
-</div>
-<div class="bubble bottom" [style.background]="color">
-  <div class="small-text">Target</div>
-  <div class="score">0</div>
-  <button
-    mat-flat-button
-    [disabled]="disabled"
-    (click)="timer === -1 ? updateHits(true) : cancel.emit()"
-  >
-    {{ timer === -1 ? 'End Round' : 'Cancel (' + timer + ')' }}
-  </button>
-</div>
+
+<game-current-player
+  [player]="player"
+  [hits]="hits"
+  [timer]="timer"
+  (endRound)="updateHits(true)"
+  (cancel)="cancel.emit()"
+></game-current-player>
+
 <svg
   version="1.1"
   id="dartboard"

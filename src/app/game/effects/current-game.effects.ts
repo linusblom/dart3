@@ -39,8 +39,8 @@ export class CurrentGameEffects {
     this.actions$.pipe(
       ofType(CurrentGameActions.createTeamPlayerRequest),
       withLatestFrom(this.store.pipe(select(getPin))),
-      concatMap(([{ playerId }, pin]) =>
-        this.service.createTeamPlayer(playerId, pin).pipe(
+      concatMap(([{ uid }, pin]) =>
+        this.service.createTeamPlayer(uid, pin).pipe(
           map(({ players }) => CurrentGameActions.createTeamPlayerSuccess({ players })),
           catchError(error => [CurrentGameActions.createTeamPlayerFailure({ error })]),
         ),
@@ -51,8 +51,8 @@ export class CurrentGameEffects {
   deleteGamePlayer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.deleteTeamPlayerRequest),
-      concatMap(({ playerId }) =>
-        this.service.deleteTeamPlayer(playerId).pipe(
+      concatMap(({ uid }) =>
+        this.service.deleteTeamPlayer(uid).pipe(
           map(({ players }) => CurrentGameActions.deleteTeamPlayerSuccess({ players })),
           catchError(error => [CurrentGameActions.deleteTeamPlayerFailure({ error })]),
         ),

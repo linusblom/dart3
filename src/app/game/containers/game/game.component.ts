@@ -1,7 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Game, Score, MatchTeam } from 'dart3-sdk';
 import { Store, select } from '@ngrx/store';
-import { takeUntil, filter, tap, takeWhile, map, startWith } from 'rxjs/operators';
+import {
+  takeUntil,
+  filter,
+  tap,
+  takeWhile,
+  map,
+  startWith,
+  pluck,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -71,6 +80,13 @@ export class GameComponent implements OnInit, OnDestroy {
         tap(([match, teams]) => this.setArrowTop(teams, match.activeMatchTeamId)),
       )
       .subscribe();
+
+    this.currentMatch$
+      .pipe(takeUntil(this.destroy$), pluck('activeMatchTeamId'), distinctUntilChanged())
+      .subscribe(() => {
+        this.disabled = false;
+        this.timer = -1;
+      });
   }
 
   ngOnInit() {

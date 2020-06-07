@@ -1,6 +1,6 @@
 <app-player-card
   *ngFor="let player of players$ | async"
   [player]="player"
-  (click)="navigateToPlayer(player.id)"
+  (click)="navigateToPlayer(player.uid)"
 ></app-player-card>
 <app-player-create (create)="create($event)"></app-player-create>

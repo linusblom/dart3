@@ -16,13 +16,16 @@ export const getFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const getByIdRequest = createAction('[Player] Get By Id Request', props<{ id: number }>());
-export const getByIdSuccess = createAction(
-  '[Player] Get By Id Success',
+export const getByUidRequest = createAction(
+  '[Player] Get By Uid Request',
+  props<{ uid: string }>(),
+);
+export const getByUidSuccess = createAction(
+  '[Player] Get By Uid Success',
   props<{ player: Player }>(),
 );
-export const getByIdFailure = createAction(
-  '[Player] Get By Id Failure',
+export const getByUidFailure = createAction(
+  '[Player] Get By Uid Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
@@ -38,7 +41,7 @@ export const createFailure = createAction(
 
 export const updateRequest = createAction(
   '[Player] Update Request',
-  props<{ id: number; player: UpdatePlayer }>(),
+  props<{ uid: string; player: UpdatePlayer }>(),
 );
 export const updateSuccess = createAction('[Player] Update Success', props<{ player: Player }>());
 export const updateFailure = createAction(
@@ -46,15 +49,15 @@ export const updateFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const resetPinRequest = createAction('[Player] Reset Pin Request', props<{ id: number }>());
+export const resetPinRequest = createAction('[Player] Reset Pin Request', props<{ uid: string }>());
 export const resetPinSuccess = createAction('[Player] Reset Pin Success');
 export const resetPinFailure = createAction(
   '[Player] Reset Pin Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const deleteRequest = createAction('[Player] Delete Request', props<{ id: number }>());
-export const deleteSuccess = createAction('[Player] Delete Success', props<{ id: number }>());
+export const deleteRequest = createAction('[Player] Delete Request', props<{ uid: string }>());
+export const deleteSuccess = createAction('[Player] Delete Success', props<{ uid: string }>());
 export const deleteFailure = createAction(
   '[Player] Delete Failure',
   props<{ error: HttpErrorResponse }>(),
@@ -63,15 +66,15 @@ export const deleteFailure = createAction(
 export const transactionRequest = createAction(
   '[Player] Transaction Request',
   props<{
-    id: number;
+    uid: string;
     _type: TransactionType;
     transaction: CreateTransaction;
-    receiverPlayerId?: number;
+    receiverUid?: string;
   }>(),
 );
 export const transactionSuccess = createAction(
   '[Player] Transaction Success',
-  props<{ id: number; transaction: Transaction }>(),
+  props<{ uid: string; transaction: Transaction }>(),
 );
 export const transactionFailure = createAction(
   '[Player] Transaction Failure',

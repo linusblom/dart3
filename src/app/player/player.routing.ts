@@ -3,5 +3,5 @@ import { PlayersComponent, PlayerComponent } from './containers';
 
 export const PlayerRoutes: Routes = [
   { path: '', pathMatch: 'full', component: PlayersComponent },
-  { path: ':id', component: PlayerComponent },
+  { path: ':uid', component: PlayerComponent },
 ];

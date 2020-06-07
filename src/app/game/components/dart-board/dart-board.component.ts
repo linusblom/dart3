@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Score, Player } from 'dart3-sdk';
 
-import { Hit } from '@game/models';
+import { BoardHit } from '@game/models';
 import { generateId } from '@utils/generate-id';
 
 @Component({
@@ -26,7 +26,6 @@ export class DartBoardComponent {
 
     if (!disabled) {
       this.hits = [];
-      this.timer = -1;
     }
   }
 
@@ -36,16 +35,12 @@ export class DartBoardComponent {
 
   @HostBinding('class.disabled') _disabled = false;
 
-  hits: Hit[] = [];
-
-  get totalScore() {
-    return this.hits.reduce((total, { value, multiplier }) => total + value * multiplier, 0);
-  }
+  hits: BoardHit[] = [];
 
   addHit(event: MouseEvent, value: number, multiplier: number) {
     event.stopPropagation();
 
-    if (this.disabled || this.hits.length === 3) {
+    if (this._disabled || this.hits.length === 3) {
       return;
     }
 
@@ -66,13 +61,19 @@ export class DartBoardComponent {
   }
 
   removeHit(id: string) {
-    if (!this.disabled) {
-      this.hits = this.hits.filter(hit => hit.id !== id);
-      this.updateHits();
+    if (this._disabled) {
+      return;
     }
+
+    this.hits = this.hits.filter(hit => hit.id !== id);
+    this.updateHits();
   }
 
   updateHits(endRound = false) {
+    if (this._disabled) {
+      return;
+    }
+
     const scores = this.hits.map(({ value, multiplier }) => ({ value, multiplier }));
 
     if (endRound) {

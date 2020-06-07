@@ -7,10 +7,11 @@ import { PlayerActions } from '@player/actions';
 
 export interface State extends EntityState<Player> {
   state: StoreState;
-  selectedId: number;
+  selectedUid: string;
 }
 
 export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
+  selectId: player => player.uid,
   sortComparer: (a, b) => {
     if (a.xp < b.xp) {
       return 1;
@@ -26,7 +27,7 @@ export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
 
 export const initialState: State = adapter.getInitialState({
   state: StoreState.NONE,
-  selectedId: undefined,
+  selectedUid: undefined,
 });
 
 export const reducer = createReducer(
@@ -38,7 +39,7 @@ export const reducer = createReducer(
     adapter.addOne(player, { ...state, state: StoreState.NONE }),
   ),
 
-  on(PlayerActions.getRequest, PlayerActions.getByIdRequest, state => ({
+  on(PlayerActions.getRequest, PlayerActions.getByUidRequest, state => ({
     ...state,
     state: StoreState.FETCHING,
     selectedId: undefined,
@@ -48,8 +49,8 @@ export const reducer = createReducer(
     adapter.upsertMany(players, { ...state, state: StoreState.NONE }),
   ),
 
-  on(PlayerActions.getByIdSuccess, (state, { player }) =>
-    adapter.upsertOne(player, { ...state, state: StoreState.NONE, selectedId: player.id }),
+  on(PlayerActions.getByUidSuccess, (state, { player }) =>
+    adapter.upsertOne(player, { ...state, state: StoreState.NONE, selectedUid: player.uid }),
   ),
 
   on(PlayerActions.updateRequest, PlayerActions.resetPinRequest, state => ({
@@ -63,17 +64,17 @@ export const reducer = createReducer(
 
   on(PlayerActions.deleteRequest, state => ({ ...state, state: StoreState.DELETING })),
 
-  on(PlayerActions.deleteSuccess, (state, { id }) =>
-    adapter.removeOne(id, { ...state, state: StoreState.NONE }),
+  on(PlayerActions.deleteSuccess, (state, { uid }) =>
+    adapter.removeOne(uid, { ...state, state: StoreState.NONE }),
   ),
 
-  on(PlayerActions.transactionSuccess, (state, { id, transaction }) =>
+  on(PlayerActions.transactionSuccess, (state, { uid, transaction }) =>
     adapter.updateOne(
       {
-        id,
+        id: uid,
         changes: {
           balance: transaction.balance,
-          transactions: [transaction, ...state.entities[id].transactions],
+          transactions: [transaction, ...state.entities[uid].transactions],
         },
       },
       state,
@@ -83,7 +84,7 @@ export const reducer = createReducer(
   on(
     PlayerActions.createFailure,
     PlayerActions.getFailure,
-    PlayerActions.getByIdFailure,
+    PlayerActions.getByUidFailure,
     PlayerActions.updateFailure,
     PlayerActions.resetPinSuccess,
     PlayerActions.resetPinFailure,

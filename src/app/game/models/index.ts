@@ -1,3 +1,3 @@
 export * from './game-option';
-export * from './dart-hit';
+export * from './board-hit';
 export * from './match-team-player';

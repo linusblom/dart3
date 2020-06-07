@@ -18,18 +18,14 @@ export class CurrentGameService {
     return this.http.delete<void>(this.apiUrl);
   }
 
-  createTeamPlayer(playerId: number, pin: string) {
+  createTeamPlayer(uid: string, pin: string) {
     const headers = new HttpHeaders().append('x-pin', pin);
 
-    return this.http.post<{ players: TeamPlayer[] }>(
-      `${this.apiUrl}/player`,
-      { playerId },
-      { headers },
-    );
+    return this.http.post<{ players: TeamPlayer[] }>(`${this.apiUrl}/player`, { uid }, { headers });
   }
 
-  deleteTeamPlayer(playerId: number) {
-    return this.http.delete<{ players: TeamPlayer[] }>(`${this.apiUrl}/player/${playerId}`);
+  deleteTeamPlayer(uid: string) {
+    return this.http.delete<{ players: TeamPlayer[] }>(`${this.apiUrl}/player/${uid}`);
   }
 
   start() {

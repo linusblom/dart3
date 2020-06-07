@@ -15,7 +15,7 @@ export const deleteFailure = createAction('[Current Game] Delete Failure');
 
 export const createTeamPlayerRequest = createAction(
   '[Current Game] Create Game Player Request',
-  props<{ playerId: number }>(),
+  props<{ uid: string }>(),
 );
 export const createTeamPlayerSuccess = createAction(
   '[Current Game] Create Game Player Success',
@@ -28,7 +28,7 @@ export const createTeamPlayerFailure = createAction(
 
 export const deleteTeamPlayerRequest = createAction(
   '[Current Game] Delete Game Player Request',
-  props<{ playerId: number }>(),
+  props<{ uid: string }>(),
 );
 export const deleteTeamPlayerSuccess = createAction(
   '[Current Game] Delete Game Player Success',

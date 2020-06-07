@@ -44,6 +44,6 @@ export const availableGames: GameOption[] = [
   },
 ];
 
-export const availableBets: number[] = [10, 20, 50, 100, 200, 500];
-export const availableSets: number[] = [1, 2, 3];
-export const availableLegs: number[] = [1, 2, 3];
+export const availableBets: number[] = [10, 20, 50, 100, 200, 500, 1000];
+export const availableSets: number[] = [1, 3, 5];
+export const availableLegs: number[] = [1, 3, 5];

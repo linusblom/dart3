@@ -18,41 +18,41 @@ export class PlayerService {
     return this.http.get<Player[]>(this.apiUrl);
   }
 
-  getById(id: number) {
-    return this.http.get<Player>(`${this.apiUrl}/${id}`);
+  getById(uid: string) {
+    return this.http.get<Player>(`${this.apiUrl}/${uid}`);
   }
 
   create(player: CreatePlayer) {
     return this.http.post<Player>(this.apiUrl, player);
   }
 
-  update(id: number, player: UpdatePlayer) {
-    return this.http.put<Player>(`${this.apiUrl}/${id}`, player);
+  update(uid: string, player: UpdatePlayer) {
+    return this.http.put<Player>(`${this.apiUrl}/${uid}`, player);
   }
 
-  resetPin(id: number) {
-    return this.http.patch(`${this.apiUrl}/${id}/reset-pin`, null);
+  resetPin(uid: string) {
+    return this.http.patch(`${this.apiUrl}/${uid}/reset-pin`, null);
   }
 
-  delete(id: number, pin: string) {
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.pin(pin) });
+  delete(uid: string, pin: string) {
+    return this.http.delete(`${this.apiUrl}/${uid}`, { headers: this.pin(pin) });
   }
 
-  deposit(id: number, pin: string, transaction: CreateTransaction) {
-    return this.http.post<Transaction>(`${this.apiUrl}/${id}/deposit`, transaction, {
+  deposit(uid: string, pin: string, transaction: CreateTransaction) {
+    return this.http.post<Transaction>(`${this.apiUrl}/${uid}/deposit`, transaction, {
       headers: this.pin(pin),
     });
   }
 
-  withdrawal(id: number, pin: string, transaction: CreateTransaction) {
-    return this.http.post<Transaction>(`${this.apiUrl}/${id}/withdrawal`, transaction, {
+  withdrawal(uid: string, pin: string, transaction: CreateTransaction) {
+    return this.http.post<Transaction>(`${this.apiUrl}/${uid}/withdrawal`, transaction, {
       headers: this.pin(pin),
     });
   }
 
-  transfer(id: number, pin: string, receiverPlayerId: number, transaction: CreateTransaction) {
+  transfer(uid: string, pin: string, receiverUid: string, transaction: CreateTransaction) {
     return this.http.post<Transaction>(
-      `${this.apiUrl}/${id}/transfer/${receiverPlayerId}`,
+      `${this.apiUrl}/${uid}/transfer/${receiverUid}`,
       transaction,
       {
         headers: this.pin(pin),

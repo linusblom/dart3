@@ -73,8 +73,8 @@
     </mat-form-field>
     <mat-form-field *ngIf="transactionForm.get('type').value === TransactionType.Transfer">
       <mat-label>Transfer to</mat-label>
-      <mat-select formControlName="receiverPlayerId">
-        <mat-option *ngFor="let player of players" [value]="player.id">
+      <mat-select formControlName="receiverUid">
+        <mat-option *ngFor="let player of players" [value]="player.uid">
           {{ player.name }}
         </mat-option>
       </mat-select>

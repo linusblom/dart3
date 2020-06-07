@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { Hit } from '@game/models';
+import { BoardHit } from '@game/models';
 
 @Component({
   selector: 'game-board-hit',
@@ -9,7 +9,7 @@ import { Hit } from '@game/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardHitComponent {
-  @Input() hit: Hit;
+  @Input() hit: BoardHit;
   @Input() avatar = '';
 
   @Output() remove = new EventEmitter<string>();

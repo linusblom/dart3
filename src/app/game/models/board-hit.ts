@@ -1,4 +1,4 @@
-export interface Hit {
+export interface BoardHit {
   id: string;
   value: number;
   multiplier: number;

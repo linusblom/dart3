@@ -13,9 +13,9 @@ export const initialState: State = adapter.getInitialState();
 export const reducer = createReducer(
   initialState,
 
-  on(
-    CurrentGameActions.getMatchesSuccess,
-    CurrentGameActions.createRoundSuccess,
-    (state, { hits }) => adapter.upsertMany(hits, state),
+  on(CurrentGameActions.getMatchesSuccess, (state, { hits }) => adapter.upsertMany(hits, state)),
+
+  on(CurrentGameActions.createRoundSuccess, (state, { hits }) =>
+    hits.length === 0 ? adapter.removeAll(state) : adapter.upsertMany(hits as RoundHit[], state),
   ),
 );

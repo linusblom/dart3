@@ -26,7 +26,7 @@ export class AppComponent {
     tap(padding => (this.padding = padding)),
   );
   showModal$ = this.store.pipe(select(showModal));
-  showFooter$ = this.store.pipe(select(showFooter));
+  showFooter$ = this.store.pipe(select(showFooter), delay(0));
 
   @HostBinding('class.padding') padding = false;
 

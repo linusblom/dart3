@@ -15,5 +15,7 @@ export const reducer = createReducer(
 
   on(CurrentGameActions.getMatchesSuccess, (state, { teams }) => adapter.upsertMany(teams, state)),
 
-  on(CurrentGameActions.createRoundSuccess, (state, { team }) => adapter.upsertOne(team, state)),
+  on(CurrentGameActions.createRoundSuccess, (state, { teams }) =>
+    adapter.upsertMany(teams as MatchTeam[], state),
+  ),
 );

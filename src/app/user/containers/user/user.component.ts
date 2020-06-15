@@ -16,6 +16,7 @@ import { Bank } from 'dart3-sdk';
 })
 export class UserComponent implements OnDestroy {
   bank = {} as Bank;
+  total = 0;
   userForm = new FormGroup({
     name: new FormControl('', Validators.required),
     nickname: new FormControl('', Validators.required),
@@ -36,6 +37,7 @@ export class UserComponent implements OnDestroy {
         this.userForm.patchValue({ name, nickname, email });
         this.settingsForm.patchValue({ ...userMetadata });
         this.bank = bank;
+        this.total = +bank.players + +bank.inPlay;
       });
   }
 

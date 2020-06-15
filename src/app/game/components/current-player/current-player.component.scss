@@ -3,7 +3,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  padding: 50px 0;
+  padding-top: 50px;
   color: $dark-blue;
 
   & > div {
@@ -14,18 +14,19 @@
   }
 }
 
-.timer {
-  font-family: $header;
-  font-weight: 100;
-  font-size: 20px;
-  color: $grey;
-}
-
-.player {
+.player-wrapper {
   background: $grey;
   height: 180px;
   padding: 10px 0;
-  margin-bottom: 1px;
+  overflow: hidden;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
+  height: 180px;
 
   .name {
     writing-mode: vertical-lr;
@@ -44,22 +45,12 @@
   }
 }
 
-.icon {
-  background: $grey;
-  cursor: pointer;
-  justify-content: center;
-  height: 36px;
-  margin-bottom: 1px;
-
-  &.disabled {
-    background: rgba($grey, .2);
-    cursor: initial;
-  }
-}
-
 .hits {
-  height: 108px;
-  background: rgba($grey, .2);
+  height: 109px;
+  box-sizing: border-box;
+  border: solid $grey;
+  border-width: 0 1px;
+  padding-top: 1px;
 
   game-score {
     margin-bottom: 1px;

@@ -18,8 +18,9 @@
 </div>
 <div class="scores">
   <game-round-hit
-    [@fadeIn]
+    [@slideIn]
     *ngFor="let hit of team.hits; trackBy: trackByFn"
-    [hit]="hit"
+    [value]="getHitValue(hit)"
+    [color]="getHitColor(hit)"
   ></game-round-hit>
 </div>

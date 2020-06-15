@@ -1,5 +1,4 @@
 import { Component, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
-import { RoundHit } from 'dart3-sdk';
 
 @Component({
   selector: 'game-round-hit',
@@ -8,13 +7,9 @@ import { RoundHit } from 'dart3-sdk';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoundHitComponent {
-  @Input() set hit(hit: RoundHit) {
-    this.score = hit.approvedScore;
-    // this.total = hits.reduce((acc, { total }) => acc + total, 0);
-    //this.background = this.total > 0 ? '#daf2dc' : '#f2dada';
-  }
+  @Input() value = 0;
 
-  @HostBinding('style.background') background = '#daf2dc';
-
-  score = 0;
+  @Input()
+  @HostBinding('style.background')
+  color = '#daf2dc';
 }

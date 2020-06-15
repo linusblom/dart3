@@ -19,12 +19,22 @@
   }
 }
 
-game-current-player {
+.absolute {
   position: absolute;
 }
 
-game-board-hit {
-  position: absolute;
+game-current-player {
+  z-index: 15;
+}
+
+game-controls {
+  bottom: 0;
+}
+
+game-checkout {
+  left: 50px;
+  top: 65px;
+  z-index: 10;
 }
 
 svg {

@@ -1,1 +1,7 @@
-{{ score > 0 ? score : '-' }}
+<span *ngIf="!value; else valueRef" class="zero">
+  <i class="far fa-times-circle"></i>
+</span>
+
+<ng-template #valueRef>
+  {{ value }}
+</ng-template>

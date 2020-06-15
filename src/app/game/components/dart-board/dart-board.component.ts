@@ -6,7 +6,7 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Score, Player } from 'dart3-sdk';
+import { Score, Player, GameType } from 'dart3-sdk';
 
 import { BoardHit } from '@game/models';
 import { generateId } from '@utils/generate-id';
@@ -21,10 +21,12 @@ export class DartBoardComponent {
   @Input() player = {} as Player;
   @Input() color = '#ffffff';
   @Input() timer = -1;
+  @Input() activeRound = 1;
+  @Input() type: GameType;
   @Input() set disabled(disabled: boolean) {
     this._disabled = disabled;
 
-    if (!disabled) {
+    if (disabled) {
       this.hits = [];
     }
   }

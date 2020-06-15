@@ -29,6 +29,7 @@ export const initialState: State = {
   bank: {
     players: '0.00',
     turnOver: '0.00',
+    inPlay: '0.00',
   },
   state: StoreState.NONE,
 };

@@ -54,6 +54,7 @@ export class GameComponent implements OnInit, OnDestroy {
     map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
     startWith({}),
   );
+  activeRound$ = this.currentMatch$.pipe(pluck('activeRound'));
 
   game: Game;
   option: GameOption;
@@ -85,7 +86,6 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$), pluck('activeMatchTeamId'), distinctUntilChanged())
       .subscribe(() => {
         this.disabled = false;
-        this.timer = -1;
       });
   }
 
@@ -124,8 +124,9 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   endRound(scores: Score[]) {
-    this.store.dispatch(CurrentGameActions.createRoundRequest({ scores }));
     this.disabled = true;
+    this.abortAutoEndRound$.next();
+    this.store.dispatch(CurrentGameActions.createRoundRequest({ scores }));
   }
 
   trackByFn(_: number, { id }: MatchTeam) {

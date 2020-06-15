@@ -11,9 +11,12 @@ import { RoundHitComponent } from './round-hit/round-hit.component';
 import { MatchesComponent } from './matches/matches.component';
 import { CurrentPlayerComponent } from './current-player/current-player.component';
 import { ScoreComponent } from './score/score.component';
+import { ControlsComponent } from './controls/controls.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 export const components = [
   DartBoardComponent,
+  ControlsComponent,
   CurrentPlayerComponent,
   TeamComponent,
   RoundHitComponent,
@@ -26,4 +29,5 @@ export const components = [
   WizardSelectComponent,
   WizardSettingsComponent,
   MatchesComponent,
+  CheckoutComponent,
 ];

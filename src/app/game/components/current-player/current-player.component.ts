@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Player, Score } from 'dart3-sdk';
 
 import { BoardHit } from '@game/models';
@@ -8,6 +8,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   selector: 'game-current-player',
   templateUrl: './current-player.component.html',
   styleUrls: ['./current-player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -24,7 +25,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class CurrentPlayerComponent {
   @Input() player: Player;
-  @Input() timer = -1;
+  @Input() disabled = false;
   @Input() set hits(hits: BoardHit[]) {
     this.scores = hits.map(({ id, value, multiplier }) => ({ id, value, multiplier }));
     this.total = {
@@ -32,9 +33,6 @@ export class CurrentPlayerComponent {
       value: hits.reduce((acc, { value, multiplier }) => acc + value * multiplier, 0),
     };
   }
-
-  @Output() endRound = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
 
   scores: (Score & { id: string })[];
   total: Score;

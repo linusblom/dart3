@@ -21,6 +21,8 @@ export const reducer = createReducer(
   initialState,
   on(CoreActions.toggleMenu, (state, { menu }) => ({ ...state, menu })),
 
+  on(CoreActions.toggleFooter, (state, { footer }) => ({ ...state, footer })),
+
   on(CoreActions.showModal, (state, { modal }) => ({ ...state, modal })),
 
   on(CoreActions.dismissModal, state => ({ ...state, modal: undefined })),

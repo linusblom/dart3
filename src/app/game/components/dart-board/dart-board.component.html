@@ -1,5 +1,6 @@
 <game-board-hit
   *ngFor="let hit of hits"
+  class="absolute"
   [avatar]="player.avatar"
   [hit]="hit"
   [style.top.px]="hit.top"
@@ -8,12 +9,28 @@
 ></game-board-hit>
 
 <game-current-player
+  class="absolute"
   [player]="player"
   [hits]="hits"
+  [disabled]="_disabled"
+></game-current-player>
+
+<game-controls
+  class="absolute"
   [timer]="timer"
+  [color]="color"
   (endRound)="updateHits(true)"
   (cancel)="cancel.emit()"
-></game-current-player>
+></game-controls>
+
+<game-checkout
+  class="absolute"
+  [disabled]="_disabled"
+  [color]="color"
+  [activeRound]="activeRound"
+  [type]="type"
+  [hits]="hits"
+></game-checkout>
 
 <svg
   version="1.1"

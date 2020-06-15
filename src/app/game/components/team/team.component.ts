@@ -1,8 +1,11 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { RoundHit } from 'dart3-sdk';
+import { RoundHit, GameType } from 'dart3-sdk';
 
 import { MatchTeamPlayer } from '@game/models';
+
+const RED = '#f2dada';
+const GREEN = '#daf2dc';
 
 @Component({
   selector: 'game-team',
@@ -10,7 +13,7 @@ import { MatchTeamPlayer } from '@game/models';
   styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger('fadeIn', [
+    trigger('slideIn', [
       transition(':enter', [
         style({ transform: 'translateY(-25px)' }),
         animate('300ms ease-in-out', style({ transform: 'translateY(0%)' })),
@@ -24,6 +27,23 @@ import { MatchTeamPlayer } from '@game/models';
 })
 export class TeamComponent {
   @Input() team: MatchTeamPlayer;
+  @Input() type: GameType;
+
+  getHitValue(hit: RoundHit) {
+    switch (this.type) {
+      case GameType.HalveIt:
+      default:
+        return hit.approvedScore;
+    }
+  }
+
+  getHitColor(hit: RoundHit) {
+    switch (this.type) {
+      case GameType.HalveIt:
+      default:
+        return hit.approvedScore > 0 ? GREEN : RED;
+    }
+  }
 
   trackByFn(_: number, { round }: RoundHit) {
     return round;

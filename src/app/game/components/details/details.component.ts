@@ -10,6 +10,7 @@ import { Game, gameName, gameSubName, Match } from 'dart3-sdk';
 export class DetailsComponent {
   @Input() game: Game;
   @Input() match: Match;
+
   @Output() matches = new EventEmitter<void>();
 
   gameName = gameName;

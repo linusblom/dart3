@@ -23,10 +23,8 @@ export class DartBoardComponent {
   @Input() timer = -1;
   @Input() activeRound = 1;
   @Input() type: GameType;
-  @Input() set disabled(disabled: boolean) {
-    this._disabled = disabled;
-
-    if (disabled) {
+  @Input() set clear(clear: boolean) {
+    if (clear) {
       this.hits = [];
     }
   }
@@ -35,14 +33,16 @@ export class DartBoardComponent {
   @Output() endRound = new EventEmitter<Score[]>();
   @Output() cancel = new EventEmitter<void>();
 
-  @HostBinding('class.disabled') _disabled = false;
+  @Input()
+  @HostBinding('class.disabled')
+  disabled = false;
 
   hits: BoardHit[] = [];
 
   addHit(event: MouseEvent, value: number, multiplier: number) {
     event.stopPropagation();
 
-    if (this._disabled || this.hits.length === 3) {
+    if (this.disabled || this.hits.length === 3) {
       return;
     }
 
@@ -63,7 +63,7 @@ export class DartBoardComponent {
   }
 
   removeHit(id: string) {
-    if (this._disabled) {
+    if (this.disabled) {
       return;
     }
 
@@ -72,7 +72,7 @@ export class DartBoardComponent {
   }
 
   updateHits(endRound = false) {
-    if (this._disabled) {
+    if (this.disabled) {
       return;
     }
 

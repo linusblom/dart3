@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Match, MatchStatus } from 'dart3-sdk';
 
 import { StoreState } from '@shared/models';
-import { CurrentGameActions } from '@game/actions';
+import { CurrentGameActions, MatchActions } from '@game/actions';
 
 export interface State extends EntityState<Match> {
   state: StoreState;
@@ -32,7 +32,7 @@ export const reducer = createReducer(
 
   on(CurrentGameActions.getMatchesFailure, state => ({ ...state, state: StoreState.NONE })),
 
-  on(CurrentGameActions.createRoundSuccess, (state, { matches }) =>
+  on(MatchActions.upsertMatches, (state, { matches }) =>
     adapter.upsertMany(matches as Match[], state),
   ),
 );

@@ -36,11 +36,9 @@ export const reducer = createReducer(
 
   on(CurrentGameActions.createRoundRequest, state => ({ ...state, state: StoreState.UPDATING })),
 
-  on(CurrentGameActions.createRoundSuccess, (state, { game }) =>
-    game
-      ? adapter.updateOne({ id: game.id, changes: game }, { ...state, state: StoreState.NONE })
-      : { ...state, state: StoreState.NONE },
-  ),
+  on(CurrentGameActions.createRoundSuccess, state => ({ ...state, state: StoreState.NONE })),
+
+  on(GameActions.updateGame, (state, { game }) => adapter.updateOne(game, state)),
 
   on(
     GameActions.createFailure,

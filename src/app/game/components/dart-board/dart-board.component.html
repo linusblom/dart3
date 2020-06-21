@@ -8,12 +8,7 @@
   (remove)="removeHit(hit.id)"
 ></game-board-hit>
 
-<game-current-player
-  class="absolute"
-  [player]="player"
-  [hits]="hits"
-  [disabled]="_disabled"
-></game-current-player>
+<game-current-player class="absolute" [player]="player" [hits]="hits"></game-current-player>
 
 <game-controls
   class="absolute"
@@ -25,7 +20,7 @@
 
 <game-checkout
   class="absolute"
-  [disabled]="_disabled"
+  [disabled]="disabled"
   [color]="color"
   [activeRound]="activeRound"
   [type]="type"

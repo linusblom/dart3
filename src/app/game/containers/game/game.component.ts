@@ -10,6 +10,7 @@ import {
   startWith,
   pluck,
   distinctUntilChanged,
+  skip,
 } from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
@@ -23,7 +24,7 @@ import {
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
 import { availableGames, GameOption } from '@game/models';
-import { CurrentGameActions } from '@game/actions';
+import { CurrentGameActions, HitActions } from '@game/actions';
 import { getAllPlayers } from '@root/reducers';
 
 @Component({
@@ -61,6 +62,7 @@ export class GameComponent implements OnInit, OnDestroy {
   arrowTop = 0;
   timer = -1;
   disabled = false;
+  clear = false;
   showMatches = false;
 
   private readonly destroy$ = new Subject();
@@ -86,6 +88,22 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$), pluck('activeMatchTeamId'), distinctUntilChanged())
       .subscribe(() => {
         this.disabled = false;
+        this.clear = true;
+      });
+
+    this.currentMatch$
+      .pipe(takeUntil(this.destroy$), pluck('activeLeg'), distinctUntilChanged(), skip(1))
+      .subscribe(() => this.store.dispatch(HitActions.removeHits()));
+
+    this.game$
+      .pipe(
+        takeUntil(this.destroy$),
+        pluck('endedAt'),
+        filter(endedAt => !!endedAt),
+      )
+      .subscribe(() => {
+        this.clear = true;
+        console.log('end');
       });
   }
 
@@ -125,6 +143,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   endRound(scores: Score[]) {
     this.disabled = true;
+    this.clear = false;
     this.abortAutoEndRound$.next();
     this.store.dispatch(CurrentGameActions.createRoundRequest({ scores }));
   }

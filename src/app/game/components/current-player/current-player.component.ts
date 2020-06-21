@@ -25,7 +25,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class CurrentPlayerComponent {
   @Input() player: Player;
-  @Input() disabled = false;
   @Input() set hits(hits: BoardHit[]) {
     this.scores = hits.map(({ id, value, multiplier }) => ({ id, value, multiplier }));
     this.total = {

@@ -13,7 +13,7 @@ export const initialState: State = adapter.getInitialState();
 export const reducer = createReducer(
   initialState,
 
-  on(CurrentGameActions.getMatchesSuccess, TeamActions.upsertTeams, (state, { teams }) =>
-    adapter.upsertMany(teams, state),
-  ),
+  on(CurrentGameActions.getMatchesSuccess, (state, { teams }) => adapter.upsertMany(teams, state)),
+
+  on(TeamActions.updateTeams, (state, { teams }) => adapter.updateMany(teams, state)),
 );

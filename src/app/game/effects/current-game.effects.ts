@@ -1,7 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, catchError, withLatestFrom, tap, filter, delay } from 'rxjs/operators';
+import {
+  concatMap,
+  map,
+  catchError,
+  withLatestFrom,
+  tap,
+  filter,
+  delay,
+  switchMap,
+} from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 import { CurrentGameService } from '@game/services';
 import {
@@ -13,8 +23,6 @@ import {
 } from '@game/actions';
 import { State } from '@game/reducers';
 import { getPin } from '@root/reducers';
-import { Router } from '@angular/router';
-import { Match, MatchTeam } from 'dart3-sdk';
 
 @Injectable()
 export class CurrentGameEffects {
@@ -95,7 +103,14 @@ export class CurrentGameEffects {
   upsertHits$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.createRoundSuccess),
-      map(({ hits }) => HitActions.upsertHits({ hits })),
+      map(({ hits, teams }) => ({
+        hits,
+        teams: teams.map(({ id, score, legs, sets }) => ({ id, changes: { score, legs, sets } })),
+      })),
+      switchMap(({ hits, teams }) => [
+        HitActions.upsertHits({ hits }),
+        TeamActions.updateTeams({ teams }),
+      ]),
     ),
   );
 
@@ -108,19 +123,21 @@ export class CurrentGameEffects {
     ),
   );
 
-  upsertMatches$ = createEffect(() =>
+  updateMatches$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.createRoundSuccess),
       delay(2000),
-      map(({ matches }) => MatchActions.upsertMatches({ matches: matches as Match[] })),
+      map(({ matches }) => matches.map(match => ({ id: match.id, changes: match }))),
+      map(matches => MatchActions.updateMatches({ matches })),
     ),
   );
 
-  upsertTeams$ = createEffect(() =>
+  updateTeams$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.createRoundSuccess),
       delay(2000),
-      map(({ teams }) => TeamActions.upsertTeams({ teams: teams as MatchTeam[] })),
+      map(({ teams }) => teams.map(team => ({ id: team.id, changes: team }))),
+      map(teams => TeamActions.updateTeams({ teams })),
     ),
   );
 

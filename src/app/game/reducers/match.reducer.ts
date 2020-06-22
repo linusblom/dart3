@@ -32,7 +32,5 @@ export const reducer = createReducer(
 
   on(CurrentGameActions.getMatchesFailure, state => ({ ...state, state: StoreState.NONE })),
 
-  on(MatchActions.upsertMatches, (state, { matches }) =>
-    adapter.upsertMany(matches as Match[], state),
-  ),
+  on(MatchActions.updateMatches, (state, { matches }) => adapter.updateMany(matches, state)),
 );

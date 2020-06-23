@@ -16,7 +16,9 @@ import { effects as authEffects } from '@auth/effects';
 import { effects as playerEffects } from '@player/effects';
 import { effects as coreEffects } from '@core/effects';
 import { effects as userEffects } from '@user/effects';
+import { effects as jackpotEffects } from '@jackpot/effects';
 import { PlayerModule } from '@player/player.module';
+import { JackpotModule } from '@jackpot/jackpot.module';
 import { UserModule } from '@user/user.module';
 
 import { AppComponent } from './app.component';
@@ -32,7 +34,13 @@ import { ROOT_REDUCERS } from './reducers';
     StoreModule.forRoot(ROOT_REDUCERS, {
       runtimeChecks: {},
     }),
-    EffectsModule.forRoot([...authEffects, ...playerEffects, ...coreEffects, ...userEffects]),
+    EffectsModule.forRoot([
+      ...authEffects,
+      ...playerEffects,
+      ...coreEffects,
+      ...userEffects,
+      ...jackpotEffects,
+    ]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
@@ -41,6 +49,7 @@ import { ROOT_REDUCERS } from './reducers';
     PlayerModule,
     UserModule,
     CoreModule,
+    JackpotModule,
     AppRoutingModule,
     SharedModule,
   ],

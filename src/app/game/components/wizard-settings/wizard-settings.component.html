@@ -28,7 +28,7 @@
     <div>Bet:</div>
     <mat-button-toggle-group formControlName="bet">
       <mat-button-toggle *ngFor="let bet of bets" [value]="bet">
-        {{ bet | currency }}
+        {{ bet | currency$ | async }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

@@ -23,6 +23,7 @@ import {
 } from '@game/actions';
 import { State } from '@game/reducers';
 import { getPin } from '@root/reducers';
+import { JackpotActions } from '@jackpot/actions';
 
 @Injectable()
 export class CurrentGameEffects {
@@ -145,7 +146,10 @@ export class CurrentGameEffects {
     this.actions$.pipe(
       ofType(CurrentGameActions.getSuccess),
       filter(({ game }) => !!game.startedAt),
-      map(() => CurrentGameActions.getMatchesRequest()),
+      switchMap(() => [
+        CurrentGameActions.getMatchesRequest(),
+        JackpotActions.getCurrentJackpotRequest(),
+      ]),
     ),
   );
 

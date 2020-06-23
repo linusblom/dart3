@@ -7,6 +7,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SharedModule } from '@shared/shared.module';
 import { CurrencyPipe } from '@shared/pipes/currency.pipe';
+import { JackpotModule } from '@jackpot/jackpot.module';
 
 import { components } from './components';
 import { containers } from './containers';
@@ -22,6 +23,7 @@ import { services } from './services';
     ReactiveFormsModule,
     GameRoutingModule,
     DragDropModule,
+    JackpotModule,
     StoreModule.forFeature('game', reducers),
     EffectsModule.forFeature(effects),
   ],

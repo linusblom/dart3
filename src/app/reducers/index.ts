@@ -6,6 +6,7 @@ import * as fromAuth from '@auth/reducers/auth.reducer';
 import * as fromUser from '@user/reducers/user.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
+import * as fromJackpot from '@jackpot/reducers/jackpot.reducer';
 import { StoreState } from '@shared/models';
 import { getGameModuleLoading } from '@game/reducers';
 
@@ -14,6 +15,7 @@ export interface State {
   user: fromUser.State;
   core: fromCore.State;
   player: fromPlayer.State;
+  jackpot: fromJackpot.State;
 }
 
 export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>(
@@ -24,6 +26,7 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       user: fromUser.reducer,
       core: fromCore.reducer,
       player: fromPlayer.reducer,
+      jackpot: fromJackpot.reducer,
     }),
   },
 );
@@ -56,14 +59,24 @@ export const getSelectedPlayer = createSelector(
 );
 export const getSelectedPlayerUid = createSelector(getPlayerState, state => state.selectedUid);
 
+export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
+export const getJackpotStoreState = createSelector(getJackpotState, ({ state }) => state);
+export const getJackpot = createSelector(getJackpotState, ({ value, nextValue }) => ({
+  value,
+  nextValue,
+}));
+export const getJackpotValue = createSelector(getJackpotState, state => state.value);
+
 export const showLoading = createSelector(
   isAuthenticated,
   getPlayerStoreState,
   getUserStoreState,
+  getJackpotStoreState,
   getGameModuleLoading,
-  (authenticated, playerStoreState, userStoreState, gameModuleLoading) =>
+  (authenticated, playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
     !authenticated ||
     playerStoreState !== StoreState.NONE ||
     userStoreState !== StoreState.NONE ||
+    jackpotStoreState !== StoreState.NONE ||
     gameModuleLoading,
 );

@@ -16,5 +16,5 @@
 
 <div class="row">
   <div class="name">Prize pool</div>
-  <div class="value">{{ game.prizePool | currency }}</div>
+  <div class="value">{{ game.prizePool | currency$ | async }}</div>
 </div>

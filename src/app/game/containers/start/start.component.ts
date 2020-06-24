@@ -9,10 +9,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
 import { availableGames, GameWizardStep } from '@game/models';
-import { getAllPlayers } from '@root/reducers';
+import { getAllPlayers, getUserCurrency } from '@root/reducers';
 import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
-import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
 @Component({
   selector: 'app-start',
@@ -24,6 +23,7 @@ export class StartComponent {
   selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
 
+  currency = '';
   options = availableGames;
   form = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -36,7 +36,7 @@ export class StartComponent {
 
   private readonly destroy$ = new Subject();
 
-  constructor(private readonly store: Store<State>, private readonly currency: CurrencyPipe) {
+  constructor(private readonly store: Store<State>) {
     this.store
       .pipe(select(getWizardValues), takeUntil(this.destroy$), distinctUntilChanged(isEqual))
       .subscribe(values => this.form.patchValue({ ...values }, { emitEvent: false }));
@@ -46,6 +46,10 @@ export class StartComponent {
       .subscribe(({ type: _type, ...rest }) =>
         this.store.dispatch(WizardActions.setValues({ _type, ...rest })),
       );
+
+    this.store
+      .pipe(select(getUserCurrency), takeUntil(this.destroy$))
+      .subscribe(currency => (this.currency = currency));
   }
 
   changeStep(step: GameWizardStep) {
@@ -77,7 +81,7 @@ export class StartComponent {
   }
 
   addPlayer(player: Player) {
-    const amount = this.currency.transform(this.form.get('bet').value);
+    const amount = `${this.currency} ${this.form.get('bet').value.toFixed(2)}`;
 
     this.store.dispatch(
       CoreActions.confirmPin({

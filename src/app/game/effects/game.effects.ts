@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, catchError, withLatestFrom, switchMap } from 'rxjs/operators';
+import { concatMap, catchError, withLatestFrom, switchMap, map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
 import { GameService } from '@game/services';
@@ -21,6 +21,18 @@ export class GameEffects {
             WizardActions.setStep({ step: GameWizardStep.SelectPlayers }),
           ]),
           catchError(() => [GameActions.createFailure()]),
+        ),
+      ),
+    ),
+  );
+
+  getByUid$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.getByUidRequest),
+      concatMap(({ uid }) =>
+        this.service.getByUid(uid).pipe(
+          map(game => GameActions.getByUidSuccess({ game })),
+          catchError(() => [GameActions.getByUidFailure()]),
         ),
       ),
     ),

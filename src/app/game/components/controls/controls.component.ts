@@ -9,6 +9,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 export class ControlsComponent {
   @Input() timer = -1;
   @Input() color = '#ffffff';
+  @Input() disabled = false;
 
   @Output() endRound = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();

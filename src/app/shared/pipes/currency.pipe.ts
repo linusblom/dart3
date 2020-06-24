@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 
 import { getUserCurrency, State } from '@root/reducers';
 
@@ -19,7 +19,7 @@ export class CurrencyPipe implements PipeTransform {
           ? `${currency} ${value || '0.00'}`
           : `${currency} ${value.toFixed(2)}`,
       ),
-      shareReplay(1),
+      share(),
     );
   }
 }

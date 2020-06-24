@@ -25,11 +25,11 @@ export class PlayerEffects {
     ),
   );
 
-  getById$ = createEffect(() =>
+  getByUid$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PlayerActions.getByUidRequest),
       concatMap(({ uid }) =>
-        this.service.getById(uid).pipe(
+        this.service.getByUid(uid).pipe(
           map(player => PlayerActions.getByUidSuccess({ player })),
           catchError(error => [PlayerActions.getByUidFailure({ error })]),
         ),

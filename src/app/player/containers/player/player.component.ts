@@ -6,10 +6,15 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 
-import { State, getSelectedPlayer, getAllPlayers, getSelectedPlayerUid } from '@root/reducers';
+import {
+  State,
+  getSelectedPlayer,
+  getAllPlayers,
+  getSelectedPlayerUid,
+  getUserCurrency,
+} from '@root/reducers';
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
-import { CurrencyPipe } from '@shared/pipes/currency.pipe';
 
 @Component({
   selector: 'app-player',
@@ -20,6 +25,7 @@ export class PlayerComponent implements OnDestroy {
   uid: string;
   player = {} as Player;
   players: Player[] = [];
+  currency = '';
 
   TransactionType = TransactionType;
 
@@ -42,11 +48,7 @@ export class PlayerComponent implements OnDestroy {
 
   private readonly destroy$ = new Subject();
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly route: ActivatedRoute,
-    private readonly currency: CurrencyPipe,
-  ) {
+  constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
     this.uid = this.route.snapshot.params.uid;
 
     this.store.dispatch(PlayerActions.getByUidRequest({ uid: this.uid }));
@@ -71,6 +73,10 @@ export class PlayerComponent implements OnDestroy {
         map(([players, selectedUid]) => players.filter(({ uid }) => uid !== selectedUid)),
       )
       .subscribe(players => (this.players = players));
+
+    this.store
+      .pipe(select(getUserCurrency), takeUntil(this.destroy$))
+      .subscribe(currency => (this.currency = currency));
   }
 
   ngOnDestroy() {
@@ -125,7 +131,7 @@ export class PlayerComponent implements OnDestroy {
 
   executeTransaction() {
     const { type, amount, receiverUid } = this.transactionForm.value;
-    const currencyAmount = this.currency.transform(amount);
+    const currencyAmount = `${this.currency} ${amount.toFixed(2)}`;
     const receiverPlayerName = receiverUid
       ? ` to <strong>${this.players.find(({ uid }) => uid === receiverUid).name}</strong>`
       : '';

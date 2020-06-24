@@ -13,4 +13,8 @@ export class GameService {
   create(game: CreateGame) {
     return this.http.post<Game>(this.apiUrl, game);
   }
+
+  getByUid(uid: string) {
+    return this.http.get<Game>(`${this.apiUrl}/${uid}`);
+  }
 }

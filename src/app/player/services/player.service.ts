@@ -18,7 +18,7 @@ export class PlayerService {
     return this.http.get<Player[]>(this.apiUrl);
   }
 
-  getById(uid: string) {
+  getByUid(uid: string) {
     return this.http.get<Player>(`${this.apiUrl}/${uid}`);
   }
 

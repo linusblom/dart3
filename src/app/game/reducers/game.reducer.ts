@@ -25,13 +25,17 @@ export const reducer = createReducer(
     state: StoreState.CREATING,
   })),
 
-  on(CurrentGameActions.getRequest, state => ({
+  on(CurrentGameActions.getRequest, GameActions.getByUidRequest, state => ({
     ...state,
     state: StoreState.FETCHING,
   })),
 
-  on(GameActions.createSuccess, CurrentGameActions.getSuccess, (state, { game }) =>
-    adapter.upsertOne(game, { ...state, selectedId: game.id, state: StoreState.NONE }),
+  on(
+    GameActions.createSuccess,
+    CurrentGameActions.getSuccess,
+    GameActions.getByUidSuccess,
+    (state, { game }) =>
+      adapter.upsertOne(game, { ...state, selectedId: game.id, state: StoreState.NONE }),
   ),
 
   on(CurrentGameActions.createRoundRequest, state => ({ ...state, state: StoreState.UPDATING })),
@@ -44,6 +48,7 @@ export const reducer = createReducer(
     GameActions.createFailure,
     CurrentGameActions.getFailure,
     CurrentGameActions.createRoundFailure,
+    GameActions.getByUidFailure,
     state => ({
       ...state,
       state: StoreState.NONE,

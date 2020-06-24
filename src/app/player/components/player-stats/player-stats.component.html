@@ -29,9 +29,9 @@
 
 <div class="row space">
   <div class="name">Turnover</div>
-  <div class="header">{{ player.turnOver }}</div>
+  <div class="header">{{ player.turnOver | currency$ | async }}</div>
 </div>
 <div class="row">
   <div class="name">Net</div>
-  <div class="header">{{ player.net }}</div>
+  <div class="header">{{ player.net | currency$ | async }}</div>
 </div>

@@ -11,6 +11,7 @@ import {
   pluck,
   distinctUntilChanged,
   skip,
+  delay,
 } from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
@@ -100,11 +101,10 @@ export class GameComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         pluck('endedAt'),
         filter(endedAt => !!endedAt),
+        tap(() => (this.clear = true)),
+        delay(2000),
       )
-      .subscribe(() => {
-        this.clear = true;
-        console.log('end');
-      });
+      .subscribe(() => this.router.navigate(['results', this.game.id]));
   }
 
   ngOnInit() {

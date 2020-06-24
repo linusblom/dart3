@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { GameGuard } from './services';
-import { GameComponent, StartComponent } from './containers';
+import { GameComponent, StartComponent, ResultsComponent } from './containers';
 
 export const routes: Routes = [
   {
@@ -19,6 +19,10 @@ export const routes: Routes = [
     path: 'play',
     component: GameComponent,
     canActivate: [GameGuard],
+  },
+  {
+    path: 'results/:uid',
+    component: ResultsComponent,
   },
 ];
 

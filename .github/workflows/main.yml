@@ -36,4 +36,4 @@ jobs:
         run: yarn build --prod
 
       - name: Deploy to S3 bucket
-        run: aws s3 sync ./dist/dart3 s3://dart3 --delete
+        run: aws s3 sync ./dist/dart3 s3://dart3.app --delete

@@ -6,9 +6,9 @@ export const environment = {
   siteUrl: '',
   dart3ApiUrl: '',
   version,
-  auto0: {
-    domain: '',
-    clientId: '',
-    audience: '',
+  auth0: {
+    domain: 'dart3.eu.auth0.com',
+    clientId: '9wZ3rNbCqBoKuCfLK44ADhLCsGzebs4x',
+    audience: 'https://stage.dart3.linusblom.io',
   },
 };

@@ -16,10 +16,10 @@ import { State } from '@root/reducers';
 export class AuthService {
   auth0Client$ = from(
     createAuth0Client({
-      domain: environment.auto0.domain,
-      client_id: environment.auto0.clientId,
+      domain: environment.auth0.domain,
+      client_id: environment.auth0.clientId,
       redirect_uri: `${environment.siteUrl}/callback`,
-      audience: `${environment.auto0.audience}`,
+      audience: `${environment.auth0.audience}`,
       scope: 'openid profile email',
     }),
   ).pipe(
@@ -91,7 +91,7 @@ export class AuthService {
   logout() {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       client.logout({
-        client_id: environment.auto0.clientId,
+        client_id: environment.auth0.clientId,
         returnTo: `${environment.siteUrl}`,
       });
     });

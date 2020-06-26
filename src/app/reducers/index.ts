@@ -1,17 +1,21 @@
 import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { Player } from 'dart3-sdk';
 
-import { Permission } from '@core/models';
-import * as fromAccount from '@core/reducers/account.reducer';
-import * as fromAuth from '@core/reducers/auth.reducer';
+import * as fromAuth from '@auth/reducers/auth.reducer';
+import * as fromUser from '@user/reducers/user.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
-import * as fromNotification from '@core/reducers/notification.reducer';
+import * as fromPlayer from '@player/reducers/player.reducer';
+import * as fromJackpot from '@jackpot/reducers/jackpot.reducer';
+import { StoreState } from '@shared/models';
+import { getGameModuleLoading } from '@game/reducers';
 
 export interface State {
   auth: fromAuth.State;
-  notification: fromNotification.State;
+  user: fromUser.State;
   core: fromCore.State;
-  account: fromAccount.State;
+  player: fromPlayer.State;
+  jackpot: fromJackpot.State;
 }
 
 export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>(
@@ -19,53 +23,60 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
   {
     factory: () => ({
       auth: fromAuth.reducer,
-      notification: fromNotification.reducer,
+      user: fromUser.reducer,
       core: fromCore.reducer,
-      account: fromAccount.reducer,
+      player: fromPlayer.reducer,
+      jackpot: fromJackpot.reducer,
     }),
   },
 );
 
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-export const getAuthLoading = createSelector(
-  getAuthState,
-  state => state.loading,
-);
-export const getAuthUser = createSelector(
-  getAuthState,
-  state => state.user,
-);
+export const isAuthenticated = createSelector(getAuthState, state => state.authenticated);
 
-export const getNotificationState = createFeatureSelector<fromNotification.State>('notification');
-export const { selectAll: getAllNotifications } = fromNotification.adapter.getSelectors(
-  getNotificationState,
+export const getUserState = createFeatureSelector<fromUser.State>('user');
+export const getUserStoreState = createSelector(getUserState, ({ state }) => state);
+export const getUser = createSelector(getUserState, state => state);
+export const getUserCurrency = createSelector(
+  getUserState,
+  state => state.userMetadata.currency || '',
 );
+export const getUserPicture = createSelector(getUserState, state => state.picture);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
-export const getMenuOpen = createSelector(
-  getCoreState,
-  state => state.menuOpen,
-);
+export const showMenu = createSelector(getCoreState, state => state.menu);
+export const showFooter = createSelector(getCoreState, state => state.footer);
+export const showModal = createSelector(getCoreState, state => !!state.modal);
+export const getModal = createSelector(getCoreState, state => state.modal);
+export const getPin = createSelector(getCoreState, state => state.pin);
 
-export const getAccountState = createFeatureSelector<fromAccount.State>('account');
-export const getAccount = createSelector(
-  getAccountState,
-  state => state,
+export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
+export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) => state);
+export const getAllPlayers = createSelector(getPlayerState, fromPlayer.selectAll);
+export const getSelectedPlayer = createSelector(
+  getPlayerState,
+  state => state.entities[state.selectedUid] || ({} as Player),
 );
-export const getJackpotValue = createSelector(
-  getAccountState,
-  state => state.jackpot.value,
+export const getSelectedPlayerUid = createSelector(getPlayerState, state => state.selectedUid);
+
+export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
+export const getJackpotStoreState = createSelector(getJackpotState, ({ state }) => state);
+export const getJackpot = createSelector(getJackpotState, ({ value, nextValue }) => ({
+  value,
+  nextValue,
+}));
+export const getJackpotValue = createSelector(getJackpotState, state => state.value);
+
+export const showLoading = createSelector(
+  isAuthenticated,
+  getPlayerStoreState,
+  getUserStoreState,
+  getJackpotStoreState,
+  getGameModuleLoading,
+  (authenticated, playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
+    !authenticated ||
+    playerStoreState !== StoreState.NONE ||
+    userStoreState !== StoreState.NONE ||
+    jackpotStoreState !== StoreState.NONE ||
+    gameModuleLoading,
 );
-export const getLoadingAccount = createSelector(
-  getAccountState,
-  state => state.loading,
-);
-export const getPermissions = createSelector(
-  getAccountState,
-  state => state.permissions,
-);
-export const hasPermission = (permission: Permission) =>
-  createSelector(
-    getAccountState,
-    state => state.permissions.includes(permission),
-  );

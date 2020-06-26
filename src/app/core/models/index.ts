@@ -1,2 +1,1 @@
-export * from './notification';
-export * from './account';
+export * from './modal';

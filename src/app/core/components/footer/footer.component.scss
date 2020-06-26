@@ -1,0 +1,16 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: $dark-blue;
+}
+
+div {
+  font-family: $header;
+  font-size: 10px;
+  margin: 0 5px;
+  text-transform: uppercase;
+  color: $dark-grey;
+}

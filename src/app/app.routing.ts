@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '@core/services';
-import { NotFoundComponent } from '@shared/components';
-
-import { SettingsComponent } from './core/containers';
+import { AuthGuard } from '@auth/services/auth.guard';
+import { PlayerRoutes } from '@player/player.routing';
+import { UserRoutes } from '@user/user.routing';
 
 export const routes: Routes = [
   {
@@ -12,8 +11,8 @@ export const routes: Routes = [
     loadChildren: () => import('@game/game.module').then(m => m.GameModule),
     canActivate: [AuthGuard],
   },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
+  { path: 'players', children: PlayerRoutes, canActivate: [AuthGuard] },
+  { path: 'user', children: UserRoutes, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

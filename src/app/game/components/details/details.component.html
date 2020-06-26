@@ -1,0 +1,20 @@
+<div class="header">
+  <div>{{ gameName(game.type) }}</div>
+  <div class="icon" (click)="matches.emit()"><i class="fas fa-sitemap"></i></div>
+</div>
+<div class="header sub">{{ gameSubName(game.type) }}</div>
+<div class="row" *ngIf="match">
+  <div class="name">Round</div>
+  <div class="value">{{ match.activeRound }}</div>
+  <div class="divider">|</div>
+  <div class="name">Leg</div>
+  <div class="value">{{ match.activeLeg }}/{{ game.legs }}</div>
+  <div class="divider">|</div>
+  <div class="name">Set</div>
+  <div class="value">{{ match.activeSet }}/{{ game.sets }}</div>
+</div>
+
+<div class="row">
+  <div class="name">Prize pool</div>
+  <div class="value">{{ game.prizePool | currency$ | async }}</div>
+</div>

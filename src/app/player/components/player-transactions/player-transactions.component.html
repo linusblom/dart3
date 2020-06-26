@@ -1,0 +1,25 @@
+<div class="header">Transactions</div>
+<div class="transactions">
+  <div class="table-headers">
+    <div class="sm">Date/Time</div>
+    <div class="sm">Type</div>
+    <div class="lg">Description</div>
+    <div class="sm right">Debit</div>
+    <div class="sm right">Credit</div>
+    <div class="sm right">Balance</div>
+  </div>
+  <div class="table-body">
+    <div *ngFor="let transaction of transactions" class="table-row">
+      <div class="sm">{{ transaction.createdAt | date: 'dd/MM HH:mm' }}</div>
+      <div class="sm capital">{{ transaction.type }}</div>
+      <div class="lg">{{ transaction.description }}</div>
+      <div class="sm right">
+        {{ transaction.debit > 0 ? (transaction.debit | number: '1.2-2') : '' }}
+      </div>
+      <div class="sm right">
+        {{ transaction.credit > 0 ? (transaction.credit | number: '1.2-2') : '' }}
+      </div>
+      <div class="sm right">{{ transaction.balance | number: '1.2-2' }}</div>
+    </div>
+  </div>
+</div>

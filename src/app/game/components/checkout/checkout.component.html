@@ -1,0 +1,8 @@
+<div
+  *ngFor="let checkout of checkouts$ | async; let index = index; trackBy: trackByFn"
+  [@slideInOut]
+  [style.background]="color"
+  [style.z-index]="10 - index"
+>
+  {{ checkout }}
+</div>

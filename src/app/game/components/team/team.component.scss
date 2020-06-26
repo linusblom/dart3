@@ -1,0 +1,59 @@
+@import '~variables.scss';
+
+:host {
+  margin-bottom: 20px;
+}
+
+.team {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: $grey;
+  z-index: 20;
+  border-bottom: 1px solid $dark-blue;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  height: 45px;
+}
+
+.player {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+img {
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  width: 110px;
+}
+
+.score {
+  width: 70px;
+  text-align: center;
+  font-family: $header;
+  font-size: 20px;
+  font-weight: 100;
+  letter-spacing: 2px;
+}
+
+.scores {
+  position: relative;
+  display: flex;
+  height: 25px;
+  z-index: 10;
+}

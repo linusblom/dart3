@@ -1,0 +1,33 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  color: $grey;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+  }
+}
+
+.icon {
+  cursor: pointer;
+  justify-content: center;
+  height: 36px;
+  margin-bottom: 1px;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: initial;
+  }
+
+  &.timer {
+    font-family: $header;
+    font-weight: 100;
+    font-size: 20px;
+  }
+}

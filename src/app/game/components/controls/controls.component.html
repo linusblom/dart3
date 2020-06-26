@@ -1,0 +1,24 @@
+<div
+  *ngIf="timer === -1; else timerRef"
+  class="icon"
+  [style.background]="color"
+  [ngClass]="{ disabled: disabled }"
+  (click)="!disabled && endRound.emit()"
+>
+  <i class="fas fa-step-forward fa-lg"></i>
+</div>
+
+<ng-template #timerRef>
+  <div class="icon timer" [style.background]="color" (click)="endRound.emit()">
+    {{ timer }}
+  </div>
+</ng-template>
+
+<div
+  class="icon"
+  [style.background]="color"
+  [ngClass]="{ disabled: disabled || timer === -1 }"
+  (click)="!disabled && timer > -1 && cancel.emit()"
+>
+  <i class="fas fa-stop fa-lg"></i>
+</div>

@@ -1,0 +1,73 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  background: rgba($black, 0.7);
+}
+
+.modal {
+  padding: 20px;
+  margin: auto;
+  background: $off-white;
+  max-width: 400px;
+  box-shadow: $box-shadow;
+}
+
+.header {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.text {
+  margin: 20px 0;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.pin {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+
+  .num {
+    text-align: center;
+    width: 30px;
+    height: 50px;
+    margin: 0 20px;
+    border: 1px solid $black;
+    box-sizing: border-box;
+    background-clip: content-box;
+    padding: 10px 5px;
+
+    &.active {
+      animation: caret-pulse 1s ease-in-out;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  margin: 0 -5px;
+
+  button {
+    flex: 1;
+    margin: 0 5px;
+  }
+}
+
+@keyframes caret-pulse {
+  0% {
+    background-color: rgba($dark-grey, 0.1);
+  }
+  20% {
+    background-color: rgba($dark-grey, 1);
+  }
+  100% {
+    background-color: rgba($dark-grey, 0.1);
+  }
+}

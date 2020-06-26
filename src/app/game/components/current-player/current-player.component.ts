@@ -1,37 +1,42 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Player, Score } from 'dart3-sdk';
 
-import { Player, Score } from '@game/models';
+import { BoardHit } from '@game/models';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
-  selector: 'app-current-player',
+  selector: 'game-current-player',
   templateUrl: './current-player.component.html',
   styleUrls: ['./current-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('200ms ease-in-out', style({ transform: 'translateX(0%)' })),
+      ]),
+      transition(':leave', [
+        style({ height: '*', transform: 'translateX(0%)' }),
+        animate('200ms ease-in-out', style({ transform: 'translateX(-100%)' })),
+        animate('200ms ease-in-out', style({ height: '0' })),
+      ]),
+    ]),
+  ],
 })
 export class CurrentPlayerComponent {
   @Input() player: Player;
-  @Input() scores: Score[] = [];
-  @Input() roundText = '-';
-  @Input() disableEndTurn = false;
-  @Input() set autoEndTurn(countDown: number) {
-    this.countDown = countDown;
+  @Input() set hits(hits: BoardHit[]) {
+    this.scores = hits.map(({ id, value, multiplier }) => ({ id, value, multiplier }));
+    this.total = {
+      multiplier: 0,
+      value: hits.reduce((acc, { value, multiplier }) => acc + value * multiplier, 0),
+    };
   }
 
-  @Output() endRound = new EventEmitter<void>();
-  @Output() abortAutoEndTurn = new EventEmitter<void>();
+  scores: (Score & { id: string })[];
+  total: Score;
 
-  emptyScore = ['empty', 'empty', 'empty'];
-  countDown = -1;
-
-  get scoresCount() {
-    return this.scores.length;
-  }
-
-  get totalScore() {
-    return this.scores.reduce((total, score) => (total += score.score * score.multiplier), 0);
-  }
-
-  get endTurnButtonText() {
-    return this.countDown >= 0 ? `End Turn (${this.countDown})` : 'End Turn';
+  trackByFn(_: number, { id }: Score & { id: string }) {
+    return id;
   }
 }

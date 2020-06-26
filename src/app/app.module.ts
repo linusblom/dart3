@@ -1,8 +1,5 @@
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -10,11 +7,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { AuthModule } from '@auth/auth.module';
+import { RequestInterceptor } from '@auth/services';
 import { CoreModule } from '@core/core.module';
-import { AccountEffects } from '@core/effects/account.effects';
-import { AuthEffects } from '@core/effects/auth.effect';
 import { environment } from '@envs/environment';
 import { SharedModule } from '@shared/shared.module';
+import { effects as authEffects } from '@auth/effects';
+import { effects as playerEffects } from '@player/effects';
+import { effects as coreEffects } from '@core/effects';
+import { effects as userEffects } from '@user/effects';
+import { effects as jackpotEffects } from '@jackpot/effects';
+import { PlayerModule } from '@player/player.module';
+import { JackpotModule } from '@jackpot/jackpot.module';
+import { UserModule } from '@user/user.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -25,29 +30,37 @@ import { ROOT_REDUCERS } from './reducers';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
+    HttpClientModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
-      runtimeChecks: {
-        strictStateImmutability: false,
-        strictActionImmutability: false,
-        strictStateSerializability: false,
-        strictActionSerializability: false,
-      },
+      runtimeChecks: {},
     }),
-    EffectsModule.forRoot([AuthEffects, AccountEffects]),
+    EffectsModule.forRoot([
+      ...authEffects,
+      ...playerEffects,
+      ...coreEffects,
+      ...userEffects,
+      ...jackpotEffects,
+    ]),
     StoreDevtoolsModule.instrument({
       name: 'Dart3',
       logOnly: environment.production,
     }),
+    AuthModule,
+    PlayerModule,
+    UserModule,
     CoreModule,
+    JackpotModule,
     AppRoutingModule,
     SharedModule,
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

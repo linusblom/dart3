@@ -1,0 +1,46 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  align-items: center;
+  background: $off-white;
+  height: 22px;
+  width: 22px;
+  border: 1px solid;
+  animation: hit-pulse 1s ease-in-out;
+  animation-iteration-count: infinite;
+  box-sizing: border-box;
+  border-radius: 11px;
+  box-shadow: $box-shadow;
+  transition: width 300ms ease-in-out;
+  overflow: hidden;
+
+  &:hover {
+    width: 100px;
+  }
+}
+
+img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+div {
+  font-family: $header;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+@keyframes hit-pulse {
+  0% {
+    border-color: $board-black;
+  }
+  50% {
+    border-color: $board-light;
+  }
+  100% {
+    border-color: $board-black;
+  }
+}

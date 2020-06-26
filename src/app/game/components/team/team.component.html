@@ -1,0 +1,26 @@
+<div class="team">
+  <div class="players">
+    <div class="player" *ngFor="let player of team.players">
+      <img
+        [src]="player.avatar"
+        [height]="team.players.length > 1 ? 20 : 30"
+        [width]="team.players.length > 1 ? 20 : 30"
+      />
+      <div class="name" [style.font-size-px]="team.players.length > 1 ? 12 : 18">
+        {{ player.name }}
+      </div>
+    </div>
+  </div>
+  <div class="score">{{ team.score }}</div>
+  <div class="score">{{ team.legs }}</div>
+  <div class="score">{{ team.sets }}</div>
+  <div class="score">{{ team.gems }}</div>
+</div>
+<div class="scores">
+  <game-round-hit
+    [@slideIn]
+    *ngFor="let hit of team.hits; trackBy: trackByFn"
+    [value]="getHitValue(hit)"
+    [color]="getHitColor(hit)"
+  ></game-round-hit>
+</div>

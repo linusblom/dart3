@@ -1,29 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { components } from './components';
-import { BoxModule } from './modules/box/box.module';
 import { pipes } from './pipes';
+import { directives } from './directives';
+import { components } from './components';
 
 const materialComponents = [
   MatButtonModule,
   MatInputModule,
-  MatProgressSpinnerModule,
   MatProgressBarModule,
   MatSelectModule,
   MatButtonToggleModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({
-  imports: [BoxModule, CommonModule, FontAwesomeModule, ...materialComponents],
-  exports: [BoxModule, ...materialComponents, ...components, ...pipes],
-  declarations: [...components, ...pipes],
+  imports: [CommonModule, ...materialComponents],
+  exports: [...materialComponents, ...pipes, ...directives, ...components],
+  declarations: [...pipes, ...directives, ...components],
 })
 export class SharedModule {}

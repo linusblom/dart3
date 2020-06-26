@@ -1,25 +1,33 @@
-import { CurrentPlayerComponent } from './current-player/current-player.component';
 import { DartBoardComponent } from './dart-board/dart-board.component';
-import { JackpotComponent } from './jackpot/jackpot.component';
-import { PlayerBankComponent } from './player-bank/player-bank.component';
-import { PlayerInfoComponent } from './player-info/player-info.component';
-import { PlayerLevelProgressComponent } from './player-level-progress/player-level-progress.component';
-import { PlayerLevelComponent } from './player-level/player-level.component';
-import { PlayerStatsComponent } from './player-stats/player-stats.component';
-import { ScoreBoardScoreFieldComponent } from './score-board-score-field/score-board-score-field.component';
-import { ScoreBoardComponent } from './score-board/score-board.component';
-import { DartHitComponent } from './dart-hit/dart-hit.component';
+import { TeamComponent } from './team/team.component';
+import { DetailsComponent } from './details/details.component';
+import { WizardComponent } from './wizard/wizard.component';
+import { WizardSelectComponent } from './wizard-select/wizard-select.component';
+import { WizardSettingsComponent } from './wizard-settings/wizard-settings.component';
+import { WizardPlayersComponent } from './wizard-players/wizard-players.component';
+import { WizardPlayerComponent } from './wizard-player/wizard-player.component';
+import { BoardHitComponent } from './board-hit/board-hit.component';
+import { RoundHitComponent } from './round-hit/round-hit.component';
+import { MatchesComponent } from './matches/matches.component';
+import { CurrentPlayerComponent } from './current-player/current-player.component';
+import { ScoreComponent } from './score/score.component';
+import { ControlsComponent } from './controls/controls.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 export const components = [
   DartBoardComponent,
-  DartHitComponent,
+  ControlsComponent,
   CurrentPlayerComponent,
-  JackpotComponent,
-  PlayerInfoComponent,
-  PlayerLevelComponent,
-  PlayerLevelProgressComponent,
-  PlayerBankComponent,
-  PlayerStatsComponent,
-  ScoreBoardComponent,
-  ScoreBoardScoreFieldComponent,
+  TeamComponent,
+  RoundHitComponent,
+  BoardHitComponent,
+  DetailsComponent,
+  ScoreComponent,
+  WizardComponent,
+  WizardPlayerComponent,
+  WizardPlayersComponent,
+  WizardSelectComponent,
+  WizardSettingsComponent,
+  MatchesComponent,
+  CheckoutComponent,
 ];

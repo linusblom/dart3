@@ -1,0 +1,53 @@
+<div class="content">
+  <div class="title">Playing</div>
+  <div
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    id="playing"
+    class="players"
+    [ngClass]="{ dragging: dragging }"
+    [cdkDropListData]="playing"
+    [cdkDropListConnectedTo]="['available']"
+    (cdkDropListDropped)="onPlayerDrop($event)"
+  >
+    <game-wizard-player
+      *ngFor="let player of playing"
+      cdkDrag
+      [cdkDragData]="player"
+      [player]="player"
+      (cdkDragStarted)="dragStarted()"
+      (cdkDragReleased)="dragReleased()"
+    ></game-wizard-player>
+    <div class="header placeholder" *ngIf="playing.length === 0">Drag Players Here</div>
+  </div>
+
+  <div class="title">Available</div>
+  <div
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    id="available"
+    class="players"
+    [ngClass]="{ dragging: dragging }"
+    [cdkDropListData]="available"
+    [cdkDropListConnectedTo]="['playing']"
+    (cdkDropListDropped)="onPlayerDrop($event)"
+  >
+    <game-wizard-player
+      *ngFor="let player of available"
+      cdkDrag
+      [cdkDragData]="player"
+      [player]="player"
+      (cdkDragStarted)="dragStarted()"
+      (cdkDragReleased)="dragReleased()"
+    ></game-wizard-player>
+  </div>
+</div>
+
+<div class="buttons">
+  <button mat-flat-button [disabled]="playing.length > 0" (click)="cancel.emit()">
+    Cancel
+  </button>
+  <button mat-flat-button [disabled]="playing.length < 2" (click)="start.emit()">
+    Game On
+  </button>
+</div>

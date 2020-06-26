@@ -1,0 +1,50 @@
+@import '~variables.scss';
+
+:host {
+  flex: 1 0 500px;
+  display: flex;
+  flex-direction: column;
+  background: $grey;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.transactions {
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-size: 12px;
+  flex: 1;
+
+  .table-headers {
+    display: flex;
+    text-transform: uppercase;
+  }
+
+  .table-body {
+    overflow: hidden;
+
+    .table-row {
+      display: flex;
+      white-space: nowrap;
+    }
+  }
+
+  .sm {
+    padding: 3px;
+    flex: 0.6;
+  }
+  
+  .lg {
+    padding: 3px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .capital {
+    text-transform: capitalize;
+  }
+
+  .right {
+    text-align: right;
+  }
+}

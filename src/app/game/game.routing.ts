@@ -1,25 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {
-  GameBoardComponent,
-  GameComponent,
-  PlayersComponent,
-  ResultsComponent,
-  StartGameComponent,
-} from './containers';
+import { GameGuard } from './services';
+import { GameComponent, StartComponent, ResultsComponent } from './containers';
 
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'start',
+  },
+  {
+    path: 'start',
+    component: StartComponent,
+    canActivate: [GameGuard],
+  },
+  {
+    path: 'play',
     component: GameComponent,
-    children: [
-      { path: '', pathMatch: 'full', redirectTo: 'start' },
-      { path: 'start', component: StartGameComponent },
-      { path: 'game/:gameId', component: GameBoardComponent },
-      { path: 'players', component: PlayersComponent },
-      { path: 'results/:gameId', component: ResultsComponent },
-    ],
+    canActivate: [GameGuard],
+  },
+  {
+    path: 'results/:uid',
+    component: ResultsComponent,
   },
 ];
 

@@ -1,0 +1,14 @@
+<game-wizard
+  *ngFor="let option of options; trackBy: trackByFn"
+  [step]="step$ | async"
+  [players]="players$ | async"
+  [selectedPlayers]="selectedPlayers$ | async"
+  [option]="option"
+  [form]="form"
+  (changeStep)="changeStep($event)"
+  (create)="create()"
+  (cancel)="cancel()"
+  (start)="start()"
+  (addPlayer)="addPlayer($event)"
+  (removePlayer)="removePlayer($event)"
+></game-wizard>

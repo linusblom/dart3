@@ -1,5 +1,3 @@
-import { NotificationItemComponent } from './notification-item/notification-item.component';
+import { FooterComponent } from './footer/footer.component';
 
-export { NotificationItemComponent } from './notification-item/notification-item.component';
-
-export const components = [NotificationItemComponent];
+export const components = [FooterComponent];

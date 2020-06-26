@@ -1,0 +1,5 @@
+<mat-progress-bar *ngIf="loading$ | async" mode="indeterminate"></mat-progress-bar>
+<app-menu *ngIf="showMenu$ | async" [@menuLeave]></app-menu>
+<app-modal class="modal" *ngIf="showModal$ | async"></app-modal>
+<router-outlet></router-outlet>
+<app-footer *ngIf="showFooter$ | async"></app-footer>

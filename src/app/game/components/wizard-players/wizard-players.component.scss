@@ -1,0 +1,66 @@
+@import '~variables.scss';
+
+:host {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  margin: 10px 0;
+}
+
+.players {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px dashed $border;
+  min-height: 70px;
+  padding: 10px;
+  margin-bottom: 40px;
+
+  &.dragging:hover {
+    background: rgba($white, .1);
+  }
+}
+
+.placeholder {
+  position: absolute;
+  width: 200px;
+  height: 12px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  font-size: 12px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    max-width: 250px;
+    width: 100%;
+    margin-left: 20px;
+    font-size: 20px;
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}

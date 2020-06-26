@@ -1,8 +1,0 @@
-<button
-  *ngFor="let tab of tabs"
-  mat-button
-  [ngClass]="{ active: tab.value === activeTab }"
-  (click)="activeTabChange.emit(tab.value)"
->
-  {{ tab.name }}
-</button>

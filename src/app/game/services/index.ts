@@ -1,7 +1,9 @@
+import { CurrentGameService } from './current-game.service';
 import { GameService } from './game.service';
-import { PlayerService } from './player.service';
+import { GameGuard } from './game.guard';
 
+export { CurrentGameService } from './current-game.service';
 export { GameService } from './game.service';
-export { PlayerService } from './player.service';
+export { GameGuard } from './game.guard';
 
-export const services = [GameService, PlayerService];
+export const services = [CurrentGameService, GameService, GameGuard];

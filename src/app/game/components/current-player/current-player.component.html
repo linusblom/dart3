@@ -1,40 +1,15 @@
-<app-box-group header="Playing">
+<div class="player-wrapper">
   <div class="player">
-    <app-avatar
-      [avatarUrl]="player.avatarUrl"
-      [color]="player.color"
-      [name]="player.name"
-      size="40"
-    ></app-avatar>
-    <div>
-      {{ player.name }}
-    </div>
+    <img [src]="player.avatar" />
+    <div class="name">{{ player.name }}</div>
   </div>
-  <div class="scores">
-    <div *ngFor="let score of scores" class="score-wrapper">
-      <div>{{ score.score }}</div>
-      <div>x{{ score.multiplier }}</div>
-      <div>{{ score.score * score.multiplier }}</div>
-    </div>
-    <div
-      *ngFor="let emptyScore of ['empty', 'empty', 'empty'] | slice: scoresCount"
-      class="score-wrapper empty"
-    >
-      <div>-</div>
-      <div>-</div>
-      <div>-</div>
-    </div>
-  </div>
-  <div class="total-score">
-    {{ totalScore }}
-  </div>
-  <div class="round-text">
-    {{ roundText }}
-  </div>
-  <button mat-stroked-button (click)="endRound.emit()" [disabled]="disableEndTurn">
-    {{ endTurnButtonText }}
-  </button>
-  <button mat-stroked-button (click)="abortAutoEndTurn.emit()" [disabled]="countDown === -1">
-    Cancel
-  </button>
-</app-box-group>
+</div>
+
+<div class="hits">
+  <game-score
+    *ngFor="let score of scores; trackBy: trackByFn"
+    [@slideInOut]
+    [score]="score"
+  ></game-score>
+</div>
+<game-score [score]="total" [total]="true"></game-score>

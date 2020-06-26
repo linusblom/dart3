@@ -1,0 +1,61 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.user {
+  position: relative;
+  padding: 20px;
+  background: $dark-blue;
+  color: $white;
+
+  button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+
+  > div {
+    flex: 1 0 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .settings {
+    background: $white;
+  }
+    
+  .bank {
+    background: $grey;
+
+    .row {
+      color: $black;
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+    
+      &.space {
+        margin-top: 20px;
+      }
+    
+      .name {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    }
+  }
+}
+
+mat-form-field {
+  width: 250px;
+  margin-right: 20px;
+}

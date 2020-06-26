@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SharedModule } from '@shared/shared.module';
+import { CurrencyPipe } from '@shared/pipes/currency.pipe';
+import { JackpotModule } from '@jackpot/jackpot.module';
 
 import { components } from './components';
 import { containers } from './containers';
@@ -17,14 +19,15 @@ import { services } from './services';
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     GameRoutingModule,
+    DragDropModule,
+    JackpotModule,
     StoreModule.forFeature('game', reducers),
     EffectsModule.forFeature(effects),
-    SharedModule,
   ],
   declarations: [...containers, ...components],
-  providers: [...services],
+  providers: [...services, CurrencyPipe],
 })
 export class GameModule {}

@@ -1,4 +1,3 @@
-export * from './player';
-export * from './transaction';
-export * from './game';
-export * from './jackpot';
+export * from './game-option';
+export * from './board-hit';
+export * from './match-team-player';

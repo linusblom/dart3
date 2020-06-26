@@ -9,23 +9,22 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom",
-      "esnext.array"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom", "esnext.array"],
     "paths": {
       "@envs/*": ["environments/*"],
       "@auth/*": ["app/auth/*"],
       "@shared/*": ["app/shared/*"],
       "@core/*": ["app/core/*"],
+      "@player/*": ["app/player/*"],
       "@game/*": ["app/game/*"],
       "@utils/*": ["app/utils/*"],
-      "@root/*": ["app/*"],
+      "@user/*": ["app/user/*"],
+      "@jackpot/*": ["app/jackpot/*"],
+      "@root/*": ["app/*"]
     }
   }
 }

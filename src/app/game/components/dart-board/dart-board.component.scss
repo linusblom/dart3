@@ -2,35 +2,43 @@
 
 :host {
   display: block;
+  height: 100%;
+  width: auto;
   position: relative;
-  cursor: default;
+  user-select: none;
 
-  &:not(.locked) {
-    cursor: url("../../../../assets/dart.png"), auto;
+  &:not(.disabled) {
+    path, circle {
+      stroke: transparent;
+      stroke-width: 5;
 
-    .light, .red, .green, .dark {
       &:hover {
-        fill: $white60;
+        fill: rgba($white, .5);
       }
     }
   }
-  
-  &.locked path {
-    transition: fill 200ms ease-in-out;
-  }
 }
 
-app-jackpot {
+.absolute {
   position: absolute;
+}
+
+game-current-player {
+  z-index: 15;
+}
+
+game-controls {
+  bottom: 0;
+}
+
+game-checkout {
+  left: 50px;
+  top: 65px;
+  z-index: 10;
 }
 
 svg {
   height: 100%;
-
-  path, circle {
-    stroke: transparent;
-    stroke-width: 5;
-  }
 }
 
 .light {
@@ -49,24 +57,10 @@ svg {
   fill: $board-black;
 }
 
-.white {
-  fill: $white70;
-}
-
-.black {
-  fill: $real-black40;
-}
-
-.blue {
-  fill: $blue70;
-}
-
-
 .text {
   transition: opacity 200ms ease-in-out;
-  font-family: 'Rubik';
-  fill: $white90;
-  stroke: $board-black;
-  stroke-width: 1;
+  font-family: $header;
+  fill: $white;
   font-size: 36px;
+  font-weight: 100;
 }

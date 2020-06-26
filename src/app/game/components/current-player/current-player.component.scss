@@ -1,59 +1,58 @@
 @import '~variables.scss';
 
-.player {
+:host {
   display: flex;
-  align-items: center;
-  font-family: $logo;
-  font-size: 30px;
+  flex-direction: column;
+  padding-top: 50px;
+  color: $dark-blue;
 
-  div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  app-avatar {
-    margin-right: 10px;
-  }
-}
-
-.scores {
-  display: flex;
-  margin-top: 20px;
-  justify-content: space-between;
-  border-bottom: 1px solid $white90;
-
-  .score-wrapper {
+  & > div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
-    border-top: 1px solid $white90;
-    font-size: 28px;
-    width: 40px;
-
-    &.empty {
-      border-color: $white60;
-      color: $white60;
-    }
+    width: 50px;
   }
 }
 
-.total-score {
-  padding: 20px;
-  border-bottom: 1px solid $white90;
-  text-align: center;
-  font-size: 72px;
+.player-wrapper {
+  background: $grey;
+  height: 180px;
+  padding: 10px 0;
+  overflow: hidden;
 }
 
-.round-text {
-  font-size: 24px;
-  padding: 20px;
-  border-bottom: 1px solid $white90;
-  text-align: center;
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
+  height: 180px;
+
+  .name {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    overflow: hidden;
+  }
+  
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
 }
 
-button {
-  margin-top: 20px;
-  width: 100%;
+.hits {
+  height: 109px;
+  box-sizing: border-box;
+  border: solid $grey;
+  border-width: 0 1px;
+  padding-top: 1px;
+
+  game-score {
+    margin-bottom: 1px;
+  }
 }

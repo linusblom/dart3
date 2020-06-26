@@ -1,0 +1,16 @@
+@import '~variables.scss';
+
+:host {
+  font-family: $header;
+  font-size: 12px;
+  padding: 5px;
+  width: 30px;
+  box-sizing: border-box;
+  border-right: 1px solid $dark-blue;
+  text-align: center;
+  background: $grey;
+}
+
+.zero {
+  color: #e88080;
+}

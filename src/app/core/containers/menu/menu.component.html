@@ -1,27 +1,26 @@
-<div class="menu" [@menuAnimation]="(menuOpen$ | async) ? 'show' : 'hide'">
-  <div class="logo">DART3</div>
+<div class="menu-left">
   <div
     class="item"
-    [ngClass]="{ active: isRouteActive('/start') || isRouteActive('/game') }"
-    (click)="onNavigate([''])"
+    data-title="Game"
+    [ngClass]="{ active: routeActive('/start') }"
+    (click)="navigate(['/'])"
   >
-    <fa-icon [icon]="gameIcon" size="2x"></fa-icon>
-  </div>
-  <div
-    class="item"
-    [ngClass]="{ active: isRouteActive('/players') }"
-    (click)="onNavigate(['players'])"
-  >
-    <fa-icon [icon]="userIcon" size="2x"></fa-icon>
+    Game
   </div>
   <div
     class="item"
-    [ngClass]="{ active: isRouteActive('/settings') }"
-    (click)="onNavigate(['settings'])"
+    data-title="Players"
+    [ngClass]="{ active: routeActive('/players') }"
+    (click)="navigate(['players'])"
   >
-    <fa-icon [icon]="settingsIcon" size="2x"></fa-icon>
+    Players
   </div>
-  <div class="item" (click)="onLogout()">
-    <fa-icon [icon]="logoutIcon" size="2x"></fa-icon>
-  </div>
+  <div class="item" data-title="Statistics">Statistics</div>
+</div>
+<div class="header">
+  DART3
+</div>
+
+<div class="menu-right">
+  <img [src]="picture$ | async" (click)="navigate(['user'])" />
 </div>

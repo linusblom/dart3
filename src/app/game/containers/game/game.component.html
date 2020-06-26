@@ -1,0 +1,51 @@
+<div class="game-id">GAME #{{ game.id }}</div>
+
+<game-matches
+  *ngIf="showMatches"
+  [matches]="matches$ | async"
+  [color]="option.color"
+  (close)="showMatches = false"
+></game-matches>
+
+<game-dart-board
+  [player]="activePlayer$ | async"
+  [color]="option.color"
+  [timer]="timer"
+  [disabled]="disabled"
+  [clear]="clear"
+  [activeRound]="activeRound$ | async"
+  [type]="game.type"
+  (updateScores)="updateScores($event)"
+  (endRound)="endRound($event)"
+  (cancel)="abortAutoEndRound$.next()"
+></game-dart-board>
+
+<div class="side-board">
+  <game-details
+    [game]="game"
+    [match]="currentMatch$ | async"
+    [style.background]="option.color"
+    (matches)="showMatches = true"
+  ></game-details>
+
+  <div class="headers">
+    <div>Score</div>
+    <div>Legs</div>
+    <div>Sets</div>
+    <div class="jackpot">
+      <div class="value">
+        <jackpot></jackpot>
+      </div>
+      <img class="gem" src="../../../../assets/gem.gif" />
+    </div>
+  </div>
+
+  <div class="teams">
+    <div class="arrow" *ngIf="arrowTop >= 0" [style.top.px]="arrowTop"></div>
+    <game-team
+      *ngFor="let team of teams$ | async; trackBy: trackByFn"
+      [team]="team"
+      [type]="game.type"
+    ></game-team>
+  </div>
+</div>

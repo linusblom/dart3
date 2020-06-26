@@ -1,17 +1,33 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { CoreActions } from '@core/actions';
+import { Modal } from '@core/models';
 
 export interface State {
-  menuOpen: boolean;
+  menu: boolean;
+  footer: boolean;
+  modal: Modal;
+  pin: string;
 }
 
-export const initalState: State = {
-  menuOpen: false,
+export const initialState: State = {
+  menu: false,
+  footer: false,
+  modal: undefined,
+  pin: undefined,
 };
 
 export const reducer = createReducer(
-  initalState,
-  on(CoreActions.openMenu, state => ({ ...state, menuOpen: true })),
-  on(CoreActions.closeMenu, state => ({ ...state, menuOpen: false })),
+  initialState,
+  on(CoreActions.toggleMenu, (state, { menu }) => ({ ...state, menu })),
+
+  on(CoreActions.toggleFooter, (state, { footer }) => ({ ...state, footer })),
+
+  on(CoreActions.showModal, (state, { modal }) => ({ ...state, modal })),
+
+  on(CoreActions.dismissModal, state => ({ ...state, modal: undefined })),
+
+  on(CoreActions.confirmPinDispatch, (state, { pin }) => ({ ...state, pin })),
+
+  on(CoreActions.confirmPinComplete, state => ({ ...state, pin: undefined })),
 );

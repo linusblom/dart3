@@ -1,30 +1,47 @@
-$regular: 'Rubik', sans-serif;
-$logo: 'Montserrat Subrayada', sans-serif;
-$jackpot: 'VT323', monospace;
-
-// new colors
-$white: #F8F8F8;
-$white08: rgba($white, .08);
-$white15: rgba($white, .15);
-$white30: rgba($white, .30);
-$white40: rgba($white, .40);
-$white60: rgba($white, .60);
-$white70: rgba($white, .70);
-$white90: rgba($white, .90);
-
-$black: #111D49;
-$real-black: #000000;
-$black40: rgba($black, .40);
-$real-black40: rgba($real-black, .40);
-$real-black70: rgba($real-black, .70);
-$blue70: rgba(#70D1F4, .70);
-
+$white: #ffffff;
+$off-white: #f7f7f7;
+$grey: #f1f1f1;
+$border:#dddddd; 
+$dark-grey: #797979;
+$dark-blue: #232e3a;
+$black: #181818;
+$error: #ff6c6c;
 $info: #6ccbff;
 $success: #8bff6c;
 $warning: #fbff6c;
-$error: #ff6c6c;
+
+$header: 'Montserrat', sans-serif;
+$base: 'Lora', sans-serif;
+
+$box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.2);
 
 $board-light: #f7e9cd;
 $board-red: #ed3737;
 $board-green: #4f9962;
 $board-black: #111111;
+
+// $grey: #747474;
+// $yellow: #ffe400;
+// $green: #14a76c;
+// $orange: #ff652f;
+
+// $white08: rgba($white, .08);
+// $white15: rgba($white, .15);
+// $white30: rgba($white, .30);
+// $white40: rgba($white, .40);
+// $white60: rgba($white, .60);
+// $white70: rgba($white, .70);
+// $white90: rgba($white, .90);
+
+// $real-black: #000000;
+// $black40: rgba($black, .40);
+// $real-black40: rgba($real-black, .40);
+// $real-black70: rgba($real-black, .70);
+// $blue70: rgba(#70D1F4, .70);
+
+
+
+// $board-light: #f7e9cd;
+// $board-red: #ed3737;
+// $board-green: #4f9962;
+// $board-black: #111111;

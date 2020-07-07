@@ -75,8 +75,6 @@ export const showLoading = createSelector(
   getGameModuleLoading,
   (authenticated, playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
     !authenticated ||
-    playerStoreState !== StoreState.NONE ||
-    userStoreState !== StoreState.NONE ||
-    jackpotStoreState !== StoreState.NONE ||
+    [playerStoreState, userStoreState, jackpotStoreState].includes(StoreState.NONE) ||
     gameModuleLoading,
 );

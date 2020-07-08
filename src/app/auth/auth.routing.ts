@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CallbackComponent } from './components';
 
-export const routes: Routes = [{ path: 'callback', component: CallbackComponent }];
+export const routes: Routes = [{ path: 'auth', component: CallbackComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

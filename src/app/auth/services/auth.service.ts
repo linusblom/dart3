@@ -18,7 +18,7 @@ export class AuthService {
     createAuth0Client({
       domain: environment.auth0.domain,
       client_id: environment.auth0.clientId,
-      redirect_uri: `${environment.siteUrl}/callback`,
+      redirect_uri: `${environment.siteUrl}/auth`,
       audience: `${environment.auth0.audience}`,
       scope: 'openid profile email',
     }),
@@ -64,7 +64,7 @@ export class AuthService {
   login(redirectPath: string = '/') {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       client.loginWithRedirect({
-        redirect_uri: `${environment.siteUrl}/callback`,
+        redirect_uri: `${environment.siteUrl}/auth`,
         appState: { target: redirectPath },
       });
     });

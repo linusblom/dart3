@@ -24,6 +24,7 @@ export const initialState: State = {
   loginCount: 0,
   userMetadata: {
     currency: '',
+    bootstrapped: false,
   },
   identities: [],
   bank: {

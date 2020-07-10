@@ -42,10 +42,8 @@ export class AuthService {
     this.handleAuthCallback();
   }
 
-  getUser$(options?: GetUserOptions) {
-    return this.auth0Client$.pipe(
-      concatMap((client: Auth0Client) => from(client.getUser(options))),
-    );
+  getUser$() {
+    return this.auth0Client$.pipe(concatMap((client: Auth0Client) => from(client.getUser())));
   }
 
   private localAuthSetup() {

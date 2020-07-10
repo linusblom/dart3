@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { isEqual } from 'lodash';
 import { Player } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -38,7 +37,7 @@ export class StartComponent {
 
   constructor(private readonly store: Store<State>) {
     this.store
-      .pipe(select(getWizardValues), takeUntil(this.destroy$), distinctUntilChanged(isEqual))
+      .pipe(select(getWizardValues), takeUntil(this.destroy$))
       .subscribe(values => this.form.patchValue({ ...values }, { emitEvent: false }));
 
     this.form.valueChanges

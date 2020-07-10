@@ -2,6 +2,6 @@
   {{ description }}
 </div>
 
-<button class="play-button" mat-flat-button (click)="next.emit()">
+<button class="play-button" mat-flat-button (click)="next.emit()" [disabled]="disabled">
   Play
 </button>

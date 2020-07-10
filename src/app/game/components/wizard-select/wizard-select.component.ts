@@ -8,6 +8,7 @@ import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from 
 })
 export class WizardSelectComponent {
   @Input() description = '';
+  @Input() disabled = false;
 
   @Output() next = new EventEmitter<void>();
 }

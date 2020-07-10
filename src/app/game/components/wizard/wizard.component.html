@@ -1,9 +1,13 @@
 <div class="container" *ngIf="step === Step.SelectGame || selected">
+  <div class="ribbon" *ngIf="option.disabled">
+    <div class="label">Coming soon</div>
+  </div>
   <div class="header">{{ option.name }}</div>
   <ng-container [ngSwitch]="step">
     <game-wizard-select
       *ngSwitchCase="Step.SelectGame"
       [description]="option.description"
+      [disabled]="option.disabled"
       (next)="setGame(option.types[0])"
     ></game-wizard-select>
 

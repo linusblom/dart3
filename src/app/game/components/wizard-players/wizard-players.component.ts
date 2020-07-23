@@ -13,6 +13,8 @@ import { GameWizardStep } from '@game/models';
 export class WizardPlayersComponent {
   @Input() players: Player[] = [];
   @Input() set selectedPlayers(players: TeamPlayer[]) {
+    console.log(players);
+
     const allPlayingIds = players.map(({ playerId }) => playerId);
     const curPlayingIds = this.playing.map(({ id }) => id);
     const curAvailableIds = this.available.map(({ id }) => id);

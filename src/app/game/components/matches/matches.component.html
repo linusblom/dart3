@@ -1,5 +1,28 @@
 <div class="content" [style.background]="color">
-  <div class="matches"></div>
+  <div class="matches">
+    <div class="winner">
+      <i class="fas fa-trophy fa-3x"></i>
+      <span>{{ prizePool | currency$ | async }}</span>
+    </div>
+    <svg><line x1="50%" y1="0" x2="50%" y2="50" /></svg>
+    <div class="match">
+      <div class="team" *ngFor="let team of teams; let last = last">
+        <div class="player" *ngFor="let player of team.players">
+          <img [src]="player.avatar" />
+          <div class="name">
+            {{ player.name }}
+          </div>
+        </div>
+        <div *ngIf="!last" class="line">
+          <div class="vs-wrapper">
+            <div class="vs">
+              VS
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="buttons">
     <button mat-flat-button (click)="close.emit()">Close</button>
   </div>

@@ -42,8 +42,11 @@ img {
   width: 110px;
 }
 
-.score {
+.score, .gems {
   width: 70px;
+}
+
+.score {
   text-align: center;
   font-family: $header;
   font-size: 20px;
@@ -56,4 +59,17 @@ img {
   display: flex;
   height: 25px;
   z-index: 10;
+}
+
+.gems {
+  display: flex;
+  justify-content: center;
+
+  &.disabled {
+    opacity: 0.4;
+  }
+
+  span {
+    padding: 0 1px;
+  }
 }

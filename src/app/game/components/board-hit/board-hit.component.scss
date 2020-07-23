@@ -7,30 +7,52 @@
   height: 22px;
   width: 22px;
   border: 1px solid;
-  animation: hit-pulse 1s ease-in-out;
-  animation-iteration-count: infinite;
   box-sizing: border-box;
   border-radius: 11px;
   box-shadow: $box-shadow;
-  transition: width 300ms ease-in-out;
-  overflow: hidden;
+}
 
-  &:hover {
-    width: 100px;
+:host.none {
+  opacity: 0.4;
+
+  div {
+    display: none;
   }
 }
 
-img {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  margin-right: 10px;
+:host.avatar {
+  &:hover {
+    width: 100px;
+  }
+
+  div {
+    font-family: $header;
+    font-size: 12px;
+    white-space: nowrap;
+  }
 }
 
-div {
-  font-family: $header;
-  font-size: 12px;
-  white-space: nowrap;
+:host.avatar, :host.none {
+  animation: hit-pulse 1s ease-in-out;
+  animation-iteration-count: infinite;
+  transition: width 300ms ease-in-out;
+  overflow: hidden;
+
+  img {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+}
+
+:host.gem {
+  border-color: $gem;
+
+  img {
+    width: 20px;
+    height: auto;
+  }
 }
 
 @keyframes hit-pulse {

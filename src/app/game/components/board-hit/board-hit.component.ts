@@ -1,6 +1,13 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  HostBinding,
+} from '@angular/core';
 
-import { BoardHit } from '@game/models';
+import { BoardHit, BoardHitType } from '@game/models';
 
 @Component({
   selector: 'game-board-hit',
@@ -13,4 +20,10 @@ export class BoardHitComponent {
   @Input() avatar = '';
 
   @Output() remove = new EventEmitter<string>();
+
+  @HostBinding('class') get type() {
+    return this.hit.type;
+  }
+
+  Type = BoardHitType;
 }

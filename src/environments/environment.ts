@@ -3,7 +3,7 @@ import { version } from '../../package.json';
 export const environment = {
   production: false,
   siteUrl: 'http://localhost:4200',
-  dart3ApiUrl: 'http://localhost:8080/api/v1',
+  dart3ApiUrl: 'http://localhost:8080/v1',
   version,
   auth0: {
     domain: 'dart3.eu.auth0.com',

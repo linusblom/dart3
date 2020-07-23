@@ -12,6 +12,7 @@ import {
 } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { getStartScore, MatchStatus } from 'dart3-sdk';
 
 import { CurrentGameService } from '@game/services';
 import {
@@ -21,7 +22,7 @@ import {
   MatchActions,
   TeamActions,
 } from '@game/actions';
-import { State } from '@game/reducers';
+import { State, getSelectedMatch, getSelectedGame } from '@game/reducers';
 import { getPin } from '@root/reducers';
 import { JackpotActions } from '@jackpot/actions';
 
@@ -32,8 +33,8 @@ export class CurrentGameEffects {
       ofType(CurrentGameActions.getRequest),
       concatMap(() =>
         this.service.get().pipe(
-          map(game => CurrentGameActions.getSuccess({ game })),
-          catchError(error => [CurrentGameActions.getFailure({ error })]),
+          map((game) => CurrentGameActions.getSuccess({ game })),
+          catchError((error) => [CurrentGameActions.getFailure({ error })]),
         ),
       ),
     ),
@@ -58,7 +59,7 @@ export class CurrentGameEffects {
       concatMap(([{ uid }, pin]) =>
         this.service.createTeamPlayer(uid, pin).pipe(
           map(({ players }) => CurrentGameActions.createTeamPlayerSuccess({ players })),
-          catchError(error => [CurrentGameActions.createTeamPlayerFailure({ error })]),
+          catchError((error) => [CurrentGameActions.createTeamPlayerFailure({ error })]),
         ),
       ),
     ),
@@ -70,7 +71,7 @@ export class CurrentGameEffects {
       concatMap(({ uid }) =>
         this.service.deleteTeamPlayer(uid).pipe(
           map(({ players }) => CurrentGameActions.deleteTeamPlayerSuccess({ players })),
-          catchError(error => [CurrentGameActions.deleteTeamPlayerFailure({ error })]),
+          catchError((error) => [CurrentGameActions.deleteTeamPlayerFailure({ error })]),
         ),
       ),
     ),
@@ -94,23 +95,72 @@ export class CurrentGameEffects {
       ofType(CurrentGameActions.createRoundRequest),
       concatMap(({ scores }) =>
         this.service.createRound(scores).pipe(
-          map(response => CurrentGameActions.createRoundSuccess(response)),
+          map((response) => CurrentGameActions.createRoundSuccess(response)),
           catchError(() => [CurrentGameActions.createRoundFailure()]),
         ),
       ),
     ),
   );
 
-  upsertHits$ = createEffect(() =>
+  updateScore$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.createRoundSuccess),
       map(({ hits, teams }) => ({
         hits,
-        teams: teams.map(({ id, score, legs, sets }) => ({ id, changes: { score, legs, sets } })),
+        teams: teams.map(({ id, score }) => ({ id, changes: { score } })),
       })),
       switchMap(({ hits, teams }) => [
         HitActions.upsertHits({ hits }),
         TeamActions.updateTeams({ teams }),
+      ]),
+    ),
+  );
+
+  resetScore$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CurrentGameActions.createRoundSuccess),
+      delay(1500),
+      withLatestFrom(this.store.pipe(select(getSelectedMatch)), this.store.select(getSelectedGame)),
+      switchMap(([{ matches, teams }, currentMatch, game]) => {
+        const match = matches.find(({ id }) => id === currentMatch.id);
+
+        if (match.activeLeg !== currentMatch.activeLeg) {
+          const resetLegs =
+            match.activeSet !== currentMatch.activeSet || match.status === MatchStatus.Completed;
+
+          return [
+            TeamActions.updateTeams({
+              teams: teams.map((team) => ({
+                id: team.id,
+                changes: {
+                  ...team,
+                  legs: resetLegs ? 0 : team.legs,
+                  score: getStartScore(game.type),
+                },
+              })),
+            }),
+            HitActions.removeHits(),
+          ];
+        }
+
+        return [
+          TeamActions.updateTeams({
+            teams: teams.map(({ gems, ...team }) => ({ id: team.id, changes: team })),
+          }),
+        ];
+      }),
+    ),
+  );
+
+  startJackpot$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CurrentGameActions.createRoundSuccess),
+      filter(({ jackpot }) => !!jackpot),
+      switchMap(({ jackpot, teams }) => [
+        JackpotActions.start({ jackpot }),
+        TeamActions.updateTeams({
+          teams: teams.map(({ id, gems }) => ({ id, changes: { gems } })),
+        }),
       ]),
     ),
   );
@@ -128,17 +178,8 @@ export class CurrentGameEffects {
     this.actions$.pipe(
       ofType(CurrentGameActions.createRoundSuccess),
       delay(2000),
-      map(({ matches }) => matches.map(match => ({ id: match.id, changes: match }))),
-      map(matches => MatchActions.updateMatches({ matches })),
-    ),
-  );
-
-  updateTeams$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CurrentGameActions.createRoundSuccess),
-      delay(2000),
-      map(({ teams }) => teams.map(team => ({ id: team.id, changes: team }))),
-      map(teams => TeamActions.updateTeams({ teams })),
+      map(({ matches }) => matches.map((match) => ({ id: match.id, changes: match }))),
+      map((matches) => MatchActions.updateMatches({ matches })),
     ),
   );
 
@@ -146,10 +187,7 @@ export class CurrentGameEffects {
     this.actions$.pipe(
       ofType(CurrentGameActions.getSuccess),
       filter(({ game }) => !!game.startedAt),
-      switchMap(() => [
-        CurrentGameActions.getMatchesRequest(),
-        JackpotActions.getCurrentJackpotRequest(),
-      ]),
+      switchMap(() => [CurrentGameActions.getMatchesRequest(), JackpotActions.getCurrentRequest()]),
     ),
   );
 
@@ -158,7 +196,7 @@ export class CurrentGameEffects {
       ofType(CurrentGameActions.getMatchesRequest),
       concatMap(() =>
         this.service.getMatches().pipe(
-          map(response => CurrentGameActions.getMatchesSuccess(response)),
+          map((response) => CurrentGameActions.getMatchesSuccess(response)),
           catchError(() => [CurrentGameActions.getMatchesFailure()]),
         ),
       ),

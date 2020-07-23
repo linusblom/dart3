@@ -34,20 +34,21 @@ export function reducers(state: GameState | undefined, action: Action) {
 export const getGameModuleState = createFeatureSelector<State, GameState>('game');
 export const getGameModuleLoading = createSelector(
   getGameModuleState,
-  state => state && (state.game.state !== StoreState.NONE || state.match.state !== StoreState.NONE),
+  (state) =>
+    state && (state.game.state !== StoreState.NONE || state.match.state !== StoreState.NONE),
 );
 
-export const getGameState = createSelector(getGameModuleState, state => state.game);
-export const getGameStoreState = createSelector(getGameState, state => state.state);
-export const getSelectedGameId = createSelector(getGameState, state => state.selectedId);
+export const getGameState = createSelector(getGameModuleState, (state) => state.game);
+export const getGameStoreState = createSelector(getGameState, (state) => state.state);
+export const getSelectedGameId = createSelector(getGameState, (state) => state.selectedId);
 export const { selectAll: getAllGames } = fromGame.adapter.getSelectors(getGameState);
 export const getSelectedGame = createSelector(
   getGameState,
-  state => state.entities[state.selectedId],
+  (state) => state.entities[state.selectedId],
 );
 
-export const getWizardState = createSelector(getGameModuleState, state => state.wizard);
-export const getWizardStep = createSelector(getWizardState, state => state.step);
+export const getWizardState = createSelector(getGameModuleState, (state) => state.wizard);
+export const getWizardStep = createSelector(getWizardState, (state) => state.step);
 export const getWizardValues = createSelector(
   getWizardState,
   ({ type, tournament, team, bet, sets, legs }) => ({
@@ -59,14 +60,14 @@ export const getWizardValues = createSelector(
     legs,
   }),
 );
-export const getWizardPlayers = createSelector(getWizardState, state => state.players);
+export const getWizardPlayers = createSelector(getWizardState, (state) => state.players);
 
-export const getMatchState = createSelector(getGameModuleState, state => state.match);
+export const getMatchState = createSelector(getGameModuleState, (state) => state.match);
 export const { selectAll: getAllMatches } = fromMatch.adapter.getSelectors(getMatchState);
-export const getSelectedMatchId = createSelector(getMatchState, state => state.selectedId);
+export const getSelectedMatchId = createSelector(getMatchState, (state) => state.selectedId);
 export const getSelectedMatch = createSelector(
   getMatchState,
-  state => state.entities[state.selectedId],
+  (state) => state.entities[state.selectedId],
 );
 export const getGameMatches = createSelector(
   getAllMatches,
@@ -74,10 +75,10 @@ export const getGameMatches = createSelector(
   (matches, selectedGameId) => matches.filter(({ gameId }) => gameId === selectedGameId),
 );
 
-export const getHitState = createSelector(getGameModuleState, state => state.hit);
+export const getHitState = createSelector(getGameModuleState, (state) => state.hit);
 export const { selectAll: getAllHits } = fromHit.adapter.getSelectors(getHitState);
 
-export const getTeamState = createSelector(getGameModuleState, state => state.team);
+export const getTeamState = createSelector(getGameModuleState, (state) => state.team);
 export const { selectAll: getAllTeams } = fromTeam.adapter.getSelectors(getTeamState);
 export const getSelectedMatchTeams = createSelector(
   getSelectedMatchId,
@@ -86,5 +87,5 @@ export const getSelectedMatchTeams = createSelector(
   (selectedMatchId, teams, hits) =>
     teams
       .filter(({ matchId }) => matchId === selectedMatchId)
-      .map(team => ({ ...team, hits: hits.filter(({ teamId }) => team.id === teamId) })),
+      .map((team) => ({ ...team, hits: hits.filter(({ teamId }) => team.id === teamId) })),
 );

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Score, Player, GameType } from 'dart3-sdk';
 
-import { BoardHit } from '@game/models';
+import { BoardHit, BoardHitType } from '@game/models';
 import { generateId } from '@utils/generate-id';
 
 @Component({
@@ -23,6 +23,15 @@ export class DartBoardComponent {
   @Input() timer = -1;
   @Input() activeRound = 1;
   @Input() type: GameType;
+  @Input() jackpotDisabled = false;
+  @Input() set gems(gems: boolean[]) {
+    if (gems.length) {
+      this.hits = this.hits.map((hit, index) => ({
+        ...hit,
+        type: gems[index] ? BoardHitType.Gem : BoardHitType.None,
+      }));
+    }
+  }
   @Input() set clear(clear: boolean) {
     if (clear) {
       this.hits = [];
@@ -52,6 +61,7 @@ export class DartBoardComponent {
       ...this.hits,
       {
         id: generateId(),
+        type: BoardHitType.Avatar,
         value,
         multiplier,
         top: offsetY - 11,
@@ -67,7 +77,7 @@ export class DartBoardComponent {
       return;
     }
 
-    this.hits = this.hits.filter(hit => hit.id !== id);
+    this.hits = this.hits.filter((hit) => hit.id !== id);
     this.updateHits();
   }
 
@@ -81,9 +91,7 @@ export class DartBoardComponent {
     if (endRound) {
       this.endRound.emit([
         ...scores,
-        ...Array(3)
-          .fill({ value: 0, multiplier: 0 })
-          .slice(scores.length, 4),
+        ...Array(3).fill({ value: 0, multiplier: 0 }).slice(scores.length, 4),
       ]);
     } else {
       this.updateScores.emit(scores);

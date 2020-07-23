@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { GameType } from 'dart3-sdk';
+import { GameType, TeamPlayer } from 'dart3-sdk';
 
 import { GameWizardStep } from '@game/models';
 
@@ -13,5 +13,6 @@ export const setValues = createAction(
     bet: number;
     sets: number;
     legs: number;
+    players: TeamPlayer[];
   }>(),
 );

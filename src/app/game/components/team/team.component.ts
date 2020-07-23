@@ -28,6 +28,8 @@ const GREEN = '#daf2dc';
 export class TeamComponent {
   @Input() team: MatchTeamPlayer;
   @Input() type: GameType;
+  @Input() color = '#000000';
+  @Input() jackpotDisabled = true;
 
   getHitValue(hit: RoundHit) {
     switch (this.type) {

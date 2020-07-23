@@ -10,8 +10,8 @@ import {
   startWith,
   pluck,
   distinctUntilChanged,
-  skip,
   delay,
+  shareReplay,
 } from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
@@ -25,8 +25,8 @@ import {
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
 import { availableGames, GameOption } from '@game/models';
-import { CurrentGameActions, HitActions } from '@game/actions';
-import { getAllPlayers } from '@root/reducers';
+import { CurrentGameActions } from '@game/actions';
+import { getAllPlayers, getJackpotGems } from '@root/reducers';
 
 @Component({
   selector: 'app-game',
@@ -39,24 +39,30 @@ export class GameComponent implements OnInit, OnDestroy {
   players$ = this.store.pipe(select(getAllPlayers));
   currentMatch$ = this.store.pipe(
     select(getSelectedMatch),
-    filter(match => !!match),
+    filter((match) => !!match),
   );
   matches$ = this.store.pipe(select(getGameMatches));
   teams$ = combineLatest([this.store.pipe(select(getSelectedMatchTeams)), this.players$]).pipe(
     map(([teams, players]) =>
-      teams.map(team => ({
+      teams.map((team) => ({
         ...team,
         players: players
           .filter(({ id }) => team.playerIds.includes(id))
           .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
       })),
     ),
+    shareReplay(1),
   );
   activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
     map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
     startWith({}),
   );
   activeRound$ = this.currentMatch$.pipe(pluck('activeRound'));
+  jackpotDisabled$ = this.currentMatch$.pipe(
+    map((m) => m.activeLeg > 1 || m.activeSet > 1 || m.activeRound > 3),
+    shareReplay(1),
+  );
+  gems$ = this.store.pipe(select(getJackpotGems));
 
   game: Game;
   option: GameOption;
@@ -71,7 +77,7 @@ export class GameComponent implements OnInit, OnDestroy {
   constructor(private readonly store: Store<State>, private readonly router: Router) {
     this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
-    this.game$.pipe(takeUntil(this.destroy$)).subscribe(game => {
+    this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
       this.option = availableGames.find(({ types }) => types.includes(game.type));
       this.game = game;
     });
@@ -92,19 +98,15 @@ export class GameComponent implements OnInit, OnDestroy {
         this.clear = true;
       });
 
-    this.currentMatch$
-      .pipe(takeUntil(this.destroy$), pluck('activeLeg'), distinctUntilChanged(), skip(1))
-      .subscribe(() => this.store.dispatch(HitActions.removeHits()));
-
     this.game$
       .pipe(
         takeUntil(this.destroy$),
         pluck('endedAt'),
-        filter(endedAt => !!endedAt),
+        filter((endedAt) => !!endedAt),
         tap(() => (this.clear = true)),
         delay(2000),
       )
-      .subscribe(() => this.router.navigate(['results', this.game.id]));
+      .subscribe(() => this.router.navigate(['results', this.game.uid]));
   }
 
   ngOnInit() {
@@ -130,10 +132,10 @@ export class GameComponent implements OnInit, OnDestroy {
       this.timer = 5;
       interval(1000)
         .pipe(
-          takeWhile(val => val <= 4),
+          takeWhile((val) => val <= 4),
           takeUntil(this.abortAutoEndRound$),
-          tap(val => (this.timer = 4 - val)),
-          filter(val => val === 4),
+          tap((val) => (this.timer = 4 - val)),
+          filter((val) => val === 4),
         )
         .subscribe(() => {
           this.endRound(scores);

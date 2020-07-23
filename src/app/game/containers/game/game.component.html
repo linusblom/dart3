@@ -4,6 +4,8 @@
   *ngIf="showMatches"
   [matches]="matches$ | async"
   [color]="option.color"
+  [prizePool]="game.prizePool"
+  [teams]="teams$ | async"
   (close)="showMatches = false"
 ></game-matches>
 
@@ -15,6 +17,8 @@
   [clear]="clear"
   [activeRound]="activeRound$ | async"
   [type]="game.type"
+  [jackpotDisabled]="jackpotDisabled$ | async"
+  [gems]="gems$ | async"
   (updateScores)="updateScores($event)"
   (endRound)="endRound($event)"
   (cancel)="abortAutoEndRound$.next()"
@@ -29,10 +33,10 @@
   ></game-details>
 
   <div class="headers">
-    <div>Score</div>
-    <div>Legs</div>
     <div>Sets</div>
-    <div class="jackpot">
+    <div>Legs</div>
+    <div>Score</div>
+    <div class="jackpot" [ngClass]="{ disabled: jackpotDisabled$ | async }">
       <div class="value">
         <jackpot></jackpot>
       </div>
@@ -46,6 +50,8 @@
       *ngFor="let team of teams$ | async; trackBy: trackByFn"
       [team]="team"
       [type]="game.type"
+      [color]="option.color"
+      [jackpotDisabled]="jackpotDisabled$ | async"
     ></game-team>
   </div>
 </div>

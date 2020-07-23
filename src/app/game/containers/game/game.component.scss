@@ -40,6 +40,10 @@
 .jackpot {
   position: relative;
 
+  &.disabled {
+    opacity: 0.4;
+  }
+
   .value {
     display: inline-flex;
     justify-content: center;

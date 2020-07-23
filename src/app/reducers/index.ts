@@ -32,40 +32,42 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
 );
 
 export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-export const isAuthenticated = createSelector(getAuthState, state => state.authenticated);
+export const isAuthenticated = createSelector(getAuthState, (state) => state.authenticated);
 
 export const getUserState = createFeatureSelector<fromUser.State>('user');
 export const getUserStoreState = createSelector(getUserState, ({ state }) => state);
-export const getUser = createSelector(getUserState, state => state);
+export const getUser = createSelector(getUserState, (state) => state);
 export const getUserCurrency = createSelector(
   getUserState,
-  state => state.userMetadata.currency || '',
+  (state) => state.userMetadata.currency || '',
 );
-export const getUserPicture = createSelector(getUserState, state => state.picture);
+export const getUserPicture = createSelector(getUserState, (state) => state.picture);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
-export const showMenu = createSelector(getCoreState, state => state.menu);
-export const showFooter = createSelector(getCoreState, state => state.footer);
-export const showModal = createSelector(getCoreState, state => !!state.modal);
-export const getModal = createSelector(getCoreState, state => state.modal);
-export const getPin = createSelector(getCoreState, state => state.pin);
+export const showMenu = createSelector(getCoreState, (state) => state.menu);
+export const showFooter = createSelector(getCoreState, (state) => state.footer);
+export const showModal = createSelector(getCoreState, (state) => !!state.modal);
+export const getModal = createSelector(getCoreState, (state) => state.modal);
+export const getPin = createSelector(getCoreState, (state) => state.pin);
 
 export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
 export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) => state);
 export const getAllPlayers = createSelector(getPlayerState, fromPlayer.selectAll);
 export const getSelectedPlayer = createSelector(
   getPlayerState,
-  state => state.entities[state.selectedUid] || ({} as Player),
+  (state) => state.entities[state.selectedUid] || ({} as Player),
 );
-export const getSelectedPlayerUid = createSelector(getPlayerState, state => state.selectedUid);
+export const getSelectedPlayerUid = createSelector(getPlayerState, (state) => state.selectedUid);
 
 export const getJackpotState = createFeatureSelector<fromJackpot.State>('jackpot');
 export const getJackpotStoreState = createSelector(getJackpotState, ({ state }) => state);
-export const getJackpot = createSelector(getJackpotState, ({ value, nextValue }) => ({
+export const getJackpot = createSelector(getJackpotState, ({ id, value, nextValue }) => ({
+  id,
   value,
   nextValue,
 }));
-export const getJackpotValue = createSelector(getJackpotState, state => state.value);
+export const getJackpotValue = createSelector(getJackpotState, (state) => state.value);
+export const getJackpotGems = createSelector(getJackpotState, (state) => state.gems);
 
 export const showLoading = createSelector(
   isAuthenticated,

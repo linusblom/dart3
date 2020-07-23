@@ -34,14 +34,19 @@ export class GameGuard implements CanActivate {
       this.actions$.pipe(ofType(CurrentGameActions.getFailure)),
     ]).pipe(
       map(({ game, error }: CurrentGame) => {
-        let navigate = '';
+        let navigate = undefined;
+        let step = undefined;
+        let setValues = false;
         let allowed = false;
         let state = {};
 
         switch (true) {
           case path === 'play' && game && !!game.startedAt:
+            allowed = true;
+            break;
           case path === 'start' && !!error:
             allowed = true;
+            step = GameWizardStep.SelectGame;
             break;
           case path === 'start' && game && !!game.startedAt:
             allowed = false;
@@ -49,32 +54,45 @@ export class GameGuard implements CanActivate {
             state = { showMatches: true };
             break;
           case path === 'play' && game && !game.startedAt: {
-            const { type: _type, tournament, team, bet, sets, legs } = game;
             allowed = false;
             navigate = 'start';
-            this.store.dispatch(
-              WizardActions.setValues({ _type, tournament, team, bet, sets, legs }),
-            );
-            this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectPlayers }));
+            step = GameWizardStep.SelectPlayers;
+            setValues = true;
             break;
           }
           case path === 'start' && game && !game.startedAt: {
-            const { type: _type, tournament, team, bet, sets, legs } = game;
             allowed = true;
-            this.store.dispatch(
-              WizardActions.setValues({ _type, tournament, team, bet, sets, legs }),
-            );
-            this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectPlayers }));
+            step = GameWizardStep.SelectPlayers;
+            setValues = true;
             break;
           }
           case path === 'play' && !!error:
             allowed = false;
             navigate = 'start';
-            this.store.dispatch(WizardActions.setStep({ step: GameWizardStep.SelectGame }));
+            step = GameWizardStep.SelectGame;
             break;
           default:
             allowed = false;
             break;
+        }
+
+        if (step) {
+          this.store.dispatch(WizardActions.setStep({ step }));
+        }
+
+        if (setValues) {
+          const { type: _type, tournament, team, bet, sets, legs, pendingPlayers } = game;
+          this.store.dispatch(
+            WizardActions.setValues({
+              _type,
+              tournament,
+              team,
+              bet,
+              sets,
+              legs,
+              players: pendingPlayers || [],
+            }),
+          );
         }
 
         if (navigate) {

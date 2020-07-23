@@ -43,16 +43,11 @@ export const reducer = createReducer(
   on(
     CurrentGameActions.createTeamPlayerFailure,
     CurrentGameActions.deleteTeamPlayerFailure,
-    state => ({
+    (state) => ({
       ...state,
       players: [...state.players],
     }),
   ),
 
-  on(CurrentGameActions.getSuccess, (state, { game: { pendingPlayers } }) => ({
-    ...state,
-    players: pendingPlayers,
-  })),
-
-  on(CurrentGameActions.deleteSuccess, () => initialState),
+  on(CurrentGameActions.deleteSuccess, CurrentGameActions.startSuccess, () => initialState),
 );

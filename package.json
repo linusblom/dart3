@@ -24,7 +24,7 @@
     "@ngrx/entity": "^9.2.0",
     "@ngrx/store": "^9.2.0",
     "@ngrx/store-devtools": "^9.2.0",
-    "dart3-sdk": "^0.2.4",
+    "dart3-sdk": "^0.2.7",
     "ngx-perfect-scrollbar": "^9.0.0",
     "rxjs": "^6.6.0",
     "tslib": "^1.10.0",

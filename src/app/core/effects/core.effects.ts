@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
@@ -86,6 +86,19 @@ export class CoreEffects {
         }),
       ),
     ),
+  );
+
+  playSound$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CoreActions.playSound),
+        tap(({ sound }) => {
+          const audio = new Audio(`../../../../assets/${sound}`);
+          audio.load();
+          audio.play();
+        }),
+      ),
+    { dispatch: false },
   );
 
   constructor(private readonly actions$: Actions) {}

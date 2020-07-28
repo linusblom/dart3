@@ -15,10 +15,7 @@
   <div class="score">{{ team.legs }}</div>
   <div class="score">{{ team.score }}</div>
   <div class="gems" [ngClass]="{ disabled: jackpotDisabled }">
-    <span
-      *ngFor="let gem of [1, 2, 3]; let index = index"
-      [style.color]="team.gems > index ? color : '#d1d1d1'"
-    >
+    <span *ngFor="let gem of [0, 1, 2]" [style.color]="team.gems > gem ? '#bc7bd1' : '#d1d1d1'">
       <i class="far fa-gem"></i>
     </span>
   </div>

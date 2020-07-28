@@ -13,12 +13,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('slideInOut', [
       transition(':enter', [
         style({ transform: 'translateX(-100%)' }),
-        animate('200ms ease-in-out', style({ transform: 'translateX(0%)' })),
+        animate('200ms ease-out', style({ transform: 'translateX(0%)' })),
       ]),
       transition(':leave', [
         style({ height: '*', transform: 'translateX(0%)' }),
-        animate('200ms ease-in-out', style({ transform: 'translateX(-100%)' })),
-        animate('200ms ease-in-out', style({ height: '0' })),
+        animate('200ms ease-in', style({ transform: 'translateX(-100%)' })),
+        animate('200ms linear', style({ height: '0' })),
       ]),
     ]),
   ],

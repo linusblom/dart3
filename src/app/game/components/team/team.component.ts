@@ -16,11 +16,11 @@ const GREEN = '#daf2dc';
     trigger('slideIn', [
       transition(':enter', [
         style({ transform: 'translateY(-25px)' }),
-        animate('300ms ease-in-out', style({ transform: 'translateY(0%)' })),
+        animate('300ms ease-out', style({ transform: 'translateY(0%)' })),
       ]),
       transition(':leave', [
         style({ transform: 'translateY(0%)' }),
-        animate('300ms ease-in-out', style({ transform: 'translateY(-25px)' })),
+        animate('300ms ease-in', style({ transform: 'translateY(-25px)' })),
       ]),
     ]),
   ],
@@ -28,7 +28,6 @@ const GREEN = '#daf2dc';
 export class TeamComponent {
   @Input() team: MatchTeamPlayer;
   @Input() type: GameType;
-  @Input() color = '#000000';
   @Input() jackpotDisabled = true;
 
   getHitValue(hit: RoundHit) {

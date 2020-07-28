@@ -1,0 +1,43 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.upper, .lower {
+  width: 100%;
+  height: 120px;
+}
+
+.banner {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 40%;
+  height: 100%;
+  color: $white;
+}
+
+.header, .text {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upper {
+  .header {
+    font-size: 70px;
+    line-height: 120px;
+  }  
+}
+
+.lower {
+  .banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+}

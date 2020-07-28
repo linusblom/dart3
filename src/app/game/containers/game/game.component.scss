@@ -86,7 +86,7 @@
     border-left: 25px solid $grey;
     animation: active-pulse 1s ease-in-out;
     animation-iteration-count: infinite;
-    transition: top 500ms ease-in-out;
+    transition: top 500ms ease-out;
   }
 }
 

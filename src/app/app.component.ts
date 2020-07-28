@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { tap, delay } from 'rxjs/operators';
 
-import { showLoading, State, showModal, showMenu, showFooter } from './reducers';
+import { showLoading, State, showModal, showMenu, showFooter, showBanner } from './reducers';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { showLoading, State, showModal, showMenu, showFooter } from './reducers'
     trigger('menuLeave', [
       transition(':leave', [
         style({ transform: 'translateY(0%)' }),
-        animate('300ms ease-in-out', style({ transform: 'translateY(-100px)' })),
+        animate('300ms ease-out', style({ transform: 'translateY(-100px)' })),
       ]),
     ]),
   ],
@@ -23,10 +23,11 @@ export class AppComponent {
   showMenu$ = this.store.pipe(
     select(showMenu),
     delay(0),
-    tap(padding => (this.padding = padding)),
+    tap((padding) => (this.padding = padding)),
   );
   showModal$ = this.store.pipe(select(showModal));
   showFooter$ = this.store.pipe(select(showFooter), delay(0));
+  showBanner$ = this.store.pipe(select(showBanner));
 
   @HostBinding('class.padding') padding = false;
 

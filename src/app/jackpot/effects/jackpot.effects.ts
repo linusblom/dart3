@@ -1,10 +1,23 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { concatMap, map, catchError, filter, delay } from 'rxjs/operators';
+import {
+  concatMap,
+  map,
+  catchError,
+  filter,
+  delay,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { merge, of } from 'rxjs';
 
 import { JackpotService } from '@jackpot/services';
 import { JackpotActions } from '@jackpot/actions';
 import { AuthActions } from '@auth/actions';
+import { CoreActions } from '@core/actions';
+import { State, getJackpotValue, getUserCurrency, getAllPlayers } from '@root/reducers';
+import { Sound } from '@core/models';
 
 @Injectable()
 export class JackpotEffects {
@@ -20,14 +33,41 @@ export class JackpotEffects {
     ),
   );
 
-  reset$ = createEffect(() =>
+  winner$ = createEffect(() =>
     this.actions$.pipe(
       ofType(JackpotActions.start),
       filter(({ jackpot }) => !!jackpot.playerIds && jackpot.playerIds.length > 0),
-      delay(2000),
-      map(() => JackpotActions.reset()),
+      withLatestFrom(
+        this.store.pipe(select(getJackpotValue)),
+        this.store.pipe(select(getUserCurrency)),
+        this.store.pipe(select(getAllPlayers)),
+      ),
+      switchMap(([{ jackpot }, value, currency, players]) => {
+        const playerNames = players
+          .filter(({ id }) => jackpot.playerIds.includes(id))
+          .reduce((acc, { name }, index) => `${acc}${index > 0 ? ', ' : ''}${name}`, '');
+
+        return merge(
+          of(CoreActions.playSound({ sound: Sound.Congratulations })),
+          of(
+            CoreActions.showBanner({
+              banner: {
+                header: 'Jackpot',
+                subHeader: `${currency} ${value}`,
+                text: `Congratulations ${playerNames.trim()}!`,
+                color: '#bc7bd1',
+              },
+            }),
+          ).pipe(delay(500)),
+          of(JackpotActions.reset()).pipe(delay(3000)),
+        );
+      }),
     ),
   );
 
-  constructor(private readonly actions$: Actions, private readonly service: JackpotService) {}
+  constructor(
+    private readonly actions$: Actions,
+    private readonly service: JackpotService,
+    private readonly store: Store<State>,
+  ) {}
 }

@@ -1,0 +1,21 @@
+<div class="upper">
+  <div
+    class="banner header"
+    [style.background]="color$ | async"
+    [@slideInLeft]
+    (@slideInLeft.done)="animationDone()"
+  >
+    {{ header$ | async }}
+  </div>
+</div>
+<div class="lower">
+  <div
+    class="banner"
+    [style.background]="color$ | async"
+    [@slideInRight]
+    (@slideInRight.done)="animationDone()"
+  >
+    <div class="header">{{ subHeader$ | async }}</div>
+    <div class="text">{{ text$ | async }}</div>
+  </div>
+</div>

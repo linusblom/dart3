@@ -27,6 +27,7 @@ import { CoreActions } from '@core/actions';
 import { availableGames, GameOption } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
+import { Sound } from '@core/models';
 
 @Component({
   selector: 'app-game',
@@ -104,7 +105,21 @@ export class GameComponent implements OnInit, OnDestroy {
         pluck('endedAt'),
         filter((endedAt) => !!endedAt),
         tap(() => (this.clear = true)),
-        delay(2000),
+        delay(1000),
+        tap(() => {
+          this.store.dispatch(CoreActions.playSound({ sound: Sound.Anthem }));
+          this.store.dispatch(
+            CoreActions.showBanner({
+              banner: {
+                header: 'Game Over',
+                subHeader: 'Well played',
+                text: 'Lets see the results!',
+                color: this.option.color,
+              },
+            }),
+          );
+        }),
+        delay(1000),
       )
       .subscribe(() => this.router.navigate(['results', this.game.uid]));
   }

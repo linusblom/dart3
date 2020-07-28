@@ -1,6 +1,6 @@
 import { createAction, props, Action } from '@ngrx/store';
 
-import { Modal } from '@core/models';
+import { Modal, Banner, Sound } from '@core/models';
 
 export const toggleMenu = createAction('[Core] Toggle Menu', props<{ menu: boolean }>());
 export const toggleFooter = createAction('[Core] Toggle Footer', props<{ footer: boolean }>());
@@ -22,3 +22,8 @@ export const confirmPinDispatch = createAction(
   props<{ pin: string; action: Action }>(),
 );
 export const confirmPinComplete = createAction('[Core] Confirm Pin Complete');
+
+export const showBanner = createAction('[Core] Show Banner', props<{ banner: Banner }>());
+export const dismissBanner = createAction('[Core] Dismiss Banner');
+
+export const playSound = createAction('[Core] Play Sound', props<{ sound: Sound }>());

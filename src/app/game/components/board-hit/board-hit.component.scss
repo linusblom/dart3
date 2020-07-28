@@ -35,7 +35,7 @@
 :host.avatar, :host.none {
   animation: hit-pulse 1s ease-in-out;
   animation-iteration-count: infinite;
-  transition: width 300ms ease-in-out;
+  transition: width 300ms ease-out;
   overflow: hidden;
 
   img {

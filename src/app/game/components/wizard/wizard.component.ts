@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { GameOption, GameWizardStep } from '@game/models';
-import { Player, GameType, TeamPlayer } from 'dart3-sdk';
+import { Player, GameType, TeamPlayer, gameName } from 'dart3-sdk';
 
 @Component({
   selector: 'game-wizard',
@@ -44,9 +44,10 @@ export class WizardComponent {
   }
 
   Step = GameWizardStep;
+  gameName = gameName;
 
   get selected() {
-    return this.option.types.includes(this.form.get('type').value);
+    return this.option.type === this.form.get('type').value;
   }
 
   setGame(type: GameType) {

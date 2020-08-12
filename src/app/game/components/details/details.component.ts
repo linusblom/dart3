@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
-import { Game, gameName, gameSubName, Match } from 'dart3-sdk';
+import { Game, gameName, Match } from 'dart3-sdk';
 
 @Component({
   selector: 'game-details',
@@ -14,5 +14,4 @@ export class DetailsComponent {
   @Output() matches = new EventEmitter<void>();
 
   gameName = gameName;
-  gameSubName = gameSubName;
 }

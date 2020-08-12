@@ -1,9 +1,8 @@
 import { GameType } from 'dart3-sdk';
 
 export interface GameOption {
-  types: GameType[];
+  type: GameType;
   color: string;
-  name: string;
   description: string;
   disabled: boolean;
 }
@@ -16,33 +15,29 @@ export enum GameWizardStep {
 
 export const availableGames: GameOption[] = [
   {
-    types: [GameType.HalveIt],
+    type: GameType.HalveIt,
     color: '#4fa7c4',
-    name: 'Halve It',
     description:
       'Players should in each round try to hit a selected target. Only the selected target will give player score, and failure to hit target will result in player losing half their accumulated score. Player with highest score after eight rounds will win.',
     disabled: false,
   },
   {
-    types: [GameType.Legs],
+    type: GameType.Legs,
     color: '#e86831',
-    name: 'Legs',
     description:
       'Each player start with three legs. Player with lowest score after each round will lose one leg. Players with score of 100 or above will automatically advance to next round without losing a leg. Players with zero legs left is out, and last player standing will win.',
     disabled: true,
   },
   {
-    types: [GameType.Three01SingleInDoubleOut, GameType.Three01SDoubleInDoubleOut],
+    type: GameType.Three01,
     color: '#4fb37b',
-    name: '301',
     description:
       'Players start with a score of 301. First player to reach exactly zero wins. Player must check out (and optional in) on any double.',
     disabled: true,
   },
   {
-    types: [GameType.Five01SingleInDoubleOut, GameType.Five01DoubleInDoubleOut],
+    type: GameType.Five01,
     color: '#ad319f',
-    name: '501',
     description:
       'Players start with a score of 501. First player to reach exactly zero wins. Player must check out (and optional in) on any double.',
     disabled: true,

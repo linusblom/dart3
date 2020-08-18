@@ -79,7 +79,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = availableGames.find(({ types }) => types.includes(game.type));
+      this.option = availableGames.find(({ type }) => type === game.type);
       this.game = game;
     });
 

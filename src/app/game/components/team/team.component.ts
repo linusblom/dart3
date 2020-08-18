@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { RoundHit, GameType } from 'dart3-sdk';
 
@@ -30,9 +30,14 @@ export class TeamComponent {
   @Input() type: GameType;
   @Input() jackpotDisabled = true;
 
+  @HostBinding('class.disabled') get disabled() {
+    return this.team.position > 1;
+  }
+
   getHitValue(hit: RoundHit) {
     switch (this.type) {
-      case GameType.HalveIt:
+      case GameType.Legs:
+        return hit.score;
       default:
         return hit.approvedScore;
     }
@@ -40,7 +45,6 @@ export class TeamComponent {
 
   getHitColor(hit: RoundHit) {
     switch (this.type) {
-      case GameType.HalveIt:
       default:
         return hit.approvedScore > 0 ? GREEN : RED;
     }

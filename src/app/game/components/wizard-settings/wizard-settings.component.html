@@ -1,13 +1,4 @@
 <div class="content" [formGroup]="form">
-  <div *ngIf="types.length > 1" class="row">
-    <div>Variant:</div>
-    <mat-button-toggle-group formControlName="type">
-      <mat-button-toggle *ngFor="let type of types" [value]="type">
-        {{ gameSubName(type) }}
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
   <!-- <div class="row">
     <div>Tournament:</div>
     <mat-button-toggle-group formControlName="tournament">

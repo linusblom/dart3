@@ -2,7 +2,6 @@
   <div>{{ gameName(game.type) }}</div>
   <div class="icon" (click)="matches.emit()"><i class="fas fa-sitemap"></i></div>
 </div>
-<div class="header sub">{{ gameSubName(game.type) }}</div>
 <div class="row" *ngIf="match">
   <div class="name">Round</div>
   <div class="value">{{ match.activeRound }}</div>

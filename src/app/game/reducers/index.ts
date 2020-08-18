@@ -87,5 +87,8 @@ export const getSelectedMatchTeams = createSelector(
   (selectedMatchId, teams, hits) =>
     teams
       .filter(({ matchId }) => matchId === selectedMatchId)
-      .map((team) => ({ ...team, hits: hits.filter(({ teamId }) => team.id === teamId) })),
+      .map((team) => ({
+        ...team,
+        hits: hits.filter(({ matchTeamId }) => team.id === matchTeamId),
+      })),
 );

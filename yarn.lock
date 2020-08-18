@@ -3196,10 +3196,10 @@ damerau-levenshtein@^1.0.4:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.5.tgz#780cf7144eb2e8dbd1c3bb83ae31100ccc31a414"
   integrity sha512-CBCRqFnpu715iPmw1KrdOrzRqbdFwQTwAWyyyYS42+iAgHCuXZ+/TdMgQkUENPomxEz9z1BEzuQU2Xw0kUuAgA==
 
-dart3-sdk@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/dart3-sdk/-/dart3-sdk-0.2.8.tgz#e64b8c9504dfe2017bd522a004d17f72e28a3560"
-  integrity sha512-YdjIQ00qGc4Iw/Gnzx2lDz2hhD3OsNA5S8ifUEiw5M8Q6x01QVzugjKmwanHfdzPnxOfk0qrHSBe58y7+0mo3w==
+dart3-sdk@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/dart3-sdk/-/dart3-sdk-0.2.9.tgz#e6e98d2f30e60038b8629b49256014ecdd1a40ea"
+  integrity sha512-nX5vySiCoiKpcwCyal2b4ZJ/q/6NEDFjgg7I8dCR+SQB4Xfl2EquRiJSqVhzsFgf3TATdiV36pTYESt73dT2nQ==
 
 dashdash@^1.12.0:
   version "1.14.1"

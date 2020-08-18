@@ -25,21 +25,21 @@ export const availableGames: GameOption[] = [
     type: GameType.Legs,
     color: '#e86831',
     description:
-      'Each player start with three legs. Player with lowest score after each round will lose one leg. Players with score of 100 or above will automatically advance to next round without losing a leg. Players with zero legs left is out, and last player standing will win.',
-    disabled: true,
+      'Each player starts with three legs and looses a leg every time they fail to beat the score of the previous player. The winner is the last player left with any legs.',
+    disabled: false,
   },
   {
     type: GameType.Three01,
     color: '#4fb37b',
     description:
-      'Players start with a score of 301. First player to reach exactly zero wins. Player must check out (and optional in) on any double.',
+      'Players start with a score of 301. First player to reach exactly zero wins. Player must check out on any double.',
     disabled: true,
   },
   {
     type: GameType.Five01,
     color: '#ad319f',
     description:
-      'Players start with a score of 501. First player to reach exactly zero wins. Player must check out (and optional in) on any double.',
+      'Players start with a score of 501. First player to reach exactly zero wins. Player must check out on any double.',
     disabled: true,
   },
 ];

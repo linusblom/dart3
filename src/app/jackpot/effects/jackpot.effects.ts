@@ -65,6 +65,27 @@ export class JackpotEffects {
     ),
   );
 
+  gem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(JackpotActions.start),
+      map(({ jackpot }) => jackpot.gems.filter((gem) => gem).length),
+      filter((gems) => gems > 0),
+      switchMap((gems) =>
+        merge(
+          of(CoreActions.playSound({ sound: Sound.Gem })).pipe(delay(0)),
+          of(CoreActions.playSound({ sound: Sound.Gem })).pipe(
+            filter(() => gems > 1),
+            delay(300),
+          ),
+          of(CoreActions.playSound({ sound: Sound.Gem })).pipe(
+            filter(() => gems > 2),
+            delay(600),
+          ),
+        ),
+      ),
+    ),
+  );
+
   constructor(
     private readonly actions$: Actions,
     private readonly service: JackpotService,

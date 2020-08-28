@@ -123,30 +123,23 @@ export class CurrentGameEffects {
       withLatestFrom(this.store.pipe(select(getSelectedMatch)), this.store.select(getSelectedGame)),
       switchMap(([{ matches, teams }, currentMatch, game]) => {
         const match = matches.find(({ id }) => id === currentMatch.id);
-
-        if (match.activeLeg !== currentMatch.activeLeg) {
-          const resetLegs =
-            match.activeSet !== currentMatch.activeSet || match.status === MatchStatus.Completed;
-
-          return [
-            TeamActions.updateTeams({
-              teams: teams.map((team) => ({
-                id: team.id,
-                changes: {
-                  ...team,
-                  legs: resetLegs ? 0 : team.legs,
-                  score: getStartScore(game.type),
-                },
-              })),
-            }),
-            HitActions.removeHits(),
-          ];
-        }
+        const newSet =
+          match.activeSet !== currentMatch.activeSet || match.status === MatchStatus.Completed;
+        const newLeg = match.activeLeg !== currentMatch.activeLeg;
 
         return [
           TeamActions.updateTeams({
-            teams: teams.map(({ gems, ...team }) => ({ id: team.id, changes: team })),
+            teams: teams.map((team) => ({
+              id: team.id,
+              changes: {
+                ...team,
+                legs: newSet ? 0 : team.legs,
+                score: newLeg ? getStartScore(game.type) : team.score,
+                position: newLeg ? null : team.position,
+              },
+            })),
           }),
+          ...(newLeg ? [HitActions.removeHits()] : []),
         ];
       }),
     ),

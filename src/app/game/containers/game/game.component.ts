@@ -93,7 +93,11 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.currentMatch$
-      .pipe(takeUntil(this.destroy$), pluck('activeMatchTeamId'), distinctUntilChanged())
+      .pipe(
+        takeUntil(this.destroy$),
+        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}`),
+        distinctUntilChanged(),
+      )
       .subscribe(() => {
         this.disabled = false;
         this.clear = true;
@@ -113,7 +117,6 @@ export class GameComponent implements OnInit, OnDestroy {
               banner: {
                 header: 'Game Over',
                 subHeader: 'Well played',
-                text: 'Lets see the results!',
                 color: this.option.color,
               },
             }),

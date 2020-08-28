@@ -16,6 +16,6 @@
     (@slideInRight.done)="animationDone()"
   >
     <div class="header">{{ subHeader$ | async }}</div>
-    <div class="text">{{ text$ | async }}</div>
+    <div *ngIf="text$ | async" class="text">{{ text$ | async }}</div>
   </div>
 </div>

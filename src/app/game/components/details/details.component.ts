@@ -14,4 +14,15 @@ export class DetailsComponent {
   @Output() matches = new EventEmitter<void>();
 
   gameName = gameName;
+
+  roundFirstTo(value: number) {
+    return Math.ceil(value / 2);
+  }
+
+  get duration() {
+    const mills = new Date(this.game.endedAt).getTime() - new Date(this.game.startedAt).getTime();
+    const minutes = Math.floor(mills / 60000);
+    const seconds = Math.floor((mills % 60000) / 1000);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
 }

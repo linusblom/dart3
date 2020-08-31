@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { getStartScore, MatchStatus } from 'dart3-sdk';
+import { MatchStatus } from 'dart3-sdk';
 
 import { CurrentGameService } from '@game/services';
 import {
@@ -134,7 +134,7 @@ export class CurrentGameEffects {
               changes: {
                 ...team,
                 legs: newSet ? 0 : team.legs,
-                score: newLeg ? getStartScore(game.type) : team.score,
+                score: newLeg ? game.startScore : team.score,
                 position: newLeg ? null : team.position,
               },
             })),

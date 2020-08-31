@@ -81,16 +81,21 @@ export class GameGuard implements CanActivate {
         }
 
         if (setValues) {
-          const { type: _type, tournament, team, bet, sets, legs, pendingPlayers } = game;
           this.store.dispatch(
             WizardActions.setValues({
-              _type,
-              tournament,
-              team,
-              bet,
-              sets,
-              legs,
-              players: pendingPlayers || [],
+              gameType: game.type,
+              players: game.pendingPlayers || [],
+              settings: {
+                tournament: game.tournament,
+                team: game.team,
+                bet: game.bet,
+                sets: game.sets,
+                legs: game.legs,
+                startScore: game.startScore,
+                checkIn: game.checkIn,
+                checkOut: game.checkOut,
+                tieBreak: game.tieBreak,
+              },
             }),
           );
         }

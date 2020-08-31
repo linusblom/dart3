@@ -18,8 +18,8 @@ export class PlayerEffects {
       ofType(PlayerActions.getRequest, AuthActions.login),
       concatMap(() =>
         this.service.get().pipe(
-          map(players => PlayerActions.getSuccess({ players })),
-          catchError(error => [PlayerActions.getFailure({ error })]),
+          map((players) => PlayerActions.getSuccess({ players })),
+          catchError((error) => [PlayerActions.getFailure({ error })]),
         ),
       ),
     ),
@@ -30,8 +30,8 @@ export class PlayerEffects {
       ofType(PlayerActions.getByUidRequest),
       concatMap(({ uid }) =>
         this.service.getByUid(uid).pipe(
-          map(player => PlayerActions.getByUidSuccess({ player })),
-          catchError(error => [PlayerActions.getByUidFailure({ error })]),
+          map((player) => PlayerActions.getByUidSuccess({ player })),
+          catchError((error) => [PlayerActions.getByUidFailure({ error })]),
         ),
       ),
     ),
@@ -42,8 +42,8 @@ export class PlayerEffects {
       ofType(PlayerActions.createRequest),
       concatMap(({ player }) =>
         this.service.create(player).pipe(
-          map(player => PlayerActions.createSuccess({ player })),
-          catchError(error => [PlayerActions.createFailure({ error })]),
+          map((player) => PlayerActions.createSuccess({ player })),
+          catchError((error) => [PlayerActions.createFailure({ error })]),
         ),
       ),
     ),
@@ -54,8 +54,8 @@ export class PlayerEffects {
       ofType(PlayerActions.updateRequest),
       concatMap(({ uid, player }) =>
         this.service.update(uid, player).pipe(
-          map(player => PlayerActions.updateSuccess({ player })),
-          catchError(error => [PlayerActions.updateFailure({ error })]),
+          map((player) => PlayerActions.updateSuccess({ player })),
+          catchError((error) => [PlayerActions.updateFailure({ error })]),
         ),
       ),
     ),
@@ -67,7 +67,7 @@ export class PlayerEffects {
       concatMap(({ uid }) =>
         this.service.resetPin(uid).pipe(
           map(() => PlayerActions.resetPinSuccess()),
-          catchError(error => [PlayerActions.resetPinFailure({ error })]),
+          catchError((error) => [PlayerActions.resetPinFailure({ error })]),
         ),
       ),
     ),
@@ -81,7 +81,7 @@ export class PlayerEffects {
         this.service.delete(uid, pin).pipe(
           tap(() => this.router.navigate(['players'])),
           map(() => PlayerActions.deleteSuccess({ uid })),
-          catchError(error => [PlayerActions.deleteFailure({ error })]),
+          catchError((error) => [PlayerActions.deleteFailure({ error })]),
         ),
       ),
     ),
@@ -109,8 +109,8 @@ export class PlayerEffects {
         }
 
         return service().pipe(
-          map(transaction => PlayerActions.transactionSuccess({ uid, transaction })),
-          catchError(error => [PlayerActions.transactionFailure({ error })]),
+          map((transaction) => PlayerActions.transactionSuccess({ uid, transaction })),
+          catchError((error) => [PlayerActions.transactionFailure({ error })]),
         );
       }),
     ),

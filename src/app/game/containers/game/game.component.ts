@@ -24,7 +24,7 @@ import {
   getSelectedMatchTeams,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { availableGames, GameOption } from '@game/models';
+import { options, GameOption } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -55,7 +55,7 @@ export class GameComponent implements OnInit, OnDestroy {
     shareReplay(1),
   );
   activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
-    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
+    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId) || {}),
     startWith({}),
   );
   activeRound$ = this.currentMatch$.pipe(pluck('activeRound'));
@@ -79,7 +79,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = availableGames.find(({ type }) => type === game.type);
+      this.option = options.find(({ type }) => type === game.type);
       this.game = game;
     });
 
@@ -124,7 +124,9 @@ export class GameComponent implements OnInit, OnDestroy {
         }),
         delay(1000),
       )
-      .subscribe(() => this.router.navigate(['results', this.game.uid]));
+      .subscribe(() =>
+        this.router.navigate(['results', this.game.uid], { state: { countXp: true } }),
+      );
   }
 
   ngOnInit() {

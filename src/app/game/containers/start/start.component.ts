@@ -3,11 +3,17 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Player } from 'dart3-sdk';
+import { Player, Check, GameType } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
-import { availableGames, GameWizardStep } from '@game/models';
+import {
+  State,
+  getWizardStep,
+  getWizardSettings,
+  getWizardGameType,
+  getWizardPlayers,
+} from '@game/reducers';
+import { options, GameWizardStep } from '@game/models';
 import { getAllPlayers, getUserCurrency } from '@root/reducers';
 import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
@@ -23,32 +29,42 @@ export class StartComponent {
   step$ = this.store.pipe(select(getWizardStep));
 
   currency = '';
-  options = availableGames;
+  options = options;
+  type: GameType;
   form = new FormGroup({
-    type: new FormControl('', Validators.required),
     tournament: new FormControl(false, Validators.required),
+    startScore: new FormControl(0, Validators.required),
     team: new FormControl(false, Validators.required),
     bet: new FormControl(10, Validators.required),
     sets: new FormControl(1, Validators.required),
     legs: new FormControl(1, Validators.required),
+    checkIn: new FormControl(Check.Straight, Validators.required),
+    checkOut: new FormControl(Check.Straight, Validators.required),
+    tieBreak: new FormControl(0, Validators.required),
   });
 
   private readonly destroy$ = new Subject();
 
   constructor(private readonly store: Store<State>) {
     this.store
-      .pipe(select(getWizardValues), takeUntil(this.destroy$))
-      .subscribe(values => this.form.patchValue({ ...values }, { emitEvent: false }));
+      .pipe(select(getWizardSettings), takeUntil(this.destroy$))
+      .subscribe((settings) => this.form.patchValue({ ...settings }, { emitEvent: false }));
+
+    this.store
+      .pipe(select(getWizardGameType), takeUntil(this.destroy$))
+      .subscribe((type) => (this.type = type));
 
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({ type: _type, ...rest }) =>
-        this.store.dispatch(WizardActions.setValues({ _type, ...rest })),
-      );
+      .subscribe((settings) => this.store.dispatch(WizardActions.setSettings({ settings })));
 
     this.store
       .pipe(select(getUserCurrency), takeUntil(this.destroy$))
-      .subscribe(currency => (this.currency = currency));
+      .subscribe((currency) => (this.currency = currency));
+  }
+
+  changeType(gameType: GameType) {
+    this.store.dispatch(WizardActions.setType({ gameType }));
   }
 
   changeStep(step: GameWizardStep) {

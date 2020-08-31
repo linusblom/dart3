@@ -15,27 +15,69 @@
     </mat-button-toggle-group>
   </div>
 
-  <div class="row">
-    <div>Bet:</div>
-    <mat-button-toggle-group formControlName="bet">
-      <mat-button-toggle *ngFor="let bet of bets" [value]="bet">
-        {{ bet | currency$ | async }}
+  <div class="row" *ngIf="option.startScore.length > 1">
+    <div>Start score:</div>
+    <mat-button-toggle-group formControlName="startScore">
+      <mat-button-toggle *ngFor="let score of option.startScore" [value]="score">
+        {{ score }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
-  <div class="row">
-    <div>Legs:</div>
-    <mat-button-toggle-group formControlName="legs">
-      <mat-button-toggle *ngFor="let leg of legs" [value]="leg">
-        {{ leg }}
+  <div class="row" *ngIf="option.checkIn.length > 1 || option.checkOut.length > 1">
+    <ng-container *ngIf="option.checkIn.length > 1">
+      <div>Check In:</div>
+      <mat-button-toggle-group formControlName="checkIn">
+        <mat-button-toggle *ngFor="let checkIn of option.checkIn" [value]="checkIn">
+          {{ checkIn }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+
+    <ng-container *ngIf="option.checkOut.length > 1">
+      <div>Check Out:</div>
+      <mat-button-toggle-group formControlName="checkOut">
+        <mat-button-toggle *ngFor="let checkOut of option.checkOut" [value]="checkOut">
+          {{ checkOut }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+  </div>
+
+  <div class="row" *ngIf="option.tieBreak.length > 1">
+    <div>Tie break:</div>
+    <mat-button-toggle-group formControlName="tieBreak">
+      <mat-button-toggle *ngFor="let tieBreak of option.tieBreak" [value]="tieBreak">
+        {{ tieBreak || 'Off' }}
       </mat-button-toggle>
     </mat-button-toggle-group>
+  </div>
 
-    <div>Sets:</div>
-    <mat-button-toggle-group formControlName="sets">
-      <mat-button-toggle *ngFor="let set of sets" [value]="set">
-        {{ set }}
+  <div class="row" *ngIf="option.legs.length > 1 || option.sets.length > 1">
+    <ng-container *ngIf="option.legs.length > 1">
+      <div>Legs:</div>
+      <mat-button-toggle-group formControlName="legs">
+        <mat-button-toggle *ngFor="let leg of option.legs" [value]="leg">
+          {{ leg }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+
+    <ng-container *ngIf="option.sets.length > 1">
+      <div>Sets:</div>
+      <mat-button-toggle-group formControlName="sets">
+        <mat-button-toggle *ngFor="let set of option.legs" [value]="set">
+          {{ set }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </ng-container>
+  </div>
+
+  <div class="row" *ngIf="option.bets.length > 1">
+    <div>Bet:</div>
+    <mat-button-toggle-group formControlName="bet">
+      <mat-button-toggle *ngFor="let bet of option.bets" [value]="bet">
+        {{ bet | currency$ | async }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

@@ -8,52 +8,31 @@
     flex: 1 0 500px;
   }
 
-  .winners {
+  .winners, .runner-ups {
     display: flex;
     align-items: center;
     padding: 20px;
-    background: $dark-blue;
 
     .fa-trophy {
       color: $gold;
       margin-right: 20px;
     }
 
-    .players {
+    .players, game-results-player {
       flex: 1;
     }
+  }
 
-    .player {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      margin-bottom: 1px;
-      color: $white;
+  .winners {
+    background: $dark-blue;
+    color: $white;
+  }
 
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
+  .runner-ups {
+    background: $grey;
 
-      .name, .win {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-
-      .name {
-        flex: 1;
-      }
-
-      .win {
-        flex: 0.5;
-        text-align: right;
-      }
+    .players {
+      margin-left: 110px;
     }
   }
 }

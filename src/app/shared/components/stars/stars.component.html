@@ -1,0 +1,7 @@
+<i *ngFor="let star of stars" class="fas fa-star gold"></i>
+<span class="next" [title]="nextStartProgress + '% progress'">
+  <i class="fas fa-star grey"></i>
+  <span class="progress" [style.width.%]="nextStartProgress">
+    <i class="fas fa-star gold"></i>
+  </span>
+</span>

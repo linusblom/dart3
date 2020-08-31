@@ -7,19 +7,19 @@ import { WizardSettingsComponent } from './wizard-settings/wizard-settings.compo
 import { WizardPlayersComponent } from './wizard-players/wizard-players.component';
 import { WizardPlayerComponent } from './wizard-player/wizard-player.component';
 import { BoardHitComponent } from './board-hit/board-hit.component';
-import { RoundHitComponent } from './round-hit/round-hit.component';
 import { MatchesComponent } from './matches/matches.component';
 import { CurrentPlayerComponent } from './current-player/current-player.component';
 import { ScoreComponent } from './score/score.component';
 import { ControlsComponent } from './controls/controls.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { XpCounterComponent } from './xp-counter/xp-counter.component';
+import { ResultsPlayerComponent } from './results-player/results-player.component';
 
 export const components = [
   DartBoardComponent,
   ControlsComponent,
   CurrentPlayerComponent,
   TeamComponent,
-  RoundHitComponent,
   BoardHitComponent,
   DetailsComponent,
   ScoreComponent,
@@ -30,4 +30,6 @@ export const components = [
   WizardSettingsComponent,
   MatchesComponent,
   CheckoutComponent,
+  XpCounterComponent,
+  ResultsPlayerComponent,
 ];

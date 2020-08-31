@@ -63,6 +63,17 @@ img {
   display: flex;
   height: 25px;
   z-index: 10;
+
+  .hit {
+    font-family: $header;
+    font-size: 12px;
+    padding: 5px;
+    width: 30px;
+    box-sizing: border-box;
+    border-right: 1px solid $dark-blue;
+    text-align: center;
+    background: $grey;
+  }
 }
 
 .gems {

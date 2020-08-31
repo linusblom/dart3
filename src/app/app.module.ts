@@ -1,11 +1,13 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import locale from '@angular/common/locales/en-SE';
 
 import { AuthModule } from '@auth/auth.module';
 import { RequestInterceptor } from '@auth/services';
@@ -24,6 +26,8 @@ import { UserModule } from '@user/user.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ROOT_REDUCERS } from './reducers';
+
+registerLocaleData(locale);
 
 @NgModule({
   declarations: [AppComponent],
@@ -60,6 +64,7 @@ import { ROOT_REDUCERS } from './reducers';
       useClass: RequestInterceptor,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: 'en-SE' },
   ],
   bootstrap: [AppComponent],
 })

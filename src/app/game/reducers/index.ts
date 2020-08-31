@@ -1,13 +1,14 @@
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromRoot from '@root/reducers';
+import { StoreState } from '@shared/models';
 
 import * as fromGame from './game.reducer';
 import * as fromWizard from './wizard.reducer';
 import * as fromMatch from './match.reducer';
 import * as fromTeam from './team.reducer';
 import * as fromHit from './hit.reducer';
-import { StoreState } from '@shared/models';
+import { defaultSettings } from './wizard.reducer';
 
 export interface GameState {
   game: fromGame.State;
@@ -49,17 +50,14 @@ export const getSelectedGame = createSelector(
 
 export const getWizardState = createSelector(getGameModuleState, (state) => state.wizard);
 export const getWizardStep = createSelector(getWizardState, (state) => state.step);
-export const getWizardValues = createSelector(
-  getWizardState,
-  ({ type, tournament, team, bet, sets, legs }) => ({
-    type,
-    tournament,
-    team,
-    bet,
-    sets,
-    legs,
-  }),
+export const getWizardSettings = createSelector(getWizardState, (state) =>
+  state.type ? state[state.type] : defaultSettings,
 );
+export const getWizardValues = createSelector(getWizardState, (state) => ({
+  type: state.type,
+  ...(state.type ? state[state.type] : defaultSettings),
+}));
+export const getWizardGameType = createSelector(getWizardState, (state) => state.type);
 export const getWizardPlayers = createSelector(getWizardState, (state) => state.players);
 
 export const getMatchState = createSelector(getGameModuleState, (state) => state.match);

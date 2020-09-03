@@ -3,7 +3,6 @@
 :host {
   display: flex;
   flex-direction: column;
-  margin-bottom: 50px;
   padding: 20px;
   color: $white;
 }
@@ -24,6 +23,10 @@
   align-items: center;
   justify-content: space-between;
   margin: 3px 0;
+
+  &.prize {
+    margin-top: 10px;
+  }
 
   .name {
     text-transform: uppercase;
@@ -46,5 +49,9 @@
     font-family: $header;
     letter-spacing: 2px;
     text-transform: uppercase;
+
+    &.first-to {
+      font-size: 10px;
+    }
   }
 }

@@ -1,1 +1,24 @@
-<p>results works!</p>
+<div class="content">
+  <game-details [game]="game" [style.background]="option.color"></game-details>
+  <div class="results">
+    <div class="winners">
+      <i class="fas fa-trophy fa-5x"></i>
+      <div class="players">
+        <game-results-player
+          *ngFor="let player of winners$ | async"
+          [player]="player"
+          [active]="countXp"
+        ></game-results-player>
+      </div>
+    </div>
+    <div class="runner-ups">
+      <div class="players">
+        <game-results-player
+          *ngFor="let player of runnerUps$ | async"
+          [player]="player"
+          [active]="countXp"
+        ></game-results-player>
+      </div>
+    </div>
+  </div>
+</div>

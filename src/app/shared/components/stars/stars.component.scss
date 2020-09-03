@@ -1,0 +1,29 @@
+@import '~variables.scss';
+
+:host {
+  height: 1em;
+}
+
+.fa-star {
+  margin: 0 1px;
+
+  &.gold {
+    color: $gold;
+  }
+
+  &.grey {
+    color: $dark-grey;
+  }
+}
+
+.next {
+  position: relative;
+  opacity: 0.5;
+}
+
+.progress {
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+}

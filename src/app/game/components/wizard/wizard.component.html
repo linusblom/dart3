@@ -2,7 +2,7 @@
   <div class="ribbon" *ngIf="option.disabled">
     <div class="label">Coming soon</div>
   </div>
-  <div class="header">{{ gameName(option.type) }}</div>
+  <div class="header">{{ option.name }}</div>
   <ng-container [ngSwitch]="step">
     <game-wizard-select
       *ngSwitchCase="Step.SelectGame"
@@ -13,8 +13,9 @@
 
     <game-wizard-settings
       *ngSwitchCase="Step.GameSettings"
+      [option]="option"
       [form]="form"
-      (back)="setGame('')"
+      (back)="setGame(undefined)"
       (next)="create.emit()"
     ></game-wizard-settings>
 

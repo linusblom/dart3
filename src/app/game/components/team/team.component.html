@@ -21,10 +21,12 @@
   </div>
 </div>
 <div class="scores">
-  <game-round-hit
+  <div
+    class="hit"
     [@slideIn]
-    *ngFor="let hit of team.hits; trackBy: trackByFn"
-    [value]="getHitValue(hit)"
-    [color]="getHitColor(hit)"
-  ></game-round-hit>
+    *ngFor="let hit of team.hits | slice: -15; trackBy: trackByFn"
+    [style.background]="hit.approvedScore > 0 ? '#daf2dc' : '#f2dada'"
+  >
+    {{ getHitValue(hit) }}
+  </div>
 </div>

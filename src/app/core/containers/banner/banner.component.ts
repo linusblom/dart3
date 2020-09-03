@@ -35,7 +35,7 @@ export class BannerComponent {
   banner$ = this.store.pipe(select(getBanner), shareReplay(1));
   header$ = this.banner$.pipe(pluck('header'));
   subHeader$ = this.banner$.pipe(pluck('subHeader'));
-  text$ = this.banner$.pipe(pluck('text'));
+  text$ = this.banner$.pipe(pluck('text'), shareReplay(1));
   color$ = this.banner$.pipe(pluck('color'));
 
   done = 0;

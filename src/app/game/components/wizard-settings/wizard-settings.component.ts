@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
-import { availableBets, availableSets, availableLegs } from '@game/models';
+import { GameOption } from '@game/models';
 
 @Component({
   selector: 'game-wizard-settings',
@@ -11,11 +10,8 @@ import { availableBets, availableSets, availableLegs } from '@game/models';
 })
 export class WizardSettingsComponent {
   @Input() form: FormGroup;
+  @Input() option: GameOption;
 
   @Output() back = new EventEmitter<void>();
   @Output() next = new EventEmitter<void>();
-
-  bets = availableBets;
-  sets = availableSets;
-  legs = availableLegs;
 }

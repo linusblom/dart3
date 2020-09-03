@@ -1,0 +1,19 @@
+@import '~variables.scss';
+
+:host {
+  display: block;
+  position: relative;
+  text-align: center;
+  height: 1em;
+  font-family: $xp;
+}
+
+.add-xp {
+  position: absolute;
+  margin: 0 auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+} 

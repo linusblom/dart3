@@ -12,6 +12,7 @@ import {
   distinctUntilChanged,
   delay,
   shareReplay,
+  take,
 } from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
@@ -24,7 +25,7 @@ import {
   getSelectedMatchTeams,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { availableGames, GameOption } from '@game/models';
+import { options, GameOption } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -55,7 +56,7 @@ export class GameComponent implements OnInit, OnDestroy {
     shareReplay(1),
   );
   activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
-    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId)),
+    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId) || {}),
     startWith({}),
   );
   activeRound$ = this.currentMatch$.pipe(pluck('activeRound'));
@@ -79,7 +80,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = availableGames.find(({ type }) => type === game.type);
+      this.option = options.find(({ type }) => type === game.type);
       this.game = game;
     });
 
@@ -93,7 +94,11 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this.currentMatch$
-      .pipe(takeUntil(this.destroy$), pluck('activeMatchTeamId'), distinctUntilChanged())
+      .pipe(
+        takeUntil(this.destroy$),
+        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}`),
+        distinctUntilChanged(),
+      )
       .subscribe(() => {
         this.disabled = false;
         this.clear = true;
@@ -113,7 +118,6 @@ export class GameComponent implements OnInit, OnDestroy {
               banner: {
                 header: 'Game Over',
                 subHeader: 'Well played',
-                text: 'Lets see the results!',
                 color: this.option.color,
               },
             }),
@@ -121,7 +125,27 @@ export class GameComponent implements OnInit, OnDestroy {
         }),
         delay(1000),
       )
-      .subscribe(() => this.router.navigate(['results', this.game.uid]));
+      .subscribe(() =>
+        this.router.navigate(['results', this.game.uid], { state: { countXp: true } }),
+      );
+
+    combineLatest([this.game$.pipe(pluck('tieBreak')), this.activeRound$])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(([tieBreak, activeRound]) => tieBreak === activeRound),
+        take(1),
+      )
+      .subscribe(() =>
+        this.store.dispatch(
+          CoreActions.showBanner({
+            banner: {
+              header: 'Tie Break',
+              subHeader: 'Highest score wins',
+              color: this.option.color,
+            },
+          }),
+        ),
+      );
   }
 
   ngOnInit() {

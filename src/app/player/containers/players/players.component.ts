@@ -14,7 +14,9 @@ import { PlayerActions } from '@player/actions';
 export class PlayersComponent {
   players$ = this.store.pipe(select(getAllPlayers));
 
-  constructor(private readonly store: Store<State>, private readonly router: Router) {}
+  constructor(private readonly store: Store<State>, private readonly router: Router) {
+    this.store.dispatch(PlayerActions.getRequest());
+  }
 
   create(player: CreatePlayer) {
     this.store.dispatch(PlayerActions.createRequest({ player }));

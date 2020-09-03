@@ -4,9 +4,6 @@ import { RoundHit, GameType } from 'dart3-sdk';
 
 import { MatchTeamPlayer } from '@game/models';
 
-const RED = '#f2dada';
-const GREEN = '#daf2dc';
-
 @Component({
   selector: 'game-team',
   templateUrl: './team.component.html',
@@ -19,8 +16,9 @@ const GREEN = '#daf2dc';
         animate('300ms ease-out', style({ transform: 'translateY(0%)' })),
       ]),
       transition(':leave', [
-        style({ transform: 'translateY(0%)' }),
-        animate('300ms ease-in', style({ transform: 'translateY(-25px)' })),
+        style({ transform: 'scale(0%)' }),
+        animate('300ms ease-in', style({ transform: 'translateY(-25px)', width: '*' })),
+        animate('100ms ease-out', style({ width: 0 })),
       ]),
     ]),
   ],
@@ -40,13 +38,6 @@ export class TeamComponent {
         return hit.score;
       default:
         return hit.approvedScore;
-    }
-  }
-
-  getHitColor(hit: RoundHit) {
-    switch (this.type) {
-      default:
-        return hit.approvedScore > 0 ? GREEN : RED;
     }
   }
 

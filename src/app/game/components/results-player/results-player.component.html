@@ -1,0 +1,11 @@
+<img [src]="player.avatar" />
+<div class="name">
+  <div>{{ player.name }}</div>
+  <app-stars [xp]="player.xp"></app-stars>
+</div>
+<game-xp-counter
+  [(totalXp)]="player.xp"
+  [addXp]="player.earnedXp"
+  [active]="countXp"
+></game-xp-counter>
+<div class="win">{{ player.win > 0 ? (player.win | currency$ | async) : '' }}</div>

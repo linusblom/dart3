@@ -1,0 +1,38 @@
+@import '~variables.scss';
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    flex: 1 0 500px;
+  }
+
+  .winners, .runner-ups {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+
+    .fa-trophy {
+      color: $gold;
+      margin-right: 20px;
+    }
+
+    .players, game-results-player {
+      flex: 1;
+    }
+  }
+
+  .winners {
+    background: $dark-blue;
+    color: $white;
+  }
+
+  .runner-ups {
+    background: $grey;
+
+    .players {
+      margin-left: 110px;
+    }
+  }
+}

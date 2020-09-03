@@ -17,8 +17,8 @@ import { MatchTeamPlayer } from '@game/models';
       ]),
       transition(':leave', [
         style({ transform: 'scale(0%)' }),
-        animate('300ms linear', style({ transform: 'translateY(-25px)', width: '*' })),
-        animate('100ms linear', style({ width: 0 })),
+        animate('300ms ease-in', style({ transform: 'translateY(-25px)', width: '*' })),
+        animate('100ms ease-out', style({ width: 0 })),
       ]),
     ]),
   ],

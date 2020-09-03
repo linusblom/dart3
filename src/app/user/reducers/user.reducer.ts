@@ -25,6 +25,7 @@ export const initialState: State = {
   userMetadata: {
     currency: '',
     bootstrapped: false,
+    rake: 0,
   },
   identities: [],
   bank: {
@@ -38,9 +39,9 @@ export const initialState: State = {
 export const reducer = createReducer(
   initialState,
 
-  on(UserActions.getRequest, state => ({ ...state, state: StoreState.FETCHING })),
+  on(UserActions.getRequest, (state) => ({ ...state, state: StoreState.FETCHING })),
 
-  on(UserActions.updateRequest, state => ({ ...state, state: StoreState.UPDATING })),
+  on(UserActions.updateRequest, (state) => ({ ...state, state: StoreState.UPDATING })),
 
   on(UserActions.getSuccess, UserActions.updateSuccess, (state, { user }) => ({
     ...state,
@@ -48,7 +49,7 @@ export const reducer = createReducer(
     state: StoreState.NONE,
   })),
 
-  on(UserActions.getFailure, UserActions.updateFailure, state => ({
+  on(UserActions.getFailure, UserActions.updateFailure, (state) => ({
     ...state,
     state: StoreState.NONE,
   })),

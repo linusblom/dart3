@@ -48,7 +48,7 @@ export class XpCounterComponent implements OnDestroy {
       this.showAdd = false;
     }),
     switchMap(() =>
-      interval(10).pipe(
+      interval(1).pipe(
         takeWhile((_, index) => index < this.xp),
         tap(() => this.totalXpChange.emit(this.totalXp + 1)),
       ),

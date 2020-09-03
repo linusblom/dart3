@@ -5,7 +5,7 @@
 </div>
 <game-xp-counter
   [(totalXp)]="player.xp"
-  [addXp]="player.gainedXp"
+  [addXp]="player.earnedXp"
   [active]="countXp"
 ></game-xp-counter>
 <div class="win">{{ player.win > 0 ? (player.win | currency$ | async) : '' }}</div>

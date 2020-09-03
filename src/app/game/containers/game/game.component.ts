@@ -12,6 +12,7 @@ import {
   distinctUntilChanged,
   delay,
   shareReplay,
+  take,
 } from 'rxjs/operators';
 import { Subject, interval, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
@@ -126,6 +127,24 @@ export class GameComponent implements OnInit, OnDestroy {
       )
       .subscribe(() =>
         this.router.navigate(['results', this.game.uid], { state: { countXp: true } }),
+      );
+
+    combineLatest([this.game$.pipe(pluck('tieBreak')), this.activeRound$])
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(([tieBreak, activeRound]) => tieBreak === activeRound),
+        take(1),
+      )
+      .subscribe(() =>
+        this.store.dispatch(
+          CoreActions.showBanner({
+            banner: {
+              header: 'Tie Break',
+              subHeader: 'Highest score wins',
+              color: this.option.color,
+            },
+          }),
+        ),
       );
   }
 

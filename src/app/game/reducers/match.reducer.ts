@@ -20,17 +20,23 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
 
-  on(CurrentGameActions.getMatchesRequest, state => ({ ...state, state: StoreState.FETCHING })),
+  on(CurrentGameActions.getRequest, (state) => ({ ...state, selectedId: null })),
+
+  on(CurrentGameActions.getMatchesRequest, (state) => ({
+    ...state,
+    state: StoreState.FETCHING,
+    selectedId: null,
+  })),
 
   on(CurrentGameActions.getMatchesSuccess, (state, { matches }) =>
     adapter.upsertMany(matches, {
       ...state,
       state: StoreState.NONE,
-      selectedId: matches.find(game => game.status === MatchStatus.Playing)?.id,
+      selectedId: matches.find((game) => game.status === MatchStatus.Playing)?.id,
     }),
   ),
 
-  on(CurrentGameActions.getMatchesFailure, state => ({ ...state, state: StoreState.NONE })),
+  on(CurrentGameActions.getMatchesFailure, (state) => ({ ...state, state: StoreState.NONE })),
 
   on(MatchActions.updateMatches, (state, { matches }) => adapter.updateMany(matches, state)),
 );

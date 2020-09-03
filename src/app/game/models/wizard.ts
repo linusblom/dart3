@@ -68,8 +68,8 @@ export const options: GameOption[] = [
     type: GameType.X01,
     color: '#4fb37b',
     description:
-      'Players start with a score of 301/501/701/1001. First player to reach exactly zero wins. Optional check-in and -out on double or master.',
-    startScore: [301, 501, 701, 1001],
+      'Players start with a score of 301/501/701. First player to reach exactly zero wins. Optional check-in and -out on double or master.',
+    startScore: [301, 501, 701],
     checkIn: [Check.Straight, Check.Double, Check.Master],
     checkOut: [Check.Straight, Check.Double, Check.Master],
     tieBreak: [0, 10, 15, 20, 25, 30],

@@ -6,13 +6,7 @@ import { Subject } from 'rxjs';
 import { Player, Check, GameType } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import {
-  State,
-  getWizardStep,
-  getWizardSettings,
-  getWizardGameType,
-  getWizardPlayers,
-} from '@game/reducers';
+import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
 import { options, GameWizardStep } from '@game/models';
 import { getAllPlayers, getUserCurrency } from '@root/reducers';
 import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
@@ -47,12 +41,11 @@ export class StartComponent {
 
   constructor(private readonly store: Store<State>) {
     this.store
-      .pipe(select(getWizardSettings), takeUntil(this.destroy$))
-      .subscribe((settings) => this.form.patchValue({ ...settings }, { emitEvent: false }));
-
-    this.store
-      .pipe(select(getWizardGameType), takeUntil(this.destroy$))
-      .subscribe((type) => (this.type = type));
+      .pipe(select(getWizardValues), takeUntil(this.destroy$))
+      .subscribe(({ type, ...settings }) => {
+        this.form.patchValue({ ...settings }, { emitEvent: false });
+        this.type = type;
+      });
 
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))

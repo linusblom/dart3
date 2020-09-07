@@ -26,7 +26,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ],
 })
 export class XpCounterComponent implements OnDestroy {
-  @Input() active = true;
   @Input() totalXp = 0;
   @Input() set addXp(xp: number) {
     this.xp = xp;

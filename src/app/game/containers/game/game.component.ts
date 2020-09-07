@@ -25,7 +25,7 @@ import {
   getSelectedMatchTeams,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { options, GameOption } from '@game/models';
+import { GameOption, getOptions } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -80,7 +80,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = options.find(({ type }) => type === game.type);
+      this.option = getOptions(game.type);
       this.game = game;
     });
 

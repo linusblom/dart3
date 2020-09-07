@@ -37,6 +37,10 @@
       <div class="header">{{ bank.inPlay | currency$ | async }}</div>
     </div>
     <div class="row">
+      <div class="name">Outstanding rake</div>
+      <div class="header">{{ bank.rake | currency$ | async }}</div>
+    </div>
+    <div class="row">
       <div class="name">Current Jackpot</div>
       <div class="header">{{ jackpot.value | currency$ | async }}</div>
     </div>
@@ -44,11 +48,11 @@
       <div class="name">Next Jackpot</div>
       <div class="header">{{ jackpot.nextValue | currency$ | async }}</div>
     </div>
-    <div class="row">
+    <div class="row line">
       <div class="name">Total</div>
       <div class="header">{{ total | currency$ | async }}</div>
     </div>
-    <div class="row space">
+    <div class="row line">
       <div class="name">Total turnover</div>
       <div class="header">{{ bank.turnOver | currency$ | async }}</div>
     </div>

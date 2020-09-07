@@ -20,15 +20,23 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
 
-  on(GameActions.createRequest, state => ({
+  on(GameActions.createRequest, (state) => ({
     ...state,
     state: StoreState.CREATING,
   })),
 
-  on(CurrentGameActions.getRequest, GameActions.getByUidRequest, state => ({
+  on(CurrentGameActions.getRequest, GameActions.getByUidRequest, (state) => ({
     ...state,
     state: StoreState.FETCHING,
   })),
+
+  on(
+    CurrentGameActions.createRoundRequest,
+    CurrentGameActions.startRequest,
+    CurrentGameActions.createTeamPlayerRequest,
+    CurrentGameActions.deleteTeamPlayerRequest,
+    (state) => ({ ...state, state: StoreState.UPDATING }),
+  ),
 
   on(
     GameActions.createSuccess,
@@ -38,18 +46,21 @@ export const reducer = createReducer(
       adapter.upsertOne(game, { ...state, selectedId: game.id, state: StoreState.NONE }),
   ),
 
-  on(CurrentGameActions.createRoundRequest, state => ({ ...state, state: StoreState.UPDATING })),
-
-  on(CurrentGameActions.createRoundSuccess, state => ({ ...state, state: StoreState.NONE })),
-
   on(GameActions.updateGame, (state, { game }) => adapter.updateOne(game, state)),
 
   on(
     GameActions.createFailure,
+    GameActions.getByUidFailure,
     CurrentGameActions.getFailure,
     CurrentGameActions.createRoundFailure,
-    GameActions.getByUidFailure,
-    state => ({
+    CurrentGameActions.createRoundSuccess,
+    CurrentGameActions.startSuccess,
+    CurrentGameActions.startFailure,
+    CurrentGameActions.createTeamPlayerSuccess,
+    CurrentGameActions.createTeamPlayerFailure,
+    CurrentGameActions.deleteTeamPlayerSuccess,
+    CurrentGameActions.deleteTeamPlayerFailure,
+    (state) => ({
       ...state,
       state: StoreState.NONE,
     }),

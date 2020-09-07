@@ -6,9 +6,15 @@ import { Subject } from 'rxjs';
 import { Player, Check, GameType } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { State, getWizardStep, getWizardValues, getWizardPlayers } from '@game/reducers';
+import {
+  State,
+  getWizardStep,
+  getWizardValues,
+  getWizardPlayers,
+  getGameModuleLoading,
+} from '@game/reducers';
 import { options, GameWizardStep } from '@game/models';
-import { getAllPlayers, getUserCurrency } from '@root/reducers';
+import { getAllPlayers, getUserCurrency, getUserMetaData } from '@root/reducers';
 import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
 
@@ -21,6 +27,8 @@ export class StartComponent {
   players$ = this.store.pipe(select(getAllPlayers));
   selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
+  fees$ = this.store.pipe(select(getUserMetaData));
+  loading$ = this.store.pipe(select(getGameModuleLoading));
 
   currency = '';
   options = options;

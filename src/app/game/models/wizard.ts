@@ -76,10 +76,12 @@ export const options: GameOption[] = [
   },
   {
     ...basicOptions,
-    name: 'TBD',
+    name: 'Cricket',
     type: 'new' as GameType,
     color: '#ad319f',
-    description: 'Cool New Game',
+    description: '',
     disabled: true,
   },
 ];
+
+export const getOptions = (type: GameType) => options.find((game) => game.type === type);

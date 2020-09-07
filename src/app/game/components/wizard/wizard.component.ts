@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { GameOption, GameWizardStep } from '@game/models';
-import { Player, GameType, TeamPlayer } from 'dart3-sdk';
+import { Player, GameType, TeamPlayer, MetaData } from 'dart3-sdk';
 
 @Component({
   selector: 'game-wizard',
@@ -24,6 +24,8 @@ export class WizardComponent {
   @Input() players: Player[] = [];
   @Input() selectedPlayers: TeamPlayer[] = [];
   @Input() selected = false;
+  @Input() fees = {} as MetaData;
+  @Input() loading = false;
 
   @Output() changeStep = new EventEmitter<GameWizardStep>();
   @Output() changeType = new EventEmitter<GameType>();

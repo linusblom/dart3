@@ -1,5 +1,5 @@
 <ng-container *ngIf="hit.type === Type.Gem; else avatarRef">
-  <img src="../../../../assets/gem.gif" />
+  <img [@gem] src="../../../../assets/gem.gif" />
 </ng-container>
 
 <ng-template #avatarRef>

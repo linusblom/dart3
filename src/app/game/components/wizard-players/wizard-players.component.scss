@@ -26,6 +26,49 @@
   &.dragging:hover {
     background: rgba($white, .1);
   }
+
+  .bets {
+    position: absolute;
+    color: $black;
+    width: 200px;
+    background: $grey;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 10px);
+    font-family: $header;
+    text-transform: uppercase;
+    font-size: 12px;
+    box-shadow: $box-shadow;
+    padding: 10px;
+    letter-spacing: 2px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+
+      &.line {
+        border-top: 1px solid $black;
+      }
+
+      .value {
+        text-align: right;
+      }
+    }
+
+    &:after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: $off-white transparent transparent transparent;
+    }
+  }
 }
 
 .placeholder {

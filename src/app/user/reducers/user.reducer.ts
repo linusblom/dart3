@@ -26,12 +26,16 @@ export const initialState: State = {
     currency: '',
     bootstrapped: false,
     rake: 0,
+    jackpotFee: 0,
+    nextJackpotFee: 0,
+    gemChance: '1/100',
   },
   identities: [],
   bank: {
     players: '0.00',
     turnOver: '0.00',
     inPlay: '0.00',
+    rake: '0.00',
   },
   state: StoreState.NONE,
 };

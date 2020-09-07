@@ -18,6 +18,44 @@
       (cdkDragStarted)="dragStarted()"
       (cdkDragReleased)="dragReleased()"
     ></game-wizard-player>
+    <div class="bets">
+      <div class="row">
+        <div class="key">Bets</div>
+        <div class="value">{{ bets > 0 ? (bets | currency$ | async) : '-' }}</div>
+      </div>
+      <div class="row">
+        <div class="key">Jackpot</div>
+        <div class="value">
+          {{
+            bets > 0
+              ? (bets * (fees.jackpotFee + fees.nextJackpotFee) * -1 | currency$ | async)
+              : ((fees.jackpotFee + fees.nextJackpotFee) * 100 | number: '1.2-2') + '%'
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="key">Rake</div>
+        <div class="value">
+          {{
+            bets > 0
+              ? (bets * fees.rake * -1 | currency$ | async)
+              : (fees.rake * 100 | number: '1.2-2') + '%'
+          }}
+        </div>
+      </div>
+      <div class="row line">
+        <div class="key">Prize pool</div>
+        <div class="value">
+          {{
+            bets > 0
+              ? (bets - bets * (fees.jackpotFee + fees.nextJackpotFee + fees.rake)
+                | currency$
+                | async)
+              : '-'
+          }}
+        </div>
+      </div>
+    </div>
     <div class="header placeholder" *ngIf="playing.length === 0">Drag Players Here</div>
   </div>
 
@@ -47,7 +85,7 @@
   <button mat-flat-button [disabled]="playing.length > 0" (click)="cancel.emit()">
     Cancel
   </button>
-  <button mat-flat-button [disabled]="playing.length < 2" (click)="start.emit()">
+  <button mat-flat-button [disabled]="playing.length < 2 || loading" (click)="start.emit()">
     Game On
   </button>
 </div>

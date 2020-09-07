@@ -47,8 +47,8 @@ export class UserComponent implements OnDestroy {
       .subscribe(([{ bank }, jackpot]) => {
         this.bank = bank;
         this.jackpot = jackpot;
-        (this.total = +bank.players + +bank.inPlay + +jackpot.value + +jackpot.nextValue),
-          +(+bank.rake);
+        this.total =
+          +bank.players + +bank.inPlay + +jackpot.value + +jackpot.nextValue + +bank.rake;
       });
   }
 

@@ -86,3 +86,48 @@ export const getSelectedMatchTeams = createSelector(
         hits: hits.filter(({ matchTeamId }) => team.id === matchTeamId),
       })),
 );
+
+export const getRoundDetails = createSelector(
+  getSelectedGame,
+  getSelectedMatch,
+  getSelectedMatchTeams,
+  (game, match, teams) => {
+    if (!game || !match || !teams) {
+      return {
+        gameType: undefined,
+        round: 0,
+        tieBreak: false,
+        currentTotal: 0,
+        previousScore: 0,
+        highestScore: 0,
+      };
+    }
+
+    const currentTeamIndex = teams.findIndex((team) => team.id === match.activeMatchTeamId);
+    let previousScore = 0;
+
+    if (currentTeamIndex > 0) {
+      previousScore = teams[currentTeamIndex - 1].hits.find(
+        (hit) => hit.round === match.activeRound,
+      ).score;
+    } else if (currentTeamIndex === 0 && match.activeRound > 1) {
+      previousScore = teams[teams.length - 1].hits.find(
+        (hit) => hit.round === match.activeRound - 1,
+      ).score;
+    }
+
+    const highestScore = teams.reduce((highest, team) => {
+      const hit = team.hits.find((hit) => hit.round === match.activeRound);
+      return hit && hit.score > highest ? hit.score : highest;
+    }, 0);
+
+    return {
+      gameType: game.type,
+      round: match.activeRound,
+      tieBreak: match.activeRound === game.tieBreak,
+      currentTotal: teams[currentTeamIndex].score,
+      previousScore,
+      highestScore,
+    };
+  },
+);

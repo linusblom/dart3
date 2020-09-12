@@ -32,6 +32,7 @@ export class PlayerComponent implements OnDestroy {
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     pro: new FormControl(false),
+    double: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
   });
 
   transactionForm = new FormGroup(
@@ -40,7 +41,7 @@ export class PlayerComponent implements OnDestroy {
       amount: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(99999)]),
       receiverUid: new FormControl(),
     },
-    controls => {
+    (controls) => {
       const { type, receiverUid } = controls.value;
       return type === TransactionType.Transfer && !receiverUid ? { playerIdError: true } : null;
     },
@@ -53,11 +54,12 @@ export class PlayerComponent implements OnDestroy {
 
     this.store.dispatch(PlayerActions.getByUidRequest({ uid: this.uid }));
 
-    this.store.pipe(select(getSelectedPlayer), takeUntil(this.destroy$)).subscribe(player => {
+    this.store.pipe(select(getSelectedPlayer), takeUntil(this.destroy$)).subscribe((player) => {
       this.settingsForm.patchValue(
         {
           name: player.name,
           pro: player.pro,
+          double: player.double,
         },
         { emitEvent: false },
       );
@@ -72,11 +74,11 @@ export class PlayerComponent implements OnDestroy {
         takeUntil(this.destroy$),
         map(([players, selectedUid]) => players.filter(({ uid }) => uid !== selectedUid)),
       )
-      .subscribe(players => (this.players = players));
+      .subscribe((players) => (this.players = players));
 
     this.store
       .pipe(select(getUserCurrency), takeUntil(this.destroy$))
-      .subscribe(currency => (this.currency = currency));
+      .subscribe((currency) => (this.currency = currency));
   }
 
   ngOnDestroy() {
@@ -86,8 +88,9 @@ export class PlayerComponent implements OnDestroy {
 
   update() {
     if (this.settingsForm.valid) {
-      const { name, pro } = this.settingsForm.value;
-      this.store.dispatch(PlayerActions.updateRequest({ uid: this.uid, player: { name, pro } }));
+      this.store.dispatch(
+        PlayerActions.updateRequest({ uid: this.uid, player: this.settingsForm.value }),
+      );
     }
   }
 

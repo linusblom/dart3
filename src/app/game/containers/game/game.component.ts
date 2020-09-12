@@ -23,6 +23,7 @@ import {
   getSelectedMatch,
   getGameMatches,
   getSelectedMatchTeams,
+  getRoundDetails,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
 import { GameOption, getOptions } from '@game/models';
@@ -65,6 +66,7 @@ export class GameComponent implements OnInit, OnDestroy {
     shareReplay(1),
   );
   gems$ = this.store.pipe(select(getJackpotGems));
+  roundDetails$ = this.store.pipe(select(getRoundDetails));
 
   game: Game;
   option: GameOption;

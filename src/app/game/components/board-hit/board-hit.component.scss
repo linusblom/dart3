@@ -13,9 +13,7 @@
 }
 
 :host.none {
-  opacity: 0.4;
-
-  div {
+  div, img {
     display: none;
   }
 }

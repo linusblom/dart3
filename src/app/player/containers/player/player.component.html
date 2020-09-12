@@ -42,9 +42,15 @@
 </div>
 <div class="settings" [formGroup]="settingsForm">
   <div class="header">Settings</div>
-  <mat-form-field class="light">
-    <input matInput formControlName="name" placeholder="Name" (change)="update()" />
-  </mat-form-field>
+  <div class="row">
+    <mat-form-field class="light">
+      <input matInput formControlName="name" placeholder="Name" (change)="update()" />
+    </mat-form-field>
+
+    <mat-form-field class="small light">
+      <input matInput formControlName="double" placeholder="Favorite double" (change)="update()" />
+    </mat-form-field>
+  </div>
   <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
     Professional
   </mat-checkbox>

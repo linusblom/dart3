@@ -6,9 +6,9 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Score, Player, GameType } from 'dart3-sdk';
+import { Score, Player, Check } from 'dart3-sdk';
 
-import { BoardHit, BoardHitType } from '@game/models';
+import { BoardHit, BoardHitType, RoundDetails } from '@game/models';
 import { generateId } from '@utils/generate-id';
 
 @Component({
@@ -21,9 +21,9 @@ export class DartBoardComponent {
   @Input() player = {} as Player;
   @Input() color = '#ffffff';
   @Input() timer = -1;
-  @Input() activeRound = 1;
-  @Input() type: GameType;
   @Input() jackpotDisabled = false;
+  @Input() roundDetails = {} as RoundDetails;
+  @Input() checkOut = Check.Double;
   @Input() set gems(gems: boolean[]) {
     if (gems.length) {
       this.hits = this.hits.map((hit, index) => ({

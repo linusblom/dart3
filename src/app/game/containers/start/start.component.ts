@@ -37,6 +37,7 @@ export class StartComponent {
     tournament: new FormControl(false, Validators.required),
     startScore: new FormControl(0, Validators.required),
     team: new FormControl(false, Validators.required),
+    random: new FormControl(true, Validators.required),
     bet: new FormControl(10, Validators.required),
     sets: new FormControl(1, Validators.required),
     legs: new FormControl(1, Validators.required),

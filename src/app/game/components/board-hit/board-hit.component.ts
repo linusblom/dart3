@@ -27,9 +27,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class BoardHitComponent {
   @Input() hit: BoardHit;
-  @Input() avatar = '';
 
   @Output() remove = new EventEmitter<string>();
+
+  @HostBinding('class.show-score')
+  @Input()
+  showScore = true;
 
   @HostBinding('class') get type() {
     return this.hit.type;

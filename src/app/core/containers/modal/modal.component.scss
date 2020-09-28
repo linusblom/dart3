@@ -22,6 +22,16 @@
   margin: 20px 0;
 }
 
+.img {
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+}
+
 mat-form-field {
   width: 100%;
 }

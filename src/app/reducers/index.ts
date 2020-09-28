@@ -43,6 +43,7 @@ export const getUserCurrency = createSelector(
 );
 export const getUserPicture = createSelector(getUserState, (state) => state.picture);
 export const getUserMetaData = createSelector(getUserState, (state) => state.userMetadata);
+export const getUserInvoices = createSelector(getUserState, (state) => state.invoices);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
 export const showMenu = createSelector(getCoreState, (state) => state.menu);

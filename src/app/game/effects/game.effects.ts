@@ -45,7 +45,7 @@ export class GameEffects {
       filter(({ game }) => !!game.results),
       switchMap(({ game }) =>
         game.results.map((result) =>
-          PlayerActions.updateById({ id: result.playerId, changes: {} }),
+          PlayerActions.updateById({ id: result.playerId, changes: { xp: result.xp } }),
         ),
       ),
     ),

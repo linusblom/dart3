@@ -49,9 +49,9 @@ export class CheckoutComponent {
     this.roundDetails$.next(details);
   }
 
-  disabled$ = new BehaviorSubject<boolean>(false);
-  @Input() set disabled(disabled: boolean) {
-    this.disabled$.next(disabled);
+  override$ = new BehaviorSubject<string[]>(undefined);
+  @Input() set override(override: string[]) {
+    this.override$.next(override);
   }
 
   hits$ = new BehaviorSubject<BoardHit[]>([]);
@@ -59,10 +59,8 @@ export class CheckoutComponent {
     this.hits$.next(hits);
   }
 
-  checkouts$ = combineLatest([this.hits$, this.roundDetails$, this.disabled$]).pipe(
-    map(([hits, roundDetails, disabled]) =>
-      disabled ? [] : this.getCheckouts(hits, roundDetails),
-    ),
+  checkouts$ = combineLatest([this.hits$, this.roundDetails$, this.override$]).pipe(
+    map(([hits, roundDetails, override]) => override || this.getCheckouts(hits, roundDetails)),
   );
 
   order = ORDER;

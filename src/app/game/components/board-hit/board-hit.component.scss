@@ -19,7 +19,7 @@
 }
 
 :host.avatar {
-  &:hover {
+  &.show-score:hover {
     width: 100px;
   }
 

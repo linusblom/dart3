@@ -3,6 +3,7 @@ import { GameType, Check } from 'dart3-sdk';
 export interface GameSettings {
   tournament: boolean;
   team: boolean;
+  random: boolean;
   bet: number;
   sets: number;
   legs: number;

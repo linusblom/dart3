@@ -25,6 +25,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class CurrentPlayerComponent {
   @Input() player = {} as Player;
+  @Input() showScore = true;
   @Input() set hits(hits: BoardHit[]) {
     this.scores = hits.map(({ id, value, multiplier }) => ({ id, value, multiplier }));
     this.total = {
@@ -33,8 +34,8 @@ export class CurrentPlayerComponent {
     };
   }
 
-  scores: (Score & { id: string })[];
-  total: Score;
+  scores: { id: string; value: number; multiplier: number }[];
+  total: { value: number; multiplier: number };
 
   trackByFn(_: number, { id }: Score & { id: string }) {
     return id;

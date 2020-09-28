@@ -59,3 +59,5 @@ export const getMatchesSuccess = createAction(
   props<MatchResponse>(),
 );
 export const getMatchesFailure = createAction('[Current Game] Get Matches Failure');
+
+export const nextOrderTurn = createAction('[Current Game] Next Order Turn');

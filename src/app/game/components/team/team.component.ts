@@ -26,6 +26,7 @@ export class TeamComponent {
   @Input() team: MatchTeamPlayer;
   @Input() type: GameType;
   @Input() jackpotDisabled = true;
+  @Input() showScore = true;
 
   @HostBinding('class.disabled') get disabled() {
     return this.team.position > 1;

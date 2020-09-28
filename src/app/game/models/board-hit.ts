@@ -1,3 +1,5 @@
+import { Target } from 'dart3-sdk';
+
 export interface BoardHit {
   id: string;
   value: number;
@@ -5,6 +7,10 @@ export interface BoardHit {
   top: number;
   left: number;
   type: BoardHitType;
+  avatar: string;
+  matchTeamId: number;
+  bullDistance: number;
+  target: Target;
 }
 
 export enum BoardHitType {

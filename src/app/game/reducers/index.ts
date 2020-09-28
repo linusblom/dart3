@@ -9,6 +9,7 @@ import * as fromMatch from './match.reducer';
 import * as fromTeam from './team.reducer';
 import * as fromHit from './hit.reducer';
 import { defaultSettings } from './wizard.reducer';
+import { MatchStatus } from 'dart3-sdk';
 
 export interface GameState {
   game: fromGame.State;
@@ -92,7 +93,7 @@ export const getRoundDetails = createSelector(
   getSelectedMatch,
   getSelectedMatchTeams,
   (game, match, teams) => {
-    if (!game || !match || !teams) {
+    if (!game || !match || !teams || match.status !== MatchStatus.Playing) {
       return {
         gameType: undefined,
         round: 0,
@@ -103,18 +104,27 @@ export const getRoundDetails = createSelector(
       };
     }
 
-    const currentTeamIndex = teams.findIndex((team) => team.id === match.activeMatchTeamId);
-    let previousScore = 0;
+    const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
+    const previousTeam = teams.find(
+      (team) => team.order === (currentTeam.order > 1 ? currentTeam.order - 1 : teams.length),
+    );
 
-    if (currentTeamIndex > 0) {
-      previousScore = teams[currentTeamIndex - 1].hits.find(
-        (hit) => hit.round === match.activeRound,
-      ).score;
-    } else if (currentTeamIndex === 0 && match.activeRound > 1) {
-      previousScore = teams[teams.length - 1].hits.find(
-        (hit) => hit.round === match.activeRound - 1,
-      ).score;
-    }
+    console.log(currentTeam);
+    console.log(previousTeam);
+
+    const previousScore = (previousTeam.hits[previousTeam.hits.length - 1] || { score: 0 }).score;
+
+    // let previousScore = 0;
+
+    // if (currentTeamIndex > 0 && (match.activeRound > 1 || teams[currentTeamIndex].order > 0)) {
+    //   previousScore = teams[currentTeamIndex - 1].hits.find(
+    //     (hit) => hit.round === match.activeRound,
+    //   ).score;
+    // } else if (currentTeamIndex === 0 && match.activeRound > 1) {
+    //   previousScore = teams[teams.length - 1].hits.find(
+    //     (hit) => hit.round === match.activeRound - 1,
+    //   ).score;
+    // }
 
     const highestScore = teams.reduce((highest, team) => {
       const hit = team.hits.find((hit) => hit.round === match.activeRound);
@@ -125,7 +135,7 @@ export const getRoundDetails = createSelector(
       gameType: game.type,
       round: match.activeRound,
       tieBreak: match.activeRound === game.tieBreak,
-      currentTotal: teams[currentTeamIndex].score,
+      currentTotal: currentTeam.score,
       previousScore,
       highestScore,
     };

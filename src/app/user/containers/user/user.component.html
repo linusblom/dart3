@@ -37,7 +37,7 @@
       <div class="header">{{ bank.inPlay | currency$ | async }}</div>
     </div>
     <div class="row">
-      <div class="name">Outstanding rake</div>
+      <div class="name">Rake</div>
       <div class="header">{{ bank.rake | currency$ | async }}</div>
     </div>
     <div class="row">
@@ -58,3 +58,5 @@
     </div>
   </div>
 </div>
+
+<app-invoice [invoices]="invoices$ | async" (pay)="pay($event)"></app-invoice>

@@ -11,9 +11,9 @@
       </div>
     </div>
   </div>
-  <div class="score">{{ team.sets }}</div>
-  <div class="score">{{ team.legs }}</div>
-  <div class="score">{{ team.score }}</div>
+  <div *ngIf="showScore" class="score">{{ team.sets }}</div>
+  <div *ngIf="showScore" class="score">{{ team.legs }}</div>
+  <div *ngIf="showScore" class="score">{{ team.score }}</div>
   <div class="gems" [ngClass]="{ disabled: jackpotDisabled }">
     <span *ngFor="let gem of [0, 1, 2]" [style.color]="team.gems > gem ? '#bc7bd1' : '#d1d1d1'">
       <i class="far fa-gem"></i>

@@ -3,6 +3,6 @@ import { Update } from '@ngrx/entity';
 import { MatchTeam } from 'dart3-sdk';
 
 export const updateTeams = createAction(
-  '[Game] Update Teams',
+  '[Team] Update Teams',
   props<{ teams: Update<MatchTeam>[] }>(),
 );

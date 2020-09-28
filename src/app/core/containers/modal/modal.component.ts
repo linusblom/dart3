@@ -43,9 +43,9 @@ export class ModalComponent implements OnDestroy {
       .pipe(
         select(getModal),
         takeUntil(this.destroy$),
-        filter(modal => !!modal),
+        filter((modal) => !!modal),
       )
-      .subscribe(modal => (this.modal = modal));
+      .subscribe((modal) => (this.modal = modal));
   }
 
   get pinValid() {

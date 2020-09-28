@@ -19,6 +19,7 @@
   [gems]="gems$ | async"
   [roundDetails]="roundDetails$ | async"
   [checkOut]="game.checkOut"
+  [orderRound]="orderRound"
   (updateScores)="updateScores($event)"
   (endRound)="endRound($event)"
   (cancel)="abortAutoEndRound$.next()"
@@ -33,9 +34,9 @@
   ></game-details>
 
   <div class="headers">
-    <div>Sets</div>
-    <div>Legs</div>
-    <div>Score</div>
+    <div *ngIf="!orderRound">Sets</div>
+    <div *ngIf="!orderRound">Legs</div>
+    <div *ngIf="!orderRound">Score</div>
     <div class="jackpot" [ngClass]="{ disabled: jackpotDisabled$ | async }">
       <div class="value">
         <jackpot></jackpot>
@@ -50,6 +51,7 @@
       *ngFor="let team of teams$ | async; trackBy: trackByFn"
       [team]="team"
       [type]="game.type"
+      [showScore]="!orderRound"
       [jackpotDisabled]="jackpotDisabled$ | async"
     ></game-team>
   </div>

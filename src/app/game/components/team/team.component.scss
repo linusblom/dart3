@@ -32,6 +32,14 @@
   align-items: center;
 }
 
+.start {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+}
+
 img {
   margin-right: 10px;
   border-radius: 50%;

@@ -5,7 +5,7 @@
   [matches]="matches$ | async"
   [color]="option.color"
   [prizePool]="game.prizePool"
-  [teams]="teams$ | async"
+  [teams]="teams"
   (close)="showMatches = false"
 ></game-matches>
 
@@ -48,9 +48,11 @@
   <div class="teams">
     <div class="arrow" *ngIf="arrowTop >= 0" [style.top.px]="arrowTop"></div>
     <game-team
-      *ngFor="let team of teams$ | async; trackBy: trackByFn"
+      *ngFor="let team of teams; trackBy: trackByFn"
       [team]="team"
       [type]="game.type"
+      [color]="option.color"
+      [showStart]="!orderRound && team.order === (activeLeg % teams.length || teams.length)"
       [showScore]="!orderRound"
       [jackpotDisabled]="jackpotDisabled$ | async"
     ></game-team>

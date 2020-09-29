@@ -26,7 +26,7 @@ import {
   getRoundDetails,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { GameOption, getOptions } from '@game/models';
+import { GameOption, getOptions, MatchTeamPlayer } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -46,17 +46,6 @@ export class GameComponent implements OnInit, OnDestroy {
     filter((match) => !!match),
   );
   matches$ = this.store.pipe(select(getGameMatches));
-  teams$ = combineLatest([this.matchTeams$, this.players$]).pipe(
-    map(([teams, players]) =>
-      teams.map((team) => ({
-        ...team,
-        players: players
-          .filter(({ id }) => team.playerIds.includes(id))
-          .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
-      })),
-    ),
-    shareReplay(1),
-  );
   activePlayer$ = combineLatest([this.currentMatch$, this.players$, this.matchTeams$]).pipe(
     map(([match, players, teams]) => {
       const player = players.find(({ id }) => id === match.activePlayerId);
@@ -89,6 +78,8 @@ export class GameComponent implements OnInit, OnDestroy {
   showMatches = false;
   orderRound = false;
   teamsCount = 0;
+  teams: MatchTeamPlayer[] = [];
+  activeLeg = 1;
 
   private readonly destroy$ = new Subject();
 
@@ -104,9 +95,10 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$), pluck('length'))
       .subscribe((length) => (this.teamsCount = length));
 
-    this.currentMatch$
-      .pipe(takeUntil(this.destroy$), pluck('status'))
-      .subscribe((status) => (this.orderRound = status === MatchStatus.Order));
+    this.currentMatch$.pipe(takeUntil(this.destroy$)).subscribe(({ status, activeLeg }) => {
+      this.orderRound = status === MatchStatus.Order;
+      this.activeLeg = activeLeg;
+    });
 
     this.abortAutoEndRound$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.timer = -1));
 
@@ -170,6 +162,20 @@ export class GameComponent implements OnInit, OnDestroy {
           }),
         ),
       );
+
+    combineLatest([this.matchTeams$, this.players$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([teams, players]) =>
+          teams.map((team) => ({
+            ...team,
+            players: players
+              .filter(({ id }) => team.playerIds.includes(id))
+              .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
+          })),
+        ),
+      )
+      .subscribe((teams) => (this.teams = teams));
   }
 
   ngOnInit() {
@@ -217,10 +223,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.abortAutoEndRound$.next();
     this.store.dispatch(CurrentGameActions.createRoundRequest({ scores }));
   }
-
-  // orderRoundNext(orderRound: OrderRound[]) {
-  //   console.log(orderRound);
-  // }
 
   trackByFn(_: number, { id }: MatchTeam) {
     return id;

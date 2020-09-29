@@ -109,9 +109,6 @@ export const getRoundDetails = createSelector(
       (team) => team.order === (currentTeam.order > 1 ? currentTeam.order - 1 : teams.length),
     );
 
-    console.log(currentTeam);
-    console.log(previousTeam);
-
     const previousScore = (previousTeam.hits[previousTeam.hits.length - 1] || { score: 0 }).score;
 
     // let previousScore = 0;

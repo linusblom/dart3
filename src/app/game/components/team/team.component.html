@@ -1,4 +1,5 @@
 <div class="team">
+  <div *ngIf="showStart" [@fadeIn] class="start" [style.background]="color"></div>
   <div class="players">
     <div class="player" *ngFor="let player of team.players">
       <img

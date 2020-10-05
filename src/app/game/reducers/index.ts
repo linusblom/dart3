@@ -105,23 +105,26 @@ export const getRoundDetails = createSelector(
     }
 
     const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
-    const previousTeam = teams.find(
-      (team) => team.order === (currentTeam.order > 1 ? currentTeam.order - 1 : teams.length),
-    );
+    const previousTeams = teams
+      .map(({ order, hits }) => ({
+        order,
+        hit:
+          hits.find(({ round }) => round === match.activeRound) ||
+          hits.find(({ round }) => round === match.activeRound - 1),
+      }))
+      .filter(({ hit }) => hit)
+      .sort((a, b) => b.order - a.order);
 
-    const previousScore = (previousTeam.hits[previousTeam.hits.length - 1] || { score: 0 }).score;
-
-    // let previousScore = 0;
-
-    // if (currentTeamIndex > 0 && (match.activeRound > 1 || teams[currentTeamIndex].order > 0)) {
-    //   previousScore = teams[currentTeamIndex - 1].hits.find(
-    //     (hit) => hit.round === match.activeRound,
-    //   ).score;
-    // } else if (currentTeamIndex === 0 && match.activeRound > 1) {
-    //   previousScore = teams[teams.length - 1].hits.find(
-    //     (hit) => hit.round === match.activeRound - 1,
-    //   ).score;
-    // }
+    const previousScore = (
+      previousTeams.find(
+        ({ order, hit }) => order < currentTeam.order && hit.round === match.activeRound,
+      ) ||
+      previousTeams.find(
+        ({ order, hit }) => order <= teams.length && hit.round === match.activeRound - 1,
+      ) || {
+        hit: { score: 0 },
+      }
+    ).hit.score;
 
     const highestScore = teams.reduce((highest, team) => {
       const hit = team.hits.find((hit) => hit.round === match.activeRound);

@@ -1,8 +1,8 @@
 <ng-container *ngIf="hit.type === Type.Gem; else avatarRef">
-  <img src="../../../../assets/gem.gif" />
+  <img [@gem] src="../../../../assets/gem.gif" />
 </ng-container>
 
 <ng-template #avatarRef>
-  <img [src]="avatar" (click)="remove.emit(hit.id)" />
+  <img [src]="hit.avatar" (click)="remove.emit(hit.id)" />
   <div>{{ hit.value }} x {{ hit.multiplier }} = {{ hit.value * hit.multiplier }}</div>
 </ng-template>

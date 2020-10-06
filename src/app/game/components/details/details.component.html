@@ -6,13 +6,13 @@
 <ng-container *ngIf="match; else gameRef">
   <div class="row">
     <div class="name">Round</div>
-    <div class="value">{{ match.activeRound }}</div>
+    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeRound : '-' }}</div>
     <div class="divider">|</div>
     <div class="name">Leg</div>
-    <div class="value">{{ match.activeLeg }}</div>
+    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeLeg : '-' }}</div>
     <div class="divider">|</div>
     <div class="name">Set</div>
-    <div class="value">{{ match.activeSet }}</div>
+    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeSet : '-' }}</div>
   </div>
 
   <div class="row">

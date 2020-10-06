@@ -1,6 +1,9 @@
 <div class="modal" (click)="$event.stopPropagation()">
   <div class="header">{{ modal.header }}</div>
   <div class="text" [innerHTML]="modal.text | safeHtml"></div>
+  <div class="img" *ngIf="modal.img">
+    <img [src]="'../../../../assets/' + modal.img" />
+  </div>
   <div class="pin" *ngIf="modal.pin">
     <div *ngFor="let p of [0, 1, 2, 3]" class="num" [ngClass]="{ active: pin.length === p }">
       {{ pin[p] >= 0 ? '*' : ' ' }}

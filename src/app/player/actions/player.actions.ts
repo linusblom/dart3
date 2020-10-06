@@ -8,6 +8,7 @@ import {
   Transaction,
 } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Update } from '@ngrx/entity';
 
 export const getRequest = createAction('[Player] Get Request');
 export const getSuccess = createAction('[Player] Get Success', props<{ players: Player[] }>());
@@ -43,7 +44,10 @@ export const updateRequest = createAction(
   '[Player] Update Request',
   props<{ uid: string; player: UpdatePlayer }>(),
 );
-export const updateSuccess = createAction('[Player] Update Success', props<{ player: Player }>());
+export const updateSuccess = createAction(
+  '[Player] Update Success',
+  props<{ player: Update<Player> }>(),
+);
 export const updateFailure = createAction(
   '[Player] Update Failure',
   props<{ error: HttpErrorResponse }>(),
@@ -79,4 +83,9 @@ export const transactionSuccess = createAction(
 export const transactionFailure = createAction(
   '[Player] Transaction Failure',
   props<{ error: HttpErrorResponse }>(),
+);
+
+export const updateById = createAction(
+  '[Player] Update By Id',
+  props<{ id: number; changes: Partial<Player> }>(),
 );

@@ -13,15 +13,13 @@
 }
 
 :host.none {
-  opacity: 0.4;
-
-  div {
+  div, img {
     display: none;
   }
 }
 
 :host.avatar {
-  &:hover {
+  &.show-score:hover {
     width: 100px;
   }
 

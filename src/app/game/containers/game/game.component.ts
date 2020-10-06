@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Game, Score, MatchTeam } from 'dart3-sdk';
+import { Game, Score, MatchTeam, MatchStatus } from 'dart3-sdk';
 import { Store, select } from '@ngrx/store';
 import {
   takeUntil,
@@ -23,9 +23,10 @@ import {
   getSelectedMatch,
   getGameMatches,
   getSelectedMatchTeams,
+  getRoundDetails,
 } from '@game/reducers';
 import { CoreActions } from '@core/actions';
-import { options, GameOption } from '@game/models';
+import { GameOption, getOptions, MatchTeamPlayer } from '@game/models';
 import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -39,32 +40,34 @@ export class GameComponent implements OnInit, OnDestroy {
   abortAutoEndRound$ = new Subject<void>();
   game$ = this.store.pipe(select(getSelectedGame));
   players$ = this.store.pipe(select(getAllPlayers));
+  matchTeams$ = this.store.pipe(select(getSelectedMatchTeams));
   currentMatch$ = this.store.pipe(
     select(getSelectedMatch),
     filter((match) => !!match),
   );
   matches$ = this.store.pipe(select(getGameMatches));
-  teams$ = combineLatest([this.store.pipe(select(getSelectedMatchTeams)), this.players$]).pipe(
-    map(([teams, players]) =>
-      teams.map((team) => ({
-        ...team,
-        players: players
-          .filter(({ id }) => team.playerIds.includes(id))
-          .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
-      })),
-    ),
-    shareReplay(1),
-  );
-  activePlayer$ = combineLatest(this.currentMatch$, this.players$).pipe(
-    map(([match, players]) => players.find(({ id }) => id === match.activePlayerId) || {}),
-    startWith({}),
+  activePlayer$ = combineLatest([this.currentMatch$, this.players$, this.matchTeams$]).pipe(
+    map(([match, players, teams]) => {
+      const player = players.find(({ id }) => id === match.activePlayerId);
+      const team = player && (teams || []).find(({ playerIds }) => playerIds.includes(player.id));
+
+      return {
+        ...player,
+        ...(team && { matchTeamId: team.id, order: team.order }),
+      };
+    }),
+    startWith({ order: 0 }),
   );
   activeRound$ = this.currentMatch$.pipe(pluck('activeRound'));
   jackpotDisabled$ = this.currentMatch$.pipe(
-    map((m) => m.activeLeg > 1 || m.activeSet > 1 || m.activeRound > 3),
+    map(
+      (m) =>
+        m.activeLeg > 1 || m.activeSet > 1 || m.activeRound > 3 || m.status === MatchStatus.Order,
+    ),
     shareReplay(1),
   );
   gems$ = this.store.pipe(select(getJackpotGems));
+  roundDetails$ = this.store.pipe(select(getRoundDetails));
 
   game: Game;
   option: GameOption;
@@ -73,20 +76,33 @@ export class GameComponent implements OnInit, OnDestroy {
   disabled = false;
   clear = false;
   showMatches = false;
+  orderRound = false;
+  teamsCount = 0;
+  teams: MatchTeamPlayer[] = [];
+  activeLeg = 1;
 
   private readonly destroy$ = new Subject();
 
   constructor(private readonly store: Store<State>, private readonly router: Router) {
-    this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
+    // this.showMatches = !!this.router.getCurrentNavigation().extras.state?.showMatches;
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = options.find(({ type }) => type === game.type);
+      this.option = getOptions(game.type);
       this.game = game;
+    });
+
+    this.matchTeams$
+      .pipe(takeUntil(this.destroy$), pluck('length'))
+      .subscribe((length) => (this.teamsCount = length));
+
+    this.currentMatch$.pipe(takeUntil(this.destroy$)).subscribe(({ status, activeLeg }) => {
+      this.orderRound = status === MatchStatus.Order;
+      this.activeLeg = activeLeg;
     });
 
     this.abortAutoEndRound$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.timer = -1));
 
-    combineLatest([this.currentMatch$, this.store.pipe(select(getSelectedMatchTeams))])
+    combineLatest([this.currentMatch$, this.matchTeams$])
       .pipe(
         takeUntil(this.destroy$),
         tap(([match, teams]) => this.setArrowTop(teams, match.activeMatchTeamId)),
@@ -96,7 +112,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.currentMatch$
       .pipe(
         takeUntil(this.destroy$),
-        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}`),
+        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}-${m.status}`),
         distinctUntilChanged(),
       )
       .subscribe(() => {
@@ -146,6 +162,20 @@ export class GameComponent implements OnInit, OnDestroy {
           }),
         ),
       );
+
+    combineLatest([this.matchTeams$, this.players$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([teams, players]) =>
+          teams.map((team) => ({
+            ...team,
+            players: players
+              .filter(({ id }) => team.playerIds.includes(id))
+              .sort((a, b) => team.playerIds.indexOf(a.id) - team.playerIds.indexOf(b.id)),
+          })),
+        ),
+      )
+      .subscribe((teams) => (this.teams = teams));
   }
 
   ngOnInit() {
@@ -167,7 +197,10 @@ export class GameComponent implements OnInit, OnDestroy {
   updateScores(scores: Score[]) {
     this.abortAutoEndRound$.next();
 
-    if (scores.length === 3) {
+    if (
+      (scores.length === 3 && !this.orderRound) ||
+      (scores.length === this.teamsCount && this.orderRound)
+    ) {
       this.timer = 5;
       interval(1000)
         .pipe(
@@ -179,6 +212,8 @@ export class GameComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.endRound(scores);
         });
+    } else if (this.orderRound) {
+      this.store.dispatch(CurrentGameActions.nextOrderTurn());
     }
   }
 

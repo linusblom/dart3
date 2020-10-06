@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
-import { Game, Match, GameType } from 'dart3-sdk';
+import { Game, Match, GameType, MatchStatus } from 'dart3-sdk';
 
 @Component({
   selector: 'game-details',
@@ -12,6 +12,8 @@ export class DetailsComponent {
   @Input() match: Match;
 
   @Output() matches = new EventEmitter<void>();
+
+  MatchStatus = MatchStatus;
 
   roundFirstTo(value: number) {
     return Math.ceil(value / 2);

@@ -3,6 +3,8 @@ import { Update } from '@ngrx/entity';
 import { Match } from 'dart3-sdk';
 
 export const updateMatches = createAction(
-  '[Game] Update Matches',
+  '[Match] Update Matches',
   props<{ matches: Update<Match>[] }>(),
 );
+
+export const updateMatch = createAction('[Match] Update Match', props<{ match: Update<Match> }>());

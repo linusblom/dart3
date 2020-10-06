@@ -95,6 +95,7 @@ export class GameGuard implements CanActivate {
                 checkIn: game.checkIn,
                 checkOut: game.checkOut,
                 tieBreak: game.tieBreak,
+                random: game.random,
               },
             }),
           );

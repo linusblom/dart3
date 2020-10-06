@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Player, TeamPlayer } from 'dart3-sdk';
+import { Player, TeamPlayer, MetaData } from 'dart3-sdk';
 
 import { GameWizardStep } from '@game/models';
 
@@ -12,6 +12,9 @@ import { GameWizardStep } from '@game/models';
 })
 export class WizardPlayersComponent {
   @Input() players: Player[] = [];
+  @Input() bet = 0;
+  @Input() fees = {} as MetaData;
+  @Input() loading = false;
   @Input() set selectedPlayers(players: TeamPlayer[]) {
     const allPlayingIds = players.map(({ playerId }) => playerId);
     const curPlayingIds = this.playing.map(({ id }) => id);
@@ -38,6 +41,10 @@ export class WizardPlayersComponent {
   dragging = false;
 
   Step = GameWizardStep;
+
+  get bets() {
+    return this.bet * this.playing.length;
+  }
 
   onPlayerDrop(event: CdkDragDrop<Player[]>) {
     if (event.previousContainer === event.container) {

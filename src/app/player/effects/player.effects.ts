@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, tap, withLatestFrom, filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { Transaction, TransactionType } from 'dart3-sdk';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
 import { AuthActions } from '@auth/actions';
-import { State, getPin } from '@root/reducers';
+import { State, getPin, getAllPlayers } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {
@@ -54,7 +54,9 @@ export class PlayerEffects {
       ofType(PlayerActions.updateRequest),
       concatMap(({ uid, player }) =>
         this.service.update(uid, player).pipe(
-          map((player) => PlayerActions.updateSuccess({ player })),
+          map((player) =>
+            PlayerActions.updateSuccess({ player: { id: player.uid, changes: player } }),
+          ),
           catchError((error) => [PlayerActions.updateFailure({ error })]),
         ),
       ),
@@ -113,6 +115,19 @@ export class PlayerEffects {
           catchError((error) => [PlayerActions.transactionFailure({ error })]),
         );
       }),
+    ),
+  );
+
+  updateById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.updateById),
+      withLatestFrom(this.store.pipe(select(getAllPlayers))),
+      map(([player, players]) => ({
+        id: (players.find(({ id }) => id === player.id) || { uid: undefined }).uid,
+        changes: player.changes,
+      })),
+      filter((player) => !!player.id),
+      map((player) => PlayerActions.updateSuccess({ player })),
     ),
   );
 

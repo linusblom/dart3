@@ -7,6 +7,7 @@ import { WizardActions, CurrentGameActions } from '@game/actions';
 export const defaultSettings: GameSettings = {
   tournament: false,
   team: false,
+  random: true,
   bet: 10,
   sets: 1,
   legs: 1,
@@ -34,6 +35,7 @@ export const initialState: State = {
   },
   [GameType.Legs]: {
     ...defaultSettings,
+    random: false,
     startScore: 3,
   },
   [GameType.X01]: {

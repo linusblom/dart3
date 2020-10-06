@@ -5,11 +5,13 @@
   </div>
 </div>
 
-<div class="hits">
-  <game-score
-    *ngFor="let score of scores; trackBy: trackByFn"
-    [@slideInOut]
-    [score]="score"
-  ></game-score>
-</div>
-<game-score [score]="total" [total]="true"></game-score>
+<ng-container *ngIf="showScore">
+  <div class="hits">
+    <game-score
+      *ngFor="let score of scores; trackBy: trackByFn"
+      [@slideInOut]
+      [score]="score"
+    ></game-score>
+  </div>
+  <game-score [score]="total" [total]="true"></game-score>
+</ng-container>

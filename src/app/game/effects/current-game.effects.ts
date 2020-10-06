@@ -22,7 +22,7 @@ import {
   MatchActions,
   TeamActions,
 } from '@game/actions';
-import { State, getSelectedMatch, getSelectedGame } from '@game/reducers';
+import { State, getSelectedMatch, getSelectedGame, getAllTeams } from '@game/reducers';
 import { getPin } from '@root/reducers';
 import { JackpotActions } from '@jackpot/actions';
 
@@ -193,6 +193,29 @@ export class CurrentGameEffects {
           catchError(() => [CurrentGameActions.getMatchesFailure()]),
         ),
       ),
+    ),
+  );
+
+  nextOrderTurn$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CurrentGameActions.nextOrderTurn),
+      withLatestFrom(
+        this.store.pipe(select(getSelectedMatch)),
+        this.store.pipe(select(getAllTeams)),
+      ),
+      map(([_, match, teams]) => {
+        const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
+        const nextTeam = teams.find(
+          (team) => team.matchId === match.id && team.order === currentTeam.order + 1,
+        );
+
+        return MatchActions.updateMatch({
+          match: {
+            id: match.id,
+            changes: { activeMatchTeamId: nextTeam.id, activePlayerId: nextTeam.playerIds[0] },
+          },
+        });
+      }),
     ),
   );
 

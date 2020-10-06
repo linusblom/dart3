@@ -1,0 +1,60 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.table {
+  font-family: $mono;
+  font-size: 16px;
+  flex: 1;
+
+  .table-headers {
+    display: flex;
+    text-transform: uppercase;
+  }
+
+  .table-body {
+    overflow: hidden;
+
+    .table-row {
+      display: flex;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &.overdue {
+        color: $error;
+      }
+    }
+  }
+
+  .sm {
+    padding: 3px;
+    flex: 0.6;
+  }
+  
+  .lg {
+    padding: 3px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .capital {
+    text-transform: capitalize;
+  }
+
+  .right {
+    text-align: right;
+  }
+}
+
+.no-invoices {
+  text-align: center;
+  font-size: 16px;
+  margin: 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

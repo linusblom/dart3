@@ -3,6 +3,7 @@ import { GameType, Check } from 'dart3-sdk';
 export interface GameSettings {
   tournament: boolean;
   team: boolean;
+  random: boolean;
   bet: number;
   sets: number;
   legs: number;
@@ -76,10 +77,12 @@ export const options: GameOption[] = [
   },
   {
     ...basicOptions,
-    name: 'TBD',
+    name: 'Cricket',
     type: 'new' as GameType,
     color: '#ad319f',
-    description: 'Cool New Game',
+    description: '',
     disabled: true,
   },
 ];
+
+export const getOptions = (type: GameType) => options.find((game) => game.type === type);

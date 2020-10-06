@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { takeUntil, filter, map } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
@@ -7,7 +7,7 @@ import { Game } from 'dart3-sdk';
 
 import { State, getSelectedGame } from '@game/reducers';
 import { GameActions } from '@game/actions';
-import { GameOption, options } from '@game/models';
+import { GameOption, getOptions } from '@game/models';
 import { getAllPlayers } from '@root/reducers';
 
 @Component({
@@ -38,21 +38,14 @@ export class ResultsComponent implements OnDestroy {
 
   option = {} as GameOption;
   game = {} as Game;
-  countXp = false;
 
   private readonly destroy$ = new Subject();
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute,
-  ) {
-    this.countXp = !!this.router.getCurrentNavigation().extras.state?.showMatches;
-
+  constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
     this.store.dispatch(GameActions.getByUidRequest({ uid: this.route.snapshot.params.uid }));
 
     this.game$.pipe(takeUntil(this.destroy$)).subscribe((game) => {
-      this.option = options.find(({ type }) => type === game.type);
+      this.option = getOptions(game.type);
       this.game = game;
     });
   }

@@ -7,14 +7,6 @@
     </mat-button-toggle-group>
   </div> -->
 
-  <div class="row">
-    <div>Teams:</div>
-    <mat-button-toggle-group formControlName="team">
-      <mat-button-toggle [value]="true">Yes</mat-button-toggle>
-      <mat-button-toggle [value]="false">No</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
   <div class="row" *ngIf="option.startScore.length > 1">
     <div>Start score:</div>
     <mat-button-toggle-group formControlName="startScore">
@@ -71,6 +63,19 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </ng-container>
+  </div>
+
+  <div class="row">
+    <div>Order:</div>
+    <mat-button-toggle-group formControlName="random">
+      <mat-button-toggle [value]="true">Random</mat-button-toggle>
+      <mat-button-toggle [value]="false">Nearest bull</mat-button-toggle>
+    </mat-button-toggle-group>
+    <div>Teams:</div>
+    <mat-button-toggle-group formControlName="team">
+      <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+      <mat-button-toggle [value]="false">No</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
 
   <div class="row" *ngIf="option.bets.length > 1">

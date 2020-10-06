@@ -32,11 +32,15 @@ export const reducer = createReducer(
     adapter.upsertMany(matches, {
       ...state,
       state: StoreState.NONE,
-      selectedId: matches.find((game) => game.status === MatchStatus.Playing)?.id,
+      selectedId: matches.find((game) =>
+        [MatchStatus.Playing, MatchStatus.Order].includes(game.status),
+      )?.id,
     }),
   ),
 
   on(CurrentGameActions.getMatchesFailure, (state) => ({ ...state, state: StoreState.NONE })),
 
   on(MatchActions.updateMatches, (state, { matches }) => adapter.updateMany(matches, state)),
+
+  on(MatchActions.updateMatch, (state, { match }) => adapter.updateOne(match, state)),
 );

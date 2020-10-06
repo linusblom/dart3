@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 const LEVEL_CAP = 10;
 
@@ -6,6 +6,7 @@ const LEVEL_CAP = 10;
   selector: 'app-stars',
   templateUrl: './stars.component.html',
   styleUrls: ['./stars.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StarsComponent {
   @Input() set xp(xp: number) {
@@ -18,10 +19,6 @@ export class StarsComponent {
   @Input()
   @HostBinding('style.font-size.px')
   size = 16;
-
-  @Input()
-  @HostBinding('style.color')
-  color = '#949494';
 
   stars = Array(0);
   nextStartProgress = 0;

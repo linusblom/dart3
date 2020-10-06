@@ -1,0 +1,37 @@
+<div class="header">Invoices</div>
+<div class="table" *ngIf="invoices.length; else noInvoicesRef">
+  <div class="table-headers">
+    <div class="sm">Reference</div>
+    <div class="lg">Period</div>
+    <div class="sm">Due at</div>
+    <div class="sm right">Debit</div>
+    <div class="sm right">Credit</div>
+    <div class="sm right">Balance</div>
+  </div>
+  <div class="table-body">
+    <div
+      *ngFor="let invoice of invoices"
+      class="table-row"
+      [ngClass]="{ overdue: overdue(invoice.dueAt) }"
+      (click)="pay.emit(invoice)"
+    >
+      <div class="sm">D3{{ invoice.id }}</div>
+      <div class="lg">
+        {{ invoice.startAt | date: 'yyyy-MM-dd' }} - {{ invoice.endAt | date: 'yyyy-MM-dd' }}
+      </div>
+      <div class="sm">
+        {{ invoice.dueAt | date: 'yyyy-MM-dd' }}
+      </div>
+      <div class="sm right">
+        {{ invoice.debit | number: '1.2-2' }}
+      </div>
+      <div class="sm right">
+        {{ invoice.credit | number: '1.2-2' }}
+      </div>
+      <div class="sm right">{{ invoice.balance | number: '1.2-2' }}</div>
+    </div>
+  </div>
+</div>
+<ng-template #noInvoicesRef>
+  <div class="no-invoices">You don't have any unpaid invoices, game on!</div>
+</ng-template>

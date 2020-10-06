@@ -11,7 +11,7 @@ export interface State extends EntityState<Player> {
 }
 
 export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
-  selectId: player => player.uid,
+  selectId: (player) => player.uid,
   sortComparer: (a, b) => {
     if (a.xp < b.xp) {
       return 1;
@@ -33,13 +33,13 @@ export const initialState: State = adapter.getInitialState({
 export const reducer = createReducer(
   initialState,
 
-  on(PlayerActions.createRequest, state => ({ ...state, state: StoreState.CREATING })),
+  on(PlayerActions.createRequest, (state) => ({ ...state, state: StoreState.CREATING })),
 
   on(PlayerActions.createSuccess, (state, { player }) =>
     adapter.addOne(player, { ...state, state: StoreState.NONE }),
   ),
 
-  on(PlayerActions.getRequest, PlayerActions.getByUidRequest, state => ({
+  on(PlayerActions.getRequest, PlayerActions.getByUidRequest, (state) => ({
     ...state,
     state: StoreState.FETCHING,
     selectedId: undefined,
@@ -53,16 +53,16 @@ export const reducer = createReducer(
     adapter.upsertOne(player, { ...state, state: StoreState.NONE, selectedUid: player.uid }),
   ),
 
-  on(PlayerActions.updateRequest, PlayerActions.resetPinRequest, state => ({
+  on(PlayerActions.updateRequest, PlayerActions.resetPinRequest, (state) => ({
     ...state,
     state: StoreState.UPDATING,
   })),
 
   on(PlayerActions.updateSuccess, (state, { player }) =>
-    adapter.upsertOne(player, { ...state, state: StoreState.NONE }),
+    adapter.updateOne(player, { ...state, state: StoreState.NONE }),
   ),
 
-  on(PlayerActions.deleteRequest, state => ({ ...state, state: StoreState.DELETING })),
+  on(PlayerActions.deleteRequest, (state) => ({ ...state, state: StoreState.DELETING })),
 
   on(PlayerActions.deleteSuccess, (state, { uid }) =>
     adapter.removeOne(uid, { ...state, state: StoreState.NONE }),
@@ -89,7 +89,7 @@ export const reducer = createReducer(
     PlayerActions.resetPinSuccess,
     PlayerActions.resetPinFailure,
     PlayerActions.deleteFailure,
-    state => ({
+    (state) => ({
       ...state,
       state: StoreState.NONE,
     }),

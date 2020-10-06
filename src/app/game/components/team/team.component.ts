@@ -16,17 +16,26 @@ import { MatchTeamPlayer } from '@game/models';
         animate('300ms ease-out', style({ transform: 'translateY(0%)' })),
       ]),
       transition(':leave', [
-        style({ transform: 'scale(0%)' }),
         animate('300ms ease-in', style({ transform: 'translateY(-25px)', width: '*' })),
         animate('100ms ease-out', style({ width: 0 })),
       ]),
+    ]),
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('500ms ease-in', style({ opacity: 0 }))]),
     ]),
   ],
 })
 export class TeamComponent {
   @Input() team: MatchTeamPlayer;
   @Input() type: GameType;
+  @Input() color = '#ffffff';
   @Input() jackpotDisabled = true;
+  @Input() showScore = true;
+  @Input() showStart = false;
 
   @HostBinding('class.disabled') get disabled() {
     return this.team.position > 1;

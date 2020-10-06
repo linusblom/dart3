@@ -6,7 +6,10 @@ import { CurrentGameActions, TeamActions } from '@game/actions';
 
 export interface State extends EntityState<MatchTeam> {}
 
-export const adapter: EntityAdapter<MatchTeam> = createEntityAdapter<MatchTeam>();
+export const adapter: EntityAdapter<MatchTeam> = createEntityAdapter<MatchTeam>({
+  selectId: (team) => team.id,
+  sortComparer: (a, b) => a.order - b.order,
+});
 
 export const initialState: State = adapter.getInitialState();
 

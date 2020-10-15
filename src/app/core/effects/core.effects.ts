@@ -11,11 +11,11 @@ export class CoreEffects {
   confirmPin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoreActions.confirmPin),
-      map(({ header, text, okText, okColor, action, cancelAction }) =>
+      map(({ header, text, okText, okColor, action, cancelAction, pinDisabled }) =>
         CoreActions.showModal({
           modal: {
             header,
-            text: `${text} Please enter PIN to confirm.`,
+            text: `${text}${!pinDisabled ? 'Please enter PIN to confirm.' : ''}`,
             backdrop: { dismiss: true, ...(cancelAction && { action: () => cancelAction }) },
             cancel: {
               text: 'Cancel',
@@ -28,7 +28,7 @@ export class CoreEffects {
               dismiss: true,
               action: (pin: string) => CoreActions.confirmPinDispatch({ pin, action }),
             },
-            pin: true,
+            pin: !pinDisabled,
           },
         }),
       ),
@@ -47,6 +47,7 @@ export class CoreEffects {
       ofType(
         PlayerActions.deleteFailure,
         PlayerActions.transactionFailure,
+        PlayerActions.disablePinFailure,
         CurrentGameActions.createTeamPlayerFailure,
       ),
       filter(({ error: { status } }) => status === 403),

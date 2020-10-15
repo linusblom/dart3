@@ -20,6 +20,7 @@
   [roundDetails]="roundDetails$ | async"
   [checkOut]="game.checkOut"
   [orderRound]="orderRound"
+  [teamsCount]="teamsCount"
   (updateScores)="updateScores($event)"
   (endRound)="endRound($event)"
   (cancel)="abortAutoEndRound$.next()"

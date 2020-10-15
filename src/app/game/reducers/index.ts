@@ -134,7 +134,7 @@ export const getRoundDetails = createSelector(
     return {
       gameType: game.type,
       round: match.activeRound,
-      tieBreak: match.activeRound === game.tieBreak,
+      tieBreak: match.activeRound > game.tieBreak,
       currentTotal: currentTeam.score,
       previousScore,
       highestScore,

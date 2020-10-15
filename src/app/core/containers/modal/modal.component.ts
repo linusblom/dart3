@@ -82,7 +82,7 @@ export class ModalComponent implements OnDestroy {
 
   dispatch(action: (pin?: string) => Action) {
     if (action) {
-      this.store.dispatch(action(this.pin.join('')));
+      this.store.dispatch(action(this.pin.join('') || '0000'));
     }
   }
 }

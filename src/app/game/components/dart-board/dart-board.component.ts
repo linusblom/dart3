@@ -23,6 +23,7 @@ export class DartBoardComponent {
   @ViewChild('bull', { static: true }) bull: ElementRef;
 
   @Input() player = {} as Player & { matchTeamId: number };
+  @Input() teamsCount = 0;
   @Input() color = '#ffffff';
   @Input() timer = -1;
   @Input() jackpotDisabled = false;
@@ -58,7 +59,11 @@ export class DartBoardComponent {
   addHit(event: MouseEvent, value: number, multiplier: number, target: Target) {
     event.stopPropagation();
 
-    if (this.disabled || (this.hits.length === 3 && !this.orderRound)) {
+    if (
+      this.disabled ||
+      (this.hits.length === 3 && !this.orderRound) ||
+      (this.hits.length === this.teamsCount && this.orderRound)
+    ) {
       return;
     }
 

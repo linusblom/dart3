@@ -109,6 +109,7 @@ export class StartComponent {
         cancelAction: CurrentGameActions.createTeamPlayerFailure({
           error: {} as HttpErrorResponse,
         }),
+        pinDisabled: player.pinDisabled,
       }),
     );
   }

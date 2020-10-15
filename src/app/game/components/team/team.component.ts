@@ -46,7 +46,7 @@ export class TeamComponent {
       case GameType.Legs:
         return hit.score;
       default:
-        return hit.approvedScore;
+        return hit.approved;
     }
   }
 

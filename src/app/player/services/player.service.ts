@@ -38,6 +38,10 @@ export class PlayerService {
     return this.http.delete(`${this.apiUrl}/${uid}`, { headers: this.pin(pin) });
   }
 
+  disablePin(uid: string, pin: string) {
+    return this.http.patch(`${this.apiUrl}/${uid}/disable-pin`, null, { headers: this.pin(pin) });
+  }
+
   deposit(uid: string, pin: string, transaction: CreateTransaction) {
     return this.http.post<Transaction>(`${this.apiUrl}/${uid}/deposit`, transaction, {
       headers: this.pin(pin),

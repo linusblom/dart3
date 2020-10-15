@@ -12,9 +12,11 @@ import {
   getAllPlayers,
   getSelectedPlayerUid,
   getUserCurrency,
+  getPlayerStoreState,
 } from '@root/reducers';
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
+import { StoreState } from '@shared/models';
 
 @Component({
   selector: 'app-player',
@@ -22,6 +24,10 @@ import { CoreActions } from '@core/actions';
   styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnDestroy {
+  loading$ = this.store.pipe(
+    select(getPlayerStoreState),
+    map((state) => state === StoreState.FETCHING),
+  );
   uid: string;
   player = {} as Player;
   players: Player[] = [];
@@ -115,6 +121,19 @@ export class PlayerComponent implements OnDestroy {
     );
   }
 
+  disablePin() {
+    this.store.dispatch(
+      CoreActions.confirmPin({
+        header: 'Disable PIN',
+        text: 'Are you sure you want to disable your PIN code?',
+        action: PlayerActions.disablePinRequest({ uid: this.uid }),
+        okText: 'Disable PIN',
+        okColor: 'error',
+        pinDisabled: false,
+      }),
+    );
+  }
+
   delete() {
     this.store.dispatch(
       CoreActions.confirmPin({
@@ -123,6 +142,7 @@ export class PlayerComponent implements OnDestroy {
         action: PlayerActions.deleteRequest({ uid: this.uid }),
         okText: 'Delete',
         okColor: 'error',
+        pinDisabled: false,
       }),
     );
   }
@@ -149,6 +169,7 @@ export class PlayerComponent implements OnDestroy {
           transaction: { amount },
           receiverUid,
         }),
+        pinDisabled: this.player.pinDisabled,
       }),
     );
   }

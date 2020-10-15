@@ -68,8 +68,21 @@ export class PlayerEffects {
       ofType(PlayerActions.resetPinRequest),
       concatMap(({ uid }) =>
         this.service.resetPin(uid).pipe(
-          map(() => PlayerActions.resetPinSuccess()),
+          map(() => PlayerActions.resetPinSuccess({ uid })),
           catchError((error) => [PlayerActions.resetPinFailure({ error })]),
+        ),
+      ),
+    ),
+  );
+
+  disablePin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.disablePinRequest),
+      withLatestFrom(this.store.pipe(select(getPin))),
+      concatMap(([{ uid }, pin]) =>
+        this.service.disablePin(uid, pin).pipe(
+          map(() => PlayerActions.disablePinSuccess({ uid })),
+          catchError((error) => [PlayerActions.disablePinFailure({ error })]),
         ),
       ),
     ),

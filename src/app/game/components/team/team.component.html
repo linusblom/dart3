@@ -26,7 +26,7 @@
     class="hit"
     [@slideIn]
     *ngFor="let hit of team.hits | slice: -15; trackBy: trackByFn"
-    [style.background]="hit.approvedScore > 0 ? '#daf2dc' : '#f2dada'"
+    [style.background]="hit.approved > 0 ? '#daf2dc' : '#f2dada'"
   >
     {{ getHitValue(hit) }}
   </div>

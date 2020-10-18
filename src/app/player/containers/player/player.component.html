@@ -1,76 +1,97 @@
-<div class="header-wrapper" [style.background-color]="player.color">
-  <div class="header-row">
-    <img [src]="player.avatar" />
-    <div>
-      <div class="header">
-        {{ player.name }}
-        <span *ngIf="player.pro"><i class="fab fa-themeco fa-xs"></i></span>
+<ng-container *ngIf="!(loading$ | async)">
+  <div class="header-wrapper" [style.background-color]="player.color">
+    <div class="header-row">
+      <img [src]="player.avatar" />
+      <div>
+        <div class="header">
+          {{ player.name }}
+          <span *ngIf="player.pro"><i class="fab fa-themeco fa-xs"></i></span>
+        </div>
+        <app-stars [xp]="player.xp" size="30"></app-stars>
       </div>
-      <app-stars [xp]="player.xp" size="30"></app-stars>
+    </div>
+    <div class="header-column">
+      <div class="header">{{ player.balance | currency$ | async }}</div>
+      <div class="buttons">
+        <button
+          mat-flat-button
+          [tooltip]="transactionRef"
+          (click)="setTransactionType(TransactionType.Deposit)"
+        >
+          Deposit
+        </button>
+        <button
+          mat-flat-button
+          [tooltip]="transactionRef"
+          (click)="setTransactionType(TransactionType.Withdrawal)"
+        >
+          Withdrawal
+        </button>
+        <button
+          mat-flat-button
+          [tooltip]="transactionRef"
+          (click)="setTransactionType(TransactionType.Transfer)"
+        >
+          Transfer
+        </button>
+      </div>
     </div>
   </div>
-  <div class="header-column">
-    <div class="header">{{ player.balance | currency$ | async }}</div>
-    <div class="buttons">
-      <button
-        mat-flat-button
-        [tooltip]="transactionRef"
-        (click)="setTransactionType(TransactionType.Deposit)"
-      >
-        Deposit
-      </button>
-      <button
-        mat-flat-button
-        [tooltip]="transactionRef"
-        (click)="setTransactionType(TransactionType.Withdrawal)"
-      >
-        Withdrawal
-      </button>
-      <button
-        mat-flat-button
-        [tooltip]="transactionRef"
-        (click)="setTransactionType(TransactionType.Transfer)"
-      >
-        Transfer
-      </button>
-    </div>
+  <div class="content">
+    <app-player-stats [player]="player"></app-player-stats>
+    <app-player-transactions [transactions]="player.transactions"></app-player-transactions>
   </div>
-</div>
-<div class="content">
-  <app-player-stats [player]="player"></app-player-stats>
-  <app-player-transactions [transactions]="player.transactions"></app-player-transactions>
-</div>
-<div class="settings" [formGroup]="settingsForm">
-  <div class="header">Settings</div>
-  <div class="row">
-    <mat-form-field class="light">
-      <input matInput formControlName="name" placeholder="Name" (change)="update()" />
-    </mat-form-field>
+  <div class="settings" [formGroup]="settingsForm">
+    <div class="header">Settings</div>
+    <div class="row">
+      <mat-form-field class="light">
+        <input matInput formControlName="name" placeholder="Name" (change)="update()" />
+      </mat-form-field>
 
-    <mat-form-field class="small light">
-      <input matInput formControlName="double" placeholder="Favorite double" (change)="update()" />
-    </mat-form-field>
+      <mat-form-field class="small light">
+        <input
+          matInput
+          formControlName="double"
+          placeholder="Favorite double"
+          (change)="update()"
+        />
+      </mat-form-field>
+    </div>
+    <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
+      Professional
+    </mat-checkbox>
   </div>
-  <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
-    Professional
-  </mat-checkbox>
-</div>
 
-<div class="danger">
-  <div class="header">Danger zone</div>
-  <div class="row">
-    <div class="text">Lost PIN? Click to reset and a new PIN code will be sent to your email.</div>
-    <div class="button">
-      <button mat-flat-button (click)="resetPin()">Reset PIN</button>
+  <div class="danger">
+    <div class="header">Danger zone</div>
+    <div class="row">
+      <div class="text">
+        {{
+          player.pinDisabled
+            ? 'Your PIN code is disabled, click reset PIN to enable it again.'
+            : 'Lost PIN code? Click to reset and a new PIN code will be sent to your email.'
+        }}
+      </div>
+      <div class="button">
+        <button mat-flat-button (click)="resetPin()">Reset PIN</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text">Don't want to play anymore? Click to delete player.</div>
+      <div class="button">
+        <button mat-flat-button [disabled]="player.pinDisabled" (click)="delete()">Delete</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text">Bad memory? Disable PIN code when joining game.</div>
+      <div class="button">
+        <button mat-flat-button [disabled]="player.pinDisabled" (click)="disablePin()">
+          Disable PIN
+        </button>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="text">Don't want to play anymore? Click to delete player.</div>
-    <div class="button">
-      <button mat-flat-button (click)="delete()">Delete</button>
-    </div>
-  </div>
-</div>
+</ng-container>
 
 <ng-template #transactionRef [formGroup]="transactionForm">
   <div class="transaction">

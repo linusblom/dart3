@@ -12,6 +12,7 @@ export const confirmPin = createAction(
     header: string;
     text: string;
     action: Action;
+    pinDisabled: boolean;
     okText?: string;
     okColor?: string;
     cancelAction?: Action;

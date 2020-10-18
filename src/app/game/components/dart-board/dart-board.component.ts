@@ -23,6 +23,7 @@ export class DartBoardComponent {
   @ViewChild('bull', { static: true }) bull: ElementRef;
 
   @Input() player = {} as Player & { matchTeamId: number };
+  @Input() teamsCount = 0;
   @Input() color = '#ffffff';
   @Input() timer = -1;
   @Input() jackpotDisabled = false;
@@ -58,12 +59,15 @@ export class DartBoardComponent {
   addHit(event: MouseEvent, value: number, multiplier: number, target: Target) {
     event.stopPropagation();
 
-    if (this.disabled || (this.hits.length === 3 && !this.orderRound)) {
+    if (
+      this.disabled ||
+      (this.hits.length === 3 && !this.orderRound) ||
+      (this.hits.length === this.teamsCount && this.orderRound)
+    ) {
       return;
     }
 
     const { offsetX, offsetY } = event;
-    const bullDistance = this.calculateBullDistance(offsetX, offsetY);
 
     this.hits = [
       ...this.hits,
@@ -77,7 +81,7 @@ export class DartBoardComponent {
         left: offsetX - 11,
         matchTeamId: this.player.matchTeamId,
         target,
-        bullDistance,
+        ...(this.orderRound && { bullDistance: this.calculateBullDistance(offsetX, offsetY) }),
       },
     ];
 
@@ -86,7 +90,6 @@ export class DartBoardComponent {
 
   calculateBullDistance(hitX: number, hitY: number) {
     const { x, y, width, height } = this.bull.nativeElement.getBoundingClientRect();
-
     return Math.round(
       Math.sqrt(
         Math.pow(Math.abs(x + width / 2 - hitX), 2) + Math.pow(Math.abs(y + height / 2 - hitY), 2),
@@ -120,9 +123,7 @@ export class DartBoardComponent {
         ...scores,
         ...(this.orderRound
           ? []
-          : Array(3)
-              .fill({ value: 0, multiplier: 0, bullDistance: -1, target: null })
-              .slice(scores.length, 4)),
+          : Array(3).fill({ value: 0, multiplier: 0, target: null }).slice(scores.length, 4)),
       ]);
     } else {
       this.updateScores.emit(scores);

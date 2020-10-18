@@ -42,7 +42,7 @@ export const reducer = createReducer(
   on(PlayerActions.getRequest, PlayerActions.getByUidRequest, (state) => ({
     ...state,
     state: StoreState.FETCHING,
-    selectedId: undefined,
+    selectedUid: undefined,
   })),
 
   on(PlayerActions.getSuccess, (state, { players }) =>
@@ -66,6 +66,20 @@ export const reducer = createReducer(
 
   on(PlayerActions.deleteSuccess, (state, { uid }) =>
     adapter.removeOne(uid, { ...state, state: StoreState.NONE }),
+  ),
+
+  on(PlayerActions.disablePinSuccess, (state, { uid }) =>
+    adapter.updateOne(
+      { id: uid, changes: { pinDisabled: true } },
+      { ...state, state: StoreState.NONE },
+    ),
+  ),
+
+  on(PlayerActions.resetPinSuccess, (state, { uid }) =>
+    adapter.updateOne(
+      { id: uid, changes: { pinDisabled: false } },
+      { ...state, state: StoreState.NONE },
+    ),
   ),
 
   on(PlayerActions.transactionSuccess, (state, { uid, transaction }) =>

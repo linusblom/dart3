@@ -54,9 +54,22 @@ export const updateFailure = createAction(
 );
 
 export const resetPinRequest = createAction('[Player] Reset Pin Request', props<{ uid: string }>());
-export const resetPinSuccess = createAction('[Player] Reset Pin Success');
+export const resetPinSuccess = createAction('[Player] Reset Pin Success', props<{ uid: string }>());
 export const resetPinFailure = createAction(
   '[Player] Reset Pin Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const disablePinRequest = createAction(
+  '[Player] Disable Pin Request',
+  props<{ uid: string }>(),
+);
+export const disablePinSuccess = createAction(
+  '[Player] Disable Pin Success',
+  props<{ uid: string }>(),
+);
+export const disablePinFailure = createAction(
+  '[Player] Disable Pin Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 

@@ -9,8 +9,8 @@ export interface BoardHit {
   type: BoardHitType;
   avatar: string;
   matchTeamId: number;
-  bullDistance: number;
   target: Target;
+  bullDistance?: number;
 }
 
 export enum BoardHitType {

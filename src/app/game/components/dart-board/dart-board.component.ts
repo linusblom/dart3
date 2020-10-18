@@ -21,7 +21,6 @@ import { generateId } from '@utils/generate-id';
 })
 export class DartBoardComponent {
   @ViewChild('bull', { static: true }) bull: ElementRef;
-  @ViewChild('twenty', { static: true }) twenty: ElementRef;
 
   @Input() player = {} as Player & { matchTeamId: number };
   @Input() teamsCount = 0;
@@ -69,7 +68,6 @@ export class DartBoardComponent {
     }
 
     const { offsetX, offsetY } = event;
-    const bullDistance = this.calculateBullDistance(offsetX, offsetY);
 
     this.hits = [
       ...this.hits,
@@ -83,7 +81,7 @@ export class DartBoardComponent {
         left: offsetX - 11,
         matchTeamId: this.player.matchTeamId,
         target,
-        bullDistance: value > 0 ? bullDistance : null,
+        ...(this.orderRound && { bullDistance: this.calculateBullDistance(offsetX, offsetY) }),
       },
     ];
 
@@ -92,14 +90,11 @@ export class DartBoardComponent {
 
   calculateBullDistance(hitX: number, hitY: number) {
     const { x, y, width, height } = this.bull.nativeElement.getBoundingClientRect();
-    const maxDistance = y + height / 2 - this.twenty.nativeElement.getBoundingClientRect().y;
-    const distance = Math.round(
+    return Math.round(
       Math.sqrt(
         Math.pow(Math.abs(x + width / 2 - hitX), 2) + Math.pow(Math.abs(y + height / 2 - hitY), 2),
       ),
     );
-
-    return Math.round((distance / maxDistance) * 1000);
   }
 
   removeHit(id: string) {
@@ -128,9 +123,7 @@ export class DartBoardComponent {
         ...scores,
         ...(this.orderRound
           ? []
-          : Array(3)
-              .fill({ value: 0, multiplier: 0, bullDistance: -1, target: null })
-              .slice(scores.length, 4)),
+          : Array(3).fill({ value: 0, multiplier: 0, target: null }).slice(scores.length, 4)),
       ]);
     } else {
       this.updateScores.emit(scores);

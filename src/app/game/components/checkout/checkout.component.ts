@@ -82,7 +82,7 @@ export class CheckoutComponent {
       case GameType.X01:
         return this.getX01Checkouts(hits, details);
       case GameType.Legs:
-        return [`BEAT ${details.previousScore}`];
+        return [`BEAT ${details.previousTotal}`];
       default:
         return [];
     }
@@ -94,7 +94,7 @@ export class CheckoutComponent {
       details.currentTotal - hits.reduce((tot, hit) => tot + hit.value * hit.multiplier, 0);
 
     if (details.tieBreak) {
-      return ['TIE BREAK', `BEAT ${details.highestScore}`];
+      return ['TIE BREAK', `BEAT ${details.previousTotal}`];
     }
 
     if (total < CHECK[this.checkOut].min || total > CHECK[this.checkOut].max || dartsLeft === 0) {

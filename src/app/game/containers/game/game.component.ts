@@ -80,6 +80,7 @@ export class GameComponent implements OnInit, OnDestroy {
   teamsCount = 0;
   teams: MatchTeamPlayer[] = [];
   activeLeg = 1;
+  activeStartOrder = 1;
 
   private readonly destroy$ = new Subject();
 
@@ -95,10 +96,13 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$), pluck('length'))
       .subscribe((length) => (this.teamsCount = length));
 
-    this.currentMatch$.pipe(takeUntil(this.destroy$)).subscribe(({ status, activeLeg }) => {
-      this.orderRound = status === MatchStatus.Order;
-      this.activeLeg = activeLeg;
-    });
+    this.currentMatch$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ status, activeLeg, activeStartOrder }) => {
+        this.orderRound = status === MatchStatus.Order;
+        this.activeLeg = activeLeg;
+        this.activeStartOrder = activeStartOrder;
+      });
 
     this.abortAutoEndRound$.pipe(takeUntil(this.destroy$)).subscribe(() => (this.timer = -1));
 

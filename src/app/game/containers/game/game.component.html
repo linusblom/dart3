@@ -53,7 +53,7 @@
       [team]="team"
       [type]="game.type"
       [color]="option.color"
-      [showStart]="!orderRound && team.order === (activeLeg % teams.length || teams.length)"
+      [showStart]="!orderRound && team.order === activeStartOrder"
       [showScore]="!orderRound"
       [jackpotDisabled]="jackpotDisabled$ | async"
     ></game-team>

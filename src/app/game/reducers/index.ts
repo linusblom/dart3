@@ -99,45 +99,18 @@ export const getRoundDetails = createSelector(
         round: 0,
         tieBreak: false,
         currentTotal: 0,
-        previousScore: 0,
-        highestScore: 0,
+        previousTotal: 0,
       };
     }
 
     const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
-    const previousTeams = teams
-      .map(({ order, hits }) => ({
-        order,
-        hit:
-          hits.find(({ round }) => round === match.activeRound) ||
-          hits.find(({ round }) => round === match.activeRound - 1),
-      }))
-      .filter(({ hit }) => hit)
-      .sort((a, b) => b.order - a.order);
-
-    const previousScore = (
-      previousTeams.find(
-        ({ order, hit }) => order < currentTeam.order && hit.round === match.activeRound,
-      ) ||
-      previousTeams.find(
-        ({ order, hit }) => order <= teams.length && hit.round === match.activeRound - 1,
-      ) || {
-        hit: { score: 0 },
-      }
-    ).hit.score;
-
-    const highestScore = teams.reduce((highest, team) => {
-      const hit = team.hits.find((hit) => hit.round === match.activeRound);
-      return hit && hit.score > highest ? hit.score : highest;
-    }, 0);
 
     return {
       gameType: game.type,
       round: match.activeRound,
       tieBreak: match.activeRound > game.tieBreak,
       currentTotal: currentTeam.score,
-      previousScore,
-      highestScore,
+      previousTotal: match.activeScore,
     };
   },
 );

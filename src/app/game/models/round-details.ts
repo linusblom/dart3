@@ -6,8 +6,7 @@ export interface RoundDetails {
   round: number;
   tieBreak: boolean;
   currentTotal: number;
-  previousScore: number;
-  highestScore: number;
+  previousTotal: number;
 }
 
 export enum CheckOutType {

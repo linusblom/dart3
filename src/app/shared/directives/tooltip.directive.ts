@@ -13,10 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ComponentPortal } from '@angular/cdk/portal';
 
 import { TooltipComponent } from '@shared/components';
-
-const positions: ConnectedPosition[] = [
-  { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top' },
-];
+import { TooltipPosition } from '@shared/models';
 
 @Directive({
   selector: '[tooltip]',
@@ -24,8 +21,29 @@ const positions: ConnectedPosition[] = [
 export class TooltipDirective implements OnInit, OnDestroy {
   @Input('tooltip') content: TemplateRef<any>;
 
+  private _position = TooltipPosition.Bottom;
+  @Input() set position(position: TooltipPosition) {
+    this._position = position;
+
+    switch (position) {
+      case TooltipPosition.Right:
+        this.positions = [
+          { originX: 'end', overlayX: 'start', originY: 'center', overlayY: 'center' },
+        ];
+        break;
+      default:
+        this.positions = [
+          { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top' },
+        ];
+        break;
+    }
+  }
+
   overlayRef: OverlayRef;
   overlayInstance: TooltipComponent;
+  positions: ConnectedPosition[] = [
+    { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top' },
+  ];
 
   private readonly destroy$ = new Subject();
 
@@ -47,7 +65,7 @@ export class TooltipDirective implements OnInit, OnDestroy {
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(this.elementRef)
-        .withPositions(positions),
+        .withPositions(this.positions),
     };
 
     this.overlayRef = this.overlay.create(overlayConfig);
@@ -68,6 +86,7 @@ export class TooltipDirective implements OnInit, OnDestroy {
   open() {
     const instance = this.overlayRef.attach(new ComponentPortal(TooltipComponent)).instance;
     instance.content = this.content;
+    instance.position = this._position;
     instance.close.pipe(takeUntil(this.destroy$)).subscribe(() => this.close());
   }
 

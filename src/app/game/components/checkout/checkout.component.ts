@@ -94,7 +94,7 @@ export class CheckoutComponent {
       details.currentTotal - hits.reduce((tot, hit) => tot + hit.value * hit.multiplier, 0);
 
     if (details.tieBreak) {
-      return ['TIE BREAK', `BEAT ${details.previousTotal}`];
+      return ['TIE BREAK', `BEAT ${details.highestScore}`];
     }
 
     if (total < CHECK[this.checkOut].min || total > CHECK[this.checkOut].max || dartsLeft === 0) {

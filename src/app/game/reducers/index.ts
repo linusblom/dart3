@@ -100,10 +100,15 @@ export const getRoundDetails = createSelector(
         tieBreak: false,
         currentTotal: 0,
         previousTotal: 0,
+        highestScore: 0,
       };
     }
 
     const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
+    const highestScore = teams.reduce((highest, team) => {
+      const hit = team.hits.find((hit) => hit.round === match.activeRound);
+      return hit && hit.score > highest ? hit.score : highest;
+    }, 0);
 
     return {
       gameType: game.type,
@@ -111,6 +116,7 @@ export const getRoundDetails = createSelector(
       tieBreak: match.activeRound > game.tieBreak,
       currentTotal: currentTeam.score,
       previousTotal: match.activeScore,
+      highestScore,
     };
   },
 );

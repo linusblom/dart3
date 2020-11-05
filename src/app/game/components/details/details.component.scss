@@ -21,37 +21,44 @@
 .row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 3px 0;
 
-  &.prize {
-    margin-top: 10px;
-  }
-
-  .name {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 12px;
-  }
-
-  .divider {
-    margin: 0 10px;
-    font-size: 16px;
-    font-weight: 100;
-    font-family: $header;
-  }
-
-  .value {
+  &:not(.margin) {
     flex: 1;
-    text-align: end;
-    font-size: 16px;
-    font-weight: 300;
-    font-family: $header;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+  }
 
-    &.first-to {
-      font-size: 10px;
-    }
+  &.margin {
+    margin: 5px 0;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+ 
+  &:not(:last-child) {
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid $white;
+  }
+}
+
+.name {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.value {
+  flex: 1;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 300;
+  font-family: $header;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  &.small {
+    font-size: 10px;
   }
 }

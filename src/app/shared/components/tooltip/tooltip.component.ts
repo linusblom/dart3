@@ -8,7 +8,9 @@ import {
   HostListener,
   Output,
   EventEmitter,
+  HostBinding,
 } from '@angular/core';
+import { TooltipPosition } from '@shared/models';
 
 @Component({
   selector: 'app-tooltip',
@@ -21,6 +23,8 @@ export class TooltipComponent implements OnInit {
   @Input() content: TemplateRef<any>;
 
   @Output() close = new EventEmitter<void>();
+
+  @Input() @HostBinding('class') position = TooltipPosition.Bottom;
 
   @HostListener('click', ['$event.target'])
   click(target: HTMLElement) {

@@ -3,39 +3,57 @@
   <div *ngIf="match" class="icon" (click)="matches.emit()"><i class="fas fa-sitemap"></i></div>
 </div>
 
-<ng-container *ngIf="match; else gameRef">
-  <div class="row">
-    <div class="name">Round</div>
-    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeRound : '-' }}</div>
-    <div class="divider">|</div>
-    <div class="name">Leg</div>
-    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeLeg : '-' }}</div>
-    <div class="divider">|</div>
-    <div class="name">Set</div>
-    <div class="value">{{ match.status === MatchStatus.Playing ? match.activeSet : '-' }}</div>
-  </div>
-
-  <div class="row">
-    <div class="value"></div>
-    <div class="value first-to">First to {{ roundFirstTo(game.legs) }}</div>
-    <div class="value first-to">First to {{ roundFirstTo(game.sets) }}</div>
+<ng-container *ngIf="!results && match">
+  <div class="row margin">
+    <div class="column">
+      <div class="row">
+        <div class="name">Set</div>
+        <div class="value">{{ match.status === MatchStatus.Playing ? match.activeSet : '-' }}</div>
+      </div>
+      <div class="value small">First to {{ roundFirstTo(game.sets) }}</div>
+    </div>
+    <div class="column">
+      <div class="row">
+        <div class="name">Leg</div>
+        <div class="value">{{ match.status === MatchStatus.Playing ? match.activeLeg : '-' }}</div>
+      </div>
+      <div class="value small">First to {{ roundFirstTo(game.legs) }}</div>
+    </div>
+    <div class="column">
+      <div class="row">
+        <div class="name">Round</div>
+        <div class="value">
+          {{ match.status === MatchStatus.Playing ? match.activeRound : '-' }}
+        </div>
+      </div>
+    </div>
   </div>
 </ng-container>
 
-<ng-template #gameRef>
-  <div class="row">
-    <div class="name">Time</div>
-    <div class="value">{{ duration }}</div>
-    <div class="divider">|</div>
-    <div class="name">Legs</div>
-    <div class="value">First to {{ roundFirstTo(game.legs) }}</div>
-    <div class="divider">|</div>
-    <div class="name">Sets</div>
-    <div class="value">First to {{ roundFirstTo(game.sets) }}</div>
+<ng-container *ngIf="results">
+  <div class="row margin">
+    <div class="column">
+      <div class="row">
+        <div class="name">Sets</div>
+        <div class="value">First to {{ roundFirstTo(game.sets) }}</div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="row">
+        <div class="name">Legs</div>
+        <div class="value">First to {{ roundFirstTo(game.legs) }}</div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="row">
+        <div class="name">Time</div>
+        <div class="value">{{ duration }}</div>
+      </div>
+    </div>
   </div>
-</ng-template>
+</ng-container>
 
-<div class="row prize">
+<div class="row margin">
   <div class="name">Prize pool</div>
   <div class="value">{{ game.prizePool | currency$ | async }}</div>
 </div>

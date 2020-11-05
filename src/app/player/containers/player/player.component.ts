@@ -16,7 +16,7 @@ import {
 } from '@root/reducers';
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
-import { StoreState } from '@shared/models';
+import { StoreState, TooltipPosition } from '@shared/models';
 
 @Component({
   selector: 'app-player',
@@ -34,6 +34,7 @@ export class PlayerComponent implements OnDestroy {
   currency = '';
 
   TransactionType = TransactionType;
+  TooltipPosition = TooltipPosition;
 
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),

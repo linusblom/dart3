@@ -1,7 +1,7 @@
 <ng-container *ngIf="!(loading$ | async)">
   <div class="header-wrapper" [style.background-color]="player.color">
     <div class="header-row">
-      <img [src]="player.avatar" />
+      <img [src]="player.avatar" [tooltip]="changeAvatarRef" [position]="TooltipPosition.Right" />
       <div>
         <div class="header">
           {{ player.name }}
@@ -92,6 +92,10 @@
     </div>
   </div>
 </ng-container>
+
+<ng-template #changeAvatarRef>
+  <div>Profile picture</div>
+</ng-template>
 
 <ng-template #transactionRef [formGroup]="transactionForm">
   <div class="transaction">

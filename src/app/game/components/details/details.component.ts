@@ -10,6 +10,7 @@ import { Game, Match, GameType, MatchStatus } from 'dart3-sdk';
 export class DetailsComponent {
   @Input() game: Game;
   @Input() match: Match;
+  @Input() results = false;
 
   @Output() matches = new EventEmitter<void>();
 
@@ -33,7 +34,8 @@ export class DetailsComponent {
   }
 
   get duration() {
-    const mills = new Date(this.game.endedAt).getTime() - new Date(this.game.startedAt).getTime();
+    const now = this.results ? new Date(this.game.endedAt).getTime() : Date.now();
+    const mills = now - new Date(this.game.startedAt).getTime();
     const minutes = Math.floor(mills / 60000);
     const seconds = Math.floor((mills % 60000) / 1000);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;

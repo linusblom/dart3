@@ -3196,10 +3196,10 @@ damerau-levenshtein@^1.0.4:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.5.tgz#780cf7144eb2e8dbd1c3bb83ae31100ccc31a414"
   integrity sha512-CBCRqFnpu715iPmw1KrdOrzRqbdFwQTwAWyyyYS42+iAgHCuXZ+/TdMgQkUENPomxEz9z1BEzuQU2Xw0kUuAgA==
 
-dart3-sdk@^0.3.23:
-  version "0.3.23"
-  resolved "https://registry.yarnpkg.com/dart3-sdk/-/dart3-sdk-0.3.23.tgz#176a13f443de03bef2a6d3d3ba0f3ead1bbfe611"
-  integrity sha512-I7Ppys2oMDAR0JHT3FAcRt/AvJLwq7idyaAIhPvp9ChuCdQ4AcyDUAzK6CEAnZcQMHOw1fP6zCtKLE+cZoOXjA==
+dart3-sdk@^0.3.25:
+  version "0.3.25"
+  resolved "https://registry.yarnpkg.com/dart3-sdk/-/dart3-sdk-0.3.25.tgz#6df286d005260b01b3e4f100fdab04a1c5c5430d"
+  integrity sha512-lvM/5J6CvEbw+9Rn5uHaey9GRtjzp0Gk9FI1cQb+BPzauA1mifLKlnHrRJHmbmaJ8Yiwhi8EIR46qViNdXcUYg==
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -6026,6 +6026,15 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
+ngx-perfect-scrollbar@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-perfect-scrollbar/-/ngx-perfect-scrollbar-10.0.1.tgz#02e4a8b32413f790c7d0b74e80d9c9f2a719fb0c"
+  integrity sha512-01Li+Cx1OwNQ3WPHeavImS+p1ifK2UEdKly6JkdVw/s7rMxbjXkraOcj7FH+I141lpvxCmNlsWS5iiIA5GAnDg==
+  dependencies:
+    perfect-scrollbar "1.5.0"
+    resize-observer-polyfill "^1.5.0"
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
@@ -6635,6 +6644,11 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+perfect-scrollbar@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-1.5.0.tgz#821d224ed8ff61990c23f26db63048cdc75b6b83"
+  integrity sha512-NrNHJn5mUGupSiheBTy6x+6SXCFbLlm8fVZh9moIzw/LgqElN5q4ncR4pbCBCYuCJ8Kcl9mYM0NgDxvW+b4LxA==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -7581,6 +7595,11 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
+
+resize-observer-polyfill@^1.5.0:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"

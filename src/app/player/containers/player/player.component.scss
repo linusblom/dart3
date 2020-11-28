@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+#upload {
+  display: none;
+}
+
 .header-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -30,11 +34,25 @@
   }
 }
 
-img {
+.avatar {
+  width: 400px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 120px;
+    }
+  }
+}
+
+app-avatar {
   margin-right: 20px;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
   cursor: pointer;
 }
 

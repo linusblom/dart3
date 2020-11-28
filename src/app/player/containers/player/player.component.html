@@ -1,7 +1,20 @@
+<input
+  #fileInput
+  id="upload"
+  type="file"
+  accept="image/*"
+  (change)="uploadAvatar($event.target.files.item(0))"
+/>
+
 <ng-container *ngIf="!(loading$ | async)">
   <div class="header-wrapper" [style.background-color]="player.color">
     <div class="header-row">
-      <img [src]="player.avatar" [tooltip]="changeAvatarRef" [position]="TooltipPosition.Right" />
+      <app-avatar
+        size="80"
+        [url]="player.avatar"
+        [tooltip]="changeAvatarRef"
+        [position]="TooltipPosition.Right"
+      ></app-avatar>
       <div>
         <div class="header">
           {{ player.name }}
@@ -94,7 +107,27 @@
 </ng-container>
 
 <ng-template #changeAvatarRef>
-  <div>Profile picture</div>
+  <div class="avatar">
+    <mat-form-field>
+      <input matInput [formControl]="avatar" placeholder="URL" />
+    </mat-form-field>
+    <div>
+      <button class="close-tooltip" mat-stroked-button (click)="update(GRAVATAR)">
+        Gravatar
+      </button>
+      <button class="close-tooltip" mat-stroked-button (click)="openFileInput()">
+        Upload
+      </button>
+      <button
+        class="close-tooltip"
+        mat-stroked-button
+        [disabled]="avatar.invalid"
+        (click)="update(avatar.value)"
+      >
+        Save URL
+      </button>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #transactionRef [formGroup]="transactionForm">

@@ -10,6 +10,7 @@ import { UserActions, InvoiceActions } from '@user/actions';
 import { AuthActions } from '@auth/actions';
 import { CoreActions } from '@core/actions';
 import { ModalImage } from '@core/models';
+import { JackpotActions } from '@jackpot/actions';
 
 @Component({
   selector: 'app-user',
@@ -39,6 +40,7 @@ export class UserComponent implements OnDestroy {
   constructor(private readonly store: Store<State>) {
     this.store.dispatch(UserActions.getRequest());
     this.store.dispatch(InvoiceActions.getRequest({ paid: false }));
+    this.store.dispatch(JackpotActions.getCurrentRequest());
 
     this.user$
       .pipe(takeUntil(this.destroy$))

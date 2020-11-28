@@ -3,6 +3,6 @@
 </ng-container>
 
 <ng-template #avatarRef>
-  <img [src]="hit.avatar" (click)="remove.emit(hit.id)" />
+  <app-avatar size="20" [url]="hit.avatar" (click)="remove.emit(hit.id)"></app-avatar>
   <div>{{ hit.value }} x {{ hit.multiplier }} = {{ hit.value * hit.multiplier }}</div>
 </ng-template>

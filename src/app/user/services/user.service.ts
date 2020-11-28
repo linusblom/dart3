@@ -17,4 +17,11 @@ export class UserService {
   update(user: Partial<User>) {
     return this.http.patch<User>(this.apiUrl, user);
   }
+
+  upload(file: File) {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return this.http.post<{ url: string }>(`${this.apiUrl}/upload`, formData);
+  }
 }

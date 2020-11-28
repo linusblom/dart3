@@ -1,5 +1,5 @@
 <div class="player">
-  <img [src]="player.avatar" />
+  <app-avatar size="80" [url]="player.avatar"></app-avatar>
   <div class="name">
     {{ player.name }}
     <i *ngIf="player.pro" class="fab fa-themeco fa-xs"></i>

@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
-import { Player, TransactionType } from 'dart3-sdk';
+import { GRAVATAR, Player, TransactionType } from 'dart3-sdk';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import {
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { StoreState, TooltipPosition } from '@shared/models';
+import { UserActions } from '@user/actions';
 
 @Component({
   selector: 'app-player',
@@ -24,6 +25,8 @@ import { StoreState, TooltipPosition } from '@shared/models';
   styleUrls: ['./player.component.scss'],
 })
 export class PlayerComponent implements OnDestroy {
+  @ViewChild('fileInput', { static: true }) fileInput: ElementRef;
+
   loading$ = this.store.pipe(
     select(getPlayerStoreState),
     map((state) => state === StoreState.FETCHING),
@@ -35,6 +38,7 @@ export class PlayerComponent implements OnDestroy {
 
   TransactionType = TransactionType;
   TooltipPosition = TooltipPosition;
+  GRAVATAR = GRAVATAR;
 
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -54,6 +58,11 @@ export class PlayerComponent implements OnDestroy {
     },
   );
 
+  avatar = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/),
+  ]);
+
   private readonly destroy$ = new Subject();
 
   constructor(private readonly store: Store<State>, private readonly route: ActivatedRoute) {
@@ -70,6 +79,7 @@ export class PlayerComponent implements OnDestroy {
         },
         { emitEvent: false },
       );
+      this.avatar.setValue(player.avatar);
       this.player = player;
     });
 
@@ -93,10 +103,13 @@ export class PlayerComponent implements OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  update() {
+  update(avatar = this.player.avatar) {
     if (this.settingsForm.valid) {
       this.store.dispatch(
-        PlayerActions.updateRequest({ uid: this.uid, player: this.settingsForm.value }),
+        PlayerActions.updateRequest({
+          uid: this.uid,
+          player: { ...this.settingsForm.value, avatar },
+        }),
       );
     }
   }
@@ -139,7 +152,7 @@ export class PlayerComponent implements OnDestroy {
     this.store.dispatch(
       CoreActions.confirmPin({
         header: 'Delete player',
-        text: `Are you sure you want to delete player <strong>${this.player.name}</strong>?`,
+        text: `Are you sure you want to delete player <strong>${this.player.name}</strong>? Any remaining fund will be donated to jackpot.`,
         action: PlayerActions.deleteRequest({ uid: this.uid }),
         okText: 'Delete',
         okColor: 'error',
@@ -171,6 +184,29 @@ export class PlayerComponent implements OnDestroy {
           receiverUid,
         }),
         pinDisabled: this.player.pinDisabled,
+      }),
+    );
+  }
+
+  openFileInput() {
+    this.fileInput.nativeElement.value = '';
+    this.fileInput.nativeElement.click();
+  }
+
+  uploadAvatar(file: File) {
+    this.store.dispatch(
+      UserActions.uploadRequest({
+        file,
+        callback: (url: string) =>
+          PlayerActions.updateRequest({
+            uid: this.uid,
+            player: {
+              avatar: url,
+              double: this.player.double,
+              name: this.player.name,
+              pro: this.player.pro,
+            },
+          }),
       }),
     );
   }

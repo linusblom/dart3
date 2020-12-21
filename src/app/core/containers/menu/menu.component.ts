@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
-import { AuthActions } from '@auth/actions';
 import { showMenu, State, getUserPicture } from '@root/reducers';
 
 @Component({
@@ -18,10 +17,6 @@ export class MenuComponent {
 
   navigate(path: string[]) {
     this.router.navigate(path);
-  }
-
-  logout() {
-    this.store.dispatch(AuthActions.logout());
   }
 
   routeActive(path: string, exact = false) {

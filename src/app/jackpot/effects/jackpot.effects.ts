@@ -14,7 +14,6 @@ import { merge, of } from 'rxjs';
 
 import { JackpotService } from '@jackpot/services';
 import { JackpotActions } from '@jackpot/actions';
-import { AuthActions } from '@auth/actions';
 import { CoreActions } from '@core/actions';
 import { State, getJackpotValue, getUserCurrency, getAllPlayers } from '@root/reducers';
 import { Sound } from '@core/models';
@@ -23,7 +22,7 @@ import { Sound } from '@core/models';
 export class JackpotEffects {
   getCurrent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(JackpotActions.getCurrentRequest, AuthActions.login),
+      ofType(JackpotActions.getCurrentRequest),
       concatMap(() =>
         this.service.getCurrent().pipe(
           map((jackpot) => JackpotActions.getCurrentSuccess({ jackpot })),

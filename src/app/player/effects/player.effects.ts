@@ -8,14 +8,13 @@ import { Observable } from 'rxjs';
 
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
-import { AuthActions } from '@auth/actions';
 import { State, getPin, getAllPlayers } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {
   get$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.getRequest, AuthActions.login),
+      ofType(PlayerActions.getRequest),
       concatMap(() =>
         this.service.get().pipe(
           map((players) => PlayerActions.getSuccess({ players })),

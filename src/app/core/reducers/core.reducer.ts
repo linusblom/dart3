@@ -12,8 +12,8 @@ export interface State {
 }
 
 export const initialState: State = {
-  menu: false,
-  footer: false,
+  menu: true,
+  footer: true,
   modal: undefined,
   banner: undefined,
   pin: undefined,

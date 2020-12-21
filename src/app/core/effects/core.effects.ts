@@ -11,27 +11,37 @@ export class CoreEffects {
   confirmPin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoreActions.confirmPin),
-      map(({ header, text, okText, okColor, action, cancelAction, pinDisabled }) =>
-        CoreActions.showModal({
+      map((modal) => {
+        const text = modal.admin
+          ? `${modal.text}<br/><br/>This action <strong>requires an admin</strong>. Please enter admin PIN to confirm.`
+          : `${modal.text} ${
+              !modal.pinDisabled ? '<br/><br/>Please enter your PIN to confirm.' : ''
+            }`;
+
+        return CoreActions.showModal({
           modal: {
-            header,
-            text: `${text}${!pinDisabled ? 'Please enter PIN to confirm.' : ''}`,
-            backdrop: { dismiss: true, ...(cancelAction && { action: () => cancelAction }) },
+            header: modal.header,
+            text,
+            backdrop: {
+              dismiss: true,
+              ...(modal.cancelAction && { action: () => modal.cancelAction }),
+            },
             cancel: {
               text: 'Cancel',
               dismiss: true,
-              ...(cancelAction && { action: () => cancelAction }),
+              ...(modal.cancelAction && { action: () => modal.cancelAction }),
             },
             ok: {
-              text: okText || 'Confirm',
-              color: okColor,
+              text: modal.okText || 'Confirm',
+              color: modal.okColor,
               dismiss: true,
-              action: (pin: string) => CoreActions.confirmPinDispatch({ pin, action }),
+              action: (pin: string) =>
+                CoreActions.confirmPinDispatch({ pin, action: modal.action }),
             },
-            pin: !pinDisabled,
+            pin: modal.admin || !modal.pinDisabled,
           },
-        }),
-      ),
+        });
+      }),
     ),
   );
 

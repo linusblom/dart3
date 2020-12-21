@@ -184,6 +184,7 @@ export class PlayerComponent implements OnDestroy {
           receiverUid,
         }),
         pinDisabled: this.player.pinDisabled,
+        admin: type !== TransactionType.Transfer,
       }),
     );
   }

@@ -90,7 +90,7 @@
   }
 }
 
-.game-id {
+.ids {
   margin: 5px;
   top: 0;
   right: 0;
@@ -98,6 +98,9 @@
   color: $dark-grey;
   font-size: 10px;
   font-family: $header;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 @keyframes active-pulse {

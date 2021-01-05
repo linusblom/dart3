@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { AuthActions } from '@auth/actions';
 import { environment } from '@envs/environment';
@@ -37,16 +37,19 @@ export class AuthEffects {
     { dispatch: false },
   );
 
-  firstLogin$ = createEffect(() =>
+  init$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.setAuthenticated),
-      filter(({ authenticated }) => authenticated),
-      take(1),
-      switchMap(() => [
-        PlayerActions.getRequest(),
-        JackpotActions.getCurrentRequest(),
-        UserActions.getRequest(),
-      ]),
+      ofType(ROOT_EFFECTS_INIT),
+      switchMap(() =>
+        this.service.isAuthenticated$.pipe(
+          filter((authenticated) => authenticated),
+          switchMap(() => [
+            PlayerActions.getRequest(),
+            JackpotActions.getCurrentRequest(),
+            UserActions.getRequest(),
+          ]),
+        ),
+      ),
     ),
   );
 

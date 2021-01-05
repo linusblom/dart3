@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { User, Invoice } from 'dart3-sdk';
 
-import { AuthActions } from '@auth/actions';
 import { UserActions, InvoiceActions } from '@user/actions';
 import { StoreState } from '@shared/models';
 
@@ -23,13 +22,12 @@ export const initialState: State = {
   lastIp: '',
   lastLogin: undefined,
   loginCount: 0,
-  userMetadata: {
+  metaData: {
     currency: '',
-    bootstrapped: false,
     rake: 0,
     jackpotFee: 0,
     nextJackpotFee: 0,
-    gemChance: '1/100',
+    gemChance: 0,
   },
   identities: [],
   bank: {
@@ -52,9 +50,13 @@ export const reducer = createReducer(
 
   on(UserActions.updateRequest, (state) => ({ ...state, state: StoreState.UPDATING })),
 
-  on(UserActions.getSuccess, UserActions.updateSuccess, (state, { user }) => ({
+  on(UserActions.getSuccess, UserActions.updateRequest, (state, { user }) => ({
     ...state,
     ...user,
+    metaData: {
+      ...state.metaData,
+      ...user.metaData,
+    },
     state: StoreState.NONE,
   })),
 
@@ -68,6 +70,4 @@ export const reducer = createReducer(
     ...state,
     state: StoreState.NONE,
   })),
-
-  on(AuthActions.logout, () => initialState),
 );

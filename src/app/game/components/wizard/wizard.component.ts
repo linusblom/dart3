@@ -24,7 +24,7 @@ export class WizardComponent {
   @Input() players: Player[] = [];
   @Input() selectedPlayers: TeamPlayer[] = [];
   @Input() selected = false;
-  @Input() fees = {} as MetaData;
+  @Input() meta = {} as MetaData;
   @Input() loading = false;
 
   @Output() changeStep = new EventEmitter<GameWizardStep>();

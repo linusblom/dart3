@@ -24,7 +24,7 @@ export class UserEffects {
       ofType(UserActions.updateRequest),
       concatMap(({ user }) =>
         this.service.update(user).pipe(
-          map((user) => UserActions.updateSuccess({ user })),
+          map(() => UserActions.updateSuccess()),
           catchError(() => [UserActions.updateFailure()]),
         ),
       ),
@@ -37,7 +37,7 @@ export class UserEffects {
       concatMap(({ file, callback }) =>
         this.service.upload(file).pipe(
           switchMap(({ url }) => [UserActions.uploadSuccess(), callback(url)]),
-          catchError(() => [UserActions.uploadFailure()]),
+          catchError((error) => [UserActions.uploadFailure({ error })]),
         ),
       ),
     ),

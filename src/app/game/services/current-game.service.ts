@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Game, TeamPlayer, Score, MatchResponse, RoundResponse } from 'dart3-sdk';
+import { Game, TeamPlayer, Score, MatchResponse, RoundResponse, StartGame } from 'dart3-sdk';
 
 import { environment } from '@envs/environment';
 
@@ -28,8 +28,8 @@ export class CurrentGameService {
     return this.http.delete<{ players: TeamPlayer[] }>(`${this.apiUrl}/player/${uid}`);
   }
 
-  start() {
-    return this.http.patch<void>(`${this.apiUrl}/start`, null);
+  start(payload: StartGame) {
+    return this.http.patch<void>(`${this.apiUrl}/start`, payload);
   }
 
   createRound(scores: Score[]) {

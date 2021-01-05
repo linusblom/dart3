@@ -5,6 +5,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
 import { CurrentGameActions } from '@game/actions';
+import { UserActions } from '@user/actions';
 
 @Injectable()
 export class CoreEffects {
@@ -66,6 +67,27 @@ export class CoreEffects {
           modal: {
             header: 'Invalid PIN',
             text: 'PIN code entered is invalid.',
+            backdrop: {
+              dismiss: true,
+            },
+            ok: {
+              dismiss: true,
+            },
+          },
+        }),
+      ),
+    ),
+  );
+
+  invalidFileType$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.uploadFailure),
+      filter(({ error: { status } }) => status === 415),
+      map(() =>
+        CoreActions.showModal({
+          modal: {
+            header: 'Invalid image',
+            text: 'Allowed images: gif, jpeg, png',
             backdrop: {
               dismiss: true,
             },

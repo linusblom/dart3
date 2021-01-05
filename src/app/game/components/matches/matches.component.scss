@@ -68,11 +68,8 @@ svg {
       align-items: center;
       margin-bottom: 10px;
 
-      img {
+      app-avatar {
         margin-right: 10px;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
       }
   
       .name {

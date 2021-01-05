@@ -152,7 +152,7 @@ export class PlayerComponent implements OnDestroy {
     this.store.dispatch(
       CoreActions.confirmPin({
         header: 'Delete player',
-        text: `Are you sure you want to delete player <strong>${this.player.name}</strong>? Any remaining fund will be donated to jackpot.`,
+        text: `Are you sure you want to delete player <strong>${this.player.name}</strong>? Any remaining funds will be donated to jackpot.`,
         action: PlayerActions.deleteRequest({ uid: this.uid }),
         okText: 'Delete',
         okColor: 'error',

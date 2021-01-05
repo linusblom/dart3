@@ -1,72 +1,57 @@
 @import '~variables.scss';
 
 :host {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .content {
-  flex: 1;
+  display: flex;
 }
 
 .title {
   margin: 10px 0;
 }
 
+.arrow {
+  display: flex;
+  align-items: center;
+  margin: 40px 20px 0;
+}
+
 .players {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
   border: 1px dashed $border;
   min-height: 70px;
+  height: 430px;
+  overflow-y: auto;
+  width: 220px;
+  overflow: auto;
   padding: 10px;
-  margin-bottom: 40px;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &.dragging:hover {
     background: rgba($white, .1);
   }
+}
 
-  .bets {
-    position: absolute;
-    color: $black;
-    width: 200px;
-    background: $grey;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    bottom: calc(100% + 10px);
-    font-family: $header;
-    text-transform: uppercase;
-    font-size: 12px;
-    box-shadow: $box-shadow;
-    padding: 10px;
-    letter-spacing: 2px;
+.settings {
+  display: flex;
+  margin: 40px 0 0 20px;
+  flex: 1;
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 3px 0;
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
 
-      &.line {
-        border-top: 1px solid $black;
-      }
-
-      .value {
-        text-align: right;
-      }
-    }
-
-    &:after {
-      content: " ";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: $off-white transparent transparent transparent;
+    div:not(.icon) {
+      width: 120px;
     }
   }
 }

@@ -1,0 +1,54 @@
+@import '~variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  display: block;
+  color: $black;
+  width: 200px;
+  background: $grey;
+  font-family: $header;
+  text-transform: uppercase;
+  font-size: 12px;
+  box-shadow: $box-shadow;
+  padding: 10px;
+  letter-spacing: 2px;
+  margin: 0 40px 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+
+  &.icon {
+    justify-content: start;
+
+    .fa-times-circle {
+      color: $board-red;
+    }
+
+    .fa-check-circle {
+      color: $board-green;
+    }
+
+    &.disabled {
+      opacity: 0.1;
+    }
+
+   &>div {
+     margin-right: 10px;
+   }
+  }
+
+  &.line {
+    border-top: 1px solid $black;
+  }
+
+  .value {
+    text-align: right;
+  }
+}

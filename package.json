@@ -1,6 +1,6 @@
 {
   "name": "dart3",
-  "version": "3.1.0",
+  "version": "3.1.01",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,7 +24,7 @@
     "@ngrx/entity": "^10.0.0",
     "@ngrx/store": "^10.0.0",
     "@ngrx/store-devtools": "^10.0.0",
-    "dart3-sdk": "^0.3.25",
+    "dart3-sdk": "^0.3.31",
     "ngx-perfect-scrollbar": "^10.0.1",
     "rxjs": "^6.6.2",
     "tslib": "^2.0.1",

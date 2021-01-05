@@ -14,14 +14,12 @@ import { AuthActions } from '@auth/actions';
 export class AuthGuard {
   constructor(private readonly auth: AuthService, private readonly store: Store<State>) {}
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(
       tap((authenticated) => {
         if (!authenticated) {
           this.store.dispatch(AuthActions.loginRequest({ url: state.url }));
         }
-
-        this.store.dispatch(AuthActions.setAuthenticated({ authenticated }));
       }),
     );
   }

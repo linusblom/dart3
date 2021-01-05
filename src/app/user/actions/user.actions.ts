@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action, createAction, props } from '@ngrx/store';
 import { User } from 'dart3-sdk';
 
@@ -9,7 +10,7 @@ export const updateRequest = createAction(
   '[User] Update Request',
   props<{ user: Partial<User> }>(),
 );
-export const updateSuccess = createAction('[User] Update Success', props<{ user: User }>());
+export const updateSuccess = createAction('[User] Update Success');
 export const updateFailure = createAction('[User] Update Failure');
 
 export const uploadRequest = createAction(
@@ -17,4 +18,7 @@ export const uploadRequest = createAction(
   props<{ file: File; callback: (url: string) => Action }>(),
 );
 export const uploadSuccess = createAction('[Player] Upload Success');
-export const uploadFailure = createAction('[Player] Upload Failure');
+export const uploadFailure = createAction(
+  '[Player] Upload Failure',
+  props<{ error: HttpErrorResponse }>(),
+);

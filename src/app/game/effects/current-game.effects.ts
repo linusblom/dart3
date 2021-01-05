@@ -22,7 +22,13 @@ import {
   MatchActions,
   TeamActions,
 } from '@game/actions';
-import { State, getSelectedMatch, getSelectedGame, getAllTeams } from '@game/reducers';
+import {
+  State,
+  getSelectedMatch,
+  getSelectedGame,
+  getAllTeams,
+  getWizardValues,
+} from '@game/reducers';
 import { getPin } from '@root/reducers';
 import { JackpotActions } from '@jackpot/actions';
 
@@ -80,8 +86,9 @@ export class CurrentGameEffects {
   start$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentGameActions.startRequest),
-      concatMap(() =>
-        this.service.start().pipe(
+      withLatestFrom(this.store.pipe(select(getWizardValues))),
+      concatMap(([_, { tournament, team, random }]) =>
+        this.service.start({ tournament, team, random }).pipe(
           tap(() => this.router.navigate(['/play'], { state: { showMatches: true } })),
           map(() => CurrentGameActions.startSuccess()),
           catchError(() => [CurrentGameActions.startFailure()]),

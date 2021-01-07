@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AuthModule as Auth0Module } from '@auth0/auth0-angular';
 
 import { AuthModule } from '@auth/auth.module';
 import { RequestInterceptor } from '@auth/services';
@@ -31,6 +32,13 @@ import { ROOT_REDUCERS } from './reducers';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    Auth0Module.forRoot({
+      domain: environment.auth0.domain,
+      clientId: environment.auth0.clientId,
+      audience: environment.auth0.audience,
+      redirectUri: `${environment.siteUrl}/auth`,
+      scope: 'openid profile email',
+    }),
     StoreModule.forRoot(ROOT_REDUCERS, {
       runtimeChecks: {},
     }),

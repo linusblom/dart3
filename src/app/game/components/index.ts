@@ -14,6 +14,7 @@ import { ControlsComponent } from './controls/controls.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { XpCounterComponent } from './xp-counter/xp-counter.component';
 import { ResultsPlayerComponent } from './results-player/results-player.component';
+import { WizardInfoComponent } from './wizard-info/wizard-info.component';
 
 export const components = [
   DartBoardComponent,
@@ -24,6 +25,7 @@ export const components = [
   DetailsComponent,
   ScoreComponent,
   WizardComponent,
+  WizardInfoComponent,
   WizardPlayerComponent,
   WizardPlayersComponent,
   WizardSelectComponent,

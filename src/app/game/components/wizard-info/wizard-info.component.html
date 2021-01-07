@@ -1,0 +1,65 @@
+<div class="info">
+  <div class="row icon">
+    <div *ngIf="players >= minPlayers; else conditionNotMetRef">
+      <i class="far fa-check-circle"></i>
+    </div>
+    Min {{ minPlayers }} players
+  </div>
+
+  <div class="row icon">
+    <div *ngIf="players <= maxPlayers; else conditionNotMetRef">
+      <i class="far fa-check-circle"></i>
+    </div>
+    Max {{ maxPlayers }} players
+  </div>
+
+  <div class="row icon" [ngClass]="{ disabled: !evenPlayers }">
+    <div *ngIf="players > 0 && players % 2 === 0; else conditionNotMetRef">
+      <i class="far fa-check-circle"></i>
+    </div>
+    Even players
+  </div>
+
+  <ng-template #conditionNotMetRef>
+    <div class="icon">
+      <i class="far fa-times-circle"></i>
+    </div>
+  </ng-template>
+</div>
+
+<div class="info">
+  <div class="row">
+    <div class="key">Bets</div>
+    <div class="value">{{ bet > 0 ? (bet | currency$ | async) : '-' }}</div>
+  </div>
+  <div class="row">
+    <div class="key">Jackpot</div>
+    <div class="value">
+      {{
+        bet > 0
+          ? (bet * (meta.jackpotFee + meta.nextJackpotFee) * -1 | currency$ | async)
+          : ((meta.jackpotFee + meta.nextJackpotFee) * 100 | number: '1.2-2') + '%'
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="key">Rake</div>
+    <div class="value">
+      {{
+        bet > 0
+          ? (bet * meta.rake * -1 | currency$ | async)
+          : (meta.rake * 100 | number: '1.2-2') + '%'
+      }}
+    </div>
+  </div>
+  <div class="row line">
+    <div class="key">Prize pool</div>
+    <div class="value">
+      {{
+        bet > 0
+          ? (bet - bet * (meta.jackpotFee + meta.nextJackpotFee + meta.rake) | currency$ | async)
+          : '-'
+      }}
+    </div>
+  </div>
+</div>

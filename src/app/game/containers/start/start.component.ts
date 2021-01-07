@@ -27,7 +27,7 @@ export class StartComponent {
   players$ = this.store.pipe(select(getAllPlayers));
   selectedPlayers$ = this.store.pipe(select(getWizardPlayers));
   step$ = this.store.pipe(select(getWizardStep));
-  fees$ = this.store.pipe(select(getUserMetaData));
+  meta$ = this.store.pipe(select(getUserMetaData));
   loading$ = this.store.pipe(select(getGameModuleLoading));
 
   currency = '';
@@ -82,7 +82,7 @@ export class StartComponent {
       CoreActions.showModal({
         modal: {
           header: 'Cancel',
-          text: `Are you sure you want to cancel this game?`,
+          text: `Are you sure you want to cancel this game? Bets will be refunded to players.`,
           backdrop: {
             dismiss: true,
           },

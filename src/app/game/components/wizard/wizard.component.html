@@ -21,10 +21,11 @@
 
     <game-wizard-players
       *ngSwitchCase="Step.SelectPlayers"
+      [form]="form"
       [players]="players"
       [selectedPlayers]="selectedPlayers"
       [bet]="form.get('bet').value"
-      [fees]="fees"
+      [meta]="meta"
       [loading]="loading"
       (start)="start.emit()"
       (cancel)="cancel.emit()"

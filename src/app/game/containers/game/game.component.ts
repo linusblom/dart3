@@ -44,6 +44,7 @@ export class GameComponent implements OnInit, OnDestroy {
   currentMatch$ = this.store.pipe(
     select(getSelectedMatch),
     filter((match) => !!match),
+    shareReplay(1),
   );
   matches$ = this.store.pipe(select(getGameMatches));
   activePlayer$ = combineLatest([this.currentMatch$, this.players$, this.matchTeams$]).pipe(
@@ -81,6 +82,7 @@ export class GameComponent implements OnInit, OnDestroy {
   teams: MatchTeamPlayer[] = [];
   activeLeg = 1;
   activeStartOrder = 1;
+  matchId = 0;
 
   private readonly destroy$ = new Subject();
 
@@ -116,6 +118,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.currentMatch$
       .pipe(
         takeUntil(this.destroy$),
+        tap(({ id }) => (this.matchId = id)),
         map((m) => `${m.activeMatchTeamId}-${m.activeLeg}-${m.status}`),
         distinctUntilChanged(),
       )

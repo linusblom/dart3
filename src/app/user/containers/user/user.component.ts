@@ -31,8 +31,12 @@ export class UserComponent implements OnDestroy {
     nickname: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
-  settingsForm = new FormGroup({
-    currency: new FormControl('', Validators.required),
+  metaDataForm = new FormGroup({
+    currency: new FormControl('', [
+      Validators.required,
+      Validators.minLength(1),
+      Validators.maxLength(5),
+    ]),
   });
 
   private readonly destroy$ = new Subject();
@@ -42,13 +46,11 @@ export class UserComponent implements OnDestroy {
     this.store.dispatch(InvoiceActions.getRequest({ paid: false }));
     this.store.dispatch(JackpotActions.getCurrentRequest());
 
-    this.user$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(({ name, nickname, email, userMetadata }) => {
-        this.userForm.patchValue({ name, nickname, email });
-        this.settingsForm.patchValue({ ...userMetadata });
-        this.currency = userMetadata.currency;
-      });
+    this.user$.pipe(takeUntil(this.destroy$)).subscribe(({ name, nickname, email, metaData }) => {
+      this.userForm.patchValue({ name, nickname, email });
+      this.metaDataForm.patchValue({ ...metaData });
+      this.currency = metaData.currency;
+    });
 
     combineLatest([this.user$, this.jackpot$])
       .pipe(takeUntil(this.destroy$))
@@ -72,9 +74,9 @@ export class UserComponent implements OnDestroy {
   }
 
   updateSettings() {
-    if (this.settingsForm.valid) {
+    if (this.metaDataForm.valid) {
       this.store.dispatch(
-        UserActions.updateRequest({ user: { userMetadata: this.settingsForm.value } }),
+        UserActions.updateRequest({ user: { metaData: this.metaDataForm.value } }),
       );
     }
   }

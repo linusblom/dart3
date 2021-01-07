@@ -1,4 +1,7 @@
-<div class="game-id">GAME #{{ game.id }}</div>
+<div class="ids">
+  <span>GAME #{{ game.id }}</span>
+  <span>MATCH #{{ matchId }}</span>
+</div>
 
 <game-matches
   *ngIf="showMatches"

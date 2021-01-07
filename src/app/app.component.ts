@@ -1,7 +1,9 @@
 import { Component, HostBinding } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { AuthService } from '@auth0/auth0-angular';
 import { trigger, style, transition, animate } from '@angular/animations';
-import { tap, delay } from 'rxjs/operators';
+import { tap, delay, map, shareReplay } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { showLoading, State, showModal, showMenu, showFooter, showBanner } from './reducers';
 
@@ -19,7 +21,6 @@ import { showLoading, State, showModal, showMenu, showFooter, showBanner } from 
   ],
 })
 export class AppComponent {
-  loading$ = this.store.pipe(select(showLoading));
   showMenu$ = this.store.pipe(
     select(showMenu),
     delay(0),
@@ -28,8 +29,12 @@ export class AppComponent {
   showModal$ = this.store.pipe(select(showModal));
   showFooter$ = this.store.pipe(select(showFooter), delay(0));
   showBanner$ = this.store.pipe(select(showBanner));
+  authenticated$ = this.auth.isAuthenticated$.pipe(shareReplay(1));
+  loading$ = combineLatest([this.store.pipe(select(showLoading)), this.authenticated$]).pipe(
+    map(([loading, authenticated]) => !authenticated || loading),
+  );
 
   @HostBinding('class.padding') padding = false;
 
-  constructor(private readonly store: Store<State>) {}
+  constructor(private readonly store: Store<State>, private auth: AuthService) {}
 }

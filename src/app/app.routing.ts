@@ -8,7 +8,7 @@ import { UserRoutes } from '@user/user.routing';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('@game/game.module').then(m => m.GameModule),
+    loadChildren: () => import('@game/game.module').then((m) => m.GameModule),
     canActivate: [AuthGuard],
   },
   { path: 'players', children: PlayerRoutes, canActivate: [AuthGuard] },
@@ -16,7 +16,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

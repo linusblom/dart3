@@ -14,10 +14,12 @@ export class DetailsComponent {
 
   @Output() matches = new EventEmitter<void>();
 
-  MatchStatus = MatchStatus;
-
   roundFirstTo(value: number) {
     return Math.ceil(value / 2);
+  }
+
+  get playing() {
+    return this.match.status === MatchStatus.Playing;
   }
 
   get gameName() {

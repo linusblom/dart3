@@ -8,14 +8,14 @@
     <div class="column">
       <div class="row">
         <div class="name">Set</div>
-        <div class="value">{{ match.status === MatchStatus.Playing ? match.activeSet : '-' }}</div>
+        <div class="value">{{ playing ? match.activeSet : '-' }}</div>
       </div>
       <div class="value small">First to {{ roundFirstTo(game.sets) }}</div>
     </div>
     <div class="column">
       <div class="row">
         <div class="name">Leg</div>
-        <div class="value">{{ match.status === MatchStatus.Playing ? match.activeLeg : '-' }}</div>
+        <div class="value">{{ playing ? match.activeLeg : '-' }}</div>
       </div>
       <div class="value small">First to {{ roundFirstTo(game.legs) }}</div>
     </div>
@@ -23,8 +23,11 @@
       <div class="row">
         <div class="name">Round</div>
         <div class="value">
-          {{ match.status === MatchStatus.Playing ? match.activeRound : '-' }}
+          {{ playing ? match.activeRound : '-' }}
         </div>
+      </div>
+      <div class="value small">
+        {{ game.tieBreak > 0 && playing ? 'Tie break > ' + game.tieBreak : '&nbsp;' }}
       </div>
     </div>
   </div>

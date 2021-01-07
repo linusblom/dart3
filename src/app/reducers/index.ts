@@ -2,7 +2,6 @@ import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Player } from 'dart3-sdk';
 
-import * as fromAuth from '@auth/reducers/auth.reducer';
 import * as fromUser from '@user/reducers/user.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
 import * as fromPlayer from '@player/reducers/player.reducer';
@@ -11,7 +10,6 @@ import { StoreState } from '@shared/models';
 import { getGameModuleLoading } from '@game/reducers';
 
 export interface State {
-  auth: fromAuth.State;
   user: fromUser.State;
   core: fromCore.State;
   player: fromPlayer.State;
@@ -22,7 +20,6 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
   'Root reducers token',
   {
     factory: () => ({
-      auth: fromAuth.reducer,
       user: fromUser.reducer,
       core: fromCore.reducer,
       player: fromPlayer.reducer,
@@ -31,18 +28,15 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
   },
 );
 
-export const getAuthState = createFeatureSelector<fromAuth.State>('auth');
-export const isAuthenticated = createSelector(getAuthState, (state) => state.authenticated);
-
 export const getUserState = createFeatureSelector<fromUser.State>('user');
 export const getUserStoreState = createSelector(getUserState, ({ state }) => state);
 export const getUser = createSelector(getUserState, (state) => state);
 export const getUserCurrency = createSelector(
   getUserState,
-  (state) => state.userMetadata.currency || '',
+  (state) => state.metaData.currency || '',
 );
 export const getUserPicture = createSelector(getUserState, (state) => state.picture);
-export const getUserMetaData = createSelector(getUserState, (state) => state.userMetadata);
+export const getUserMetaData = createSelector(getUserState, (state) => state.metaData);
 export const getUserInvoices = createSelector(getUserState, (state) => state.invoices);
 
 export const getCoreState = createFeatureSelector<fromCore.State>('core');
@@ -74,13 +68,11 @@ export const getJackpotValue = createSelector(getJackpotState, (state) => state.
 export const getJackpotGems = createSelector(getJackpotState, (state) => state.gems);
 
 export const showLoading = createSelector(
-  isAuthenticated,
   getPlayerStoreState,
   getUserStoreState,
   getJackpotStoreState,
   getGameModuleLoading,
-  (authenticated, playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
-    !authenticated ||
+  (playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
     playerStoreState !== StoreState.NONE ||
     userStoreState !== StoreState.NONE ||
     jackpotStoreState !== StoreState.NONE ||

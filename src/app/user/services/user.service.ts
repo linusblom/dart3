@@ -15,7 +15,7 @@ export class UserService {
   }
 
   update(user: Partial<User>) {
-    return this.http.patch<User>(this.apiUrl, user);
+    return this.http.patch(this.apiUrl, user);
   }
 
   upload(file: File) {

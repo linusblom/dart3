@@ -8,7 +8,7 @@
     <div class="match">
       <div class="team" *ngFor="let team of teams; let last = last">
         <div class="player" *ngFor="let player of team.players">
-          <img [src]="player.avatar" />
+          <app-avatar size="30" [url]="player.avatar"></app-avatar>
           <div class="name">
             {{ player.name }}
           </div>

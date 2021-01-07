@@ -15,7 +15,9 @@ export class AvatarComponent {
   }
 
   @Input() set url(url: string) {
-    this.backgroundImage = `url(${url})`;
+    if (url) {
+      this.backgroundImage = `url(${url})`;
+    }
   }
 
   @HostBinding('style.background-image') backgroundImage = '';

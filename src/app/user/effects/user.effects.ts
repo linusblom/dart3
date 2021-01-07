@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, concatMap, catchError, switchMap } from 'rxjs/operators';
 
-import { AuthActions } from '@auth/actions';
 import { UserService } from '@user/services';
 import { UserActions } from '@user/actions';
 
@@ -10,7 +9,7 @@ import { UserActions } from '@user/actions';
 export class UserEffects {
   get$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserActions.getRequest, AuthActions.login),
+      ofType(UserActions.getRequest),
       concatMap(() =>
         this.service.get().pipe(
           map((user) => UserActions.getSuccess({ user })),
@@ -25,7 +24,7 @@ export class UserEffects {
       ofType(UserActions.updateRequest),
       concatMap(({ user }) =>
         this.service.update(user).pipe(
-          map((user) => UserActions.updateSuccess({ user })),
+          map(() => UserActions.updateSuccess()),
           catchError(() => [UserActions.updateFailure()]),
         ),
       ),
@@ -38,7 +37,7 @@ export class UserEffects {
       concatMap(({ file, callback }) =>
         this.service.upload(file).pipe(
           switchMap(({ url }) => [UserActions.uploadSuccess(), callback(url)]),
-          catchError(() => [UserActions.uploadFailure()]),
+          catchError((error) => [UserActions.uploadFailure({ error })]),
         ),
       ),
     ),

@@ -1,91 +1,98 @@
 <div class="content">
-  <div class="title">Playing</div>
-  <div
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    id="playing"
-    class="players"
-    [ngClass]="{ dragging: dragging }"
-    [cdkDropListData]="playing"
-    [cdkDropListConnectedTo]="['available']"
-    (cdkDropListDropped)="onPlayerDrop($event)"
-  >
-    <game-wizard-player
-      *ngFor="let player of playing"
-      cdkDrag
-      [cdkDragData]="player"
-      [player]="player"
-      (cdkDragStarted)="dragStarted()"
-      (cdkDragReleased)="dragReleased()"
-    ></game-wizard-player>
-    <div class="bets">
-      <div class="row">
-        <div class="key">Bets</div>
-        <div class="value">{{ bets > 0 ? (bets | currency$ | async) : '-' }}</div>
-      </div>
-      <div class="row">
-        <div class="key">Jackpot</div>
-        <div class="value">
-          {{
-            bets > 0
-              ? (bets * (fees.jackpotFee + fees.nextJackpotFee) * -1 | currency$ | async)
-              : ((fees.jackpotFee + fees.nextJackpotFee) * 100 | number: '1.2-2') + '%'
-          }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="key">Rake</div>
-        <div class="value">
-          {{
-            bets > 0
-              ? (bets * fees.rake * -1 | currency$ | async)
-              : (fees.rake * 100 | number: '1.2-2') + '%'
-          }}
-        </div>
-      </div>
-      <div class="row line">
-        <div class="key">Prize pool</div>
-        <div class="value">
-          {{
-            bets > 0
-              ? (bets - bets * (fees.jackpotFee + fees.nextJackpotFee + fees.rake)
-                | currency$
-                | async)
-              : '-'
-          }}
-        </div>
-      </div>
+  <div class="list">
+    <div class="title">Available ({{ available.length }})</div>
+    <div
+      cdkDropList
+      id="available"
+      class="players"
+      [ngClass]="{ dragging: dragging }"
+      [cdkDropListData]="available"
+      [cdkDropListConnectedTo]="['participating']"
+      (cdkDropListDropped)="playerDrop($event)"
+    >
+      <game-wizard-player
+        *ngFor="let player of available; let index = index"
+        cdkDrag
+        [cdkDragData]="player"
+        [player]="player"
+        (cdkDragStarted)="dragStarted()"
+        (cdkDragReleased)="dragReleased()"
+        (dblclick)="playerDoubleClick(player, index)"
+      ></game-wizard-player>
     </div>
-    <div class="header placeholder" *ngIf="playing.length === 0">Drag Players Here</div>
   </div>
 
-  <div class="title">Available</div>
-  <div
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    id="available"
-    class="players"
-    [ngClass]="{ dragging: dragging }"
-    [cdkDropListData]="available"
-    [cdkDropListConnectedTo]="['playing']"
-    (cdkDropListDropped)="onPlayerDrop($event)"
-  >
-    <game-wizard-player
-      *ngFor="let player of available"
-      cdkDrag
-      [cdkDragData]="player"
-      [player]="player"
-      (cdkDragStarted)="dragStarted()"
-      (cdkDragReleased)="dragReleased()"
-    ></game-wizard-player>
+  <div class="arrow">
+    <i class="fas fa-arrow-right fa-3x"></i>
+  </div>
+
+  <div class="list">
+    <div class="title">Participating ({{ participating.length }})</div>
+    <div
+      cdkDropList
+      id="participating"
+      class="players"
+      [ngClass]="{ dragging: dragging }"
+      [cdkDropListData]="participating"
+      [cdkDropListConnectedTo]="['available']"
+      (cdkDropListDropped)="playerDrop($event)"
+    >
+      <game-wizard-player
+        *ngFor="let player of participating"
+        cdkDrag
+        [cdkDragData]="player"
+        [player]="player"
+        (cdkDragStarted)="dragStarted()"
+        (cdkDragReleased)="dragReleased()"
+      ></game-wizard-player>
+
+      <div class="header placeholder" *ngIf="participating.length === 0">Drag Players Here</div>
+    </div>
+  </div>
+
+  <div class="settings" [formGroup]="form">
+    <div>
+      <!-- <div class="row">
+        <div>Tournament:</div>
+        <mat-button-toggle-group formControlName="tournament" (click)="calculatePlayers()">
+          <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+          <mat-button-toggle [value]="false">No</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div> -->
+
+      <div class="row">
+        <div>Teams:</div>
+        <mat-button-toggle-group formControlName="team" (click)="calculatePlayers()">
+          <mat-button-toggle [value]="true">Yes</mat-button-toggle>
+          <mat-button-toggle [value]="false">No</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="row">
+        <div>Order:</div>
+        <mat-button-toggle-group formControlName="random">
+          <mat-button-toggle [value]="true">Random</mat-button-toggle>
+          <mat-button-toggle [value]="false">Nearest bull</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <game-wizard-info
+      [meta]="meta"
+      [bet]="bet * participating.length"
+      [players]="participating.length"
+      [minPlayers]="minPlayers"
+      [maxPlayers]="maxPlayers"
+      [evenPlayers]="form.get('team').value"
+    ></game-wizard-info>
   </div>
 </div>
 
 <div class="buttons">
-  <button mat-flat-button [disabled]="playing.length > 0" (click)="cancel.emit()">
+  <button mat-flat-button (click)="cancel.emit()">
     Cancel
   </button>
-  <button mat-flat-button [disabled]="playing.length < 2 || loading" (click)="start.emit()">
+  <button mat-flat-button [disabled]="!valid || loading" (click)="start.emit()">
     Game On
   </button>
 </div>

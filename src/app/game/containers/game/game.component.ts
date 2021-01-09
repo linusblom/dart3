@@ -119,7 +119,7 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap(({ id }) => (this.matchId = id)),
-        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}-${m.status}`),
+        map((m) => `${m.activeMatchTeamId}-${m.activeLeg}-${m.status}-${m.activeSet}`),
         distinctUntilChanged(),
       )
       .subscribe(() => {
@@ -132,7 +132,10 @@ export class GameComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         pluck('endedAt'),
         filter((endedAt) => !!endedAt),
-        tap(() => (this.clear = true)),
+        tap(() => {
+          this.clear = true;
+          this.disabled = true;
+        }),
         delay(1000),
         tap(() => {
           this.store.dispatch(CoreActions.playSound({ sound: Sound.Anthem }));

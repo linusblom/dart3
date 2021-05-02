@@ -2,4 +2,4 @@ import { CallbackComponent } from './callback/callback.component';
 
 export { CallbackComponent } from './callback/callback.component';
 
-export const components = [CallbackComponent];
+export const containers = [CallbackComponent];

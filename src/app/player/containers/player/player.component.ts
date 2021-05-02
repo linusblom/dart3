@@ -1,23 +1,24 @@
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { GRAVATAR, Player, TransactionType } from 'dart3-sdk';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subject, combineLatest } from 'rxjs';
-import { takeUntil, map } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { GRAVATAR, Player, Role, TransactionType } from 'dart3-sdk';
+import { combineLatest, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
+import { CoreActions } from '@core/actions';
+import { PlayerActions } from '@player/actions';
 import {
-  State,
-  getSelectedPlayer,
   getAllPlayers,
+  getPlayerStoreState,
+  getSelectedPlayer,
   getSelectedPlayerUid,
   getUserCurrency,
-  getPlayerStoreState,
+  State,
 } from '@root/reducers';
-import { PlayerActions } from '@player/actions';
-import { CoreActions } from '@core/actions';
 import { StoreState, TooltipPosition } from '@shared/models';
 import { UserActions } from '@user/actions';
+import { hasRole } from '@utils/player-roles';
 
 @Component({
   selector: 'app-player',
@@ -35,6 +36,7 @@ export class PlayerComponent implements OnDestroy {
   player = {} as Player;
   players: Player[] = [];
   currency = '';
+  Role = Role;
 
   TransactionType = TransactionType;
   TooltipPosition = TooltipPosition;
@@ -43,7 +45,9 @@ export class PlayerComponent implements OnDestroy {
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     pro: new FormControl(false),
+    single: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
     double: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
+    triple: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
   });
 
   transactionForm = new FormGroup(
@@ -69,13 +73,17 @@ export class PlayerComponent implements OnDestroy {
     this.uid = this.route.snapshot.params.uid;
 
     this.store.dispatch(PlayerActions.getByUidRequest({ uid: this.uid }));
+    this.store.dispatch(PlayerActions.getStatisticsRequest({ uid: this.uid }));
+    this.getTransactions(0);
 
     this.store.pipe(select(getSelectedPlayer), takeUntil(this.destroy$)).subscribe((player) => {
       this.settingsForm.patchValue(
         {
           name: player.name,
-          pro: player.pro,
+          pro: hasRole(player.roles, Role.Pro),
+          single: player.single,
           double: player.double,
+          triple: player.triple,
         },
         { emitEvent: false },
       );
@@ -103,12 +111,34 @@ export class PlayerComponent implements OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  getTransactions(offset: number) {
+    this.store.dispatch(
+      PlayerActions.getTransactionsRequest({
+        uid: this.uid,
+        limit: 15,
+        offset,
+      }),
+    );
+  }
+
+  hasRoles(role: Role) {
+    return hasRole(this.player.roles, role);
+  }
+
   update(avatar = this.player.avatar) {
     if (this.settingsForm.valid) {
+      const { name, pro, single, double, triple } = this.settingsForm.value;
       this.store.dispatch(
         PlayerActions.updateRequest({
           uid: this.uid,
-          player: { ...this.settingsForm.value, avatar },
+          player: {
+            name,
+            roles: pro ? [Role.Pro] : [],
+            single,
+            double,
+            triple,
+            avatar,
+          },
         }),
       );
     }
@@ -177,13 +207,11 @@ export class PlayerComponent implements OnDestroy {
       CoreActions.confirmPin({
         header: 'Transaction',
         text: `Are you sure you want to ${type} <strong>${currencyAmount}</strong>${receiverPlayerName}?`,
-        action: PlayerActions.transactionRequest({
+        action: PlayerActions.createTransactionRequest({
           uid: this.uid,
-          _type: type,
-          transaction: { amount },
-          receiverUid,
+          transaction: { type, amount, receiverUid },
         }),
-        pinDisabled: this.player.pinDisabled,
+        pinDisabled: false,
         admin: type !== TransactionType.Transfer,
       }),
     );
@@ -203,12 +231,18 @@ export class PlayerComponent implements OnDestroy {
             uid: this.uid,
             player: {
               avatar: url,
+              single: this.player.single,
               double: this.player.double,
+              triple: this.player.triple,
               name: this.player.name,
-              pro: this.player.pro,
+              roles: this.player.roles,
             },
           }),
       }),
     );
+  }
+
+  verifyEmail() {
+    this.store.dispatch(PlayerActions.sendEmailVerificationRequest({ uid: this.uid }));
   }
 }

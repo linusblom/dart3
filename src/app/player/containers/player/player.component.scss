@@ -9,6 +9,10 @@
   display: none;
 }
 
+app-roles {
+  display: block;
+}
+
 .header-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -70,21 +74,8 @@ app-avatar {
   background: $dark-blue;
   color: $white;
 
-  .row {
-    display: flex;
-  }
-
-  .header {
-    margin-bottom: 20px;
-  }
-
   mat-form-field {
-    width: 250px;
     margin-right: 20px;
-
-    &.small {
-      width: 150px;
-    }
   }
 }
 
@@ -95,21 +86,21 @@ app-avatar {
   display: flex;
   flex-direction: column;
   color: $white;
+}
 
-  .row {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 500px;
+.row {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
 
 
-    .button {
-      margin-left: 20px;
+  .button {
+    margin-left: 20px;
 
-      button {
-        width: 145px;
-      }
+    button {
+      width: 180px;
     }
   }
 }

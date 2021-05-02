@@ -1,22 +1,22 @@
 <div class="row">
   <div class="name">Hits</div>
-  <div class="header">{{ player.statistics?.hits }}</div>
+  <div class="header">{{ player.statistics?.hits || 0 }}</div>
 </div>
 <div class="row">
   <div class="name">Misses</div>
-  <div class="header">{{ player.statistics?.misses }}</div>
+  <div class="header">{{ player.statistics?.misses || 0 }}</div>
 </div>
 <div class="row">
   <div class="name">Highest</div>
-  <div class="header">{{ player.statistics?.highest }}</div>
+  <div class="header">{{ player.statistics?.highest || 0 }}</div>
 </div>
 <div class="row">
   <div class="name">Average</div>
-  <div class="header">{{ player.statistics?.average }}</div>
+  <div class="header">{{ player.statistics?.average || 0 }}</div>
 </div>
 <div class="row">
   <div class="name">180's</div>
-  <div class="header">{{ player.statistics?.oneHundredEighty }}</div>
+  <div class="header">{{ player.statistics?.oneHundredEighty || 0 }}</div>
 </div>
 <div class="row space">
   <div class="name">XP</div>

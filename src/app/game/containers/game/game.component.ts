@@ -1,35 +1,35 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Game, Score, MatchTeam, MatchStatus } from 'dart3-sdk';
-import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { Game, MatchStatus, MatchTeam, Score } from 'dart3-sdk';
+import { combineLatest, interval, Subject } from 'rxjs';
 import {
-  takeUntil,
-  filter,
-  tap,
-  takeWhile,
-  map,
-  startWith,
-  pluck,
-  distinctUntilChanged,
   delay,
+  distinctUntilChanged,
+  filter,
+  map,
+  pluck,
   shareReplay,
   skipWhile,
+  startWith,
+  takeUntil,
+  takeWhile,
+  tap,
 } from 'rxjs/operators';
-import { Subject, interval, combineLatest } from 'rxjs';
-import { Router } from '@angular/router';
 
+import { CoreActions } from '@core/actions';
+import { Sound } from '@core/models';
+import { CurrentGameActions } from '@game/actions';
+import { GameOption, getOptions, MatchTeamPlayer } from '@game/models';
 import {
-  State,
+  getGameMatches,
+  getRoundDetails,
   getSelectedGame,
   getSelectedMatch,
-  getGameMatches,
   getSelectedMatchTeams,
-  getRoundDetails,
+  State,
 } from '@game/reducers';
-import { CoreActions } from '@core/actions';
-import { GameOption, getOptions, MatchTeamPlayer } from '@game/models';
-import { CurrentGameActions } from '@game/actions';
 import { getAllPlayers, getJackpotGems } from '@root/reducers';
-import { Sound } from '@core/models';
 
 @Component({
   selector: 'app-game',

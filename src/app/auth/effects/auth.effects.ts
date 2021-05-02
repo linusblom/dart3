@@ -5,8 +5,8 @@ import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { AuthActions } from '@auth/actions';
 import { environment } from '@envs/environment';
-import { PlayerActions } from '@player/actions';
 import { JackpotActions } from '@jackpot/actions';
+import { PlayerActions } from '@player/actions';
 import { UserActions } from '@user/actions';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout, AuthActions.loginFailure),
-        tap(() => this.service.logout()),
+        tap(() => this.service.logout({ returnTo: environment.siteUrl })),
       ),
     { dispatch: false },
   );

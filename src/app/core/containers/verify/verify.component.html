@@ -1,0 +1,14 @@
+<section class="center">
+  <ng-container *ngIf="!(verify$ | async).verified; else verifiedRef">
+    <h1>Verify E-mail</h1>
+    <p>Please click button below to verify {{ (verify$ | async).email }}</p>
+    <button mat-stroked-button [disabled]="disabled" (click)="verify()">
+      Verify E-mail address
+    </button>
+  </ng-container>
+
+  <ng-template #verifiedRef>
+    <h1>Thank you!</h1>
+    <p>Your email has now been verified. Game on!</p>
+  </ng-template>
+</section>

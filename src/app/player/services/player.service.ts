@@ -1,6 +1,14 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Player, CreatePlayer, UpdatePlayer, CreateTransaction, Transaction } from 'dart3-sdk';
+import { Injectable } from '@angular/core';
+import {
+  CreatePlayer,
+  CreateTransaction,
+  Pagination,
+  Player,
+  PlayerStats,
+  Transaction,
+  UpdatePlayer,
+} from 'dart3-sdk';
 
 import { environment } from '@envs/environment';
 
@@ -42,25 +50,23 @@ export class PlayerService {
     return this.http.patch(`${this.apiUrl}/${uid}/disable-pin`, null, { headers: this.pin(pin) });
   }
 
-  deposit(uid: string, pin: string, transaction: CreateTransaction) {
-    return this.http.post<Transaction>(`${this.apiUrl}/${uid}/deposit`, transaction, {
+  createTransaction(uid: string, pin: string, transaction: CreateTransaction) {
+    return this.http.post<{ balance: string }>(`${this.apiUrl}/${uid}/transaction`, transaction, {
       headers: this.pin(pin),
     });
   }
 
-  withdrawal(uid: string, pin: string, transaction: CreateTransaction) {
-    return this.http.post<Transaction>(`${this.apiUrl}/${uid}/withdrawal`, transaction, {
-      headers: this.pin(pin),
+  getTransactions(uid: string, limit: number, offset: number) {
+    return this.http.get<Pagination<Transaction>>(`${this.apiUrl}/${uid}/transaction`, {
+      params: { limit: `${limit}`, offset: `${offset}` },
     });
   }
 
-  transfer(uid: string, pin: string, receiverUid: string, transaction: CreateTransaction) {
-    return this.http.post<Transaction>(
-      `${this.apiUrl}/${uid}/transfer/${receiverUid}`,
-      transaction,
-      {
-        headers: this.pin(pin),
-      },
-    );
+  getStatistics(uid: string) {
+    return this.http.get<PlayerStats>(`${this.apiUrl}/${uid}/statistics`);
+  }
+
+  sendEmailVerification(uid: string) {
+    return this.http.post(`${this.apiUrl}/${uid}/verify`, null);
   }
 }

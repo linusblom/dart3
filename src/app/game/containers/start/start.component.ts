@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Player, Check, GameType } from 'dart3-sdk';
+import { Player, Check, GameType, Role } from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import {
@@ -17,6 +17,7 @@ import { options, GameWizardStep } from '@game/models';
 import { getAllPlayers, getUserCurrency, getUserMetaData } from '@root/reducers';
 import { GameActions, WizardActions, CurrentGameActions } from '@game/actions';
 import { CoreActions } from '@core/actions';
+import { hasRole } from '@utils/player-roles';
 
 @Component({
   selector: 'app-start',
@@ -109,7 +110,7 @@ export class StartComponent {
         cancelAction: CurrentGameActions.createTeamPlayerFailure({
           error: {} as HttpErrorResponse,
         }),
-        pinDisabled: player.pinDisabled,
+        pinDisabled: !hasRole(player.roles, Role.Pin),
       }),
     );
   }

@@ -1,16 +1,21 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Player } from 'dart3-sdk';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import { Pagination, Player, PlayerStats, Role, Transaction } from 'dart3-sdk';
 
-import { StoreState } from '@shared/models';
 import { PlayerActions } from '@player/actions';
+import { StoreState } from '@shared/models';
 
-export interface State extends EntityState<Player> {
+export interface PlayerState extends Player {
+  transactions?: Pagination<Transaction>;
+  statistics?: PlayerStats;
+}
+
+export interface State extends EntityState<PlayerState> {
   state: StoreState;
   selectedUid: string;
 }
 
-export const adapter: EntityAdapter<Player> = createEntityAdapter<Player>({
+export const adapter: EntityAdapter<PlayerState> = createEntityAdapter<PlayerState>({
   selectId: (player) => player.uid,
   sortComparer: (a, b) => {
     if (a.xp < b.xp) {
@@ -53,10 +58,15 @@ export const reducer = createReducer(
     adapter.upsertOne(player, { ...state, state: StoreState.NONE, selectedUid: player.uid }),
   ),
 
-  on(PlayerActions.updateRequest, PlayerActions.resetPinRequest, (state) => ({
-    ...state,
-    state: StoreState.UPDATING,
-  })),
+  on(
+    PlayerActions.updateRequest,
+    PlayerActions.resetPinRequest,
+    PlayerActions.sendEmailVerificationRequest,
+    (state) => ({
+      ...state,
+      state: StoreState.UPDATING,
+    }),
+  ),
 
   on(PlayerActions.updateSuccess, (state, { player }) =>
     adapter.updateOne(player, { ...state, state: StoreState.NONE }),
@@ -70,26 +80,51 @@ export const reducer = createReducer(
 
   on(PlayerActions.disablePinSuccess, (state, { uid }) =>
     adapter.updateOne(
-      { id: uid, changes: { pinDisabled: true } },
+      {
+        id: uid,
+        changes: { roles: state.entities[uid].roles.filter((role) => role !== Role.Pin) },
+      },
       { ...state, state: StoreState.NONE },
     ),
   ),
 
   on(PlayerActions.resetPinSuccess, (state, { uid }) =>
     adapter.updateOne(
-      { id: uid, changes: { pinDisabled: false } },
+      {
+        id: uid,
+        changes: {
+          roles: [...state.entities[uid].roles.filter((role) => role !== Role.Pin), Role.Pin],
+        },
+      },
       { ...state, state: StoreState.NONE },
     ),
   ),
 
-  on(PlayerActions.transactionSuccess, (state, { uid, transaction }) =>
+  on(PlayerActions.createTransactionSuccess, (state, { uid, balance }) =>
     adapter.updateOne(
       {
         id: uid,
-        changes: {
-          balance: transaction.balance,
-          transactions: [transaction, ...state.entities[uid].transactions],
-        },
+        changes: { balance },
+      },
+      state,
+    ),
+  ),
+
+  on(PlayerActions.getTransactionsSuccess, (state, { uid, transactions }) =>
+    adapter.updateOne(
+      {
+        id: uid,
+        changes: { transactions },
+      },
+      state,
+    ),
+  ),
+
+  on(PlayerActions.getStatisticsSuccess, (state, { uid, statistics }) =>
+    adapter.updateOne(
+      {
+        id: uid,
+        changes: { statistics },
       },
       state,
     ),
@@ -103,6 +138,8 @@ export const reducer = createReducer(
     PlayerActions.resetPinSuccess,
     PlayerActions.resetPinFailure,
     PlayerActions.deleteFailure,
+    PlayerActions.sendEmailVerificationSuccess,
+    PlayerActions.sendEmailVerificationFailure,
     (state) => ({
       ...state,
       state: StoreState.NONE,

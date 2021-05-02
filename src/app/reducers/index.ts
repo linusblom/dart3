@@ -2,12 +2,12 @@ import { InjectionToken } from '@angular/core';
 import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Player } from 'dart3-sdk';
 
-import * as fromUser from '@user/reducers/user.reducer';
 import * as fromCore from '@core/reducers/core.reducer';
-import * as fromPlayer from '@player/reducers/player.reducer';
-import * as fromJackpot from '@jackpot/reducers/jackpot.reducer';
-import { StoreState } from '@shared/models';
 import { getGameModuleLoading } from '@game/reducers';
+import * as fromJackpot from '@jackpot/reducers/jackpot.reducer';
+import * as fromPlayer from '@player/reducers/player.reducer';
+import { StoreState } from '@shared/models';
+import * as fromUser from '@user/reducers/user.reducer';
 
 export interface State {
   user: fromUser.State;
@@ -47,6 +47,15 @@ export const getModal = createSelector(getCoreState, (state) => state.modal);
 export const getPin = createSelector(getCoreState, (state) => state.pin);
 export const showBanner = createSelector(getCoreState, (state) => !!state.banner);
 export const getBanner = createSelector(getCoreState, (state) => state.banner);
+export const getCoreStoreState = createSelector(getCoreState, (state) => state.state);
+export const getVerifyToken = createSelector(getCoreState, (state) =>
+  state.verify ? { uid: state.verify.uid, token: state.verify.token } : {},
+);
+export const getVerifyEmail = createSelector(getCoreState, (state) =>
+  state.verify
+    ? { email: state.verify.email, verified: state.verify.verified }
+    : { email: '', verified: false },
+);
 
 export const getPlayerState = createFeatureSelector<fromPlayer.State>('player');
 export const getPlayerStoreState = createSelector(getPlayerState, ({ state }) => state);
@@ -71,10 +80,12 @@ export const showLoading = createSelector(
   getPlayerStoreState,
   getUserStoreState,
   getJackpotStoreState,
+  getCoreStoreState,
   getGameModuleLoading,
-  (playerStoreState, userStoreState, jackpotStoreState, gameModuleLoading) =>
+  (playerStoreState, userStoreState, jackpotStoreState, coreStoreState, gameModuleLoading) =>
     playerStoreState !== StoreState.NONE ||
     userStoreState !== StoreState.NONE ||
     jackpotStoreState !== StoreState.NONE ||
+    coreStoreState !== StoreState.NONE ||
     gameModuleLoading,
 );

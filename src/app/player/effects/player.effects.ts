@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, map, tap, withLatestFrom, filter } from 'rxjs/operators';
-import { Store, select } from '@ngrx/store';
-import { Transaction, TransactionType } from 'dart3-sdk';
-import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { catchError, concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
-import { State, getPin, getAllPlayers } from '@root/reducers';
+import { getAllPlayers, getPin, State } from '@root/reducers';
 
 @Injectable()
 export class PlayerEffects {
@@ -41,7 +39,7 @@ export class PlayerEffects {
       ofType(PlayerActions.createRequest),
       concatMap(({ player }) =>
         this.service.create(player).pipe(
-          map((player) => PlayerActions.createSuccess({ player })),
+          map((created) => PlayerActions.createSuccess({ player: created })),
           catchError((error) => [PlayerActions.createFailure({ error })]),
         ),
       ),
@@ -53,8 +51,8 @@ export class PlayerEffects {
       ofType(PlayerActions.updateRequest),
       concatMap(({ uid, player }) =>
         this.service.update(uid, player).pipe(
-          map((player) =>
-            PlayerActions.updateSuccess({ player: { id: player.uid, changes: player } }),
+          map((updated) =>
+            PlayerActions.updateSuccess({ player: { id: updated.uid, changes: updated } }),
           ),
           catchError((error) => [PlayerActions.updateFailure({ error })]),
         ),
@@ -101,32 +99,31 @@ export class PlayerEffects {
     ),
   );
 
-  transaction$ = createEffect(() =>
+  createTransaction$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.transactionRequest),
+      ofType(PlayerActions.createTransactionRequest),
       withLatestFrom(this.store.pipe(select(getPin))),
-      concatMap(([{ uid, _type, transaction, receiverUid }, pin]) => {
-        let service: () => Observable<Transaction>;
+      concatMap(([{ uid, transaction }, pin]) =>
+        this.service.createTransaction(uid, pin, transaction).pipe(
+          switchMap(({ balance }) => [
+            PlayerActions.createTransactionSuccess({ uid, balance }),
+            PlayerActions.getTransactionsRequest({ uid, limit: 15, offset: 0 }),
+          ]),
+          catchError((error) => [PlayerActions.createTransactionFailure({ error })]),
+        ),
+      ),
+    ),
+  );
 
-        switch (_type) {
-          case TransactionType.Deposit:
-            service = () => this.service.deposit(uid, pin, transaction);
-            break;
-          case TransactionType.Withdrawal:
-            service = () => this.service.withdrawal(uid, pin, transaction);
-            break;
-          case TransactionType.Transfer:
-            service = () => this.service.transfer(uid, pin, receiverUid, transaction);
-            break;
-          default:
-            return [];
-        }
-
-        return service().pipe(
-          map((transaction) => PlayerActions.transactionSuccess({ uid, transaction })),
-          catchError((error) => [PlayerActions.transactionFailure({ error })]),
-        );
-      }),
+  getTransactions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.getTransactionsRequest),
+      concatMap(({ uid, limit, offset }) =>
+        this.service.getTransactions(uid, limit, offset).pipe(
+          map((transactions) => PlayerActions.getTransactionsSuccess({ uid, transactions })),
+          catchError((error) => [PlayerActions.getTransactionsFailure({ error })]),
+        ),
+      ),
     ),
   );
 
@@ -140,6 +137,30 @@ export class PlayerEffects {
       })),
       filter((player) => !!player.id),
       map((player) => PlayerActions.updateSuccess({ player })),
+    ),
+  );
+
+  getStatistics$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.getStatisticsRequest),
+      concatMap(({ uid }) =>
+        this.service.getStatistics(uid).pipe(
+          map((statistics) => PlayerActions.getStatisticsSuccess({ uid, statistics })),
+          catchError((error) => [PlayerActions.getStatisticsFailure(error)]),
+        ),
+      ),
+    ),
+  );
+
+  sendEmailVerification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlayerActions.sendEmailVerificationRequest),
+      concatMap(({ uid }) =>
+        this.service.sendEmailVerification(uid).pipe(
+          map(() => PlayerActions.sendEmailVerificationSuccess()),
+          catchError(() => [PlayerActions.sendEmailVerificationFailure()]),
+        ),
+      ),
     ),
   );
 

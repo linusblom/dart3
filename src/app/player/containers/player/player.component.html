@@ -15,12 +15,13 @@
         [tooltip]="changeAvatarRef"
         [position]="TooltipPosition.Right"
       ></app-avatar>
+
       <div>
         <div class="header">
           {{ player.name }}
-          <span *ngIf="player.pro"><i class="fab fa-themeco fa-xs"></i></span>
         </div>
         <app-stars [xp]="player.xp" size="30"></app-stars>
+        <app-roles [roles]="player.roles"></app-roles>
       </div>
     </div>
     <div class="header-column">
@@ -52,7 +53,11 @@
   </div>
   <div class="content">
     <app-player-stats [player]="player"></app-player-stats>
-    <app-player-transactions [transactions]="player.transactions"></app-player-transactions>
+    <app-player-transactions
+      *ngIf="player.transactions"
+      [transactions]="player.transactions"
+      (changeOffset)="getTransactions($event)"
+    ></app-player-transactions>
   </div>
   <div class="settings" [formGroup]="settingsForm">
     <div class="header">Settings</div>
@@ -61,7 +66,16 @@
         <input matInput formControlName="name" placeholder="Name" (change)="update()" />
       </mat-form-field>
 
-      <mat-form-field class="small light">
+      <mat-form-field class="light">
+        <input
+          matInput
+          formControlName="single"
+          placeholder="Favorite single"
+          (change)="update()"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="light">
         <input
           matInput
           formControlName="double"
@@ -69,10 +83,27 @@
           (change)="update()"
         />
       </mat-form-field>
+
+      <mat-form-field class="light">
+        <input
+          matInput
+          formControlName="triple"
+          placeholder="Favorite triple"
+          (change)="update()"
+        />
+      </mat-form-field>
     </div>
     <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
       Professional
     </mat-checkbox>
+    <div class="row" *ngIf="!hasRoles(Role.EmailVerified)">
+      <div class="text">
+        Your e-mail is not verified, click to send verification to your inbox.
+      </div>
+      <div class="button">
+        <button mat-flat-button (click)="verifyEmail()">Verify e-mail</button>
+      </div>
+    </div>
   </div>
 
   <div class="danger">
@@ -80,27 +111,29 @@
     <div class="row">
       <div class="text">
         {{
-          player.pinDisabled
-            ? 'Your PIN code is disabled, click reset PIN to enable it again.'
-            : 'Lost PIN code? Click to reset and a new PIN code will be sent to your email.'
+          hasRoles(Role.Pin)
+            ? 'Lost PIN code? Click to reset and a new PIN code will be sent to your email.'
+            : 'Your PIN code is disabled, click reset PIN to enable it again.'
         }}
       </div>
       <div class="button">
         <button mat-flat-button (click)="resetPin()">Reset PIN</button>
       </div>
     </div>
+
+    <div class="row" *ngIf="hasRoles(Role.Pin)">
+      <div class="text">Bad memory? Disable PIN code when joining game.</div>
+      <div class="button">
+        <button mat-flat-button (click)="disablePin()">
+          Disable PIN
+        </button>
+      </div>
+    </div>
+
     <div class="row">
       <div class="text">Don't want to play anymore? Click to delete player.</div>
       <div class="button">
-        <button mat-flat-button [disabled]="player.pinDisabled" (click)="delete()">Delete</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="text">Bad memory? Disable PIN code when joining game.</div>
-      <div class="button">
-        <button mat-flat-button [disabled]="player.pinDisabled" (click)="disablePin()">
-          Disable PIN
-        </button>
+        <button mat-flat-button (click)="delete()">Delete</button>
       </div>
     </div>
   </div>

@@ -1,14 +1,15 @@
-import { createAction, props } from '@ngrx/store';
-import {
-  Player,
-  CreatePlayer,
-  UpdatePlayer,
-  TransactionType,
-  CreateTransaction,
-  Transaction,
-} from 'dart3-sdk';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Update } from '@ngrx/entity';
+import { createAction, props } from '@ngrx/store';
+import {
+  CreatePlayer,
+  CreateTransaction,
+  Pagination,
+  Player,
+  PlayerStats,
+  Transaction,
+  UpdatePlayer,
+} from 'dart3-sdk';
 
 export const getRequest = createAction('[Player] Get Request');
 export const getSuccess = createAction('[Player] Get Success', props<{ players: Player[] }>());
@@ -80,25 +81,57 @@ export const deleteFailure = createAction(
   props<{ error: HttpErrorResponse }>(),
 );
 
-export const transactionRequest = createAction(
-  '[Player] Transaction Request',
-  props<{
-    uid: string;
-    _type: TransactionType;
-    transaction: CreateTransaction;
-    receiverUid?: string;
-  }>(),
+export const createTransactionRequest = createAction(
+  '[Player] Create Transaction Request',
+  props<{ uid: string; transaction: CreateTransaction }>(),
 );
-export const transactionSuccess = createAction(
-  '[Player] Transaction Success',
-  props<{ uid: string; transaction: Transaction }>(),
+export const createTransactionSuccess = createAction(
+  '[Player] Create Transaction Success',
+  props<{ uid: string; balance: string }>(),
 );
-export const transactionFailure = createAction(
-  '[Player] Transaction Failure',
+export const createTransactionFailure = createAction(
+  '[Player] Create Transaction Failure',
   props<{ error: HttpErrorResponse }>(),
 );
 
 export const updateById = createAction(
   '[Player] Update By Id',
   props<{ id: number; changes: Partial<Player> }>(),
+);
+
+export const getTransactionsRequest = createAction(
+  '[Player] Get Transactions Request',
+  props<{ uid: string; limit: number; offset: number }>(),
+);
+export const getTransactionsSuccess = createAction(
+  '[Player] Get Transactions Success',
+  props<{ uid: string; transactions: Pagination<Transaction> }>(),
+);
+export const getTransactionsFailure = createAction(
+  '[Player] Get Transactions Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const getStatisticsRequest = createAction(
+  '[Player] Get Statistics Request',
+  props<{ uid: string }>(),
+);
+export const getStatisticsSuccess = createAction(
+  '[Player] Get Statistics Success',
+  props<{ uid: string; statistics: PlayerStats }>(),
+);
+export const getStatisticsFailure = createAction(
+  '[Player] Get Statistics Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
+
+export const sendEmailVerificationRequest = createAction(
+  '[Player] Send Email Verification Request',
+  props<{ uid: string }>(),
+);
+export const sendEmailVerificationSuccess = createAction(
+  '[Player] Send Email Verification Success',
+);
+export const sendEmailVerificationFailure = createAction(
+  '[Player] Send Email Verification Failure',
 );

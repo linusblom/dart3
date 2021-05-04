@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreatePlayer } from 'dart3-sdk';
 
 @Component({
@@ -13,6 +13,7 @@ export class PlayerCreateComponent {
   form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
+    terms: new FormControl(false, [Validators.requiredTrue]),
   });
 
   onCreate() {

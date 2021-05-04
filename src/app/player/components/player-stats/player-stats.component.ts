@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Player } from 'dart3-sdk';
+import { PlayerState } from '@player/reducers/player.reducer';
 
 @Component({
   selector: 'app-player-stats',
@@ -7,5 +7,5 @@ import { Player } from 'dart3-sdk';
   styleUrls: ['./player-stats.component.scss'],
 })
 export class PlayerStatsComponent {
-  @Input() player: Player;
+  @Input() player: PlayerState;
 }

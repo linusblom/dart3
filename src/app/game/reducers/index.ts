@@ -3,13 +3,13 @@ import { Action, combineReducers, createFeatureSelector, createSelector } from '
 import * as fromRoot from '@root/reducers';
 import { StoreState } from '@shared/models';
 
+import { MatchStatus } from 'dart3-sdk';
 import * as fromGame from './game.reducer';
-import * as fromWizard from './wizard.reducer';
+import * as fromHit from './hit.reducer';
 import * as fromMatch from './match.reducer';
 import * as fromTeam from './team.reducer';
-import * as fromHit from './hit.reducer';
+import * as fromWizard from './wizard.reducer';
 import { defaultSettings } from './wizard.reducer';
-import { MatchStatus } from 'dart3-sdk';
 
 export interface GameState {
   game: fromGame.State;
@@ -106,7 +106,7 @@ export const getRoundDetails = createSelector(
 
     const currentTeam = teams.find((team) => team.id === match.activeMatchTeamId);
     const highestScore = teams.reduce((highest, team) => {
-      const hit = team.hits.find((hit) => hit.round === match.activeRound);
+      const hit = team.hits.find((h) => h.round === match.activeRound);
       return hit && hit.score > highest ? hit.score : highest;
     }, 0);
 

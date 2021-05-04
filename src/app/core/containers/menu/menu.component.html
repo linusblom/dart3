@@ -1,26 +1,30 @@
 <div class="menu-left">
-  <div
-    class="item"
-    data-title="Game"
-    [ngClass]="{ active: routeActive('/start') }"
-    (click)="navigate(['/'])"
-  >
-    Game
-  </div>
-  <div
-    class="item"
-    data-title="Players"
-    [ngClass]="{ active: routeActive('/players') }"
-    (click)="navigate(['players'])"
-  >
-    Players
-  </div>
-  <!-- <div class="item" data-title="Statistics">Statistics</div> -->
+  <ng-container *ngIf="authenticated">
+    <div
+      class="item"
+      data-title="Game"
+      [ngClass]="{ active: routeActive('/game') }"
+      (click)="navigate('/game')"
+    >
+      Game
+    </div>
+    <div
+      class="item"
+      data-title="Players"
+      [ngClass]="{ active: routeActive('/players') }"
+      (click)="navigate('/players')"
+    >
+      Players
+    </div>
+  </ng-container>
 </div>
 <div class="header">
   DART3
 </div>
 
 <div class="menu-right">
-  <img [src]="picture$ | async" (click)="navigate(['user'])" />
+  <img *ngIf="authenticated; else login" [src]="picture$ | async" (click)="navigate('/user')" />
+  <ng-template #login>
+    <button mat-stroked-button (click)="navigate('/game', true)">Login</button>
+  </ng-template>
 </div>

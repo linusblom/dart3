@@ -1,15 +1,15 @@
-import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Game } from 'dart3-sdk';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { Game } from 'dart3-sdk';
 import { race } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
 
-import { State } from '@game/reducers';
-import { WizardActions, CurrentGameActions } from '@game/actions';
+import { CurrentGameActions, WizardActions } from '@game/actions';
 import { GameWizardStep } from '@game/models';
+import { State } from '@game/reducers';
 
 interface CurrentGame {
   game?: Game;
@@ -34,8 +34,8 @@ export class GameGuard implements CanActivate {
       this.actions$.pipe(ofType(CurrentGameActions.getFailure)),
     ]).pipe(
       map(({ game, error }: CurrentGame) => {
-        let navigate = undefined;
-        let step = undefined;
+        let navigate: string[];
+        let step: GameWizardStep;
         let setValues = false;
         let allowed = false;
         let state = {};
@@ -44,23 +44,23 @@ export class GameGuard implements CanActivate {
           case path === 'play' && game && !!game.startedAt:
             allowed = true;
             break;
-          case path === 'start' && !!error:
+          case path === '' && !!error:
             allowed = true;
             step = GameWizardStep.SelectGame;
             break;
-          case path === 'start' && game && !!game.startedAt:
+          case path === '' && game && !!game.startedAt:
             allowed = false;
-            navigate = 'play';
+            navigate = ['game', 'play'];
             state = { showMatches: true };
             break;
           case path === 'play' && game && !game.startedAt: {
             allowed = false;
-            navigate = 'start';
+            navigate = ['game'];
             step = GameWizardStep.SelectPlayers;
             setValues = true;
             break;
           }
-          case path === 'start' && game && !game.startedAt: {
+          case path === '' && game && !game.startedAt: {
             allowed = true;
             step = GameWizardStep.SelectPlayers;
             setValues = true;
@@ -68,7 +68,7 @@ export class GameGuard implements CanActivate {
           }
           case path === 'play' && !!error:
             allowed = false;
-            navigate = 'start';
+            navigate = ['game'];
             step = GameWizardStep.SelectGame;
             break;
           default:
@@ -102,7 +102,7 @@ export class GameGuard implements CanActivate {
         }
 
         if (navigate) {
-          this.router.navigate([navigate], { state });
+          this.router.navigate(navigate, { state });
         }
 
         return allowed;

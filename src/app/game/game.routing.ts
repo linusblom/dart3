@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { GameComponent, ResultsComponent, StartComponent } from './containers';
 import { GameGuard } from './services';
-import { GameComponent, StartComponent, ResultsComponent } from './containers';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'start',
-  },
-  {
-    path: 'start',
     component: StartComponent,
     canActivate: [GameGuard],
   },

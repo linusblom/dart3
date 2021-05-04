@@ -1,0 +1,12 @@
+<span [ngClass]="{ enabled: hasRole(Role.Pin) }" title="Pin protected">
+  <i class="fas fa-lock fa-xs"></i>
+</span>
+<span [ngClass]="{ enabled: hasRole(Role.Pro) }" title="Professional">
+  <i class="fas fa-parking fa-xs"></i>
+</span>
+<span [ngClass]="{ enabled: hasRole(Role.EmailVerified) }" title="Verified email">
+  <i class="fas fa-envelope fa-xs"></i>
+</span>
+<span [ngClass]="{ enabled: hasRole(Role.Admin) }" title="Admin">
+  <i class="fas fa-user-secret fa-xs"></i>
+</span>

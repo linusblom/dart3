@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
-
-import { State, getAllPlayers } from '@root/reducers';
-import { CreatePlayer } from 'dart3-sdk';
+import { select, Store } from '@ngrx/store';
 import { PlayerActions } from '@player/actions';
+import { getAllPlayers, State } from '@root/reducers';
+import { CreatePlayer } from 'dart3-sdk';
 
 @Component({
   selector: 'app-players',

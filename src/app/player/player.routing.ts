@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { PlayersComponent, PlayerComponent } from './containers';
+
+import { PlayerComponent, PlayersComponent } from './containers';
 
 export const PlayerRoutes: Routes = [
   { path: '', pathMatch: 'full', component: PlayersComponent },

@@ -1,9 +1,9 @@
+@import '~normalize.scss';
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
 @import '~variables.scss'; 
 @import '~material.scss';
 
 body {
-  margin: 0;
   color: $black;
   background: $off-white;
   font-family: $base;
@@ -16,4 +16,24 @@ body {
   letter-spacing: 2px;
   font-weight: 100;
   white-space: nowrap;
+}
+
+h1 {
+  font-family: $header;
+  font-size: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 100;
+}
+
+p {
+  font-family: $base;
+}
+
+.center {
+  text-align: center;
+}
+
+.no-wrap {
+   white-space: nowrap;
 }

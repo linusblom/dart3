@@ -1,36 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  concatMap,
-  map,
-  catchError,
-  withLatestFrom,
-  tap,
-  filter,
-  delay,
-  switchMap,
-} from 'rxjs/operators';
-import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { MatchStatus } from 'dart3-sdk';
+import {
+  catchError,
+  concatMap,
+  delay,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
-import { CurrentGameService } from '@game/services';
 import {
   CurrentGameActions,
-  HitActions,
   GameActions,
+  HitActions,
   MatchActions,
   TeamActions,
 } from '@game/actions';
 import {
-  State,
-  getSelectedMatch,
-  getSelectedGame,
   getAllTeams,
+  getSelectedGame,
+  getSelectedMatch,
   getWizardValues,
+  State,
 } from '@game/reducers';
-import { getPin } from '@root/reducers';
+import { CurrentGameService } from '@game/services';
 import { JackpotActions } from '@jackpot/actions';
+import { getPin } from '@root/reducers';
 
 @Injectable()
 export class CurrentGameEffects {
@@ -89,7 +89,7 @@ export class CurrentGameEffects {
       withLatestFrom(this.store.pipe(select(getWizardValues))),
       concatMap(([_, { tournament, team, random }]) =>
         this.service.start({ tournament, team, random }).pipe(
-          tap(() => this.router.navigate(['/play'], { state: { showMatches: true } })),
+          tap(() => this.router.navigate(['game', 'play'], { state: { showMatches: true } })),
           map(() => CurrentGameActions.startSuccess()),
           catchError(() => [CurrentGameActions.startFailure()]),
         ),

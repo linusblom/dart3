@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { catchError, concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { PlayerActions } from '@player/actions';
 import { CoreActions } from '@core/actions';
+import { CoreService } from '@core/services';
 import { CurrentGameActions } from '@game/actions';
+import { PlayerActions } from '@player/actions';
+import { getVerifyToken, State } from '@root/reducers';
 import { UserActions } from '@user/actions';
 
 @Injectable()
@@ -57,7 +61,7 @@ export class CoreEffects {
     this.actions$.pipe(
       ofType(
         PlayerActions.deleteFailure,
-        PlayerActions.transactionFailure,
+        PlayerActions.createTransactionFailure,
         PlayerActions.disablePinFailure,
         CurrentGameActions.createTeamPlayerFailure,
       ),
@@ -102,7 +106,7 @@ export class CoreEffects {
 
   insufficientFunds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PlayerActions.transactionFailure, CurrentGameActions.createTeamPlayerFailure),
+      ofType(PlayerActions.createTransactionFailure, CurrentGameActions.createTeamPlayerFailure),
       filter(({ error: { status } }) => status === 406),
       map(() =>
         CoreActions.showModal({
@@ -134,5 +138,45 @@ export class CoreEffects {
     { dispatch: false },
   );
 
-  constructor(private readonly actions$: Actions) {}
+  getVerifyEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CoreActions.getVerifyEmailRequest),
+      concatMap(({ uid, token }) =>
+        this.service.getVerifyEmail(uid, token).pipe(
+          map(({ email }) =>
+            CoreActions.getVerifyEmailSuccess({ verify: { uid, token, email, verified: false } }),
+          ),
+          catchError(() => {
+            this.router.navigate(['/404']);
+
+            return [CoreActions.getVerifyEmailFailure()];
+          }),
+        ),
+      ),
+    ),
+  );
+
+  verifyEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CoreActions.verifyEmailRequest),
+      withLatestFrom(this.store.pipe(select(getVerifyToken))),
+      concatMap(([_, { uid, token }]) =>
+        this.service.verifyEmail(uid, token).pipe(
+          map(() => CoreActions.verifyEmailSuccess()),
+          catchError(() => {
+            this.router.navigate(['/404']);
+
+            return [CoreActions.verifyEmailFailure()];
+          }),
+        ),
+      ),
+    ),
+  );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly service: CoreService,
+    private readonly router: Router,
+    private readonly store: Store<State>,
+  ) {}
 }

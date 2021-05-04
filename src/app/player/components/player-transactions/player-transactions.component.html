@@ -8,8 +8,8 @@
     <div class="sm right">Credit</div>
     <div class="sm right">Balance</div>
   </div>
-  <div class="table-body">
-    <div *ngFor="let transaction of transactions" class="table-row">
+  <div class="table-body" *ngIf="transactions">
+    <div *ngFor="let transaction of transactions.items" class="table-row">
       <div class="sm">{{ transaction.createdAt | date: 'dd/MM HH:mm' }}</div>
       <div class="sm capital">{{ transaction.type }}</div>
       <div class="lg">{{ transaction.description }}</div>
@@ -23,3 +23,7 @@
     </div>
   </div>
 </div>
+<app-pagination
+  [pagination]="transactions"
+  (changeOffset)="changeOffset.emit($event)"
+></app-pagination>

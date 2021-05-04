@@ -1,0 +1,21 @@
+<div
+  class="arrow"
+  [ngClass]="{ disabled: currentPage === 1 }"
+  (click)="currentPage !== 1 && changePage(currentPage - 1)"
+>
+  <i class="fas fa-chevron-left"></i>
+</div>
+<div
+  *ngFor="let page of pages"
+  [ngClass]="{ current: page === currentPage, dots: page === '...' }"
+  (click)="![currentPage, '...'].includes(page) && changePage(page)"
+>
+  {{ page }}
+</div>
+<div
+  class="arrow"
+  [ngClass]="{ disabled: currentPage === totalPages }"
+  (click)="currentPage !== totalPages && changePage(currentPage + 1)"
+>
+  <i class="fas fa-chevron-right"></i>
+</div>

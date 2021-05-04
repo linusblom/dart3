@@ -7,6 +7,9 @@
   <mat-form-field>
     <input matInput formControlName="email" placeholder="E-mail" />
   </mat-form-field>
+  <mat-checkbox color="primary" formControlName="terms">
+    Accept Terms & Conditions
+  </mat-checkbox>
 </div>
 
 <button mat-stroked-button [disabled]="form.invalid" (click)="onCreate()">

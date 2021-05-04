@@ -1,10 +1,10 @@
-import { trigger, transition, style, animate } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { pluck, shareReplay } from 'rxjs/operators';
 
-import { State, getBanner } from '@root/reducers';
 import { CoreActions } from '@core/actions';
+import { getBanner, State } from '@root/reducers';
 
 @Component({
   selector: 'app-banner',

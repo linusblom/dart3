@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 
-import { State } from '@root/reducers';
 import { AuthActions } from '@auth/actions';
+import { State } from '@root/reducers';
 
 @Injectable({
   providedIn: 'root',

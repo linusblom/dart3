@@ -1,4 +1,4 @@
-import { GameType, Check } from 'dart3-sdk';
+import { Check, GameType } from 'dart3-sdk';
 
 export interface GameSettings {
   tournament: boolean;
@@ -52,7 +52,7 @@ export const options: GameOption[] = [
     type: GameType.HalveIt,
     color: '#4fa7c4',
     description:
-      'Players should in each round try to hit a selected target. Only the selected target will give player score, and failure to hit target will result in player losing half their accumulated score. Player with highest score after eight rounds will win.',
+      'Players should in each round try to hit a selected target. Only the selected target will give player score, and failure to hit target will result in player losing half their accumulated score. Player with highest score after eight rounds wins.',
   },
   {
     ...basicOptions,

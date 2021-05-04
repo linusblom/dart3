@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CallbackComponent } from './components';
+import { CallbackComponent } from './containers';
 
 export const routes: Routes = [{ path: 'auth', component: CallbackComponent }];
 

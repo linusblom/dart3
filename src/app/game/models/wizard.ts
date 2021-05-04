@@ -1,4 +1,4 @@
-import { GameType, Check } from 'dart3-sdk';
+import { Check, GameType } from 'dart3-sdk';
 
 export interface GameSettings {
   tournament: boolean;

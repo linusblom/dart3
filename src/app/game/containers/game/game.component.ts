@@ -152,7 +152,7 @@ export class GameComponent implements OnInit, OnDestroy {
         delay(1000),
       )
       .subscribe(() =>
-        this.router.navigate(['results', this.game.uid], { state: { countXp: true } }),
+        this.router.navigate(['game', 'results', this.game.uid], { state: { countXp: true } }),
       );
 
     this.activeRound$

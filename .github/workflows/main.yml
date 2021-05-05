@@ -38,5 +38,8 @@ jobs:
       - name: Deploy to S3 bucket
         run: aws s3 sync ./dist/dart3 s3://dart3.app --delete
 
-      - name: Invalidate index.html
-        run: aws cloudfront create-invalidation --distribution-id EY9UDRHUAY31E --paths /index.html
+      - name: Create invalidation 1/2
+        run: aws cloudfront create-invalidation --distribution-id EY9UDRHUAY31E --paths "/*"
+      
+      - name: Create invalidation 2/2
+        run: aws cloudfront create-invalidation --distribution-id E292MI139CCJ43 --paths "/*"

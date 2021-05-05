@@ -45,6 +45,7 @@ export class PlayerComponent implements OnDestroy {
   settingsForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     pro: new FormControl(false),
+    consent: new FormControl(false),
     single: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
     double: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
     triple: new FormControl(20, [Validators.required, Validators.min(1), Validators.max(25)]),
@@ -81,6 +82,7 @@ export class PlayerComponent implements OnDestroy {
         {
           name: player.name,
           pro: hasRole(player.roles, Role.Pro),
+          consent: hasRole(player.roles, Role.EmailConsent),
           single: player.single,
           double: player.double,
           triple: player.triple,
@@ -127,18 +129,13 @@ export class PlayerComponent implements OnDestroy {
 
   update(avatar = this.player.avatar) {
     if (this.settingsForm.valid) {
-      const { name, pro, single, double, triple } = this.settingsForm.value;
+      const { name, pro, single, double, triple, consent } = this.settingsForm.value;
+      const roles = [...(pro ? [Role.Pro] : []), ...(consent ? [Role.EmailConsent] : [])];
+
       this.store.dispatch(
         PlayerActions.updateRequest({
           uid: this.uid,
-          player: {
-            name,
-            roles: pro ? [Role.Pro] : [],
-            single,
-            double,
-            triple,
-            avatar,
-          },
+          player: { name, roles, single, double, triple, avatar },
         }),
       );
     }
@@ -150,9 +147,7 @@ export class PlayerComponent implements OnDestroy {
         modal: {
           header: 'Reset PIN',
           text: `Are you sure you want to reset your PIN code? New PIN code will be sent to <strong>${this.player.email}</strong>.`,
-          backdrop: {
-            dismiss: true,
-          },
+          backdrop: { dismiss: true },
           cancel: { dismiss: true },
           ok: {
             text: 'Send PIN',

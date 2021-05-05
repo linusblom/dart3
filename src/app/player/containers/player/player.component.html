@@ -93,9 +93,15 @@
         />
       </mat-form-field>
     </div>
+
     <mat-checkbox class="light" color="primary" formControlName="pro" (change)="update()">
       Professional
     </mat-checkbox>
+
+    <mat-checkbox class="light" color="primary" formControlName="consent" (change)="update()">
+      Receive e-mails
+    </mat-checkbox>
+
     <div class="row" *ngIf="!hasRoles(Role.EmailVerified)">
       <div class="text">
         Your e-mail is not verified, click to send verification to your inbox.

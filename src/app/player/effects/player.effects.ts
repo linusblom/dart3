@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { catchError, concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
+import { CoreActions } from '@core/actions';
 import { PlayerActions } from '@player/actions';
 import { PlayerService } from '@player/services';
 import { getAllPlayers, getPin, State } from '@root/reducers';
@@ -157,7 +158,21 @@ export class PlayerEffects {
       ofType(PlayerActions.sendEmailVerificationRequest),
       concatMap(({ uid }) =>
         this.service.sendEmailVerification(uid).pipe(
-          map(() => PlayerActions.sendEmailVerificationSuccess()),
+          switchMap(() => [
+            PlayerActions.sendEmailVerificationSuccess(),
+            CoreActions.showModal({
+              modal: {
+                header: 'E-mail sent',
+                text: 'Check your inbox and click the link provided. Link is valid for 24 hours.',
+                backdrop: {
+                  dismiss: true,
+                },
+                ok: {
+                  dismiss: true,
+                },
+              },
+            }),
+          ]),
           catchError(() => [PlayerActions.sendEmailVerificationFailure()]),
         ),
       ),

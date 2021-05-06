@@ -13,7 +13,7 @@ export class PlayerCreateComponent {
   form = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    terms: new FormControl(false, [Validators.requiredTrue]),
+    consent: new FormControl(false),
   });
 
   onCreate() {
